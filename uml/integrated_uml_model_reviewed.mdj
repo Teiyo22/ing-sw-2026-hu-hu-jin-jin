@@ -10063,7 +10063,7 @@
 											"top": 531,
 											"width": 231,
 											"height": 13,
-											"text": "-changeAge(int currentAge): void",
+											"text": "-changeAge(): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -11719,24 +11719,6 @@
 											"height": 13,
 											"text": "-initBuildingCards(): int",
 											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGc9liifkLwZBc=",
-											"_parent": {
-												"$ref": "AAAAAAGc5Ett5v5jx34="
-											},
-											"model": {
-												"$ref": "AAAAAAGc9liib0Le7o8="
-											},
-											"font": "Arial;13;0",
-											"parentStyle": true,
-											"left": 2133,
-											"top": 1355,
-											"width": 231,
-											"height": 13,
-											"text": "+setAge(): int",
-											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
@@ -11744,7 +11726,7 @@
 									"left": 2128,
 									"top": 1275,
 									"width": 241,
-									"height": 98
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -37084,15 +37066,6 @@
 							"parameters": [
 								{
 									"_type": "UMLParameter",
-									"_id": "AAAAAAGc9j/WE2//bv8=",
-									"_parent": {
-										"$ref": "AAAAAAGc9j+MOG335Ok="
-									},
-									"name": "int currentAge",
-									"type": ""
-								},
-								{
-									"_type": "UMLParameter",
 									"_id": "AAAAAAGc9j/WE3AAw9w=",
 									"_parent": {
 										"$ref": "AAAAAAGc9j+MOG335Ok="
@@ -38052,25 +38025,6 @@
 									"_id": "AAAAAAGc6D7w27yspYQ=",
 									"_parent": {
 										"$ref": "AAAAAAGc6D7Mbbs613g="
-									},
-									"type": "int",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGc9liib0Le7o8=",
-							"_parent": {
-								"$ref": "AAAAAAGc5Ett5v5asJ8="
-							},
-							"name": "setAge",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAGc9li9ckTmt/8=",
-									"_parent": {
-										"$ref": "AAAAAAGc9liib0Le7o8="
 									},
 									"type": "int",
 									"direction": "return"
@@ -40669,7 +40623,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8WtcK7o+WV0="
 									},
-									"name": "Pickable p"
+									"name": "Pickable p",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -42557,7 +42512,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGdAttnBDzr5WI="
 									},
-									"name": "Pickable p"
+									"name": "Pickable p",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -43215,7 +43171,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGdAurjuehCU7E="
 									},
-									"name": "Pickable p"
+									"name": "Pickable p",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
