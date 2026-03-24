@@ -11346,7 +11346,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1159,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "Deck"
 										},
@@ -11384,7 +11384,7 @@
 									"parentStyle": true,
 									"left": 2128,
 									"top": 1152,
-									"width": 241,
+									"width": 247.29150390625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGc5Ett5v5e9kA="
@@ -11422,7 +11422,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1182,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-[final] board: Board",
 											"horizontalAlignment": 0
@@ -11440,9 +11440,9 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1197,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
-											"text": "-[final] charEventCards: Map<Card; int>",
+											"text": "-[final] charEventCards: Stack<Card>[3]",
 											"horizontalAlignment": 0
 										},
 										{
@@ -11477,7 +11477,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1212,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-[final] buildingCards: Queue<Building>",
 											"horizontalAlignment": 0
@@ -11495,7 +11495,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1227,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-[final] ageBuildingsCount: int[3]",
 											"horizontalAlignment": 0
@@ -11551,7 +11551,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1242,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-currentAge: int",
 											"horizontalAlignment": 0
@@ -11588,7 +11588,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1257,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-[final] gameSize: int",
 											"horizontalAlignment": 0
@@ -11598,7 +11598,7 @@
 									"parentStyle": true,
 									"left": 2128,
 									"top": 1177,
-									"width": 241,
+									"width": 247.29150390625,
 									"height": 98
 								},
 								{
@@ -11624,7 +11624,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1280,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "+init(int gameSize): void",
 											"horizontalAlignment": 0
@@ -11642,7 +11642,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1295,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "+drawCards(int num): List<Card>",
 											"horizontalAlignment": 0
@@ -11679,7 +11679,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1310,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "+drawBuildingCards(): void",
 											"horizontalAlignment": 0
@@ -11697,7 +11697,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1325,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-initCards(): int",
 											"horizontalAlignment": 0
@@ -11715,7 +11715,7 @@
 											"parentStyle": true,
 											"left": 2133,
 											"top": 1340,
-											"width": 231,
+											"width": 237.29150390625,
 											"height": 13,
 											"text": "-initBuildingCards(): int",
 											"horizontalAlignment": 0
@@ -11725,7 +11725,7 @@
 									"parentStyle": true,
 									"left": 2128,
 									"top": 1275,
-									"width": 241,
+									"width": 247.29150390625,
 									"height": 83
 								},
 								{
@@ -11768,7 +11768,7 @@
 							"containerChangeable": true,
 							"left": 2128,
 							"top": 1152,
-							"width": 240,
+							"width": 246.29150390625,
 							"height": 224,
 							"nameCompartment": {
 								"$ref": "AAAAAAGc5Ett5v5dsu0="
@@ -33080,6 +33080,24 @@
 											"height": 13,
 											"text": "+pickTop(Pickable p): void",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGdH/UNPyS/tM8=",
+											"_parent": {
+												"$ref": "AAAAAAGdAw4Ls5Zhu0M="
+											},
+											"model": {
+												"$ref": "AAAAAAGdH/UNCCSALSA="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 2437,
+											"top": 660,
+											"width": 152.37890625,
+											"height": 13,
+											"text": "+update(): void",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
@@ -33087,7 +33105,7 @@
 									"left": 2432,
 									"top": 640,
 									"width": 162.37890625,
-									"height": 23
+									"height": 38
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -33130,7 +33148,7 @@
 							"left": 2432,
 							"top": 592,
 							"width": 161.37890625,
-							"height": 72,
+							"height": 86,
 							"nameCompartment": {
 								"$ref": "AAAAAAGdAw4Ls5ZbQkA="
 							},
@@ -37813,7 +37831,8 @@
 							},
 							"name": "[final] charEventCards",
 							"visibility": "private",
-							"type": "Map<Card; int>"
+							"type": "Stack<Card>",
+							"multiplicity": "3"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -43873,6 +43892,25 @@
 									"_id": "AAAAAAGdAw96m9ZtyAI=",
 									"_parent": {
 										"$ref": "AAAAAAGdAw4+YpzWB4Y="
+									},
+									"type": "void",
+									"direction": "return"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGdH/UNCCSALSA=",
+							"_parent": {
+								"$ref": "AAAAAAGdAw4Ls5ZYHAE="
+							},
+							"name": "update",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGdH/UgjSaj/PY=",
+									"_parent": {
+										"$ref": "AAAAAAGdH/UNCCSALSA="
 									},
 									"type": "void",
 									"direction": "return"
