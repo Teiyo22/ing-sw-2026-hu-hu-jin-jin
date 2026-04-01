@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.card.character;
+package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 
