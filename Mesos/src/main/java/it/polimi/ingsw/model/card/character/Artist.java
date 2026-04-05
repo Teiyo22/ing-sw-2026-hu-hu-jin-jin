@@ -8,7 +8,12 @@ public class Artist extends AbstractCharacter {
     }
 
     @Override
-    public void onPick(Player player) {
+    public String getCharacterType() {
+        return "Artist";
+    }
 
+    @Override
+    public void onPick(Player player) {
+        player.getTribe().addArtist();
     }
 }

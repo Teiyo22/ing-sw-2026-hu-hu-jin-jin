@@ -11,9 +11,20 @@ public class Builder extends AbstractCharacter{
         this.bonusPP = bonusPP;
         this.buildingDiscount = buildingDiscount;
     }
-
+    @Override
+    public String getCharacterType() {
+        return "Builder";
+    }
     @Override
     public void onPick(Player player) {
+        player.getTribe().addBuilder();
+    }
 
+    public int getBonusPP() {
+        return bonusPP;
+    }
+
+    public int getBuildingDiscount() {
+        return buildingDiscount;
     }
 }

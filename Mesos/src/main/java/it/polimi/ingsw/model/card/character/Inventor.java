@@ -11,7 +11,16 @@ public class Inventor extends AbstractCharacter{
     }
 
     @Override
-    public void onPick(Player player) {
+    public String getCharacterTyper(){
+        return "Inventor";
+    }
 
+    @Override
+    public void onPick(Player player) {
+        player.getTribe().addInventor();
     }
 }
+
+    public String getInventorType(){
+        return this.type;
+    }

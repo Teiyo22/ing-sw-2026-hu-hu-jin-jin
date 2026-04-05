@@ -11,7 +11,16 @@ public class Shaman extends AbstractCharacter{
     }
 
     @Override
-    public void onPick(Player player) {
+    public String getCharacterTyper(){
+        return "Shaman";
+    }
 
+    @Override
+    public void onPick(Player player) {
+        player.getTribe().addShaman();
+    }
+
+    public int getStar(){
+        return this.stars;
     }
 }

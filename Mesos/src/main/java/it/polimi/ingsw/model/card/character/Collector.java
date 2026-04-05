@@ -8,7 +8,12 @@ public class Collector extends AbstractCharacter{
     }
 
     @Override
-    public void onPick(Player player) {
+    public String getCharacterTyper(){
+        return "Collector";
+    }
 
+    @Override
+    public void onPick(Player player) {
+        player.getTribe().addCollector();
     }
 }
