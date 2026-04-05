@@ -65,10 +65,15 @@ public class Tribe {
     }
 /**
  * Get the discount provided by builders
- * Each builder reduces the cost of a construction by 1, so the discount is the total number of builders
+ * Each builder has his own discount so we sum them
  */
     public int getBuilderDiscount() {
-        return builders.size();
+
+        int totDiscount = 0;
+        for(Builder builder : builders){
+            totDiscount+=builder.getBuildingDiscount();
+        }
+        return totDiscount;
     }
 
     public int getSustenanceDiscount() {
@@ -106,7 +111,7 @@ public class Tribe {
  * @param invetor , the inventor to add
  * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1*/
     public void addInventor(Inventor inventor) {
-        InvetorType type = inventor.getType();
+        InvetorType type = inventor.getInventorType();
         if(inventors.containsKey(type)){
             int oldValue = inventors.get(type);
             inventors.put(type, oldValue + 1);
