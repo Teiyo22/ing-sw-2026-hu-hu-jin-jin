@@ -2211,7 +2211,7 @@
 											"top": 1816,
 											"width": 215,
 											"height": 13,
-											"text": "+{abstract} onEvent(): void",
+											"text": "+{abstract} onEvent(Game g): void",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6799,7 +6799,7 @@
 											"top": 2052,
 											"width": 144.40625,
 											"height": 13,
-											"text": "+onEvent(Player p): void",
+											"text": "+onEvent(Game g): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7122,7 +7122,7 @@
 											"top": 2037,
 											"width": 143.71435546875,
 											"height": 13,
-											"text": "+onEvent(Player p): void",
+											"text": "+onEvent(Game g): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7804,7 +7804,7 @@
 											"top": 2052,
 											"width": 143.71435546875,
 											"height": 13,
-											"text": "+onEvent(Player p): void",
+											"text": "+onEvent(Game g): void",
 											"horizontalAlignment": 0
 										}
 									],
@@ -24524,6 +24524,15 @@
 									},
 									"type": "void",
 									"direction": "return"
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGdYHqbBqINmak=",
+									"_parent": {
+										"$ref": "AAAAAAGc3yy3aCYerK0="
+									},
+									"name": "Game g",
+									"type": ""
 								}
 							],
 							"isAbstract": true
@@ -25910,8 +25919,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XbwRhUsU0c="
 									},
-									"name": "Player p",
-									"type": ""
+									"name": "Game g"
 								},
 								{
 									"_type": "UMLParameter",
@@ -25975,8 +25983,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XdCZRs34XM="
 									},
-									"name": "Player p",
-									"type": ""
+									"name": "Game g"
 								},
 								{
 									"_type": "UMLParameter",
@@ -26125,8 +26132,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XiV/CfT1+4="
 									},
-									"name": "Player p",
-									"type": ""
+									"name": "Game g"
 								},
 								{
 									"_type": "UMLParameter",
