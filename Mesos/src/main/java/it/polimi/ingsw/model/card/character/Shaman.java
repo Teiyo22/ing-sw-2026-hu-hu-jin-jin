@@ -26,4 +26,9 @@ public class Shaman extends AbstractCharacter{
     public int getStar(){
         return this.stars;
     }
+
+    @Override
+    public void accept(CardVisitor v){
+        v.doForShaman(this);
+    }
 }

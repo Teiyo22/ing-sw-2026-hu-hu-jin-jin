@@ -16,4 +16,9 @@ public class Artist extends AbstractCharacter {
     public void onPick(Player player) {
         player.getTribe().addArtist();
     }
+
+    @Override
+    public void accept(CardVisitor v){
+        v.doForArtist(this);
+    }
 }

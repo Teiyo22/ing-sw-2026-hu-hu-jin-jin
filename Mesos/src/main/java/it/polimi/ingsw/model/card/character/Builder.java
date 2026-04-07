@@ -27,4 +27,9 @@ public class Builder extends AbstractCharacter{
     public int getBuildingDiscount() {
         return buildingDiscount;
     }
+
+    @Override
+    public void accept(CardVisitor v){
+        v.doForBuilder(this);
+    }
 }

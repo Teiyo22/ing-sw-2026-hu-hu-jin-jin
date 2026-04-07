@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.player.Player;
 
-public class Inventor extends AbstractCharacter{
+public class Inventor extends AbstractCharacter {
     private InventorType type;
 
     public Inventor(int era, InventorType type) {
@@ -11,7 +11,7 @@ public class Inventor extends AbstractCharacter{
     }
 
     @Override
-    public String getCharacterTyper(){
+    public String getCharacterTyper() {
         return "Inventor";
     }
 
@@ -19,8 +19,14 @@ public class Inventor extends AbstractCharacter{
     public void onPick(Player player) {
         player.getTribe().addInventor();
     }
-}
 
-    public String getInventorType(){
+    @Override
+    public void accept(CardVisitor v) {
+        v.doForInventor(this);
+    }
+
+    public String getInventorType() {
         return this.type;
     }
+
+}

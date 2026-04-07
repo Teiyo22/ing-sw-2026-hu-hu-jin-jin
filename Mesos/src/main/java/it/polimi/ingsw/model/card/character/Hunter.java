@@ -24,4 +24,9 @@ public class Hunter extends AbstractCharacter {
             player.addFood(player.getTribe().getHunterCount())
         }
     }
+
+    @Override
+    public void accept(CardVisitor v){
+        v.doForHunter(this);
+    }
 }

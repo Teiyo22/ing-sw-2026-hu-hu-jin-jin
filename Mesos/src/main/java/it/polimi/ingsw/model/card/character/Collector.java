@@ -19,4 +19,9 @@ public class Collector extends AbstractCharacter{
         player.getTribe().addCollector();
         player.getTribe().addSustenanceDiscount(3);
     }
+
+    @Override
+    public void accept(CardVisitor v){
+        v.doForCollector(this);
+    }
 }
