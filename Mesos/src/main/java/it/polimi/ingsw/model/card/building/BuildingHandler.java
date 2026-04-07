@@ -12,34 +12,96 @@ public class BuildingHandler {
     private List<CardPickBuilding> cardPickBuildings;
     private List<HuntBuilding> huntBuildings;
     private List<CavePaintingBuilding> cavePaintingBuildings;
-    private List<OfferTileBuilding> offerTileBuildings;
+    private List<OrderTileBuilding> orderTileBuildings;
     private List<ExtraActionBuilding> extraActionBuildings;
     private List<GameEndBuilding> gameEndBuildings;
 
     public BuildingHandler() {
+        this.cardPickBuildings = new ArrayList<>();
+        this.huntBuildings = new ArrayList<>();
+        this.cavePaintingBuildings = new ArrayList<>();
+        this.orderTileBuildings = new ArrayList<>();
+        this.extraActionBuildings = new ArrayList<>();
+        this.gameEndBuildings = new ArrayList<>();
     }
 
-    public void applyCardPickEffects(Pickable pickable, Player player) {
+    public void addCardPickBuildings(CardPickBuilding building){
+        cardPickBuildings.add(building);
 
+        return;
+    }
+
+    public void addHuntBuildings(HuntBuilding building){
+        HuntBuildings.add(building);
+
+        return;
+    }
+
+    public void addCavePaintingBuildings(CavePaintingBuilding building){
+        cavePaintingBuildings.add(building);
+
+        return;
+    }
+    public void addOrderTileBuildings(OrderTileBuilding building){
+        orderTileBuildings.add(building);
+
+        return;
+    }
+    public void addGameEndBuildings(GameEndBuilding building){
+        gameEndBuildings.add(building);
+
+        return;
+    }
+    public void addExtraActionBuildings(ExtraActionBuilding building){
+        extraActionBuildings.add(building);
+
+        return;
+    }
+
+    public void addCardPickBuildings(CardPickBuilding building){
+        cardPickBuildings.add(building);
+
+        return;
+    }
+
+
+
+
+
+    public void applyCardPickEffects(Pickable pickable, Player player) {
+        for(CardPickBuilding building: cardPickBuildings){
+            building.applyEffects(pickable, player);
+        }
     }
 
     public void applyHuntEffects() {
-
+        for(HuntBuilding building: huntBuildings){
+            building.applyEffects();
+        }
     }
 
     public void applyCavePaintingEffects() {
+        for(CavePaintingBuilding building: cavePaintingBuildings){
+            building.applyEffects();
+        }
 
     }
 
-    public void applyOfferTileEffects(Player p, int foodDelta) {
-
+    public void applyOrderTileEffects(OrderSlots[] orderTile) {
+        for(OrderTileBuilding building: orderTileBuildings){
+            building.applyEffects(orderTile);
+        }
     }
 
     public void applyExtraActionEffects(ExtraActionState state) {
-
+        for(ExtraActionBuilding building: extraActionBuildings){
+            building.applyEffects(state);
+        }
     }
 
     public void applyGameEndEffects() {
-
+        for(GameEndBuilding building: gameEndBuildings){
+            building.applyEffects();
+        }
     }
 }

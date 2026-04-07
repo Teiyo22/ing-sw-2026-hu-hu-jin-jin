@@ -18,9 +18,12 @@ public class Board {
 
     }
 
+
     private void initOfferTrack() {
 
     }
+
+    public OrderSlot[] getOrderTile(){return orderTile;}
 
     public Deck getDeck() {
         return deck;

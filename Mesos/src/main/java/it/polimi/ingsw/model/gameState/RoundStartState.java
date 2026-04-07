@@ -14,6 +14,19 @@ public class RoundStartState extends GameState {
 
     @Override
     public void update() {
+        assignedSlots++;
+        if(assignedSlots == game.getPlayers().size()){
+            onEnd();
+        }
+    }
 
+    @Override
+    public void onEnd(){
+        game.setGameState(new RoundActionState);
+    }
+
+    public void assignTo(OfferTile offer){
+        offer.setPlayer(currPlayer);
+        update();
     }
 }

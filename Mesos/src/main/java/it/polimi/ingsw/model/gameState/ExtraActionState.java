@@ -12,8 +12,11 @@ public class ExtraActionState extends GameState {
         super(game, buildingHandler);
     }
 
-    public void pickTop(Pickable p) {
 
+
+    public void pickTop(Pickable p) {
+        p.onPick(currPlayer);
+        game.setGameState(new RoundEndState);
     }
 
     @Override

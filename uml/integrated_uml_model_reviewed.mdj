@@ -50,7 +50,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1792,
-											"top": -1648,
+											"top": -1664,
 											"height": 13
 										},
 										{
@@ -62,7 +62,7 @@
 											"font": "Arial;13;1",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 375,
+											"top": 367,
 											"width": 327,
 											"height": 13,
 											"text": "Game"
@@ -77,7 +77,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1792,
-											"top": -1648,
+											"top": -1664,
 											"width": 73.67724609375,
 											"height": 13,
 											"text": "(from Model)"
@@ -92,7 +92,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1792,
-											"top": -1648,
+											"top": -1664,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
@@ -100,7 +100,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 1120,
-									"top": 368,
+									"top": 360,
 									"width": 337,
 									"height": 25,
 									"stereotypeLabel": {
@@ -138,7 +138,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 398,
+											"top": 390,
 											"width": 327,
 											"height": 13,
 											"text": "-[final] gameSize: int",
@@ -156,7 +156,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 413,
+											"top": 405,
 											"width": 327,
 											"height": 13,
 											"text": "-[final] players: List<Player>",
@@ -175,7 +175,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 37,
-											"top": 61,
+											"top": 45,
 											"width": 247,
 											"height": 13,
 											"text": "+Attribute1",
@@ -193,7 +193,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 428,
+											"top": 420,
 											"width": 327,
 											"height": 13,
 											"text": "-[final] board: Board",
@@ -211,7 +211,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 443,
+											"top": 435,
 											"width": 327,
 											"height": 13,
 											"text": "-gameState: GameState",
@@ -230,7 +230,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 317,
-											"top": -398,
+											"top": -414,
 											"width": 327,
 											"height": 13,
 											"text": "-playersStarOrder: List<Player>",
@@ -249,7 +249,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 317,
-											"top": -383,
+											"top": -399,
 											"width": 327,
 											"height": 13,
 											"text": "-isRunning: boolean",
@@ -267,7 +267,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 458,
+											"top": 450,
 											"width": 327,
 											"height": 13,
 											"text": "-leaderboard: List<Player>",
@@ -277,7 +277,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 1120,
-									"top": 393,
+									"top": 385,
 									"width": 337,
 									"height": 83
 								},
@@ -303,7 +303,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 481,
+											"top": 473,
 											"width": 327,
 											"height": 13,
 											"text": "-GameState(int playerNum): GameState",
@@ -321,7 +321,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 496,
+											"top": 488,
 											"width": 327,
 											"height": 13,
 											"text": "-getGameSize(): int",
@@ -339,7 +339,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 511,
+											"top": 503,
 											"width": 327,
 											"height": 13,
 											"text": "-addPlayer(Totem totem, String name): void",
@@ -357,7 +357,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 526,
+											"top": 518,
 											"width": 327,
 											"height": 13,
 											"text": "-getBoard(): Board",
@@ -375,7 +375,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 541,
+											"top": 533,
 											"width": 327,
 											"height": 13,
 											"text": "-getGameState(): GameState",
@@ -393,7 +393,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 556,
+											"top": 548,
 											"width": 327,
 											"height": 13,
 											"text": "-setGameState(): void",
@@ -412,19 +412,37 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 1125,
-											"top": 571,
+											"top": 555,
 											"width": 327,
 											"height": 13,
 											"text": "+updateStarOrder(): void",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGdX6qpcvQzxBo=",
+											"_parent": {
+												"$ref": "AAAAAAGc3qJjXnlxqxw="
+											},
+											"model": {
+												"$ref": "AAAAAAGdX6qpa/QwrwI="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 1125,
+											"top": 563,
+											"width": 327,
+											"height": 13,
+											"text": "-getPlayers(): List<Player>",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 1120,
-									"top": 476,
+									"top": 468,
 									"width": 337,
-									"height": 98
+									"height": 113
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -439,7 +457,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 896,
-									"top": -824,
+									"top": -832,
 									"width": 10,
 									"height": 10
 								},
@@ -456,7 +474,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 896,
-									"top": -824,
+									"top": -832,
 									"width": 10,
 									"height": 10
 								}
@@ -465,7 +483,7 @@
 							"parentStyle": false,
 							"containerChangeable": true,
 							"left": 1120,
-							"top": 368,
+							"top": 360,
 							"width": 336,
 							"height": 221,
 							"nameCompartment": {
@@ -13443,7 +13461,7 @@
 											"top": 1155,
 											"width": 255,
 											"height": 13,
-											"text": "+getFoodDelta(): void",
+											"text": "+getFoodDelta(): int",
 											"horizontalAlignment": 0
 										}
 									],
@@ -23307,6 +23325,26 @@
 									"direction": "return"
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGdX6qpa/QwrwI=",
+							"_parent": {
+								"$ref": "AAAAAAGc3qJjXnloeM8="
+							},
+							"name": "getPlayers",
+							"visibility": "private",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAGdX6tDfvgW7Zc=",
+									"_parent": {
+										"$ref": "AAAAAAGdX6qpa/QwrwI="
+									},
+									"type": "List<Player>",
+									"direction": "return"
+								}
+							]
 						}
 					]
 				},
@@ -24527,7 +24565,7 @@
 								},
 								{
 									"_type": "UMLParameter",
-									"_id": "AAAAAAGdYHqbBqINmak=",
+									"_id": "AAAAAAGdYFhKs0X2pQo=",
 									"_parent": {
 										"$ref": "AAAAAAGc3yy3aCYerK0="
 									},
@@ -25919,7 +25957,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XbwRhUsU0c="
 									},
-									"name": "Game g"
+									"name": "Game g",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -25983,7 +26022,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XdCZRs34XM="
 									},
-									"name": "Game g"
+									"name": "Game g",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -26132,7 +26172,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGc8XiV/CfT1+4="
 									},
-									"name": "Game g"
+									"name": "Game g",
+									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
@@ -28773,7 +28814,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGc+7pZdkc3DVA="
 									},
-									"type": "void",
+									"type": "int",
 									"direction": "return"
 								}
 							]

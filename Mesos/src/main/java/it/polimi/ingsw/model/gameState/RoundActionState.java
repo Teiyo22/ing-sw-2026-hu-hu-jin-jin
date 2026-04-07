@@ -15,17 +15,29 @@ public class RoundActionState extends GameState{
 
     }
 
+
+    //metodo chiamato nel controller dopo che si finisce di eseguire una tessera offerta
     @Override
     public void update() {
+        solvedOffers++;
+        if(solvedOffers == game.getOfferTile().size){
+            onEnd();
+        }
+    }
 
+    @Override
+    public void onEnd(){
+        game.setGameState(new ExtraActionState);
     }
 
     private void pick(Pickable p, Row row) {
-
+        p.onPick(currPlayer);
     }
 
-    public void assignToOrderSlot(Player player) {
+    public void assignToOrderSlot(Player player, int i) {
+        OrderSlot[] orderSlots = game.getBoard().getOfferTile();
+        orderSlots[i].setPlayer(player);
 
+        buildingHandler.applyOrderTileEffects(orderSlots);
     }
-
 }

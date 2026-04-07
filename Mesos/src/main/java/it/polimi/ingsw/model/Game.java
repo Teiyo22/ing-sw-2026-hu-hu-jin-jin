@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+    package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.gameState.*;
@@ -32,7 +32,7 @@ public class Game {
     }
 
     public void addPlayer(Totem totem, String name) {
-
+        gameState.update();
     }
 
     public void setGameState(GameState state) {
