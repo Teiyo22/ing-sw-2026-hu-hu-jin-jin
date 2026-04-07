@@ -33,6 +33,11 @@ public class Tribe {
         this.sustenanceDiscount = 0;
     }
 
+    public int getTribeSize(){
+        int total= getArtistCount()+getBuilderCount()+getCollectorCount()+ getHunterCount()+getInventorCount()+ getShamanCount()
+        return total;
+    }
+
     public int getInventorCount() {
         int totInventors = 0;
         for(int count : inventors.values()){
@@ -68,7 +73,6 @@ public class Tribe {
  * Each builder has his own discount so we sum them
  */
     public int getBuilderDiscount() {
-
         int totDiscount = 0;
         for(Builder builder : builders){
             totDiscount+=builder.getBuildingDiscount();
@@ -79,15 +83,21 @@ public class Tribe {
     public int getSustenanceDiscount() {
         return sustenanceDiscount;
     }
+
+    /**
+     * Add discount in sustenanceDiscount*/
+    public void addSustenanceDiscount(int discount){
+        this.sustenanceDiscount += discount;
+    }
+
+    public void addStars(int stars){
+        this.stars += stars;
+    }
 /**
  * Get the total stars possesed by the player
  * Every shaman card has a number of stars, so we multiply that number with the number shamans with the same stars and sum them all */
     public int getStars() {
-        int totStars = 0;
-        for(int i=0; i<3 ; i++ ){
-            totStars= shamans[i] * (i+1);
-        }
-        return totStars;
+        return stars;
     }
 /**
  * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
@@ -105,10 +115,10 @@ public class Tribe {
         for(Builder builder : builders){
             totalBonus += builder.getBonusPP();
         }
+        return totalBonus;
     }
 /**
  * Add an inventor in the tribe
- * @param invetor , the inventor to add
  * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1*/
     public void addInventor(Inventor inventor) {
         InvetorType type = inventor.getInventorType();
@@ -116,7 +126,7 @@ public class Tribe {
             int oldValue = inventors.get(type);
             inventors.put(type, oldValue + 1);
         }else {
-            inventors.put(type,1);
+            inventors.put(type, 1);
         }
     }
 /**
