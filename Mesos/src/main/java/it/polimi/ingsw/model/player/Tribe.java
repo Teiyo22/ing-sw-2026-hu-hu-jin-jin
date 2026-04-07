@@ -46,6 +46,10 @@ public class Tribe {
         return totInventors;
     }
 
+    public int getNumInventorType(InventorType type){
+        return inventors.get(type);
+    }
+
     public int getShamanCount() {
         int totShamans = 0;
         for(int i=0; i<3 ; i++ )
@@ -83,6 +87,7 @@ public class Tribe {
     public int getSustenanceDiscount() {
         return sustenanceDiscount;
     }
+
 
     /**
      * Add discount in sustenanceDiscount*/
@@ -150,5 +155,18 @@ public class Tribe {
 
     public void addArtist() {
         artists++;
+    }
+
+    /**
+     * Return the Character with the minimun number of cards*/
+    public int getMinChar(){
+        int sets = 0;
+        if(getInventorCount() < sets) { sets=getInventorCount(); }
+        if(getShamanCount() < sets) { sets=getShamanCount(); }
+        if(getHunterCount() < sets) { sets=getHunterCount(); }
+        if(getArtistCount() < sets) { sets=getArtistCount(); }
+        if(getBuilderCount() < sets) { sets=getBuilderCount(); }
+        if(getCollectorCount() < sets) { sets=getCollectorCount(); }
+        return sets;
     }
 }
