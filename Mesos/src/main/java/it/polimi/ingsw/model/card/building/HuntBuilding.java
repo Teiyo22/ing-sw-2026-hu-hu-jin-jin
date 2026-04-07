@@ -14,10 +14,12 @@ public class HuntBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-
+        owner = player;
+        buildingHandler.addHuntBuilding();
     }
 
     public void applyEffect() {
-
+        owner.addFood(owner.getTribe().getHunterCount());
+        owner.addPP(owner.getTribe().getHunterCount());
     }
 }

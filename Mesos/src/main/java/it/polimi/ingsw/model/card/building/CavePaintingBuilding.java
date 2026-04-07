@@ -12,10 +12,11 @@ public class CavePaintingBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-
+        owner = player;
+        buildingHandler.addCavePaintingBuilding();
     }
 
     public void applyEffect() {
-
+        owner.addFood(owner.getTribe().getArtistCount());
     }
 }

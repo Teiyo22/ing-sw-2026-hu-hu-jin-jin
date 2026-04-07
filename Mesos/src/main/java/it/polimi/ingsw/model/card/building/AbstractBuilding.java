@@ -10,6 +10,8 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     protected int cost;
     protected int pp;
 
+    protected BuildingHandler buildingHandler;
+
     public AbstractBuilding(int era, int cost, int pp, BuildingHandler buildingHandler) {
         super(era);
         this.cost = cost;
@@ -19,8 +21,6 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
 
     @Override
     public void moveTo(Row row) {
-
+        row.addBuilding(this);
     }
-
-    protected BuildingHandler buildingHandler;
 }

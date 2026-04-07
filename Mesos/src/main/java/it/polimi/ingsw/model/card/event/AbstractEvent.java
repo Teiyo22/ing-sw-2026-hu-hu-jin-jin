@@ -12,7 +12,7 @@ public abstract class AbstractEvent extends AbstractCard {
     public abstract void onEvent(Game game);
 
     @Override
-    public void moveTo(Row row) {
-
+    public void moveTo(Row row){
+        row.addEvent(this);
     }
 }
