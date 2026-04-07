@@ -12,8 +12,11 @@ public class Collector extends AbstractCharacter{
         return "Collector";
     }
 
+    /**
+     * Every collector gives a discount, so we add the discount on sustenanceDiscount */
     @Override
     public void onPick(Player player) {
         player.getTribe().addCollector();
+        player.getTribe().addSustenanceDiscount(3);
     }
 }
