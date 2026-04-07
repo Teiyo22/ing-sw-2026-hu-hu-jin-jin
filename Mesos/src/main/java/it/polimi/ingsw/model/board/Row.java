@@ -14,8 +14,19 @@ public class Row {
     private final List<AbstractBuilding> buildingCards;
 
     public Row() {
-
+        this.sustenanceEventCards = new ArrayList<>();
+        this.eventCards = new ArrayList<>();
+        this.characterCards = new ArrayList<>();
+        this.buildingCards = new ArrayList<>();
     }
+
+    public void addSustenanceEvent(Sustenance event){ sustenanceEventCards.add(event); }
+
+    public void addEvent(AbstractEvent event){ eventCards.add(event); }
+
+    public void addCharacter(AbstractCharacter character){ characterCards.add(character); }
+
+    public void addBuilding(AbstractBuilding building){ buildingCards.add(building); }
 
     public List<Sustenance> getSustenanceEventCards() {
         return sustenanceEventCards;
