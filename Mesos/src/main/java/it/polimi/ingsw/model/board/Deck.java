@@ -28,8 +28,23 @@ public class Deck {
 
     }
 
+    /**
+     * Draws a certain number of character/event cards.
+     * @param num Number of drawn cards
+     * @return List of character/event cards.
+     * */
     public List<AbstractCard> drawCards(int num) {
+        List<AbstractCard> cards = new ArrayList<>();
 
+        for(int i = 0; i < num; i++) {
+            try {
+                cards.add(charEventCards.pop());
+            } catch (EmptyStackException e) {
+                System.out.println("Attempting to draw from empty deck");
+            }
+        }
+
+        return cards;
     }
 
     public List<AbstractBuilding> drawBuildingsCards(int num) {
