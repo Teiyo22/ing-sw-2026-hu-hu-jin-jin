@@ -17,6 +17,11 @@ public class Game {
 
     public Game(int gameSize) {
         this.gameSize = gameSize;
+        this.players = new ArrayList<Player>();
+        this.board = new Board();
+        this.leaderboard = new ArrayList<Player>();
+
+        this.gameState = new GameStartState();
     }
 
     public int getGameSize() {
@@ -32,7 +37,8 @@ public class Game {
     }
 
     public void addPlayer(Totem totem, String name) {
-
+        Player player = new Player(name, totem);
+        players.add(player);
     }
 
     public void setGameState(GameState state) {
