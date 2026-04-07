@@ -67,6 +67,15 @@ public class Deck {
         return buildings;
     }
 
+
+    /**
+     * Updates the current age.
+     * */
+    public void changeAge() {
+        this.currentAge += 1;
+    }
+
+
     private void initCards() {
 
     }
