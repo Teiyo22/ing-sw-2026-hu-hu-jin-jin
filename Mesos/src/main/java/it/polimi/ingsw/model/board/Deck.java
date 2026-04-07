@@ -47,8 +47,24 @@ public class Deck {
         return cards;
     }
 
-    public List<AbstractBuilding> drawBuildingsCards(int num) {
 
+    /**
+     * Draws a certain number of building cards based on the current age.
+     * @return List of building cards.
+     * */
+    public List<AbstractBuilding> drawBuildingsCards() {
+        List<AbstractBuilding> buildings = new ArrayList<>();
+
+        for (int i = 0; i < ageBuildingsCount.get(currentAge); i++) {
+            AbstractBuilding building = buildingCards.poll();
+
+            if (building != null)
+                buildings.add(building);
+            else
+                System.out.println("Attempting to draw from empty deck");
+        }
+
+        return buildings;
     }
 
     private void initCards() {
