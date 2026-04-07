@@ -19,6 +19,9 @@ public class Deck {
     public Deck(int gameSize, Board board) {
         this.gameSize = gameSize;
         this.board = board;
+        this.charEventCards = new Stack<AbstractCard>();
+        this.buildingCards = new LinkedList<AbstractBuilding>();
+        this.ageBuildingsCount = new ArrayList<>();
     }
 
     public void init() {
