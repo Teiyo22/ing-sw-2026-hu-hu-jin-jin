@@ -6,7 +6,7 @@ public enum InventorType {
     FISHERMAN,
     JEWELER,
     HERBORIST,
-    SHEPERD,
+    SHEPHERD,
     MANUFACTURER,
     MUSICIAN,
     TANNER,
