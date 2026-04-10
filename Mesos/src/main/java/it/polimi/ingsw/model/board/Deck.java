@@ -15,17 +15,21 @@ public class Deck {
     private List<Integer> ageBuildingsCount;
     private int currentAge = 0;
 
-
     public Deck(int gameSize, Board board) {
         this.gameSize = gameSize;
         this.board = board;
-        this.charEventCards = new Stack<AbstractCard>();
-        this.buildingCards = new LinkedList<AbstractBuilding>();
-        this.ageBuildingsCount = new ArrayList<>();
     }
 
+    /**
+     *  Initializes the deck objects based on the number of players.
+     *  Each number is associated to a different deck config file.
+     *  Each deck config file contains different configurations for the cards
+     * */
     public void init() {
-
+        DeckConfig deckConfig = new DeckConfigLoader().load("tmp");
+        ageBuildingsCount = deckConfig.getBuildingsCountPerAge();
+        initCards(deckConfig.getCardConfigs());
+        initBuildingCards(deckConfig.getBuildingConfigs());
     }
 
     /**
@@ -37,10 +41,11 @@ public class Deck {
         List<AbstractCard> cards = new ArrayList<>();
 
         for(int i = 0; i < num; i++) {
-            try {
-                cards.add(charEventCards.pop());
-            } catch (EmptyStackException e) {
+            if(!charEventCards.isEmpty())
+                cards.add(charEventCards.poll());
+            else {
                 System.out.println("Attempting to draw from empty deck");
+                break;
             }
         }
 
@@ -52,16 +57,16 @@ public class Deck {
      * Draws a certain number of building cards based on the current age.
      * @return List of building cards.
      * */
-    public List<AbstractBuilding> drawBuildingsCards() {
-        List<AbstractBuilding> buildings = new ArrayList<>();
+    public List<AbstractCard> drawBuildingsCards() {
+        List<AbstractCard> buildings = new ArrayList<>();
 
         for (int i = 0; i < ageBuildingsCount.get(currentAge); i++) {
-            AbstractBuilding building = buildingCards.poll();
-
-            if (building != null)
-                buildings.add(building);
-            else
+            if (!buildingCards.isEmpty())
+                buildings.add(buildingCards.poll());
+            else {
                 System.out.println("Attempting to draw from empty deck");
+                break;
+            }
         }
 
         return buildings;
@@ -76,11 +81,18 @@ public class Deck {
     }
 
 
-    private void initCards() {
-
+    /**
+     * Initializes the character/event cards list of list card configurations
+     * */
+    private void initCards(List<CardConfig> configs) {
+        charEventCards = CardFactory.generateCards(configs);
     }
 
-    private void initBuildingCards() {
 
+    /**
+     * Initializes the building cards list of list card configurations
+     * */
+    private void initBuildingCards(List<CardConfig> configs) {
+        buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount);
     }
 }
