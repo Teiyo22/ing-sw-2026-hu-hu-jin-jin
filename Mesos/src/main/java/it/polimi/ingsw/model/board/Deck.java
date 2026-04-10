@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.utils.*;
 
 import java.util.*;
 
@@ -9,10 +9,10 @@ public class Deck {
     final private int gameSize;
     private final Board board;
 
-    private final Stack<AbstractCard> charEventCards;
-    private final Queue<AbstractBuilding> buildingCards;
+    private Queue<AbstractCard> charEventCards;
+    private Queue<AbstractCard> buildingCards;
 
-    private final List<Integer> ageBuildingsCount;
+    private List<Integer> ageBuildingsCount;
     private int currentAge = 0;
 
 
