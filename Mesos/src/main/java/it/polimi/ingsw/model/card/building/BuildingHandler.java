@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.card.building.cardPick.CardPickBuilding;
 import it.polimi.ingsw.model.card.building.gameEnd.GameEndBuilding;
 import it.polimi.ingsw.model.gameState.ExtraActionState;
 import it.polimi.ingsw.model.player.Player;
+import java.util.*;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class BuildingHandler {
     }
 
     public void addHuntBuildings(HuntBuilding building){
-        HuntBuildings.add(building);
+        huntBuildings.add(building);
 
         return;
     }
@@ -58,14 +59,6 @@ public class BuildingHandler {
         return;
     }
 
-    public void addCardPickBuildings(CardPickBuilding building){
-        cardPickBuildings.add(building);
-
-        return;
-    }
-
-
-
     public void applyCardPickEffects(Pickable pickable, Player player) {
         for(CardPickBuilding building: cardPickBuildings){
             building.applyEffects(pickable, player);
@@ -85,9 +78,9 @@ public class BuildingHandler {
 
     }
 
-    public void applyOrderTileEffects(OrderSlots[] orderTile) {
+    public void applyOrderTileEffects(OrderSlot slot) {
         for(OrderTileBuilding building: orderTileBuildings){
-            building.applyEffects(orderTile);
+            building.applyEffects(slot);
         }
     }
 
