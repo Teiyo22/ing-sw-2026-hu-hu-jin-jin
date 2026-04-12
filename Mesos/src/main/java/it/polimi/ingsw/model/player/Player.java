@@ -48,6 +48,12 @@ public class Player implements Comparable<Player>{
 
     @Override
     public int compareTo(Player other) {
+        int comparePP = Integer.compare(other.getPP(), this.PP)
+        if(comparePP!=0){return comparePP; }
+
+        int compareCibo = Integer.compare(other.getFood(), this.food);
+        if (compareCibo != 0) {return compareCibo;}
+
         return 0;
     }
 
