@@ -14,6 +14,13 @@ public class RoundStartState extends GameState {
 
     @Override
     public void update() {
+        OrderSlot[] orderTile = game.getBoard().getOrderTile();
+        for(int i=0; i<=game.){
+            //...
+
+        }
+
+
         assignedSlots++;
         if(assignedSlots == game.getPlayers().size()){
             onEnd();
@@ -22,10 +29,14 @@ public class RoundStartState extends GameState {
 
     @Override
     public void onEnd(){
-        game.setGameState(new RoundActionState);
+        game.setGameState(new RoundActionState());
+        game.getGameState().update();
     }
 
+
+
     public void assignTo(OfferTile offer){
+        //resettare l'oderTIle
         offer.setPlayer(currPlayer);
         update();
     }

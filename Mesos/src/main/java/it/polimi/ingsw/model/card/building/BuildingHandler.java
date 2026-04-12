@@ -66,8 +66,6 @@ public class BuildingHandler {
 
 
 
-
-
     public void applyCardPickEffects(Pickable pickable, Player player) {
         for(CardPickBuilding building: cardPickBuildings){
             building.applyEffects(pickable, player);

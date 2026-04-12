@@ -20,6 +20,8 @@ public class GameStartState extends GameState{
 
     @Override
     public void update() {
+
+
         playerCount++;
         if(playerCount == playerList.size()) {
             onEnd();
@@ -30,43 +32,40 @@ public class GameStartState extends GameState{
     public void onEnd(){
         int player_index = 1;
         int food = 2;
-        List<AbstractCard> cards;
 
         assignPlayersToOrderTile();
-        Collections.shuffle(orderTile);
         for(Player p: orderTile) {
             p.setFood(food);
             player_index++;
             food = 2 + Math.floor(player_index);
         }
 
-        cards = game.getBoard().getDeck.drawCards(playersList.size+1);
-        distributeCards(cards);
+        distributeCards();
 
-        cards = game.getBoard().getDeck.drawCards(playersList.size+4);
-        distributeCards(cards);
-
-        game.setGameState(new RoundStartState);
+        game.setGameState(new RoundStartState());
+        game.getGameState().update();
     }
 
     private void assignPlayersToOrderTile(){
         int i = 0;
-
+        Collections.shuffle(playerList);
         for(Player p: playersList) {
             orderTile[i].setPlayer(p);
             i++;
         }
     }
 
-    private void distributeCards(List<AbstractCard> drawnCards) {
+    private void distributeCards() {
         Row row;
+        List<AbstractCard> cards;
 
-        if(drawnCards.size == playersList.size+1){
-            row = game.getBoard().getBottomRow();
-        }else
-            row = game.getBoard().getTopRow();
+        cards = game.getBoard().getDeck().drawCards(playersList.size()+1);
+        for(AbstractCard card: cards){
+            card.moveTo(row);
+        }
 
-        for(AbstractCard card: drawnCards){
+        cards = game.getBoard().getDeck().drawCards(playersList.size()+4);
+        for(AbstractCard card: cards){
             card.moveTo(row);
         }
     }

@@ -21,15 +21,20 @@ public class RoundEndState extends GameState {
     @Override
     public void update() {
 
+        if(!deck.getCharEventCards().isEmpty()) {
+            resolveEvents();
+            setUp();
+            game.setGameState(new RoundStartState);
+
+        }else
+            game.setGameState(new GameEndState);
+
+        game.getGameState().update();
     }
 
     @Override
     public void onEnd(){
-        if(deck.charEventCards()[2].isEmpty) {
-            game.setGameState(new GameEndState);
-        }else{
-            game.setGameState(RoundStartState);
-        }
+
     }
 
     private void resolveEvents() {
@@ -45,6 +50,7 @@ public class RoundEndState extends GameState {
     }
 
     private void setUp() {
+
         bottom.getEventCards().clear();
         bottom.getSustenanceEventCards().clear();
         bottom.getCharactersCards().clear();
@@ -69,16 +75,18 @@ public class RoundEndState extends GameState {
 
         cards = deck.drawCards(players.size+4);
         for(AbstractCard card: cards) {
-            if (card.era > deck.currentAge) {
-                changeAge();
-                deck.currentAge++;
+            if (card.era > deck.currentEra) {
+                bottom.getBuildingCards().clear();
+                deck.currentEra++;
+                List<Building> buildingList = deck.drawBuildings();
+                for(Building building: buildingList){
+                    building.moveTo(top);
+                }
             }
             card.moveTo(top);
         }
+
         onEnd();
     }
 
-    private void changeAge() {
-        bottom.getBuildingCards().clear();
-    }
 }

@@ -20,7 +20,9 @@ public class GameEndState extends GameState {
 
     @Override
     public void update() {
-
+        resolveEvents();
+        assignBonusPP();
+        setLeaderboard();
     }
 
     private void resolveEvents() {
@@ -34,7 +36,16 @@ public class GameEndState extends GameState {
         for(Sustenance s: sustenance){
             s.onEvent(game);
         }
+        events = bottom.getEventCards();
 
+        for(Event e: events){
+            e.onEvent(game);
+        }
+
+        List<Sustenance> sustenance = bottom.getSustenanceEventCards();
+        for(Sustenance s: sustenance){
+            s.onEvent(game);
+        }
 
     }
 
@@ -46,22 +57,23 @@ public class GameEndState extends GameState {
     }
 
     private void setLeaderboard() {
-        int rank=1;
-        Player precedente;
-        Player corrente = playersList.get(0);
+        Player previous;
+        Player current;
 
         playersList.sort(null);
-        corrent.setRank(rank);
-        for(int i=1; i<playersList.size(); i++){
-            corrente = playersList.get(i);
-            precedente = playersList.get(i-1);
 
-            if(corrente.compareTo(precedente)==0){
-                corrente.setRank(precedente.getRank());
+        current = playersList.get(0);
+        current.setRank(rank);
+        for(int evaluatedPlayers=1; i<playersList.size(); evaluatedPlayers++){
+            current = playersList.get(i);
+            previous = playersList.get(i-1);
+
+            if(current.compareTo(previous)==0){
+                current.setRank(previous.getRank());
             }else{
-                corrente.setRank(rank+1);
+                current.setRank(evaluatedPlayers+1);
             {
-            rank++;
         }
+
     }
 }
