@@ -1,8 +1,16 @@
 package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Deck;
 import it.polimi.ingsw.model.board.Row;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
+import it.polimi.ingsw.model.card.event.Sustenance;
+
+import java.util.List;
 
 public class RoundEndState extends GameState {
     private final Row bottom;
@@ -24,22 +32,17 @@ public class RoundEndState extends GameState {
         if(!deck.getCharEventCards().isEmpty()) {
             resolveEvents();
             setUp();
-            game.setGameState(new RoundStartState);
+            game.setGameState(new RoundStartState(game, buildingHandler));
 
         }else
-            game.setGameState(new GameEndState);
+            game.setGameState(new GameEndState(game, buildingHandler));
 
         game.getGameState().update();
     }
 
-    @Override
-    public void onEnd(){
-
-    }
-
     private void resolveEvents() {
-        List<Event> events = bottom.getEventCards();
-        for(Event e: events){
+        List<AbstractEvent> events = bottom.getEventCards();
+        for(AbstractEvent e: events){
             e.onEvent(game);
         }
 
@@ -53,40 +56,44 @@ public class RoundEndState extends GameState {
 
         bottom.getEventCards().clear();
         bottom.getSustenanceEventCards().clear();
-        bottom.getCharactersCards().clear();
+        bottom.getCharacterCards().clear();
 
-        List<Character> characters = top.getCharacterCards();
-        for(Character c: characters){
+        List<AbstractCharacter> characters = top.getCharacterCards();
+        for(AbstractCharacter c: characters){
             c.moveTo(bottom);
         }
-        List<Event> events = top.getEventCards();
-        for(Event e: events){
+        top.getCharacterCards().clear();
+
+        List<AbstractEvent> events = top.getEventCards();
+        for(AbstractEvent e: events){
             e.moveTo(bottom);
         }
+        top.getEventCards().clear();
+
         List<Sustenance> sustenance = top.getSustenanceEventCards();
         for(Sustenance s: sustenance){
             s.moveTo(bottom);
         }
+        top.getSustenanceEventCards().clear();
+
         redrawCards();
 
     }
 
     private void redrawCards() {
 
-        cards = deck.drawCards(players.size+4);
+        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size+4);
         for(AbstractCard card: cards) {
-            if (card.era > deck.currentEra) {
+            if (card.getEra() > deck.getCurrentEra()) {
                 bottom.getBuildingCards().clear();
-                deck.currentEra++;
-                List<Building> buildingList = deck.drawBuildings();
-                for(Building building: buildingList){
+                deck.changeAge();
+                List<AbstractBuilding> buildingList = deck.drawBuildingsCards();
+                for(AbstractBuilding building: buildingList){
                     building.moveTo(top);
                 }
             }
             card.moveTo(top);
         }
-
-        onEnd();
     }
 
 }

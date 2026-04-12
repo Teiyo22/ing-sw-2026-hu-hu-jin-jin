@@ -10,16 +10,16 @@ public class ExtraActionState extends GameState {
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
-        building.applyExtraActionEffects(this);
+        buildingHandler.applyExtraActionEffects(this);
         if(currPlayer==null) {
-            game.setGameState(new RoundEndState);
+            game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
         }
     }
 
     public void pickTop(Pickable p) {
         p.onPick(currPlayer);
-
+        update();
     }
 
     public void setCurrPlayer(Player player){
@@ -28,7 +28,7 @@ public class ExtraActionState extends GameState {
 
     @Override
     public void update() {
-        game.setGameState(new RoundEndState);
+        game.setGameState(new RoundEndState(game, buildingHandler));
         game.getGameState().update();
     }
 }

@@ -1,55 +1,65 @@
 package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoundActionState extends GameState{
     private Player currPlayer;
     private int solvedOffers = 0;
     private int i=0;
     private OrderSlot[] orderTile;
+    private OfferTile[] offers;
+    private List<OfferTile> turnOrder = new ArrayList<>();
 
     public RoundActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
 
+        this.offers = game.getBoard().getOfferTrack();
+        for(i=0; i<offers.size(); i++) {
+            if (offers[i] != null) {
+                turnOrder.add(offers[i]);
+            }
+        }
         this.orderTile = game.getBoard().getOrderTile();
     }
 
-    //metodo chiamato nel controller dopo che si finisce di eseguire una tessera offerta
     @Override
     public void update() {
-        if(solvedOffers == game.getOfferTile().size()){
-            onEnd();
+        if(solvedOffers == game.getPlayers.size()){
+            game.setGameState(new ExtraActionState(game, buildingHandler));
+            game.getGameState().update();
         }
-        solvedOffers++;
 
+        currPlayer = turnOrder.get(solvedOffers).getAssignedPlayer();
     }
 
     public void setPlayer(Player player){
         currPlayer = player;
     }
 
-    @Override
-    public void onEnd(){
-
-        game.setGameState(new ExtraActionState());
-    }
-
 
     private void pick(Pickable p, Row row) {
         p.onPick(currPlayer);
-        //togliere carta dalla row
+        p.remove(row);
+
+        assignToOrderSlot(currPlayer, turnOrder.get(solvedOffers));
     }
 
 
-
-    public void assignToOrderSlot(Player player) {
-        //resettare l'offerTile
+    public void assignToOrderSlot(Player player, OfferTile tile) {
         orderTile[i].setPlayer(player);
-        buildingHandler.applyOrderTileEffects(i, orderTile);
+        tile.setPlayer(null);
+        solvedOffers++;
+        buildingHandler.applyOrderTileEffects(orderTile[i]);
         i++;
+        update();
     }
 }

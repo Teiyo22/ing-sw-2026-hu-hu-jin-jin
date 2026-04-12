@@ -3,7 +3,10 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
+import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
+import java.util.*;
 
 public class GameEndState extends GameState {
     private final Row bottom;
@@ -21,14 +24,16 @@ public class GameEndState extends GameState {
     @Override
     public void update() {
         resolveEvents();
-        assignBonusPP();
+        for(Player p: playersList) {
+            assignBonusPP(p);
+        }
+        buildingHandler.applyGameEndEffects();
         setLeaderboard();
     }
 
     private void resolveEvents() {
-        List<Event> events = top.getEventCards();
-
-        for(Event e: events){
+        List<AbstractEvent> events = top.getEventCards();
+        for(AbstractEvent e: events){
             e.onEvent(game);
         }
 
@@ -36,13 +41,13 @@ public class GameEndState extends GameState {
         for(Sustenance s: sustenance){
             s.onEvent(game);
         }
-        events = bottom.getEventCards();
 
-        for(Event e: events){
+        events = bottom.getEventCards();
+        for(AbstractEvent e: events){
             e.onEvent(game);
         }
 
-        List<Sustenance> sustenance = bottom.getSustenanceEventCards();
+        sustenance = bottom.getSustenanceEventCards();
         for(Sustenance s: sustenance){
             s.onEvent(game);
         }
@@ -53,7 +58,6 @@ public class GameEndState extends GameState {
         int PPbonus=0;
         PPbonus = p.getBuilderBonusPP() + p.getInventorBonusPP() + 10*(p.ArtistCount()/2);
         p.addPP(PPbonus);
-        buildingHandler.applyGameEndEffects();
     }
 
     private void setLeaderboard() {
@@ -63,10 +67,10 @@ public class GameEndState extends GameState {
         playersList.sort(null);
 
         current = playersList.get(0);
-        current.setRank(rank);
-        for(int evaluatedPlayers=1; i<playersList.size(); evaluatedPlayers++){
-            current = playersList.get(i);
-            previous = playersList.get(i-1);
+        current.setRank(1);
+        for(int evaluatedPlayers=1; evaluatedPlayers<playersList.size(); evaluatedPlayers++){
+            current = playersList.get(evaluatedPlayers);
+            previous = playersList.get(evaluatedPlayers-1);
 
             if(current.compareTo(previous)==0){
                 current.setRank(previous.getRank());
