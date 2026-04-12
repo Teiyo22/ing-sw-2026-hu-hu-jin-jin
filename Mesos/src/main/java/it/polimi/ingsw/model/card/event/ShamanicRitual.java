@@ -19,8 +19,8 @@ public class ShamanicRitual extends AbstractEvent {
     }
 
     /** Apply the effects of the shamanic ritual event:
-     * when called the methdìod calculates the number of stars owned by the player with the least and most.
-     * Then it iterates and adds/sutracts pp if the player is amongst the ones with the most/least.*/
+     * when called the method calculates the number of stars owned by the player with the least and most.
+     * Then it iterates and adds/subtracts pp if the player is amongst the ones with the most/least.*/
     @Override
     public void onEvent(Game game) {
         int minStars = 0;  //number of stars owned by the player(s) who has the least
@@ -30,8 +30,8 @@ public class ShamanicRitual extends AbstractEvent {
 
         //calulate minStars and maxStars
         for(int i=0; i<order.length; i++){
-            player = order[i].getAssignedPlayer();
-            playerStars = player.getTribe().getStars();
+            Player player = order[i].getAssignedPlayer();
+            int playerStars = player.getTribe().getStars();
             if (playerStars < minStars){ minStars = playerStars; }
             else if (playerStars > maxStars){ maxStars = playerStars; }
         }
@@ -43,7 +43,8 @@ public class ShamanicRitual extends AbstractEvent {
                 if(!player.getNoLossRitualMod()) {
                     player.addPP(-malusPP);  //players with the least stars lose pp
                 }
-            } else if (playerStars == maxStars){  //players with the most stars gain pp
+            }
+            if (playerStars == maxStars){  //players with the most stars gain pp
                 if(player.getDoubleRitualMod()){
                     player.addPP(bonusPP * 2);
                 } else {

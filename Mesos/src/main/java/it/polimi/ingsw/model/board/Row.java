@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -45,6 +46,6 @@ public class Row {
     }
 
     public int getPickableCardCount() {
-
+        return characterCards.size() + buildingCards.size();
     }
 }

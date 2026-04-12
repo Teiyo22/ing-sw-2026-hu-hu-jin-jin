@@ -31,7 +31,7 @@ public class Sustenance extends AbstractEvent {
         OrderSlot[] order = game.getBoard().getOrderTile();
 
         for(int i=0; i<order.length; i++) {  //apply the effects for each player
-            player = order[i].getAssignedPlayer();
+            Player player = order[i].getAssignedPlayer();
             //get the number of tribe members
             int tribeSize = player.getTribe().getTribeSize();
             tribeSize -= player.getTribe().getSustenanceDiscount();  //discount caused by collectors and buildings

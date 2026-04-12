@@ -5,19 +5,17 @@ import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
 public class InventorPairBuilding extends CardPickBuilding {
-    private InventorType type;
 
     public InventorPairBuilding(int era, int cost, int pp, BuildingHandler buildingHandler, InventorType type) {
         super(era, cost, pp, buildingHandler);
-        this.type = type;
     }
 
+    /** The method checks if the number of the picked inventor type became even.
+     * If so a pair is formed thus the bonus gets added.*/
     @Override
     public void doForInventor(Inventor i) {
-        if(i.getInventorType() == type){
-            if(owner.getTribe().getNumInventorType(type) % 2 == 0){
-                owner.addFood(3);
-            }
+        if(owner.getTribe().getNumInventorType(i.getInventorType()) % 2 == 0){
+            owner.addFood(3);
         }
     }
 

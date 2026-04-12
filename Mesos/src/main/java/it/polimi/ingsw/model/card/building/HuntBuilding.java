@@ -19,7 +19,7 @@ public class HuntBuilding extends AbstractBuilding{
     }
 
     public void applyEffect() {
-        owner.addFood(owner.getTribe().getHunterCount());
-        owner.addPP(owner.getTribe().getHunterCount());
+        owner.addFood(owner.getTribe().getHunterCount()*bonusFood);
+        owner.addPP(owner.getTribe().getHunterCount()*bonusPP);
     }
 }

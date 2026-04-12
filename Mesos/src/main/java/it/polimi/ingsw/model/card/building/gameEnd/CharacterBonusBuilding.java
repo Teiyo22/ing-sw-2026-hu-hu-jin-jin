@@ -36,6 +36,11 @@ public class CharacterBonusBuilding extends GameEndBuilding {
         int numArtists = owner.getTribe().getArtistCount();
         int numBuilders = owner.getTribe().getBuilderCount();
 
-        owner.addPP(numInventors * inventorBonusPP + numShamans * shamanBonusPP + numHunters * hunterBonusPP + numCollectors * collectorBonusPP + numArtists * artistBonusPP + numBuilders * builderBonusPP)
+        owner.addPP(numInventors * inventorBonusPP +
+                    numShamans * shamanBonusPP +
+                    numHunters * hunterBonusPP +
+                    numCollectors * collectorBonusPP +
+                    numArtists * artistBonusPP +
+                    numBuilders * builderBonusPP);
     }
 }

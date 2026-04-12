@@ -29,8 +29,8 @@ public class CavePainting extends AbstractEvent{
         OrderSlot[] order = game.getBoard().getOrderTile();
 
         for(int i = 0; i < order.length ; i++){  //apply effects for each player
-            player = order[i].getAssignedPlayer;
-            numArtists = player.getTribe().getArtistCount();
+            Player player = order[i].getAssignedPlayer;
+            int numArtists = player.getTribe().getArtistCount();
             if(numArtists <= numArtistsMalus){
                 player.addPP(-malusPP);
             } else if (numArtists >= numArtistsBonus){

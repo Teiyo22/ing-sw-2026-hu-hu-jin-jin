@@ -23,8 +23,8 @@ public class Hunt extends AbstractEvent {
         OrderSlot[] order = game.getBoard().getOrderTile();
 
         for(int i=0; i<order.length; i++){  //apply effects for each player
-            player = order[i].getAssignedPlayer();
-            numHunters = player.getTribe().getHunterCount();
+            Player player = order[i].getAssignedPlayer();
+            int numHunters = player.getTribe().getHunterCount();
             player.addFood(numHunters);
             player.addPP(numHunters * ppMultiplier);
         }

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.card.building.Building;
+import it.polimi.ingsw.model.card.building.*;
 import it.polimi.ingsw.model.player.Tribe;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Player implements Comparable<Player>{
     private final String name;
     private final Totem totem;
     private final Tribe tribe;
-    private final List<Building> buildings;
+    private final List<AbstractBuilding> buildings;
 
     private int food;
     private int pp;
@@ -44,7 +45,7 @@ public class Player implements Comparable<Player>{
     public void setNoLossRitualMod(boolean b) { noLossRitualMod = b; }
     public void setDoubleRitualMod(boolean b) { doubleRitualMod = b; }
 
-    public void addBuilding(Building building) {
+    public void addBuilding(AbstractBuilding building) {
         buildings.add(building);
     }
 
@@ -62,7 +63,7 @@ public class Player implements Comparable<Player>{
 
     public boolean getNoLossRitualMod() { return noLossRitualMod; }
 
-    public boolean getDoubleRitualMod() { return DoubleRitualMod; }
+    public boolean getDoubleRitualMod() { return doubleRitualMod; }
 
     @Override
     public int compareTo(Player other) {

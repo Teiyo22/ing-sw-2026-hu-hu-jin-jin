@@ -18,6 +18,8 @@ public class NewFullSetBuilding extends CardPickBuilding{
         minForSet = owner.getTribe().getMinChar() + 1;
     }
 
+    /** Every picked card has the same effects.
+     * If a new set is formed (the character type with the least amount meets the required minimum) the bonus is added.*/
     @Override
     public void doForInventor(Inventor i) {
         if(owner.getTribe().getMinChar() >= minForSet){

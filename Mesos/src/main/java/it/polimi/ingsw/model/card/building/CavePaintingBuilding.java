@@ -17,6 +17,6 @@ public class CavePaintingBuilding extends AbstractBuilding{
     }
 
     public void applyEffect() {
-        owner.addFood(owner.getTribe().getArtistCount());
+        owner.addFood(owner.getTribe().getArtistCount()*bonusFood);
     }
 }

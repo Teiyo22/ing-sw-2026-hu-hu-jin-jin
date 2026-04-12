@@ -12,7 +12,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
     int artistDiscount;
     int builderDiscount;
 
-    public SustenanceDiscountBuilding(int era, int cost, int pp, BuildingHandler buildingHandler, int inventorDiscount, shamanDiscount, hunterDiscount, artistDiscount, collectorDiscount, builderDiscount) {
+    public SustenanceDiscountBuilding(int era, int cost, int pp, BuildingHandler buildingHandler, int inventorDiscount, int shamanDiscount, int hunterDiscount, int artistDiscount, int collectorDiscount, int builderDiscount) {
         super(era, cost, pp, buildingHandler);
         this.inventorDiscount = inventorDiscount;
         this.shamanDiscount = shamanDiscount;
@@ -33,7 +33,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
         int numCollectors = owner.getTribe().getCollectorCount();
         int numArtists = owner.getTribe().getArtistCount();
         int numBuilders = owner.getTribe().getBuilderCount();
-        owner.getTribe().addSustenanceDiscount(numInventors * inventorDiscount + numShamans * shamanDiscount + numHunters * hunterDiscount + numCollectors * collectorDiscount + numArtists * artistDiscount + numBuilders * builderDiscount)
+        owner.getTribe().addSustenanceDiscount(numInventors * inventorDiscount + numShamans * shamanDiscount + numHunters * hunterDiscount + numCollectors * collectorDiscount + numArtists * artistDiscount + numBuilders * builderDiscount);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
 
     @Override
     public void doForCollector(Collector c) {
-        owner.getTribe().addSustenanceDiscount(collecorDiscount);
+        owner.getTribe().addSustenanceDiscount(collectorDiscount);
     }
 
     @Override
