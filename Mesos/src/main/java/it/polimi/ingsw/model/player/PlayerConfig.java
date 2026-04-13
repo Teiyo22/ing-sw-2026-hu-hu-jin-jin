@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-public enum PlayerNum {
+public enum PlayerConfig {
     TWO(2, "tmp.json", "tmp.json", "tmp.json"),
     THREE(3, "tmp.json", "tmp.json", "tmp.json"),
     FOUR(4, "tmp.json", "tmp.json", "tmp.json") ,
@@ -11,14 +11,14 @@ public enum PlayerNum {
     private final String offerTrackConfigFile;
     private final String orderTileConfigFile;
 
-    PlayerNum(int n, String deckConfigFile, String offerTrackConfigFile, String orderTileConfigFile) {
+    PlayerConfig(int n, String deckConfigFile, String offerTrackConfigFile, String orderTileConfigFile) {
         this.n = n;
         this.deckConfigFile = deckConfigFile;
         this.offerTrackConfigFile = offerTrackConfigFile;
         this.orderTileConfigFile = orderTileConfigFile;
     }
 
-    public int get() {
+    public int getNum() {
         return n;
     }
 

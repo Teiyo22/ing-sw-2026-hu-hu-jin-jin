@@ -30,7 +30,7 @@ public class GameStartState extends GameState{
 
         playerCount++;
 
-        if(playerCount == game.getGameSize()) {
+        if(playerCount == game.getPlayerConfig().getNum()) {
             playersList = game.getPlayers();
 
             assignPlayersToOrderTile();

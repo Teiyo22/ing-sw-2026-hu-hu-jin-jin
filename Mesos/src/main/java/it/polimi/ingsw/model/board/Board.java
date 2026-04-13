@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utils.ConfigLoader;
-import it.polimi.ingsw.model.utils.LoadConfig;
 
 public class Board {
     final Game game;
@@ -15,7 +14,7 @@ public class Board {
     public Board(Game game) {
 
         this.game = game;
-        this.deck = new Deck(game.getGameSize(),this);
+        this.deck = new Deck(game.getPlayerConfig(),this);
         this.deck.init();
         this.topRow = new Row();
         this.bottomRow = new Row();
@@ -25,14 +24,14 @@ public class Board {
      * Init of OrderTile
      */
     public void initOfferTrack() {
-        offerTrack = new ConfigLoader().loadOfferTile(game.getGameSize().getOfferTiles());
+        offerTrack = new ConfigLoader().loadOfferTile(game.getPlayerConfig().getOfferTrackConfigFile());
     }
 
     /**
      * Init of OfferTrack
      */
     public void initOrderTile() {
-        orderTile = new LoadConfig().loadOrderSlot(game.getGameSize().getOrderslots());
+        orderTile = new ConfigLoader().loadOrderSlot(game.getPlayerConfig().getOrderTileConfigFile());
     }
 
     /**

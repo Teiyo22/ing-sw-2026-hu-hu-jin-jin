@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.utils.*;
 
 import java.util.*;
 
 public class Deck {
-    final private int gameSize;
+    final private PlayerConfig playerConfig;
     private final Board board;
 
     private Queue<AbstractCard> charEventCards;
@@ -15,8 +16,8 @@ public class Deck {
     private List<Integer> ageBuildingsCount;
     private int currentEra = 0;
 
-    public Deck(int gameSize, Board board) {
-        this.gameSize = gameSize;
+    public Deck(PlayerConfig playerConfig, Board board) {
+        this.playerConfig = playerConfig;
         this.board = board;
     }
 
@@ -26,7 +27,7 @@ public class Deck {
      *  Each deck config file contains different configurations for the cards
      * */
     public void init() {
-        DeckConfig deckConfig = new DeckConfigLoader().load("tmp");
+        DeckConfig deckConfig = new DeckConfigLoader().load(playerConfig.getDeckConfigFile());
         ageBuildingsCount = deckConfig.getBuildingsCountPerAge();
         initCards(deckConfig.getCardConfigs());
         initBuildingCards(deckConfig.getBuildingConfigs());
