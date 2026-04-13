@@ -32,25 +32,24 @@ public class Tribe {
         this.sustenanceDiscount = 0;
     }
 
-    public int getTribeSize(){
-        return getArtistCount()+getBuilderCount()+getCollectorCount()+ getHunterCount()+getInventorCount()+ getShamanCount();
+    public int getTribeSize() {
+        return getArtistCount() + getBuilderCount() + getCollectorCount() + getHunterCount() + getInventorCount() + getShamanCount();
     }
 
     public int getInventorCount() {
-        int totInventors = 0;
-        for(int count : inventors.values()){
-            totInventors += count;
-        }
-        return totInventors;
+        return inventors.size();
     }
 
-    public int getNumInventorType(InventorType type){
+    /**
+     * Get the number of one type of inventor
+     */
+    public int getNumInventorType(InventorType type) {
         return inventors.get(type);
     }
 
     public int getShamanCount() {
         int totShamans = 0;
-        for(int i=0; i<3 ; i++ )
+        for (int i = 0; i < 3; i++)
             totShamans += shamans[i];
         return totShamans;
     }
@@ -70,14 +69,15 @@ public class Tribe {
     public int getArtistCount() {
         return artists;
     }
-/**
- * Get the discount provided by builders
- * Each builder has his own discount so we sum them
- */
+
+    /**
+     * Get the discount provided by builders
+     * Each builder has his own discount so we sum them
+     */
     public int getBuilderDiscount() {
         int totDiscount = 0;
-        for(Builder builder : builders){
-            totDiscount+=builder.getBuildingDiscount();
+        for (Builder builder : builders) {
+            totDiscount += builder.getBuildingDiscount();
         }
         return totDiscount;
     }
@@ -86,45 +86,50 @@ public class Tribe {
         return sustenanceDiscount;
     }
 
-
     /**
-     * Add discount in sustenanceDiscount*/
-    public void addSustenanceDiscount(int discount){
+     * Add discount in sustenanceDiscount
+     */
+    public void addSustenanceDiscount(int discount) {
         this.sustenanceDiscount += discount;
     }
 
-    public void addStars(int stars){
+    public void addStars(int stars) {
         this.stars += stars;
     }
 
-/**
- * Get the total stars possesed by the player
- * Every shaman card has a number of stars, so we multiply that number with the number shamans with the same stars and sum them all */
+    /**
+     * Get the total stars possesed by the player
+     * Every shaman card has a number of stars, so we multiply that number with the number shamans with the same stars and sum them all
+     */
     public int getStars() {
         return stars;
     }
 
-/**
- * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
- */
+    /**
+     * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
+     */
     public int getInventorBonusPP() {
-        int types = inventors.size();
+        int types = inventors. keySet().size();
         return getInventorCount() * types;
     }
-/**
- * Get the builder bonus PP
- * Every builder has his own bonus PP, so we sum all the bonuses we have
- * */
+
+    /**
+     * Get the builder bonus PP
+     * Every builder has his own bonus PP, so we sum all the bonuses we have
+     *
+     */
     public int getBuilderBonusPP() {
         int totalBonus = 0;
-        for(Builder builder : builders){
+        for (Builder builder : builders) {
             totalBonus += builder.getBonusPP();
         }
         return totalBonus;
     }
-/**
- * Add an inventor in the tribe
- * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1*/
+
+    /**
+     * Add an inventor in the tribe
+     * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1
+     */
     public void addInventor(Inventor inventor) {
         InventorType type = inventor.getInventorType();
         int value = 1;
@@ -133,11 +138,13 @@ public class Tribe {
             value = inventors.get(type) + 1;
         inventors.put(type, value);
     }
-/**
- * It does the same thing as the inventor, but instead of types we now have the number of stars*/
+
+    /**
+     * Add shaman based on how many stars they have
+     */
     public void addShaman(Shaman shaman) {
         int shamanStars = shaman.getStar();
-        shamans[shamanStars]++;
+        shamans[shamanStars-1]++;
     }
 
     public void addBuilder(Builder builder) {
@@ -157,15 +164,28 @@ public class Tribe {
     }
 
     /**
-     * Return the Character with the minimun number of cards*/
-    public int getMinChar(){
+     * Return the Character with the minimun number of cards
+     */
+    public int getMinChar() {
         int sets = 0;
-        if(getInventorCount() < sets) { sets=getInventorCount(); }
-        if(getShamanCount() < sets) { sets=getShamanCount(); }
-        if(getHunterCount() < sets) { sets=getHunterCount(); }
-        if(getArtistCount() < sets) { sets=getArtistCount(); }
-        if(getBuilderCount() < sets) { sets=getBuilderCount(); }
-        if(getCollectorCount() < sets) { sets=getCollectorCount(); }
+        if (getInventorCount() < sets) {
+            sets = getInventorCount();
+        }
+        if (getShamanCount() < sets) {
+            sets = getShamanCount();
+        }
+        if (getHunterCount() < sets) {
+            sets = getHunterCount();
+        }
+        if (getArtistCount() < sets) {
+            sets = getArtistCount();
+        }
+        if (getBuilderCount() < sets) {
+            sets = getBuilderCount();
+        }
+        if (getCollectorCount() < sets) {
+            sets = getCollectorCount();
+        }
         return sets;
     }
 }
