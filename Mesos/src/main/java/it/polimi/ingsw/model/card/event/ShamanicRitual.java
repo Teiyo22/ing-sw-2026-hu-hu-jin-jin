@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 
 public class ShamanicRitual extends AbstractEvent {
-    private final int bonusPP;
-    private final int malusPP;
+    private int bonusPP;
+    private int malusPP;
 
     public ShamanicRitual(String type, int era, boolean isFinal, int bonusPP, int malusPP) {
         super(type, era, isFinal);

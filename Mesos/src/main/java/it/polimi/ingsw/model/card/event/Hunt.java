@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 
 public class Hunt extends AbstractEvent {
-    private final int ppMultiplier;
+    private  int ppMultiplier;
 
     public Hunt(String type, int era, boolean isFinal, int ppMultiplier) {
         super(type, era, isFinal);
