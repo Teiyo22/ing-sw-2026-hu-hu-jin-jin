@@ -14,7 +14,7 @@ public class RitualNoLossBuilding extends AbstractBuilding{
     }
 
     @Override
-    public AbstractBuilding clone() {
+    public AbstractCard clone() {
         return new RitualNoLossBuilding(this);
     }
 

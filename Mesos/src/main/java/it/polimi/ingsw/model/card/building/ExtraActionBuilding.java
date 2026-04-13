@@ -15,7 +15,7 @@ public class ExtraActionBuilding extends AbstractBuilding{
     }
 
     @Override
-    public AbstractBuilding clone() {
+    public AbstractCard clone() {
         return new ExtraActionBuilding(this);
     }
 

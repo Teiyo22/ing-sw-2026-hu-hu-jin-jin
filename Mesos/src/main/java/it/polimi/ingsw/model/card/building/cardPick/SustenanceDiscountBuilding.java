@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card.building.cardPick;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
@@ -38,7 +37,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
     }
 
     @Override
-    public AbstractBuilding clone() {
+    public AbstractCard clone() {
         return new SustenanceDiscountBuilding(this);
     }
 
