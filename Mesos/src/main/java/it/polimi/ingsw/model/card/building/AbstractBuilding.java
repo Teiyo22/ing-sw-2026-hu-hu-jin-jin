@@ -9,7 +9,7 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     protected Player owner = null;
     protected int cost;
     protected int pp;
-    protected BuildingHandler buildingHandler = null;
+    protected transient BuildingHandler buildingHandler = null;
 
     public AbstractBuilding(String type, int era, boolean isFinal, int cost, int pp, BuildingHandler buildingHandler) {
         super(type, era, isFinal);
