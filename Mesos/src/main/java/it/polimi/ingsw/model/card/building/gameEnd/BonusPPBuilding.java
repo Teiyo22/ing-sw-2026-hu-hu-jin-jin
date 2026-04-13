@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.player.Player;
 
 public class BonusPPBuilding extends GameEndBuilding {
     private int bonusPP;
@@ -11,7 +9,7 @@ public class BonusPPBuilding extends GameEndBuilding {
     public BonusPPBuilding(String type, int era, boolean isFinal,
                            int cost, int pp, BuildingHandler buildingHandler,
                            int bonusPP) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
     }
 

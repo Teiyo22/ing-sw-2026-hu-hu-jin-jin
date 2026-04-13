@@ -9,7 +9,7 @@ public class RitualStarsBuilding extends AbstractBuilding {
     public RitualStarsBuilding(String type, int era, boolean isFinal,
                                int cost, int pp, BuildingHandler buildingHandler,
                                int bonusStars) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.bonusStars = bonusStars;
     }
 

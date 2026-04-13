@@ -9,7 +9,7 @@ public class NewFullSetBuilding extends CardPickBuilding{
     transient int minForSet;
     public NewFullSetBuilding(String type, int era, boolean isFinal,
                               int cost, int pp, BuildingHandler buildingHandler) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
     }
 
     public NewFullSetBuilding(NewFullSetBuilding source) {

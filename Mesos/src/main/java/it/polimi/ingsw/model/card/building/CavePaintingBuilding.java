@@ -9,7 +9,7 @@ public class CavePaintingBuilding extends AbstractBuilding{
     public CavePaintingBuilding(String type, int era, boolean isFinal,
                                 int cost, int pp, BuildingHandler buildingHandler,
                                 int bonusFood) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.bonusFood = bonusFood;
     }
 

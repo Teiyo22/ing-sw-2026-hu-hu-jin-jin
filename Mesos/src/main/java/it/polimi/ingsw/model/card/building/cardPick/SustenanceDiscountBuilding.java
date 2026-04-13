@@ -17,7 +17,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
                                       int cost, int pp, BuildingHandler buildingHandler, 
                                       int inventorDiscount, int shamanDiscount, int hunterDiscount,
                                       int artistDiscount, int collectorDiscount, int builderDiscount) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.inventorDiscount = inventorDiscount;
         this.shamanDiscount = shamanDiscount;
         this.hunterDiscount = hunterDiscount;

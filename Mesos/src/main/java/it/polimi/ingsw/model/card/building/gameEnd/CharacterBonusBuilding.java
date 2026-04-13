@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card.building.gameEnd;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.player.Player;
 
 public class CharacterBonusBuilding extends GameEndBuilding {
     private int inventorBonusPP;
@@ -16,7 +15,7 @@ public class CharacterBonusBuilding extends GameEndBuilding {
                                   int cost, int pp, BuildingHandler buildingHandler,
                                   int inventorBonusPP, int shamanBonusPP, int hunterBonusPP,
                                   int collectorBonusPP, int artistBonusPP, int builderBonusPP) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.inventorBonusPP = inventorBonusPP;
         this.shamanBonusPP = shamanBonusPP;
         this.hunterBonusPP = hunterBonusPP;

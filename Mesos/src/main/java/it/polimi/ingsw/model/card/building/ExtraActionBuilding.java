@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.player.Player;
 public class ExtraActionBuilding extends AbstractBuilding{
     public ExtraActionBuilding(String type, int era, boolean isFinal,
                                int cost, int pp, BuildingHandler buildingHandler) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
     }
 
     public ExtraActionBuilding(ExtraActionBuilding source) {

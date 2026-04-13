@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.event.Hunt;
 import it.polimi.ingsw.model.player.Player;
 
 public class HuntBuilding extends AbstractBuilding{
@@ -11,7 +10,7 @@ public class HuntBuilding extends AbstractBuilding{
     public HuntBuilding(String type, int era, boolean isFinal,
                         int cost, int pp, BuildingHandler buildingHandler,
                         int bonusPP, int bonusFood) {
-        super(type, era, isFinal, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
         this.bonusFood = bonusFood;
     }
