@@ -35,6 +35,7 @@ public class RoundActionState extends GameState{
     public void update() {
         if(solvedOffers == game.getPlayers.size()){
             game.setGameState(new ExtraActionState(game, buildingHandler));
+            game.getGameState().update();
         }
 
         currPlayer = turnOrder.get(solvedOffers).getAssignedPlayer();

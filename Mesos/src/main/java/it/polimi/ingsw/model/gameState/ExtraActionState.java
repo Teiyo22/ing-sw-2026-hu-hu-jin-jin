@@ -7,19 +7,16 @@ import it.polimi.ingsw.model.player.Player;
 
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;
+    private int solvedExtraActions=0;
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
-        buildingHandler.applyExtraActionEffects(this);
-        if(currPlayer==null) {
-            game.setGameState(new RoundEndState(game, buildingHandler));
-            game.getGameState().update();
-        }
     }
 
     public void pickTop(Pickable p, int removedIndex) {
         p.onPick(currPlayer);
         p.remove(game.getBoard().getTopRow(), removedIndex);
+        solvedExtraActions++;
         update();
     }
 
@@ -29,7 +26,10 @@ public class ExtraActionState extends GameState {
 
     @Override
     public void update() {
-        game.setGameState(new RoundEndState(game, buildingHandler));
-        game.getGameState().update();
+        buildingHandler.applyExtraActionEffects(this, solvedExtraActions);
+        if(currPlayer==null) {
+            game.setGameState(new RoundEndState(game, buildingHandler));
+            game.getGameState().update();
+        }
     }
 }

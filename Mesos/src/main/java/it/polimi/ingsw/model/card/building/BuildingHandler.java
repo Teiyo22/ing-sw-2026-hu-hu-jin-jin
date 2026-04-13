@@ -84,9 +84,12 @@ public class BuildingHandler {
         }
     }
 
-    public void applyExtraActionEffects(ExtraActionState state) {
-        for(ExtraActionBuilding building: extraActionBuildings){
-            building.applyEffects(state);
+    public void applyExtraActionEffects(ExtraActionState state, int buildingIndex) {
+        if(buildingIndex<extraActionBuildings.size()){
+            ExtraActionBuilding building  = extraActionBuildings.get(buildingIndex);
+            building.applyEffect(state);
+        }else{
+            state.setCurrPlayer(null);
         }
     }
 
