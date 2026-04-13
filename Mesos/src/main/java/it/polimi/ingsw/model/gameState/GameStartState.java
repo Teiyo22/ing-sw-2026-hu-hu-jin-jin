@@ -51,14 +51,13 @@ public class GameStartState extends GameState{
         for(Player p: playersList) {
             orderTile[i].setPlayer(p);
             p.setFood(food);
-            player_index++;
-            food = 2 + Math.floor(player_index);
+            food = 2 + (int)Math.floor(player_index);
+            player_index+=0.5;
             i++;
         }
     }
 
     private void distributeCards() {
-        Row row;
         List<AbstractCard> cards;
 
         cards = game.getBoard().getDeck().drawCards(playersList.size()+1);

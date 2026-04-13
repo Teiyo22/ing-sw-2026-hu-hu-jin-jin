@@ -24,7 +24,7 @@ public class RoundActionState extends GameState{
 
         this.offers = game.getBoard().getOfferTrack();
         for(i=0; i<offers.size(); i++) {
-            if (offers[i] != null) {
+            if (offers[i].getAssignedPlayer() != null) {
                 turnOrder.add(offers[i]);
             }
         }
@@ -35,7 +35,6 @@ public class RoundActionState extends GameState{
     public void update() {
         if(solvedOffers == game.getPlayers.size()){
             game.setGameState(new ExtraActionState(game, buildingHandler));
-            game.getGameState().update();
         }
 
         currPlayer = turnOrder.get(solvedOffers).getAssignedPlayer();
@@ -46,9 +45,9 @@ public class RoundActionState extends GameState{
     }
 
 
-    private void pick(Pickable p, Row row) {
+    private void pick(Pickable p, Row row, int removedIndex) {
         p.onPick(currPlayer);
-        p.remove(row);
+        p.remove(row, removedIndex);
 
         assignToOrderSlot(currPlayer, turnOrder.get(solvedOffers));
     }

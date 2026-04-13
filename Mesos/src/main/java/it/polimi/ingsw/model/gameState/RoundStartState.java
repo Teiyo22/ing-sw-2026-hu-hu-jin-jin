@@ -27,7 +27,6 @@ public class RoundStartState extends GameState {
 
 
     public void assignTo(OfferTile offer){
-        //uso assigned slot come indice
         game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
         offer.setPlayer(currPlayer);
         assignedSlots++;
