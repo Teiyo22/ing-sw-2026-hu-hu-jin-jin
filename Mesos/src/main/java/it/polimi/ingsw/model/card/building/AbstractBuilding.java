@@ -24,7 +24,7 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     }
 
     @Override
-    public void onPick(Player player) {
+    public void onPick(Player player, BuildingHandler buildingHandler) {
         owner = player;
     }
 

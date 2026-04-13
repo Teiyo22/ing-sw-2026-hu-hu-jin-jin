@@ -41,7 +41,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
         return new SustenanceDiscountBuilding(this);
     }
 
-    public void onPick(Player player) {
+    public void onPick(Player player, BuildingHandler buildingHandler) {
         owner = player;
         buildingHandler.addCardPickBuilding(this);
 

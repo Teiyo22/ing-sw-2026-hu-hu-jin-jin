@@ -22,7 +22,7 @@ public class NewFullSetBuilding extends CardPickBuilding{
     }
 
     @Override
-    public void onPick(Player player) {
+    public void onPick(Player player, BuildingHandler buildingHandler) {
         owner = player;
         buildingHandler.addCardPickBuilding(this);
         minForSet = owner.getTribe().getMinChar() + 1;
