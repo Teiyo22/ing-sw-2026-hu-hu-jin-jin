@@ -21,7 +21,7 @@ public class BonusPPBuilding extends GameEndBuilding {
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new BonusPPBuilding(this);
     }
 

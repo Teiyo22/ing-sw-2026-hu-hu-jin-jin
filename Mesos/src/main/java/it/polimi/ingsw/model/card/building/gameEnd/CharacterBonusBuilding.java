@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
@@ -36,7 +37,7 @@ public class CharacterBonusBuilding extends GameEndBuilding {
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new CharacterBonusBuilding(this);
     }
 

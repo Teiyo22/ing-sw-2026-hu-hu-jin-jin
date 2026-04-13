@@ -15,7 +15,7 @@ public class OrderTileBuilding extends AbstractBuilding{
     }
     @Override
 
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new OrderTileBuilding(this);
     }
 

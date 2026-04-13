@@ -14,7 +14,7 @@ public class RitualDoubleBonusBuilding extends AbstractBuilding {
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new RitualDoubleBonusBuilding(this);
     }
 

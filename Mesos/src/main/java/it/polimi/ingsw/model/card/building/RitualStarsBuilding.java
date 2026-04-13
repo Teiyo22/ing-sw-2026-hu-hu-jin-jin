@@ -19,7 +19,7 @@ public class RitualStarsBuilding extends AbstractBuilding {
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new RitualStarsBuilding(this);
     }
 

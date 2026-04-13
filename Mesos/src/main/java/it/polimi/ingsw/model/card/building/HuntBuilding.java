@@ -23,7 +23,7 @@ public class HuntBuilding extends AbstractBuilding{
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new HuntBuilding(this);
     }
 

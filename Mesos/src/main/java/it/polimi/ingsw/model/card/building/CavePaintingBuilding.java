@@ -19,7 +19,7 @@ public class CavePaintingBuilding extends AbstractBuilding{
     }
 
     @Override
-    public AbstractCard clone() {
+    public AbstractBuilding clone() {
         return new CavePaintingBuilding(this);
     }
 

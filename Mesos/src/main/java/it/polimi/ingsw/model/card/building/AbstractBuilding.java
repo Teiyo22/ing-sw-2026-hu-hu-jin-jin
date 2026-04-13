@@ -36,4 +36,8 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     public void remove(Row row, int removedIndex){
         row.getBuildingCards().remove(removedIndex);
     }
+
+    public void setBuildingHandler(BuildingHandler buildingHandler) {
+        this.buildingHandler = buildingHandler;
+    }
 }
