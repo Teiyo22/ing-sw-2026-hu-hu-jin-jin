@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.player.Player;
+import com.google.gson.annotations.Expose;
 
 public class OfferTile {
-    private Player assignedPlayer = null;
+    private transient Player assignedPlayer = null; //transient is used to let Gson ignore this parameter
     private final int bonusFood;
-    private final int topRowPickable;
-    private final int bottomRowPickable;
+    private int topRowPickable;
+    private int bottomRowPickable;
 
     public OfferTile(int bonusFood, int topRowPickable, int bottomRowPickable) {
         this.bonusFood = bonusFood;
@@ -23,7 +24,6 @@ public class OfferTile {
     }
 
     public void solveBonusFood() {
-        public Player p = getAssignedPlayer();
-        p.addFood(bonusFood);
+        assignedPlayer.addFood(bonusFood);
     }
 }
