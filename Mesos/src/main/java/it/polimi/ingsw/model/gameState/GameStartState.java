@@ -70,8 +70,8 @@ public class GameStartState extends GameState{
             card.moveTo(game.getBoard().getBottomRow());
         }
 
-        List<AbstractBuilding> buildingList = game.getBoard().getDeck().drawBuildingCards();
-        for(AbstractBuilding building: buildingList){
+        List<AbstractCard> buildingList = game.getBoard().getDeck().drawBuildingCards();
+        for(AbstractCard building: buildingList){
             building.moveTo(game.getBoard().getTopRow());
         }
     }
