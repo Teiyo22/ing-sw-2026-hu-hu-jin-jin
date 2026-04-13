@@ -5,14 +5,14 @@ import java.util.List;
 public class DeckConfig {
     private int playerCount;
     private List<Integer> buildingsCountPerAge;
-    private List<BuildingConfig> buildingConfigs;
+    private List<CardConfig> buildingConfigs;
     private List<CardConfig> cardConfigs;
 
     public List<CardConfig> getCardConfigs() {
         return cardConfigs;
     }
 
-    public List<BuildingConfig> getBuildingConfigs() {
+    public List<CardConfig> getBuildingConfigs() {
         return buildingConfigs;
     }
 

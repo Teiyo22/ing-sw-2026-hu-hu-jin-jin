@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.utils.*;
 
@@ -12,7 +11,7 @@ public class Deck {
     private final Board board;
 
     private Queue<AbstractCard> charEventCards;
-    private Queue<AbstractBuilding> buildingCards;
+    private Queue<AbstractCard> buildingCards;
 
     private List<Integer> ageBuildingsCount;
     private int currentEra = 0;
@@ -59,8 +58,8 @@ public class Deck {
      * Draws a certain number of building cards based on the current age.
      * @return List of building cards.
      * */
-    public List<AbstractBuilding> drawBuildingCards() {
-        List<AbstractBuilding> buildings = new ArrayList<>();
+    public List<AbstractCard> drawBuildingCards() {
+        List<AbstractCard> buildings = new ArrayList<>();
 
         for (int i = 0; i < ageBuildingsCount.get(currentEra); i++) {
             if (!buildingCards.isEmpty())
@@ -94,7 +93,7 @@ public class Deck {
     /**
      * Initializes the building cards list of list card configurations
      * */
-    private void initBuildingCards(List<BuildingConfig> configs) {
+    private void initBuildingCards(List<CardConfig> configs) {
         buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount);
     }
 

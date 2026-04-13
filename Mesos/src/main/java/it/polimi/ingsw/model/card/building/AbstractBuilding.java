@@ -30,8 +30,6 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         owner = player;
     }
 
-    public abstract AbstractBuilding clone();
-
     @Override
     public void moveTo(Row row) {
         row.addBuilding(this);
