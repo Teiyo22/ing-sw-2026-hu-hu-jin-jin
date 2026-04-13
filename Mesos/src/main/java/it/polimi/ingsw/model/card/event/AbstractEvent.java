@@ -9,6 +9,10 @@ public abstract class AbstractEvent extends AbstractCard {
         super(type, era, isFinal);
     }
 
+    public AbstractEvent(AbstractEvent source) {
+        super(source);
+    }
+
     public abstract void onEvent(Game game);
 
     @Override

@@ -10,6 +10,10 @@ public abstract class CardPickBuilding extends AbstractBuilding implements CardV
         super(type, era, isFinal, cost, pp, buildingHandler);
     }
 
+    public CardPickBuilding(CardPickBuilding source) {
+        super(source);
+    }
+
     @Override
     public void onPick(Player player) {
 

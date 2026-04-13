@@ -9,6 +9,10 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
         super(type, era, isFinal);
     }
 
+    public AbstractCharacter(AbstractCharacter source) {
+        super(source);
+    }
+
     @Override
     public void moveTo(Row row) {
 

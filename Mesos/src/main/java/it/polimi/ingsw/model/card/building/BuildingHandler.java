@@ -12,7 +12,7 @@ public class BuildingHandler {
     private List<CardPickBuilding> cardPickBuildings;
     private List<HuntBuilding> huntBuildings;
     private List<CavePaintingBuilding> cavePaintingBuildings;
-    private List<OfferTileBuilding> offerTileBuildings;
+    private List<OrderTileBuilding> orderTileBuildings;
     private List<ExtraActionBuilding> extraActionBuildings;
     private List<GameEndBuilding> gameEndBuildings;
 

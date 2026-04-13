@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.character;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class Artist extends AbstractCharacter {
@@ -7,8 +8,13 @@ public class Artist extends AbstractCharacter {
         super(type, era, isFinal);
     }
 
-    public Artist(int era) {
-        super(era);
+    public Artist(Artist source) {
+        super(source);
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new Artist(this);
     }
 
     @Override

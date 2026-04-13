@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
@@ -22,6 +23,21 @@ public class CharacterBonusBuilding extends GameEndBuilding {
         this.collectorBonusPP = collectorBonusPP;
         this.artistBonusPP = artistBonusPP;
         this.builderBonusPP = builderBonusPP;
+    }
+
+    public CharacterBonusBuilding(CharacterBonusBuilding source) {
+        super(source);
+        this.inventorBonusPP = source.inventorBonusPP;
+        this.shamanBonusPP = source.shamanBonusPP;
+        this.hunterBonusPP = source.hunterBonusPP;
+        this.collectorBonusPP = source.collectorBonusPP;
+        this.artistBonusPP = source.artistBonusPP;
+        this.builderBonusPP = source.builderBonusPP;
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new CharacterBonusBuilding(this);
     }
 
     @Override

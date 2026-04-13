@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.character;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class Builder extends AbstractCharacter{
@@ -10,6 +11,17 @@ public class Builder extends AbstractCharacter{
         super(type, era, isFinal);
         this.bonusPP = bonusPP;
         this.buildingDiscount = buildingDiscount;
+    }
+
+    public Builder(Builder source) {
+        super(source);
+        this.buildingDiscount = source.buildingDiscount;
+        this.bonusPP = source.bonusPP;
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new Builder(this);
     }
 
     @Override

@@ -9,6 +9,7 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     protected Player owner = null;
     protected int cost;
     protected int pp;
+    protected BuildingHandler buildingHandler = null;
 
     public AbstractBuilding(String type, int era, boolean isFinal, int cost, int pp, BuildingHandler buildingHandler) {
         super(type, era, isFinal);
@@ -17,10 +18,15 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         this.buildingHandler = buildingHandler;
     }
 
+    public AbstractBuilding(AbstractBuilding source) {
+        super(source);
+        this.owner = source.owner;
+        this.cost = source.cost;
+        this.pp = source.pp;
+    }
+
     @Override
     public void moveTo(Row row) {
 
     }
-
-    protected BuildingHandler buildingHandler;
 }

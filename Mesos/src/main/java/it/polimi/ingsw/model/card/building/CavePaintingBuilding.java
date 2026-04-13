@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class CavePaintingBuilding extends AbstractBuilding{
@@ -10,6 +11,16 @@ public class CavePaintingBuilding extends AbstractBuilding{
                                 int bonusFood) {
         super(type, era, isFinal, cost, pp, buildingHandler);
         this.bonusFood = bonusFood;
+    }
+
+    public CavePaintingBuilding(CavePaintingBuilding source) {
+        super(source);
+        this.bonusFood = source.bonusFood;
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new CavePaintingBuilding(this);
     }
 
     @Override

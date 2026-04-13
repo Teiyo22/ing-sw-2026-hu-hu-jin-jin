@@ -10,6 +10,10 @@ public abstract class GameEndBuilding extends AbstractBuilding {
         super(type, era, isFinal, cost, pp, buildingHandler);
     }
 
+    public GameEndBuilding(GameEndBuilding source) {
+        super(source);
+    }
+
     @Override
     public void onPick(Player player) {
 

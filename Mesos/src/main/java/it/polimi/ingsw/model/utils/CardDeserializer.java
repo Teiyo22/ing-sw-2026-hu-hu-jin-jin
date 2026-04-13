@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.utils;
 
 import com.google.gson.*;
-import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.*;
 import it.polimi.ingsw.model.card.building.cardPick.InventorPairBuilding;
@@ -15,7 +14,6 @@ import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.card.event.CavePainting;
 import it.polimi.ingsw.model.card.event.Hunt;
 import it.polimi.ingsw.model.card.event.ShamanicRitual;
-import it.polimi.ingsw.model.card.event.Sustenance;
 
 import java.lang.reflect.Type;
 
@@ -45,7 +43,7 @@ public class CardDeserializer implements JsonDeserializer<AbstractCard> {
             case "cavePaintingBuilding" ->  context.deserialize(jsonObject, CavePaintingBuilding.class);
             case "extraActionBuilding" ->  context.deserialize(jsonObject, ExtraActionBuilding.class);
             case "huntBuilding" ->  context.deserialize(jsonObject, HuntBuilding.class);
-            case "offerTileBuilding" ->  context.deserialize(jsonObject, OfferTileBuilding.class);
+            case "offerTileBuilding" ->  context.deserialize(jsonObject, OrderTileBuilding.class);
             case "ritualDoubleBonusBuilding" ->  context.deserialize(jsonObject, RitualDoubleBonusBuilding.class);
             case "ritualNoLossBuilding" ->  context.deserialize(jsonObject, RitualNoLossBuilding.class);
             case "ritualStarsBuilding" ->  context.deserialize(jsonObject, RitualStarsBuilding.class);

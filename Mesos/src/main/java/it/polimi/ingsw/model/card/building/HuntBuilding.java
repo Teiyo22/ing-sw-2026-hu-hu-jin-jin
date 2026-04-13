@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.event.Hunt;
 import it.polimi.ingsw.model.player.Player;
 
 public class HuntBuilding extends AbstractBuilding{
@@ -12,6 +14,17 @@ public class HuntBuilding extends AbstractBuilding{
         super(type, era, isFinal, cost, pp, buildingHandler);
         this.bonusPP = bonusPP;
         this.bonusFood = bonusFood;
+    }
+
+    public HuntBuilding(HuntBuilding source) {
+        super(source);
+        this.bonusPP = source.bonusPP;
+        this.bonusFood = source.bonusFood;
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new HuntBuilding(this);
     }
 
     @Override

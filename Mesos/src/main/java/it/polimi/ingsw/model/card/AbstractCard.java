@@ -13,7 +13,14 @@ public abstract class AbstractCard {
         this.isFinal = isFinal;
     }
 
-    public abstract AbstractCard copy();
+    public AbstractCard(AbstractCard source) {
+        this.type = source.type;
+        this.era = source.era;
+        this.isFinal = source.isFinal;
+    }
+
+    public abstract AbstractCard clone();
+
     public abstract void moveTo(Row row);
 
     public void setEra(int era) {

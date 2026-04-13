@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class RitualStarsBuilding extends AbstractBuilding {
@@ -10,6 +11,16 @@ public class RitualStarsBuilding extends AbstractBuilding {
                                int bonusStars) {
         super(type, era, isFinal, cost, pp, buildingHandler);
         this.bonusStars = bonusStars;
+    }
+
+    public RitualStarsBuilding(RitualStarsBuilding source) {
+        super(source);
+        this.bonusStars = source.bonusStars;
+    }
+
+    @Override
+    public AbstractCard clone() {
+        return new RitualStarsBuilding(this);
     }
 
     @Override
