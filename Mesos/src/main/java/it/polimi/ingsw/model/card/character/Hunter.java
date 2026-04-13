@@ -21,8 +21,18 @@ public class Hunter extends AbstractCharacter {
         return new Hunter(this);
     }
 
+    /**The hunter gives immediately food if he has the icon
+     * so when we pick the card we check if it has the icon */
     @Override
     public void onPick(Player player) {
+        player.getTribe().addHunter();
+        if(hasIcon){
+            player.addFood(player.getTribe().getHunterCount())
+        }
+    }
 
+    @Override
+    public void accept(CardVisitor v){
+        v.doForHunter(this);
     }
 }

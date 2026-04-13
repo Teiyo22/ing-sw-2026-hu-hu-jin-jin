@@ -15,6 +15,8 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
 
     @Override
     public void moveTo(Row row) {
+        currRow = row;
+    }
 
     }
 

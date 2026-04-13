@@ -23,6 +23,16 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public void onPick(Player player) {
-
+        player.getTribe().addInventor();
     }
+
+    @Override
+    public void accept(CardVisitor v) {
+        v.doForInventor(this);
+    }
+
+    public String getInventorType() {
+        return this.type;
+    }
+
 }
