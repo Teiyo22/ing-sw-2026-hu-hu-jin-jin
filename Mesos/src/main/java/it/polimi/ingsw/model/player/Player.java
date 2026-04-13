@@ -67,14 +67,15 @@ public class Player implements Comparable<Player>{
 
     @Override
     public int compareTo(Player other) {
-        int comparePP = Integer.compare(other.getPP(), this.PP)
-        if(comparePP!=0){return comparePP; }
+        int res = Integer.compare(other.getPP(), this.pp);
 
-        int compareCibo = Integer.compare(other.getFood(), this.food);
-        if (compareCibo != 0) {return compareCibo;}
+        if(res != 0)
+            return res;
 
-        return 0;
-    }
+        res = Integer.compare(other.getFood(), this.food);
+
+        return res;
+        }
 
     public int getRank() {
         return rank;

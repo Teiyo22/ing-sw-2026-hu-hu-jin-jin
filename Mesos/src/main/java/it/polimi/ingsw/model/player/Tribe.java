@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-// aspetta la risposta di nicco
 public class Tribe {
     private final Map<InventorType, Integer> inventors;
     private final int[] shamans;
@@ -34,8 +33,7 @@ public class Tribe {
     }
 
     public int getTribeSize(){
-        int total= getArtistCount()+getBuilderCount()+getCollectorCount()+ getHunterCount()+getInventorCount()+ getShamanCount()
-        return total;
+        return getArtistCount()+getBuilderCount()+getCollectorCount()+ getHunterCount()+getInventorCount()+ getShamanCount();
     }
 
     public int getInventorCount() {
@@ -98,12 +96,14 @@ public class Tribe {
     public void addStars(int stars){
         this.stars += stars;
     }
+
 /**
  * Get the total stars possesed by the player
  * Every shaman card has a number of stars, so we multiply that number with the number shamans with the same stars and sum them all */
     public int getStars() {
         return stars;
     }
+
 /**
  * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
  */
@@ -126,13 +126,12 @@ public class Tribe {
  * Add an inventor in the tribe
  * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1*/
     public void addInventor(Inventor inventor) {
-        InvetorType type = inventor.getInventorType();
-        if(inventors.containsKey(type)){
-            int oldValue = inventors.get(type);
-            inventors.put(type, oldValue + 1);
-        }else {
-            inventors.put(type, 1);
-        }
+        InventorType type = inventor.getInventorType();
+        int value = 1;
+
+        if(inventors.containsKey(type))
+            value = inventors.get(type) + 1;
+        inventors.put(type, value);
     }
 /**
  * It does the same thing as the inventor, but instead of types we now have the number of stars*/

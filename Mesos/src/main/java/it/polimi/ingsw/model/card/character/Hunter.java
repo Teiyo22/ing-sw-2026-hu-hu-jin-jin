@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Hunter extends AbstractCharacter {
@@ -27,7 +28,7 @@ public class Hunter extends AbstractCharacter {
     public void onPick(Player player) {
         player.getTribe().addHunter();
         if(hasIcon){
-            player.addFood(player.getTribe().getHunterCount())
+            player.addFood(player.getTribe().getHunterCount());
         }
     }
 

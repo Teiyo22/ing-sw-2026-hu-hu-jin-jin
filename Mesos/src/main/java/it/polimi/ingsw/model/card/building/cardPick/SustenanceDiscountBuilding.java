@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.card.building.cardPick;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.*;
-import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
 
 public class SustenanceDiscountBuilding extends CardPickBuilding{
@@ -18,7 +17,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
                                       int cost, int pp, BuildingHandler buildingHandler, 
                                       int inventorDiscount, int shamanDiscount, int hunterDiscount,
                                       int artistDiscount, int collectorDiscount, int builderDiscount) {
-        super(era, cost, pp, buildingHandler);
+        super(type, era, isFinal, cost, pp, buildingHandler);
         this.inventorDiscount = inventorDiscount;
         this.shamanDiscount = shamanDiscount;
         this.hunterDiscount = hunterDiscount;
@@ -46,13 +45,13 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
         owner = player;
         buildingHandler.addCardPickBuilding(this);
 
-        int numInventors = owner.getTribe().getInventorCount();
-        int numShamans = owner.getTribe().getShamanCount();
-        int numHunters = owner.getTribe().getHunterCount();
-        int numCollectors = owner.getTribe().getCollectorCount();
-        int numArtists = owner.getTribe().getArtistCount();
-        int numBuilders = owner.getTribe().getBuilderCount();
-        owner.getTribe().addSustenanceDiscount(numInventors * inventorDiscount + numShamans * shamanDiscount + numHunters * hunterDiscount + numCollectors * collectorDiscount + numArtists * artistDiscount + numBuilders * builderDiscount);
+        owner.getTribe().addSustenanceDiscount(
+                owner.getTribe().getInventorCount() * inventorDiscount +
+                owner.getTribe().getShamanCount() * shamanDiscount +
+                owner.getTribe().getHunterCount() * hunterDiscount +
+                owner.getTribe().getCollectorCount() * collectorDiscount +
+                owner.getTribe().getArtistCount() * artistDiscount +
+                owner.getTribe().getBuilderCount() * builderDiscount);
     }
 
     @Override

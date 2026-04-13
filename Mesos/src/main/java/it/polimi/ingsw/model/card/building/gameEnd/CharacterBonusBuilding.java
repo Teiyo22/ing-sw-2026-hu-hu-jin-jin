@@ -42,18 +42,12 @@ public class CharacterBonusBuilding extends GameEndBuilding {
 
     @Override
     public void applyEffect() {
-        int numInventors = owner.getTribe().getInventorCount();
-        int numShamans = owner.getTribe().getShamanCount();
-        int numHunters = owner.getTribe().getHunterCount();
-        int numCollectors = owner.getTribe().getCollectorCount();
-        int numArtists = owner.getTribe().getArtistCount();
-        int numBuilders = owner.getTribe().getBuilderCount();
-
-        owner.addPP(numInventors * inventorBonusPP +
-                    numShamans * shamanBonusPP +
-                    numHunters * hunterBonusPP +
-                    numCollectors * collectorBonusPP +
-                    numArtists * artistBonusPP +
-                    numBuilders * builderBonusPP);
+        owner.addPP(
+                owner.getTribe().getInventorCount() * inventorBonusPP +
+                owner.getTribe().getShamanCount() * shamanBonusPP +
+                owner.getTribe().getHunterCount() * hunterBonusPP +
+                owner.getTribe().getCollectorCount() * collectorBonusPP +
+                owner.getTribe().getArtistCount() * artistBonusPP +
+                owner.getTribe().getBuilderCount() * builderBonusPP);
     }
 }

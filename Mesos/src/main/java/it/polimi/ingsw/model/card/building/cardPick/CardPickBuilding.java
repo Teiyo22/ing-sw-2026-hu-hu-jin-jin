@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building.cardPick;
 
+import it.polimi.ingsw.model.card.Visitable;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
@@ -18,5 +19,9 @@ public abstract class CardPickBuilding extends AbstractBuilding implements CardV
     public void onPick(Player player) {
         owner = player;
         buildingHandler.addCardPickBuilding(this);
+    }
+
+    public void applyEffect(Visitable v, Player p) {
+        if (p == owner) v.accept(this);
     }
 }

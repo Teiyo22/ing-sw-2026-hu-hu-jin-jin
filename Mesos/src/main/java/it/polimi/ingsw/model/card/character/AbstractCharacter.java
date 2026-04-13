@@ -3,8 +3,9 @@ package it.polimi.ingsw.model.card.character;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
+import it.polimi.ingsw.model.card.Visitable;
 
-public abstract class AbstractCharacter extends AbstractCard implements Pickable {
+public abstract class AbstractCharacter extends AbstractCard implements Pickable, Visitable {
     public AbstractCharacter(String type, int era, boolean isFinal) {
         super(type, era, isFinal);
     }
@@ -15,9 +16,7 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
 
     @Override
     public void moveTo(Row row) {
-        currRow = row;
-    }
-
+        row.addCharacter(this);
     }
 
     @Override

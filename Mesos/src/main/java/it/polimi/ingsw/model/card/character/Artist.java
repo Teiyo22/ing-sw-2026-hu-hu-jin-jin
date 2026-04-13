@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Artist extends AbstractCharacter {

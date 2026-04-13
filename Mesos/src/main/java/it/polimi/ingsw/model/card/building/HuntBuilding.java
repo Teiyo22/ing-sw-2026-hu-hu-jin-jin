@@ -30,7 +30,7 @@ public class HuntBuilding extends AbstractBuilding{
     @Override
     public void onPick(Player player) {
         owner = player;
-        buildingHandler.addHuntBuilding();
+        buildingHandler.addHuntBuilding(this);
     }
 
     public void applyEffect() {

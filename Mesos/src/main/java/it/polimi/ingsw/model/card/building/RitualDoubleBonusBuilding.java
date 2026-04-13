@@ -21,6 +21,6 @@ public class RitualDoubleBonusBuilding extends AbstractBuilding {
     @Override
     public void onPick(Player player) {
         owner = player;
-        owner.setDoubleRitualMod(True);
+        owner.setDoubleRitualMod(true);
     }
 }

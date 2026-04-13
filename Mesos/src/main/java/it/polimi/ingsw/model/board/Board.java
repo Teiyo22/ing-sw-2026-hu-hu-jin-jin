@@ -13,28 +13,22 @@ public class Board {
     public Board(Game game) {
 
         this.game = game;
-        this.deck= new Deck();
-        this.topRow = new Row(game);
-        this.bottomRow = new Row(game);
-        this.orderTile = new OrderSlot[gameSize];
-        this.offerTrack = new OfferTile[gameSize];
+        this.deck= new Deck(game.getGameSize(), this);
+        this.topRow = new Row();
+        this.bottomRow = new Row();
+        this.orderTile = new OrderSlot[game.getGameSize()];
+        this.offerTrack = new OfferTile[game.getGameSize()];
 
 
     }
     /**
     * Inizializzazione di ogni singola cella dell'orderTile*/
-    private void initOrderTile() {
-        for (int i = 0; i < orderTile.length; i++) {
-            orderTile[i]= new OrderSlot(i);
-        }
+    public void initOrderTile() {
     }
 
     /**
      * Inizializzazione di ogni singola cella dell'offerTile*/
-    private void initOfferTrack() {
-        for (int i = 0; i < offerTrack.length; i++) {
-            offerTrack[i]= new OfferTile(i);
-        }
+    public void initOfferTrack() {
     }
 
     public OrderSlot[] getOrderTile(){return orderTile;}

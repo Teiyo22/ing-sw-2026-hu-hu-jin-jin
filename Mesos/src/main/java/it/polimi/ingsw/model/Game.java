@@ -48,6 +48,10 @@ public class Game {
         gameState.update();
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     public void setGameState(GameState state) {
         this.gameState = state;
     }

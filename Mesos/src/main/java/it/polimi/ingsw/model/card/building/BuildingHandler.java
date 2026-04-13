@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.card.Pickable;
+import it.polimi.ingsw.model.card.Visitable;
 import it.polimi.ingsw.model.card.building.cardPick.CardPickBuilding;
 import it.polimi.ingsw.model.card.building.gameEnd.GameEndBuilding;
 import it.polimi.ingsw.model.gameState.ExtraActionState;
@@ -26,42 +28,33 @@ public class BuildingHandler {
         this.gameEndBuildings = new ArrayList<>();
     }
 
-    public void addCardPickBuildings(CardPickBuilding building){
+    public void addCardPickBuilding(CardPickBuilding building){
         cardPickBuildings.add(building);
-
-        return;
     }
 
-    public void addHuntBuildings(HuntBuilding building){
+    public void addHuntBuilding(HuntBuilding building){
         huntBuildings.add(building);
-
-        return;
     }
 
-    public void addCavePaintingBuildings(CavePaintingBuilding building){
+    public void addCavePaintingBuilding(CavePaintingBuilding building){
         cavePaintingBuildings.add(building);
-
-        return;
     }
-    public void addOrderTileBuildings(OrderTileBuilding building){
+
+    public void addOrderTileBuilding(OrderTileBuilding building){
         orderTileBuildings.add(building);
-
-        return;
     }
-    public void addGameEndBuildings(GameEndBuilding building){
+
+    public void addGameEndBuilding(GameEndBuilding building){
         gameEndBuildings.add(building);
-
-        return;
     }
-    public void addExtraActionBuildings(ExtraActionBuilding building){
+
+    public void addExtraActionBuilding(ExtraActionBuilding building){
         extraActionBuildings.add(building);
-
-        return;
     }
 
-    public void applyCardPickEffects(Pickable pickable, Player player) {
+    public void applyCardPickEffects(Visitable visitable, Player player) {
         for(CardPickBuilding building: cardPickBuildings){
-            building.applyEffect(pickable, player);
+            building.applyEffect(visitable, player);
         }
     }
 

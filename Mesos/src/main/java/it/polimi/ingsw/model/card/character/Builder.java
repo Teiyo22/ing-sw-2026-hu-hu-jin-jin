@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Builder extends AbstractCharacter{
@@ -26,7 +27,7 @@ public class Builder extends AbstractCharacter{
 
     @Override
     public void onPick(Player player) {
-        player.getTribe().addBuilder();
+        player.getTribe().addBuilder(this);
     }
 
     public int getBonusPP() {

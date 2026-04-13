@@ -22,7 +22,7 @@ public class OrderTileBuilding extends AbstractBuilding{
     @Override
     public void onPick(Player player) {
         owner = player;
-        buildingHandler.addOrderTileBuilding();
+        buildingHandler.addOrderTileBuilding(this);
 
     }
     public void applyEffect(OrderSlot slot) {

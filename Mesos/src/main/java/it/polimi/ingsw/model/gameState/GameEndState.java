@@ -56,7 +56,7 @@ public class GameEndState extends GameState {
 
     private void assignBonusPP(Player p) {
         int PPbonus=0;
-        PPbonus = p.getBuilderBonusPP() + p.getInventorBonusPP() + 10*(p.ArtistCount()/2);
+        PPbonus = p.getTribe().getBuilderBonusPP() + p.getTribe().getInventorBonusPP() + 10*(p.getTribe().getArtistCount()/2);
         p.addPP(PPbonus);
     }
 
@@ -66,18 +66,17 @@ public class GameEndState extends GameState {
 
         playersList.sort(null);
 
-        current = playersList.get(0);
+        current = playersList.getFirst();
         current.setRank(1);
-        for(int evaluatedPlayers=1; evaluatedPlayers<playersList.size(); evaluatedPlayers++){
+        for(int evaluatedPlayers=1; evaluatedPlayers<playersList.size(); evaluatedPlayers++) {
             current = playersList.get(evaluatedPlayers);
-            previous = playersList.get(evaluatedPlayers-1);
+            previous = playersList.get(evaluatedPlayers - 1);
 
-            if(current.compareTo(previous)==0){
+            if (current.compareTo(previous) == 0) {
                 current.setRank(previous.getRank());
-            }else{
-                current.setRank(evaluatedPlayers+1);
-            {
+            } else {
+                current.setRank(evaluatedPlayers + 1);
+            }
         }
-
     }
 }

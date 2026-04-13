@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Shaman extends AbstractCharacter{
@@ -25,8 +26,8 @@ public class Shaman extends AbstractCharacter{
      * Every shaman has stars so when we pick one shaman we add the number of stars*/
     @Override
     public void onPick(Player player) {
-        player.getTribe().addShaman();
-        player.getTribe().addStars(getStar);
+        player.getTribe().addShaman(this);
+        player.getTribe().addStars(stars);
     }
 
     public int getStar(){

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Inventor extends AbstractCharacter{
@@ -23,7 +24,7 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public void onPick(Player player) {
-        player.getTribe().addInventor();
+        player.getTribe().addInventor(this);
     }
 
     @Override
@@ -31,8 +32,8 @@ public class Inventor extends AbstractCharacter{
         v.doForInventor(this);
     }
 
-    public String getInventorType() {
-        return this.type;
+    public InventorType getInventorType() {
+        return this.inventorType;
     }
 
 }
