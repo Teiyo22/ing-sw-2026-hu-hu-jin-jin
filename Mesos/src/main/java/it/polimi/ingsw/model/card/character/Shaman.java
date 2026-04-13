@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Shaman extends AbstractCharacter{
-    private int stars;
+    private final int stars;
 
     public Shaman(String type, int era, boolean isFinal, int stars) {
         super(type, era, isFinal);

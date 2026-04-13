@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Hunter extends AbstractCharacter {
-    private boolean hasIcon;
+    private final boolean hasIcon;
 
     public Hunter(String type, int era, boolean isFinal, boolean hasIcon) {
         super(type, era, isFinal);
