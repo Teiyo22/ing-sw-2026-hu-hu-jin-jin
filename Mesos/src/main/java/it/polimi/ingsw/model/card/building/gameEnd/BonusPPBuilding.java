@@ -27,6 +27,6 @@ public class BonusPPBuilding extends GameEndBuilding {
 
     @Override
     public void applyEffect() {
-
+        owner.addPP(bonusPP);
     }
 }

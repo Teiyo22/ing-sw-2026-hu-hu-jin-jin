@@ -21,10 +21,11 @@ public class ExtraActionBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-
+        owner = player;
+        buildingHandler.addExtraActionBuilding();
     }
 
     public void applyEffect(ExtraActionState state){
-
+        state.setCurrPlayer(owner);
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.Builder;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
 public class BuilderBonusBuilding extends GameEndBuilding {
     public BuilderBonusBuilding(String type, int era, boolean isFinal,
@@ -22,6 +23,6 @@ public class BuilderBonusBuilding extends GameEndBuilding {
 
     @Override
     public void applyEffect() {
-
+        owner.addPP(owner.getTribe().getBuilderBonusPP());
     }
 }

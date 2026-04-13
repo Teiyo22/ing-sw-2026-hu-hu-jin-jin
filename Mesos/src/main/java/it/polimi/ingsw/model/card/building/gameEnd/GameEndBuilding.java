@@ -16,7 +16,8 @@ public abstract class GameEndBuilding extends AbstractBuilding {
 
     @Override
     public void onPick(Player player) {
-
+        owner = player;
+        buildingHandler.addGameEndBuilding(this);
     }
 
     public abstract void applyEffect();

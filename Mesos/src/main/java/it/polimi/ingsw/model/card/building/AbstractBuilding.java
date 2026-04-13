@@ -27,6 +27,6 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
 
     @Override
     public void moveTo(Row row) {
-
+        row.addBuilding(this);
     }
 }
