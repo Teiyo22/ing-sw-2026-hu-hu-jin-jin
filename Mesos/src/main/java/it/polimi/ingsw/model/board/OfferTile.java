@@ -26,4 +26,6 @@ public class OfferTile {
     public void solveBonusFood() {
         assignedPlayer.addFood(bonusFood);
     }
+
+    public void setPlayer(Player p) { assignedPlayer = p; }
 }

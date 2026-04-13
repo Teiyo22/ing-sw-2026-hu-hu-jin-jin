@@ -23,7 +23,7 @@ public class RoundActionState extends GameState{
         super(game, buildingHandler);
 
         this.offers = game.getBoard().getOfferTrack();
-        for(i=0; i<offers.size(); i++) {
+        for(i=0; i<offers.length; i++) {
             if (offers[i].getAssignedPlayer() != null) {
                 turnOrder.add(offers[i]);
             }
@@ -33,7 +33,7 @@ public class RoundActionState extends GameState{
 
     @Override
     public void update() {
-        if(solvedOffers == game.getPlayers.size()){
+        if(solvedOffers == game.getPlayers().size()){
             game.setGameState(new ExtraActionState(game, buildingHandler));
             game.getGameState().update();
         }

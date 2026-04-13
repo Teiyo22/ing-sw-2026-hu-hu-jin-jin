@@ -55,4 +55,8 @@ public class Game {
     public void setGameState(GameState state) {
         this.gameState = state;
     }
+
+    public GameState getGameState() {
+        return gameState;
+    }
 }

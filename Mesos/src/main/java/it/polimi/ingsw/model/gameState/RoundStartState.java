@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 

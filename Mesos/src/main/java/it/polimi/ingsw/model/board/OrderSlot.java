@@ -26,4 +26,6 @@ public class OrderSlot {
     public void solveDeltaFood(){
         assignedPlayer.addFood(foodDelta);
     }
+
+    public void setPlayer(Player p) { assignedPlayer = p; }
 }

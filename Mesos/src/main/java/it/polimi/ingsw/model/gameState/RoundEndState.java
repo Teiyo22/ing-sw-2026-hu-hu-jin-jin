@@ -86,8 +86,8 @@ public class RoundEndState extends GameState {
         for(AbstractCard card: cards) {
             if (card.getEra() > deck.getCurrentEra()) {
                 bottom.getBuildingCards().clear();
-                deck.changeAge();
-                List<AbstractBuilding> buildingList = deck.drawBuildingsCards();
+                deck.changeEra();
+                List<AbstractBuilding> buildingList = deck.drawBuildingCards();
                 for(AbstractBuilding building: buildingList){
                     building.moveTo(top);
                 }

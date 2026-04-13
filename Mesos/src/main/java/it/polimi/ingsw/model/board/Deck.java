@@ -13,7 +13,7 @@ public class Deck {
     private Queue<AbstractCard> buildingCards;
 
     private List<Integer> ageBuildingsCount;
-    private int currentAge = 0;
+    private int currentEra = 0;
 
     public Deck(int gameSize, Board board) {
         this.gameSize = gameSize;
@@ -57,10 +57,10 @@ public class Deck {
      * Draws a certain number of building cards based on the current age.
      * @return List of building cards.
      * */
-    public List<AbstractCard> drawBuildingsCards() {
+    public List<AbstractCard> drawBuildingCards() {
         List<AbstractCard> buildings = new ArrayList<>();
 
-        for (int i = 0; i < ageBuildingsCount.get(currentAge); i++) {
+        for (int i = 0; i < ageBuildingsCount.get(currentEra); i++) {
             if (!buildingCards.isEmpty())
                 buildings.add(buildingCards.poll());
             else {
@@ -76,8 +76,8 @@ public class Deck {
     /**
      * Updates the current age.
      * */
-    public void changeAge() {
-        this.currentAge += 1;
+    public void changeEra() {
+        this.currentEra += 1;
     }
 
 
@@ -94,5 +94,13 @@ public class Deck {
      * */
     private void initBuildingCards(List<CardConfig> configs) {
         buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount);
+    }
+
+    public Queue<AbstractCard> getCharEventCards() {
+        return charEventCards;
+    }
+
+    public int getCurrentEra() {
+        return currentEra;
     }
 }
