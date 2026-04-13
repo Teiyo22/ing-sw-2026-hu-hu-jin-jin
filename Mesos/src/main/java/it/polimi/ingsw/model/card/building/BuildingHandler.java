@@ -61,26 +61,26 @@ public class BuildingHandler {
 
     public void applyCardPickEffects(Pickable pickable, Player player) {
         for(CardPickBuilding building: cardPickBuildings){
-            building.applyEffects(pickable, player);
+            building.applyEffect(pickable, player);
         }
     }
 
     public void applyHuntEffects() {
         for(HuntBuilding building: huntBuildings){
-            building.applyEffects();
+            building.applyEffect();
         }
     }
 
     public void applyCavePaintingEffects() {
         for(CavePaintingBuilding building: cavePaintingBuildings){
-            building.applyEffects();
+            building.applyEffect();
         }
 
     }
 
     public void applyOrderTileEffects(OrderSlot slot) {
         for(OrderTileBuilding building: orderTileBuildings){
-            building.applyEffects(slot);
+            building.applyEffect(slot);
         }
     }
 
@@ -95,7 +95,7 @@ public class BuildingHandler {
 
     public void applyGameEndEffects() {
         for(GameEndBuilding building: gameEndBuildings){
-            building.applyEffects();
+            building.applyEffect();
         }
     }
 }
