@@ -29,4 +29,11 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     public void moveTo(Row row) {
         row.addBuilding(this);
     }
+
+    @Override
+    public void remove(Row row, int removedIndex){
+        row.getBuildingCards().remove(removedIndex);
+    }
+
+    protected BuildingHandler buildingHandler;
 }

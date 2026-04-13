@@ -12,5 +12,9 @@ public abstract class GameState {
         this.buildingHandler = buildingHandler;
     }
 
+    public BuildingHandler getBuildingHandler() {
+        return buildingHandler;
+    }
+
     public abstract void update();
 }

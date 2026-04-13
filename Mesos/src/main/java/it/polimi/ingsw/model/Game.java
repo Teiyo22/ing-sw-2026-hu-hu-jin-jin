@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+    package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
@@ -45,6 +45,7 @@ public class Game {
     public void addPlayer(Totem totem, String name) {
         Player player = new Player(name, totem);
         players.add(player);
+        gameState.update();
     }
 
     public void setGameState(GameState state) {
