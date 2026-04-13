@@ -3,11 +3,14 @@ package it.polimi.ingsw.model.card;
 import it.polimi.ingsw.model.board.Row;
 
 public abstract class AbstractCard {
+    protected String type;
     protected int era;
     protected boolean isFinal;
 
-    public AbstractCard(int era) {
+    public AbstractCard(String type, int era, boolean isFinal) {
+        this.type = type;
         this.era = era;
+        this.isFinal = isFinal;
     }
 
     public abstract AbstractCard copy();

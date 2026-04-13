@@ -5,8 +5,10 @@ import it.polimi.ingsw.model.player.Player;
 public class RitualStarsBuilding extends AbstractBuilding {
     private int bonusStars;
 
-    public RitualStarsBuilding(int era, int cost, int pp, BuildingHandler buildingHandler, int bonusStars) {
-        super(era, cost, pp, buildingHandler);
+    public RitualStarsBuilding(String type, int era, boolean isFinal,
+                               int cost, int pp, BuildingHandler buildingHandler,
+                               int bonusStars) {
+        super(type, era, isFinal, cost, pp, buildingHandler);
         this.bonusStars = bonusStars;
     }
 

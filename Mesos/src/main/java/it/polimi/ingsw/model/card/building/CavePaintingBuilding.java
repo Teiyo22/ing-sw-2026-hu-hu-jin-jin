@@ -5,8 +5,10 @@ import it.polimi.ingsw.model.player.Player;
 public class CavePaintingBuilding extends AbstractBuilding{
     private int bonusFood;
 
-    public CavePaintingBuilding(int era, int cost, int pp, BuildingHandler buildingHandler, int bonusFood) {
-        super(era, cost, pp, buildingHandler);
+    public CavePaintingBuilding(String type, int era, boolean isFinal,
+                                int cost, int pp, BuildingHandler buildingHandler,
+                                int bonusFood) {
+        super(type, era, isFinal, cost, pp, buildingHandler);
         this.bonusFood = bonusFood;
     }
 

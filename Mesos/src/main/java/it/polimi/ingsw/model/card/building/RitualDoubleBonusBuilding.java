@@ -3,8 +3,9 @@ package it.polimi.ingsw.model.card.building;
 import it.polimi.ingsw.model.player.Player;
 
 public class RitualDoubleBonusBuilding extends AbstractBuilding {
-    public RitualDoubleBonusBuilding(int era, int cost, int pp, BuildingHandler buildingHandler) {
-        super(era, cost, pp, buildingHandler);
+    public RitualDoubleBonusBuilding(String type, int era, boolean isFinal,
+                                     int cost, int pp, BuildingHandler buildingHandler) {
+        super(type, era, isFinal, cost, pp, buildingHandler);
     }
 
     @Override

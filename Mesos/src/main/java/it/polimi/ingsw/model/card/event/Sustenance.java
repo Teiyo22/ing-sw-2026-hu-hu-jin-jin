@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Game;
 public class Sustenance extends AbstractEvent {
     private final int ppMultiplier;
 
-    public Sustenance(int era, int ppMultiplier) {
-        super(era);
+    public Sustenance(String type, int era, boolean isFinal, int ppMultiplier) {
+        super(type, era, isFinal);
         this.ppMultiplier = ppMultiplier;
     }
 

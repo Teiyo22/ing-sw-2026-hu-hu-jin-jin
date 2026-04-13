@@ -4,8 +4,8 @@ public class ShamanicRitual extends AbstractEvent {
     private final int bonusPP;
     private final int malusPP;
 
-    public ShamanicRitual(int era, int bonusPP, int malusPP) {
-        super(era);
+    public ShamanicRitual(String type, int era, boolean isFinal, int bonusPP, int malusPP) {
+        super(type, era, isFinal);
         this.bonusPP = bonusPP;
         this.malusPP = malusPP;
     }

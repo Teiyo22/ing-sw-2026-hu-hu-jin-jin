@@ -6,8 +6,8 @@ public class CavePainting extends AbstractEvent{
     private final int bonusPP;
     private final int malusPP;
 
-    public CavePainting(int era, int bonusPP, int malusPP) {
-        super(era);
+    public CavePainting(String type, int era, boolean isFinal, int bonusPP, int malusPP) {
+        super(type, era, isFinal);
         this.bonusPP = bonusPP;
         this.malusPP = malusPP;
     }

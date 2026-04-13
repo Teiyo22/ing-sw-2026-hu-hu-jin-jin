@@ -4,8 +4,9 @@ import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public class BuilderBonusBuilding extends GameEndBuilding {
-    public BuilderBonusBuilding(int era, int cost, int pp, BuildingHandler buildingHandler) {
-        super(era, cost, pp, buildingHandler);
+    public BuilderBonusBuilding(String type, int era, boolean isFinal,
+                                int cost, int pp, BuildingHandler buildingHandler) {
+        super(type, era, isFinal, cost, pp, buildingHandler);
     }
 
     @Override

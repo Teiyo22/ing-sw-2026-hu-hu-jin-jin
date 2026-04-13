@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Hunter extends AbstractCharacter {
     private boolean hasIcon;
 
-    public Hunter(int era, boolean hasIcon) {
-        super(era);
+    public Hunter(String type, int era, boolean isFinal, boolean hasIcon) {
+        super(type, era, isFinal);
         this.hasIcon = hasIcon;
     }
 

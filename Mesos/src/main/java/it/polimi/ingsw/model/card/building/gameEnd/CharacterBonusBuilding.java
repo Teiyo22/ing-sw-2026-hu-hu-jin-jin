@@ -11,14 +11,11 @@ public class CharacterBonusBuilding extends GameEndBuilding {
     private int artistBonusPP;
     private int builderBonusPP;
 
-    public CharacterBonusBuilding(int era, int cost, int pp, BuildingHandler buildingHandler,
-                                  int inventorBonusPP,
-                                  int shamanBonusPP,
-                                  int hunterBonusPP,
-                                  int collectorBonusPP,
-                                  int artistBonusPP,
-                                  int builderBonusPP) {
-        super(era, cost, pp, buildingHandler);
+    public CharacterBonusBuilding(String type, int era, boolean isFinal,
+                                  int cost, int pp, BuildingHandler buildingHandler,
+                                  int inventorBonusPP, int shamanBonusPP, int hunterBonusPP,
+                                  int collectorBonusPP, int artistBonusPP, int builderBonusPP) {
+        super(type, era, isFinal, cost, pp, buildingHandler);
         this.inventorBonusPP = inventorBonusPP;
         this.shamanBonusPP = shamanBonusPP;
         this.hunterBonusPP = hunterBonusPP;
