@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
 public class Artist extends AbstractCharacter {
     public Artist(String type, int era, boolean isFinal) {
@@ -20,8 +21,8 @@ public class Artist extends AbstractCharacter {
     }
 
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        player.getTribe().addArtist();
+    public void addToTribeOf(Player p) {
+        p.getTribe().addArtist();
     }
 
     @Override

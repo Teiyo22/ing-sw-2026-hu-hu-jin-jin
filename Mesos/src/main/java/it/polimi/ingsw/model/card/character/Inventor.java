@@ -24,8 +24,8 @@ public class Inventor extends AbstractCharacter{
     }
 
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        player.getTribe().addInventor(this);
+    public void addToTribeOf(Player p) {
+        p.getTribe().addInventor(this);
     }
 
     @Override

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
 public class Builder extends AbstractCharacter{
     private int bonusPP;
@@ -27,8 +28,8 @@ public class Builder extends AbstractCharacter{
     }
 
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        player.getTribe().addBuilder(this);
+    public void addToTribeOf(Player p) {
+        p.getTribe().addBuilder(this);
     }
 
     public int getBonusPP() {

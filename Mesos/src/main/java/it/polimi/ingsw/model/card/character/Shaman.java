@@ -23,12 +23,10 @@ public class Shaman extends AbstractCharacter{
         return new Shaman(this);
     }
 
-    /**
-     * Every shaman has stars so when we pick one shaman we add the number of stars*/
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        player.getTribe().addShaman(this);
-        player.getTribe().addStars(stars);
+    public void addToTribeOf(Player p) {
+        p.getTribe().addShaman(this);
+        p.getTribe().addStars(stars);
     }
 
     public int getStar(){
