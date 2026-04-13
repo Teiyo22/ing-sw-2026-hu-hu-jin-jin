@@ -25,6 +25,11 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         this.pp = source.pp;
     }
 
+    @Override
+    public void onPick(Player player) {
+        owner = player;
+    }
+
     public abstract AbstractBuilding clone();
 
     @Override

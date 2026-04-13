@@ -29,7 +29,7 @@ public class HuntBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-        owner = player;
+        super.onPick(player);
         buildingHandler.addHuntBuilding(this);
     }
 

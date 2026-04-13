@@ -21,7 +21,7 @@ public class ExtraActionBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-        owner = player;
+        super.onPick(player);
         buildingHandler.addExtraActionBuilding(this);
     }
 

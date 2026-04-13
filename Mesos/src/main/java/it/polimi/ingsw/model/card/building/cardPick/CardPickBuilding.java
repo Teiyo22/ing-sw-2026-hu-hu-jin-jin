@@ -17,7 +17,7 @@ public abstract class CardPickBuilding extends AbstractBuilding implements CardV
 
     @Override
     public void onPick(Player player) {
-        owner = player;
+        super.onPick(player);
         buildingHandler.addCardPickBuilding(this);
     }
 

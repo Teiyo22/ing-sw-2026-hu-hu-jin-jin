@@ -25,7 +25,7 @@ public class CavePaintingBuilding extends AbstractBuilding{
 
     @Override
     public void onPick(Player player) {
-        owner = player;
+        super.onPick(player);
         buildingHandler.addCavePaintingBuilding(this);
     }
 

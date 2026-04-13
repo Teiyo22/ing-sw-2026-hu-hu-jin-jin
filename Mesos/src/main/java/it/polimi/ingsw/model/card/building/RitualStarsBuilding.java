@@ -25,7 +25,7 @@ public class RitualStarsBuilding extends AbstractBuilding {
 
     @Override
     public void onPick(Player player) {
-        owner = player;
+        super.onPick(player);
         owner.getTribe().addStars(3);
     }
 }
