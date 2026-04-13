@@ -50,8 +50,8 @@ public class ShamanicRitual extends AbstractEvent {
         }
         //apply effects to players, depending on their number of stars
         for(int i=0; i<order.length; i++){
-            player = order[i].getAssignedPlayer();
-            playerStars = player.getTribe().getStars();
+            Player player = order[i].getAssignedPlayer();
+            int playerStars = player.getTribe().getStars();
             if (playerStars == minStars){
                 if(!player.getNoLossRitualMod()) {
                     player.addPP(-malusPP);  //players with the least stars lose pp
