@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.utils;
 
 import com.google.gson.*;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class DeckConfigLoader {
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(AbstractCard.class, new CardDeserializer())
+            .registerTypeAdapter(AbstractBuilding.class, new BuildingDeserializer())
             .create();
 
     public DeckConfig load(String filePath) {

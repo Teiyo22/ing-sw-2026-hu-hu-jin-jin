@@ -25,6 +25,8 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         this.pp = source.pp;
     }
 
+    public abstract AbstractBuilding clone();
+
     @Override
     public void moveTo(Row row) {
         row.addBuilding(this);

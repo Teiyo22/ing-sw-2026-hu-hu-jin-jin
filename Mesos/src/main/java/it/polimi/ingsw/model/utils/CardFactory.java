@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.utils;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class CardFactory {
 
         for (CardConfig config : configs)
             for (int i = 0; i < config.getQuantity(); i++) {
-                AbstractCard card = config.getCard().copy();
+                AbstractCard card = config.getCard().clone();
 
                 if(card.isFinal())
                     cardsDividedByEra.getLast().add(card);
@@ -32,16 +33,16 @@ public class CardFactory {
         return cards;
     }
 
-    public static Queue<AbstractCard> generateBuildingCards(List<CardConfig> configs, List<Integer> buildingsCountPerAge) {
-        List<List<AbstractCard>> buildingsDividedByEra = new ArrayList<>();
-        Queue<AbstractCard> buildings = new LinkedList<>();
+    public static Queue<AbstractBuilding> generateBuildingCards(List<BuildingConfig> configs, List<Integer> buildingsCountPerAge) {
+        List<List<AbstractBuilding>> buildingsDividedByEra = new ArrayList<>();
+        Queue<AbstractBuilding> buildings = new LinkedList<>();
 
         for(int i = 0; i < maxEra; i++)
             buildingsDividedByEra.add(new ArrayList<>());
 
-        for(CardConfig config: configs)
+        for(BuildingConfig config: configs)
             for(int i = 0; i < config.getQuantity(); i++) {
-                AbstractCard building = config.getCard().copy();
+                AbstractBuilding building = config.getBuilding().clone();
 
                 if(building.getEra() <= maxEra)
                     buildingsDividedByEra.get(building.getEra() - 1).add(building);
