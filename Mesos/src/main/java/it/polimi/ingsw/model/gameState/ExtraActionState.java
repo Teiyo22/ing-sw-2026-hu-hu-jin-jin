@@ -13,9 +13,9 @@ public class ExtraActionState extends GameState {
         super(game, buildingHandler);
     }
 
-    public void pickTop(Pickable p, int removedIndex) {
+    public void pickTop(Pickable p) {
         p.onPick(currPlayer, buildingHandler);
-        p.remove(game.getBoard().getTopRow(), removedIndex);
+        p.removeFrom(game.getBoard().getTopRow());
         solvedExtraActions++;
         update();
     }

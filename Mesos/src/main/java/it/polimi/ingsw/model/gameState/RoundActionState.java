@@ -46,9 +46,9 @@ public class RoundActionState extends GameState{
     }
 
 
-    private void pick(Pickable p, Row row, int removedIndex) {
+    private void pick(Pickable p, Row row) {
         p.onPick(currPlayer, buildingHandler);
-        p.remove(row, removedIndex);
+        p.removeFrom(row);
 
         assignToOrderSlot(currPlayer, turnOrder.get(solvedOffers));
     }
