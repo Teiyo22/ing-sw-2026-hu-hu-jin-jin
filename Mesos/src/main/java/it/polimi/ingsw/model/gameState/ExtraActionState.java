@@ -16,6 +16,7 @@ public class ExtraActionState extends GameState {
     public void pickTop(Pickable p) {
         p.onPick(currPlayer, buildingHandler);
         p.removeFrom(game.getBoard().getTopRow());
+
         solvedExtraActions++;
         update();
     }
@@ -27,7 +28,8 @@ public class ExtraActionState extends GameState {
     @Override
     public void update() {
         buildingHandler.applyExtraActionEffects(this, solvedExtraActions);
-        if(currPlayer==null) {
+
+        if(currPlayer == null) {
             game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
         }

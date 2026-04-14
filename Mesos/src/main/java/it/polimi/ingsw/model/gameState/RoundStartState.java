@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.player.Player;
 public class RoundStartState extends GameState {
     private Player currPlayer;
     private int assignedSlots = 0;
-    private int playerIndex = 0;
 
     public RoundStartState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -17,20 +16,20 @@ public class RoundStartState extends GameState {
     @Override
     public void update() {
         if(assignedSlots == game.getPlayers().size()){
-
             game.setGameState(new RoundActionState(game, buildingHandler));
             game.getGameState().update();
+            return;
         }
 
-        currPlayer = game.getPlayers().get(playerIndex);
+        currPlayer = game.getPlayers().get(assignedSlots);
     }
 
 
     public void assignTo(OfferTile offer){
         game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
         offer.setPlayer(currPlayer);
+
         assignedSlots++;
-        playerIndex++;
         update();
     }
 }

@@ -24,9 +24,10 @@ public class GameEndState extends GameState {
     @Override
     public void update() {
         resolveEvents();
-        for(Player p: playersList) {
+
+        for(Player p: playersList)
             assignBonusPP(p);
-        }
+
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
     }
@@ -55,9 +56,10 @@ public class GameEndState extends GameState {
     }
 
     private void assignBonusPP(Player p) {
-        int PPbonus=0;
-        PPbonus = p.getTribe().getBuilderBonusPP() + p.getTribe().getInventorBonusPP() + 10*(p.getTribe().getArtistCount()/2);
-        p.addPP(PPbonus);
+        int bonusPP = bonusPP = p.getTribe().getBuilderBonusPP() +
+                                p.getTribe().getInventorBonusPP() +
+                                10 * (p.getTribe().getArtistCount()/2);
+        p.addPP(bonusPP);
     }
 
     private void setLeaderboard() {
@@ -68,9 +70,10 @@ public class GameEndState extends GameState {
 
         current = playersList.getFirst();
         current.setRank(1);
-        for(int evaluatedPlayers=1; evaluatedPlayers<playersList.size(); evaluatedPlayers++) {
+
+        for(int evaluatedPlayers = 1; evaluatedPlayers < playersList.size(); evaluatedPlayers++) {
+            previous = current;
             current = playersList.get(evaluatedPlayers);
-            previous = playersList.get(evaluatedPlayers - 1);
 
             if (current.compareTo(previous) == 0) {
                 current.setRank(previous.getRank());

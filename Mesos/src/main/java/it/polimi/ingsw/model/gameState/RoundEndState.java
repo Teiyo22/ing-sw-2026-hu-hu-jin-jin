@@ -18,7 +18,6 @@ public class RoundEndState extends GameState {
     private final Deck deck;
 
     public RoundEndState(Game game, BuildingHandler buildingHandler) {
-
         super(game, buildingHandler);
 
         this.bottom = game.getBoard().getBottomRow();
@@ -28,13 +27,11 @@ public class RoundEndState extends GameState {
 
     @Override
     public void update() {
-
         if(!deck.getCharEventCards().isEmpty()) {
             resolveEvents();
             setUp();
             game.setGameState(new RoundStartState(game, buildingHandler));
-
-        }else
+        } else
             game.setGameState(new GameEndState(game, buildingHandler));
 
         game.getGameState().update();
@@ -53,13 +50,11 @@ public class RoundEndState extends GameState {
     }
 
     private void setUp() {
-
         bottom.getEventCards().clear();
         bottom.getSustenanceEventCards().clear();
         bottom.getCharacterCards().clear();
 
         List<AbstractCharacter> characters = top.getCharacterCards();
-
         for(AbstractCharacter c: characters){
             c.moveTo(bottom);
         }
@@ -78,24 +73,25 @@ public class RoundEndState extends GameState {
         top.getSustenanceEventCards().clear();
 
         redrawCards();
-
     }
 
     private void redrawCards() {
-        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() +4);
+        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() + 4);
         int ID = 0;
 
         for(AbstractCard card: cards) {
             if (card.getEra() > deck.getCurrentEra()) {
                 bottom.getBuildingCards().clear();
                 deck.changeEra();
-                List<AbstractCard> buildingList = deck.drawBuildingCards();
-                for(AbstractCard building: buildingList){
+
+                List<AbstractCard> buildings = deck.drawBuildingCards();
+                for(AbstractCard building: buildings){
                     building.setID(ID);
                     ID++;
                     building.moveTo(top);
                 }
             }
+
             card.setID(ID);
             ID++;
             card.moveTo(top);
