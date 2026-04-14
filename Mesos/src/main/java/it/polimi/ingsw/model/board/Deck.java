@@ -27,7 +27,7 @@ public class Deck {
      *  Each deck config file contains different configurations for the cards
      * */
     public void init() {
-        DeckConfig deckConfig = new DeckConfigLoader().load(playerConfig.getDeckConfigFile());
+        DeckConfig deckConfig = new ConfigLoader().loadDeckConfig(playerConfig.getDeckConfigFile());
         ageBuildingsCount = deckConfig.getBuildingsCountPerAge();
         initCards(deckConfig.getCardConfigs());
         initBuildingCards(deckConfig.getBuildingConfigs());
