@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.List;
+
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;
     private int solvedExtraActions=0;
@@ -13,10 +15,11 @@ public class ExtraActionState extends GameState {
         super(game, buildingHandler);
     }
 
-    public void pickTop(Pickable p) {
-        p.onPick(currPlayer, buildingHandler);
-        p.removeFrom(game.getBoard().getTopRow());
-
+    public void pickTop(List<Pickable> pickedCards) {
+        for(Pickable p: pickedCards) {
+            p.onPick(currPlayer, buildingHandler);
+            p.removeFrom(game.getBoard().getTopRow());
+        }
         solvedExtraActions++;
         update();
     }
