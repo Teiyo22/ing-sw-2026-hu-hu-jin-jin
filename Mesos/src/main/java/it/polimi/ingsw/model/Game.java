@@ -14,19 +14,14 @@ public class Game {
     private final PlayerConfig playerConfig;
     private final List<Player> players;
     private final Board board;
-    private final List<Player> leaderboard;
 
-    private BuildingHandler buildingHandler;
     private GameState gameState;
 
     public Game(PlayerConfig playerConfig) {
         this.playerConfig = playerConfig;
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
+        this.gameState = new GameStartState(this, new BuildingHandler());
         this.board = new Board(this);
-        this.leaderboard = new ArrayList<Player>();
-        this.buildingHandler = new BuildingHandler();
-
-        this.gameState = new GameStartState(this, this.buildingHandler);
         this.board.initOfferTrack();
         this.board.initOrderTile();
     }
