@@ -13,32 +13,28 @@ import java.util.List;
 
 public class RoundActionState extends GameState{
     private Player currPlayer;
+    private final OfferTile[] offerTrack;
+
     private int solvedOffers = 0;
-    private int i=0;
-    private OrderSlot[] orderTile;
-    private OfferTile[] offers;
-    private List<OfferTile> turnOrder = new ArrayList<>();
+    private int assignedPlayers = 0;
 
     public RoundActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
-
-        this.offers = game.getBoard().getOfferTrack();
-        for(i=0; i<offers.length; i++) {
-            if (offers[i].getAssignedPlayer() != null) {
-                turnOrder.add(offers[i]);
-            }
-        }
-        this.orderTile = game.getBoard().getOrderTile();
+        offerTrack = game.getBoard().getOfferTrack();
     }
 
     @Override
     public void update() {
-        if(solvedOffers == game.getPlayers().size()){
+        for(; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++);
+
+        if(offerTrack.length == solvedOffers){
             game.setGameState(new ExtraActionState(game, buildingHandler));
             game.getGameState().update();
+            return;
         }
 
-        currPlayer = turnOrder.get(solvedOffers).getAssignedPlayer();
+        currPlayer = offerTrack[solvedOffers].getAssignedPlayer();
+        offerTrack[solvedOffers].solveBonusFood();
     }
 
     public void setPlayer(Player player){
@@ -50,16 +46,19 @@ public class RoundActionState extends GameState{
         p.onPick(currPlayer, buildingHandler);
         p.removeFrom(row);
 
-        assignToOrderSlot(currPlayer, turnOrder.get(solvedOffers));
+        assignToOrderSlot(offerTrack[solvedOffers]);
     }
 
 
-    public void assignToOrderSlot(Player player, OfferTile tile) {
-        orderTile[i].setPlayer(player);
-        tile.setPlayer(null);
+    public void assignToOrderSlot(OfferTile offerTile) {
+        OrderSlot orderSlot = game.getBoard().getOrderTile()[assignedPlayers];
+
+        orderSlot.setPlayer(offerTile.getAssignedPlayer());
+        offerTile.setPlayer(null);
+        buildingHandler.applyOrderTileEffects(orderSlot);
+
         solvedOffers++;
-        buildingHandler.applyOrderTileEffects(orderTile[i]);
-        i++;
+        assignedPlayers++;
         update();
     }
 }
