@@ -22,6 +22,8 @@ public abstract class AbstractCard {
         this.isFinal = source.isFinal;
     }
 
+    public abstract void removeFrom(Row row);
+
     public abstract AbstractCard clone();
 
     public abstract void moveTo(Row row);

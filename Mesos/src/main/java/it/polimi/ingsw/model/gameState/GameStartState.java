@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
+import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.board.Board;
@@ -48,21 +50,43 @@ public class GameStartState extends GameState{
 
     private void distributeCards() {
         List<AbstractCard> cards;
+        Row topRow =  game.getBoard().getTopRow();
+        Row bottomRow = game.getBoard().getBottomRow();
         int ID = 0;
 
-        cards = game.getBoard().getDeck().drawCards(game.getPlayerConfig().getNum() +1);
+        int drawCount = game.getPlayerConfig().getNum() + 4;
+        do {
+            cards = game.getBoard().getDeck().drawCards(drawCount);
+            for(AbstractCard card: cards){
+                card.setID(ID);
+                ID++;
+                card.moveTo(bottomRow);
+            }
+
+            for(AbstractEvent event: bottomRow.getEventCards()) {
+                event.moveTo(topRow);
+                event.removeFrom(bottomRow);
+            }
+
+            for(Sustenance event: bottomRow.getSustenanceEventCards()) {
+                event.moveTo(topRow);
+                event.removeFrom(bottomRow);
+            }
+
+            drawCount = game.getPlayerConfig().getNum() + 4 - bottomRow.getCharacterCards().size();
+        } while(drawCount > 0);
+
+        drawCount = game.getPlayerConfig().getNum() + 1 -
+                    topRow.getEventCards().size() -
+                    topRow.getSustenanceEventCards().size();
+
+        cards = game.getBoard().getDeck().drawCards(drawCount);
         for(AbstractCard card: cards){
             card.setID(ID);
             ID++;
-            card.moveTo(game.getBoard().getTopRow());
+            card.moveTo(topRow);
         }
 
-        cards = game.getBoard().getDeck().drawCards(game.getPlayerConfig().getNum() + 4);
-        for(AbstractCard card: cards){
-            card.setID(ID);
-            ID++;
-            card.moveTo(game.getBoard().getBottomRow());
-        }
 
         cards = game.getBoard().getDeck().drawBuildingCards();
         for(AbstractCard card: cards){
