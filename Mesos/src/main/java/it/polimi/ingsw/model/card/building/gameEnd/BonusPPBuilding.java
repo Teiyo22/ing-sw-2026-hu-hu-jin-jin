@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 
 public class BonusPPBuilding extends GameEndBuilding {
+    @Expose
     private int bonusPP;
 
     public BonusPPBuilding(String type, int era, boolean isFinal,

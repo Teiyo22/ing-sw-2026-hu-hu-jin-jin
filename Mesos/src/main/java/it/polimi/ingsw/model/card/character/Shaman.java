@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.card.character;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Shaman extends AbstractCharacter{
-    private final int stars;
+    @Expose private final int stars;
 
     public Shaman(String type, int era, boolean isFinal, int stars) {
         super(type, era, isFinal);

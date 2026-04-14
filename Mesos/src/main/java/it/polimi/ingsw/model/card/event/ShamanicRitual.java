@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.event;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
@@ -10,8 +11,8 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import java.util.ArrayList;
 
 public class ShamanicRitual extends AbstractEvent {
-    private int bonusPP;
-    private int malusPP;
+    @Expose private int bonusPP;
+    @Expose private int malusPP;
 
     public ShamanicRitual(String type, int era, boolean isFinal, int bonusPP, int malusPP) {
         super(type, era, isFinal);

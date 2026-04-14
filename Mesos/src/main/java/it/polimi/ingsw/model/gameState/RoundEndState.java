@@ -59,6 +59,7 @@ public class RoundEndState extends GameState {
         bottom.getCharacterCards().clear();
 
         List<AbstractCharacter> characters = top.getCharacterCards();
+
         for(AbstractCharacter c: characters){
             c.moveTo(bottom);
         }
@@ -81,17 +82,22 @@ public class RoundEndState extends GameState {
     }
 
     private void redrawCards() {
+        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() +4);
+        int ID = 0;
 
-        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size+4);
         for(AbstractCard card: cards) {
             if (card.getEra() > deck.getCurrentEra()) {
                 bottom.getBuildingCards().clear();
                 deck.changeEra();
-                List<AbstractBuilding> buildingList = deck.drawBuildingCards();
-                for(AbstractBuilding building: buildingList){
+                List<AbstractCard> buildingList = deck.drawBuildingCards();
+                for(AbstractCard building: buildingList){
+                    building.setID(ID);
+                    ID++;
                     building.moveTo(top);
                 }
             }
+            card.setID(ID);
+            ID++;
             card.moveTo(top);
         }
     }

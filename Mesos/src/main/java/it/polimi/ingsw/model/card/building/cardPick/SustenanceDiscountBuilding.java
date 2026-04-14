@@ -1,17 +1,18 @@
 package it.polimi.ingsw.model.card.building.cardPick;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
 public class SustenanceDiscountBuilding extends CardPickBuilding{
-    int inventorDiscount;
-    int shamanDiscount;
-    int hunterDiscount;
-    int collectorDiscount;
-    int artistDiscount;
-    int builderDiscount;
+    @Expose int inventorDiscount;
+    @Expose int shamanDiscount;
+    @Expose int hunterDiscount;
+    @Expose int collectorDiscount;
+    @Expose int artistDiscount;
+    @Expose int builderDiscount;
 
     public SustenanceDiscountBuilding(String type, int era, boolean isFinal,
                                       int cost, int pp, BuildingHandler buildingHandler, 

@@ -1,15 +1,16 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 
 public class CharacterBonusBuilding extends GameEndBuilding {
-    private int inventorBonusPP;
-    private int shamanBonusPP;
-    private int hunterBonusPP;
-    private int collectorBonusPP;
-    private int artistBonusPP;
-    private int builderBonusPP;
+    @Expose private int inventorBonusPP;
+    @Expose private int shamanBonusPP;
+    @Expose private int hunterBonusPP;
+    @Expose private int collectorBonusPP;
+    @Expose private int artistBonusPP;
+    @Expose private int builderBonusPP;
 
     public CharacterBonusBuilding(String type, int era, boolean isFinal,
                                   int cost, int pp, BuildingHandler buildingHandler,

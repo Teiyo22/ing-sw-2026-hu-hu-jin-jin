@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.card.building;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class HuntBuilding extends AbstractBuilding{
-    private int bonusPP;
-    private int bonusFood;
+    @Expose private int bonusPP;
+    @Expose private int bonusFood;
 
     public HuntBuilding(String type, int era, boolean isFinal,
                         int cost, int pp, BuildingHandler buildingHandler,

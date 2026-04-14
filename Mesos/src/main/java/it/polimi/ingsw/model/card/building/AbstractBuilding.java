@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
@@ -7,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 
 public abstract class AbstractBuilding extends AbstractCard implements Pickable {
     protected Player owner = null;
-    protected int cost;
-    protected int pp;
+    @Expose protected int cost;
+    @Expose protected int pp;
 
     public AbstractBuilding(String type, int era, boolean isFinal, int cost, int pp) {
         super(type, era, isFinal);

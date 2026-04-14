@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.event;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import java.util.ArrayList;
 
 public class Hunt extends AbstractEvent {
+    @Expose
     private  int ppMultiplier;
 
     public Hunt(String type, int era, boolean isFinal, int ppMultiplier) {

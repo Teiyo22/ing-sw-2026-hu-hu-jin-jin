@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 public class DeckConfigLoader {
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(AbstractCard.class, new CardDeserializer())
+            .excludeFieldsWithoutExposeAnnotation()
             .create();
 
     public DeckConfig load(String filePath) {

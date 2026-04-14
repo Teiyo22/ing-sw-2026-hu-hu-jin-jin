@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.character;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 public class Hunter extends AbstractCharacter {
-    private final boolean hasIcon;
+    @Expose private final boolean hasIcon;
 
     public Hunter(String type, int era, boolean isFinal, boolean hasIcon) {
         super(type, era, isFinal);

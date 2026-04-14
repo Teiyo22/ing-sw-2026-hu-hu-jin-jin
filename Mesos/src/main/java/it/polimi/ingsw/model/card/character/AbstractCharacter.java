@@ -31,8 +31,8 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
     }
 
     @Override
-    public void remove(Row row, int removedIndex){
-        row.getCharacterCards().remove(removedIndex);
+    public void removeFrom(Row row){
+        row.getCharacterCards().remove(this);
     }
 
 

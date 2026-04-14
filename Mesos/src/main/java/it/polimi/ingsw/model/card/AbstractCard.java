@@ -1,11 +1,14 @@
 package it.polimi.ingsw.model.card;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.board.Row;
 
 public abstract class AbstractCard {
-    protected String type;
-    protected int era;
-    protected boolean isFinal;
+    protected int ID = -1;
+
+    @Expose protected String type;
+    @Expose protected int era;
+    @Expose protected boolean isFinal;
 
     public AbstractCard(String type, int era, boolean isFinal) {
         this.type = type;
@@ -33,5 +36,28 @@ public abstract class AbstractCard {
 
     public boolean isFinal() {
         return isFinal;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null) return false;
+
+        if(obj == this) return true;
+
+        if(obj.getClass() != this.getClass()) return false;
+
+        return ((AbstractCard) obj).getID() == this.ID;
     }
 }

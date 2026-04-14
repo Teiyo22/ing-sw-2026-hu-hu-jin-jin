@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.event;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.board.Row;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import java.util.ArrayList;
 
 public class Sustenance extends AbstractEvent {
+    @Expose
     private int ppMultiplier;
 
     public Sustenance(String type, int era, boolean isFinal, int ppMultiplier) {

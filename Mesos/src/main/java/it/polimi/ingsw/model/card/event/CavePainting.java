@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.event;
 
+import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
@@ -10,10 +11,10 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import java.util.ArrayList;
 
 public class CavePainting extends AbstractEvent{
-    private final int bonusPP;  //must be a positive number
-    private final int malusPP;  //must be a negative number
-    private int numArtistsBonus;
-    private int numArtistsMalus;
+    @Expose private final int bonusPP;  //must be a positive number
+    @Expose private final int malusPP;  //must be a negative number
+    @Expose private int numArtistsBonus;
+    @Expose private int numArtistsMalus;
 
     public CavePainting(String type, int era, boolean isFinal, 
                         int bonusPP, int malusPP, int numArtistsBonus, int numArtistsMalus) {

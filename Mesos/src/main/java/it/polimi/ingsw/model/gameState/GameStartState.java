@@ -59,20 +59,27 @@ public class GameStartState extends GameState{
 
     private void distributeCards() {
         List<AbstractCard> cards;
+        int ID = 0;
 
         cards = game.getBoard().getDeck().drawCards(playersList.size()+1);
         for(AbstractCard card: cards){
+            card.setID(ID);
+            ID++;
             card.moveTo(game.getBoard().getTopRow());
         }
 
         cards = game.getBoard().getDeck().drawCards(playersList.size()+4);
         for(AbstractCard card: cards){
+            card.setID(ID);
+            ID++;
             card.moveTo(game.getBoard().getBottomRow());
         }
 
-        List<AbstractCard> buildingList = game.getBoard().getDeck().drawBuildingCards();
-        for(AbstractCard building: buildingList){
-            building.moveTo(game.getBoard().getTopRow());
+        cards = game.getBoard().getDeck().drawBuildingCards();
+        for(AbstractCard card: cards){
+            card.setID(ID);
+            ID++;
+            card.moveTo(game.getBoard().getTopRow());
         }
     }
 }
