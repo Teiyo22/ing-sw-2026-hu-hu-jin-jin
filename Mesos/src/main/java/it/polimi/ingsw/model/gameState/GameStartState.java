@@ -15,45 +15,34 @@ import java.lang.Math;
 
 public class GameStartState extends GameState{
     private int playerCount = 0;
-    private OrderSlot[] orderTile;
-    private List<Player> playersList;
 
     public GameStartState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
-
-        this.orderTile = game.getBoard().getOrderTile();
     }
 
     @Override
     public void update() {
-        Player p;
-
         playerCount++;
 
         if(playerCount == game.getPlayerConfig().getNum()) {
-            playersList = game.getPlayers();
-
             assignPlayersToOrderTile();
-
             distributeCards();
-
             game.setGameState(new RoundStartState(game, buildingHandler));
             game.getGameState().update();
         }
     }
 
     private void assignPlayersToOrderTile(){
-        int i = 0;
-        double player_index = 1.0;
-        int food = 2;
+        List<Player> players = game.getPlayers();
+        OrderSlot[] orderTile = game.getBoard().getOrderTile();
 
-        Collections.shuffle(playersList);
-        for(Player p: playersList) {
-            orderTile[i].setPlayer(p);
-            p.setFood(food);
-            food = 2 + (int)Math.floor(player_index);
-            player_index+=0.5;
-            i++;
+        Collections.shuffle(players);
+
+        for(int i = 0; i < players.size(); i++) {
+            Player p = players.get(i);
+
+            p.setFood(2 + (i + 1) / 2);
+            orderTile[i].setAssignedPlayer(p); ;
         }
     }
 
@@ -61,14 +50,14 @@ public class GameStartState extends GameState{
         List<AbstractCard> cards;
         int ID = 0;
 
-        cards = game.getBoard().getDeck().drawCards(playersList.size()+1);
+        cards = game.getBoard().getDeck().drawCards(game.getPlayerConfig().getNum() +1);
         for(AbstractCard card: cards){
             card.setID(ID);
             ID++;
             card.moveTo(game.getBoard().getTopRow());
         }
 
-        cards = game.getBoard().getDeck().drawCards(playersList.size()+4);
+        cards = game.getBoard().getDeck().drawCards(game.getPlayerConfig().getNum() + 4);
         for(AbstractCard card: cards){
             card.setID(ID);
             ID++;
