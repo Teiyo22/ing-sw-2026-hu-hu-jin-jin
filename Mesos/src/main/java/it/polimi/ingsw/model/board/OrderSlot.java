@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.player.Player;
-import com.google.gson.annotations.Expose;
 
 public class OrderSlot {
     private transient Player assignedPlayer = null; //transient is used to let Gson ignore this parameter
@@ -15,7 +14,7 @@ public class OrderSlot {
         return assignedPlayer;
     }
 
-    public void setAssignedPlayer(Player assignedPlayer) {
+    public void setPlayer(Player assignedPlayer) {
         this.assignedPlayer = assignedPlayer;
     }
 
@@ -27,5 +26,4 @@ public class OrderSlot {
         assignedPlayer.addFood(foodDelta);
     }
 
-    public void setPlayer(Player p) { assignedPlayer = p; }
 }
