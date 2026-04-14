@@ -6,4 +6,6 @@ import it.polimi.ingsw.model.player.Player;
 
 public interface Pickable {
     public abstract void onPick(Player player, BuildingHandler buildingHandler);
+
+    public abstract void removeFrom(Row row);
 }

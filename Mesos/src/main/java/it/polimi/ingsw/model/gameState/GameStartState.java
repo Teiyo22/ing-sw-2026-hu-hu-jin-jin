@@ -63,15 +63,14 @@ public class GameStartState extends GameState{
                 card.moveTo(bottomRow);
             }
 
-            for(AbstractEvent event: bottomRow.getEventCards()) {
+            for(AbstractEvent event: bottomRow.getEventCards())
                 event.moveTo(topRow);
-                event.removeFrom(bottomRow);
-            }
 
-            for(Sustenance event: bottomRow.getSustenanceEventCards()) {
+            for(Sustenance event: bottomRow.getSustenanceEventCards())
                 event.moveTo(topRow);
-                event.removeFrom(bottomRow);
-            }
+
+            bottomRow.getEventCards().clear();
+            bottomRow.getSustenanceEventCards().clear();
 
             drawCount = game.getPlayerConfig().getNum() + 4 - bottomRow.getCharacterCards().size();
         } while(drawCount > 0);
