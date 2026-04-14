@@ -42,10 +42,15 @@ public class RoundActionState extends GameState{
     }
 
 
-    private void pick(List<Pickable> pickedCards, Row row) {
-        for(Pickable p: pickedCards){
+    private void pick(List<Pickable> topPicks, List<Pickable> bottomPicks) {
+        for(Pickable p: topPicks){
             p.onPick(currPlayer, buildingHandler);
-            p.removeFrom(row);
+            p.removeFrom(game.getBoard().getTopRow());
+        }
+
+        for(Pickable p: bottomPicks){
+            p.onPick(currPlayer, buildingHandler);
+            p.removeFrom(game.getBoard().getBottomRow());
         }
 
         assignToOrderSlot(offerTrack[solvedOffers]);
