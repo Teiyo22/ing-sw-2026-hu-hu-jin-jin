@@ -35,7 +35,7 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     }
 
     @Override
-    public void remove(Row row, int removedIndex){
-        row.getBuildingCards().remove(removedIndex);
+    public void removeFrom(Row row){
+        row.getBuildingCards().remove(this);
     }
 }
