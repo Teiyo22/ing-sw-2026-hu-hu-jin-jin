@@ -20,11 +20,12 @@ public class ConfigLoader {
     public OfferTile[] loadOfferTile(String path){
         Gson gson= new Gson();
 
-        try(InputStream is= getClass().getResourceAsStream(path)) { //prende direttamente il file json
-            if (is == null) throw new RuntimeException(path + "not found");
-            InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8); //converte lo stream in testo leggibile
-            return gson.fromJson(reader,OfferTile[].class); //kegge il json e lo converte direttamente in array (?)
-        }catch (IOException e){
+        try(InputStream is= getClass().getResourceAsStream(path)) {
+            if(is == null) throw new RuntimeException(path + "not found");
+
+            InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+            return gson.fromJson(reader,OfferTile[].class);
+        } catch (IOException e) {
             throw new RuntimeException("Error"+path,e);
         }
     }
@@ -37,10 +38,11 @@ public class ConfigLoader {
         Gson gson= new Gson();
 
         try(InputStream is= getClass().getResourceAsStream(path)){
-            if (is == null) throw new RuntimeException(path+"not found");
+            if(is == null) throw new RuntimeException(path+"not found");
+
             InputStreamReader reader= new InputStreamReader(is, StandardCharsets.UTF_8);
             return gson.fromJson(reader, OrderSlot[].class);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Error"+path,e);
         }
     }
@@ -55,7 +57,6 @@ public class ConfigLoader {
             Reader reader = new InputStreamReader(i, StandardCharsets.UTF_8);
 
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
-
             return gson.fromJson(root, DeckConfig.class);
         } catch (IOException e) {
             throw new RuntimeException(e);

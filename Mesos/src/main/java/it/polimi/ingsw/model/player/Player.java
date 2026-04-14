@@ -43,6 +43,7 @@ public class Player implements Comparable<Player>{
     }
 
     public void setNoLossRitualMod(boolean b) { noLossRitualMod = b; }
+
     public void setDoubleRitualMod(boolean b) { doubleRitualMod = b; }
 
     public void addBuilding(AbstractBuilding building) {
@@ -75,7 +76,7 @@ public class Player implements Comparable<Player>{
         res = Integer.compare(other.getFood(), this.food);
 
         return res;
-        }
+    }
 
     public int getRank() {
         return rank;

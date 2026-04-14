@@ -109,7 +109,7 @@ public class Tribe {
      * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
      */
     public int getInventorBonusPP() {
-        int types = inventors. keySet().size();
+        int types = inventors.keySet().size();
         return getInventorCount() * types;
     }
 
@@ -167,25 +167,25 @@ public class Tribe {
      * Return the Character with the minimun number of cards
      */
     public int getMinChar() {
-        int sets = 0;
-        if (getInventorCount() < sets) {
-            sets = getInventorCount();
+        int min = 0;
+        if (getInventorCount() < min) {
+            min = getInventorCount();
         }
-        if (getShamanCount() < sets) {
-            sets = getShamanCount();
+        if (getShamanCount() < min) {
+            min = getShamanCount();
         }
-        if (getHunterCount() < sets) {
-            sets = getHunterCount();
+        if (getHunterCount() < min) {
+            min = getHunterCount();
         }
-        if (getArtistCount() < sets) {
-            sets = getArtistCount();
+        if (getArtistCount() < min) {
+            min = getArtistCount();
         }
-        if (getBuilderCount() < sets) {
-            sets = getBuilderCount();
+        if (getBuilderCount() < min) {
+            min = getBuilderCount();
         }
-        if (getCollectorCount() < sets) {
-            sets = getCollectorCount();
+        if (getCollectorCount() < min) {
+            min = getCollectorCount();
         }
-        return sets;
+        return min;
     }
 }

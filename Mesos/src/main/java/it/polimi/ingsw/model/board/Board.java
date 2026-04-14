@@ -12,7 +12,6 @@ public class Board {
     OfferTile[] offerTrack;
 
     public Board(Game game) {
-
         this.game = game;
         this.deck = new Deck(game.getPlayerConfig(),this);
         this.deck.init();

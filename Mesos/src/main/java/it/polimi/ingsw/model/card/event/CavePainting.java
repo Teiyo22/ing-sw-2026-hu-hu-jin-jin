@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OrderSlot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CavePainting extends AbstractEvent{
     @Expose private final int bonusPP;  //must be a positive number
@@ -43,11 +44,11 @@ public class CavePainting extends AbstractEvent{
      * when called the method subtracts or adds pp depending on the number of artists the player owns.*/
     @Override
     public void onEvent(Game game) {
-        OrderSlot[] order = game.getBoard().getOrderTile();
+        List<Player> players = game.getPlayers();
 
-        for(int i = 0; i < order.length ; i++){  //apply effects for each player
-            Player player = order[i].getAssignedPlayer();
+        for(Player player: players){  //apply effects for each player
             int numArtists = player.getTribe().getArtistCount();
+
             if(numArtists <= numArtistsMalus){
                 player.addPP(-malusPP);
             } else if (numArtists >= numArtistsBonus){
