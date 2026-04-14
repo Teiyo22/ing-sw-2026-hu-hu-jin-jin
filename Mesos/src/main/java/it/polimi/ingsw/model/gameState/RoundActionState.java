@@ -54,6 +54,8 @@ public class RoundActionState extends GameState{
         OrderSlot orderSlot = game.getBoard().getOrderTile()[assignedPlayers];
 
         orderSlot.setPlayer(offerTile.getAssignedPlayer());
+        orderSlot.solveDeltaFood();
+
         offerTile.setPlayer(null);
         buildingHandler.applyOrderTileEffects(orderSlot);
 
