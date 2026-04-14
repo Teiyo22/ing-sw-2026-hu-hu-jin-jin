@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OrderSlot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShamanicRitual extends AbstractEvent {
     @Expose private int bonusPP;
@@ -37,27 +38,30 @@ public class ShamanicRitual extends AbstractEvent {
      * Then it iterates and adds/subtracts pp if the player is amongst the ones with the most/least.*/
     @Override
     public void onEvent(Game game) {
-        int minStars = 0;  //number of stars owned by the player(s) who has the least
-        int maxStars = 0;  //number of stars owned by the player(s) who has the most
+        List<Player> players = game.getPlayers();
 
-        OrderSlot[] order = game.getBoard().getOrderTile();
+        int minStars = players.getFirst().getTribe().getStars();
+        int maxStars = minStars;  //number of stars owned by the player(s) who has the most
 
-        //calulate minStars and maxStars
-        for(int i=0; i<order.length; i++){
-            Player player = order[i].getAssignedPlayer();
-            int playerStars = player.getTribe().getStars();
-            if (playerStars < minStars){ minStars = playerStars; }
-            else if (playerStars > maxStars){ maxStars = playerStars; }
+        for(int i = 1; i < players.size(); i++){
+            int stars = players.get(i).getTribe().getStars();
+
+            if (stars < minStars)
+                minStars = stars;
+            else if (stars > maxStars)
+                maxStars = stars;
         }
+
         //apply effects to players, depending on their number of stars
-        for(int i=0; i<order.length; i++){
-            Player player = order[i].getAssignedPlayer();
+        for(Player player: players){
             int playerStars = player.getTribe().getStars();
+
             if (playerStars == minStars){
                 if(!player.getNoLossRitualMod()) {
                     player.addPP(-malusPP);  //players with the least stars lose pp
                 }
             }
+
             if (playerStars == maxStars){  //players with the most stars gain pp
                 if(player.getDoubleRitualMod()){
                     player.addPP(bonusPP * 2);
