@@ -20,8 +20,7 @@ public class FullSetBuilding extends GameEndBuilding{
 
     @Override
     public void applyEffect() {
-        int sets = owner.getTribe().getMinChar();
-
-        owner.addPP(6*sets);
+        int setNum = owner.getTribe().getMinChar();
+        owner.addPP(6 * setNum);
     }
 }

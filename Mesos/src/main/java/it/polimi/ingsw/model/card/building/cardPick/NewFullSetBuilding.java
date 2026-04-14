@@ -32,46 +32,35 @@ public class NewFullSetBuilding extends CardPickBuilding{
      * If a new set is formed (the character type with the least amount meets the required minimum) the bonus is added.*/
     @Override
     public void doForInventor(Inventor i) {
-        if(owner.getTribe().getMinChar() >= minForSet){
-            minForSet++;
-            owner.addFood(5);
-        }
+        checkAndAdd();
     }
 
     @Override
     public void doForShaman(Shaman s) {
-        if(owner.getTribe().getMinChar() >= minForSet){
-            minForSet++;
-            owner.addFood(5);
-        }
+        checkAndAdd();
     }
 
     @Override
     public void doForHunter(Hunter h) {
-        if(owner.getTribe().getMinChar() >= minForSet){
-            minForSet++;
-            owner.addFood(5);
-        }
+        checkAndAdd();
     }
 
     @Override
     public void doForCollector(Collector c) {
-        if(owner.getTribe().getMinChar() >= minForSet){
-            minForSet++;
-            owner.addFood(5);
-        }
+        checkAndAdd();
     }
 
     @Override
     public void doForArtist(Artist a) {
-        if(owner.getTribe().getMinChar() >= minForSet){
-            minForSet++;
-            owner.addFood(5);
-        }
+        checkAndAdd();
     }
 
     @Override
     public void doForBuilder(Builder b) {
+        checkAndAdd();
+    }
+
+    public void checkAndAdd() {
         if(owner.getTribe().getMinChar() >= minForSet){
             minForSet++;
             owner.addFood(5);
