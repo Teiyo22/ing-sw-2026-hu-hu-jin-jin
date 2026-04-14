@@ -16,7 +16,7 @@ public class CardFactory {
 
         for (CardConfig config : configs)
             for (int i = 0; i < config.getQuantity(); i++) {
-                AbstractCard card = config.getCard().copy();
+                AbstractCard card = config.getCard().clone();
 
                 if(card.isFinal())
                     cardsDividedByEra.getLast().add(card);
@@ -41,7 +41,7 @@ public class CardFactory {
 
         for(CardConfig config: configs)
             for(int i = 0; i < config.getQuantity(); i++) {
-                AbstractCard building = config.getCard().copy();
+                AbstractCard building = config.getCard().clone();
 
                 if(building.getEra() <= maxEra)
                     buildingsDividedByEra.get(building.getEra() - 1).add(building);
