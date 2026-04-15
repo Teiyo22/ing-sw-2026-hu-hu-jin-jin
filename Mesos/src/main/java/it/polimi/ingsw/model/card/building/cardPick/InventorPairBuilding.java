@@ -23,33 +23,8 @@ public class InventorPairBuilding extends CardPickBuilding {
      * If so a pair is formed thus the bonus gets added.*/
     @Override
     public void doForInventor(Inventor i) {
-        if(owner.getTribe().getNumInventorType(i.getInventorType()) % 2 == 0){
+        if (owner.getTribe().getNumInventorType(i.getInventorType()) % 2 == 0) {
             owner.addFood(3);
         }
-    }
-
-    @Override
-    public void doForShaman(Shaman s) {
-        return;
-    }
-
-    @Override
-    public void doForHunter(Hunter h) {
-        return;
-    }
-
-    @Override
-    public void doForCollector(Collector c) {
-        return;
-    }
-
-    @Override
-    public void doForArtist(Artist a) {
-        return;
-    }
-
-    @Override
-    public void doForBuilder(Builder b) {
-        return;
     }
 }
