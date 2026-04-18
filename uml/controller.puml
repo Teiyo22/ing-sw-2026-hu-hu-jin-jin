@@ -1,0 +1,203 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package controller {
+    package server {
+        class ServerController {
+            - [static] instance : ServerController
+            - networkServer : NetworkServer
+            - waitingLobbies : Map<String, LobbyController>
+            - runningLobbies : Map<String, LobbyController>
+            - clients: Map<String, VirtualClient>
+
+            + [static] getInstance() : ServerController
+
+            + addClient(client : VirtualClient) : void
+            + createLobby(lobbyName : String, playerNum : int, client : VirtualClient, playerName : String, totem: Totem) : void
+            + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
+            + leaveLobby(lobbyID : String, client : VirtualClient) : void
+            + startLobby(lobbyID : String) : void
+            + getOpenLobbies(client : VirtualClient) : void
+            + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+        }
+
+        class LobbyController {
+            - id : String
+            - name : String
+            - model : Game
+            - clients : List<VirtualClient>
+
+            + addPlayer(client : VirtualClient, playerName : String, totem: Totem) : void
+            + removePlayer(client : VirtualClient) : void
+            + setName(name : String) : void
+            + setID(id : String) : void
+            + getModel() : Game
+        }
+
+        package network {
+            class ClientHandler {
+                - clientInterface : ClientTCPInterface
+                - socket : Socket
+                - gson : Gson
+
+                + run() : void
+                + sendMessage(response : Response) : void
+            }
+
+            class ClientTCPInterface {
+                - clientHandler : ClientHandler
+
+                + handleMessage(msg : Message) : void
+            }
+
+            class NetworkServer {
+                - ip : String
+                - tcpPort: int
+                - rmiPort: int
+                - serverSocket : ServerSocket
+                - serverController : ServerController
+
+                + run() : void
+            }
+        }
+    }
+
+    package client {
+        class ClientController {
+            - server : VirtualServer
+
+            + connectRMI(registryName : String, ip : String, rmiPort : int) : void
+            + connectTCP(ip : String, tcpPort : int) : void
+        }
+
+        package network {
+            class ServerTCPInterface {
+                - clientController : ClientController
+                - serverHandler : NetworkClient
+
+                + handleMessage(Message : msg)
+                + addClient(client : VirtualClient) : void
+                + createLobby(client : VirtualClient, playerName: String, totem: Totem) : void
+                + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
+                + startLobby(lobbyID : String) : void
+                + getOpenLobbies(client : VirtualClient) : void
+                + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+            }
+
+
+            class NetworkClient {
+                - serverInterface : ServerTCPInterface
+                - socket : Socket
+                - gson : Gson
+
+                + run() : void
+                + sendMessage(request : Request) : void
+                + connect(ip : String, tcpPort : int)
+            }
+        }
+
+        package states {
+
+        }
+    }
+
+    package common {
+        interface VirtualClient {
+            - id : String
+            - name : String
+
+            + setID(id : String) : void
+        }
+
+        interface VirtualServer {
+            + addClient(client : VirtualClient) : void
+            + createLobby(client : VirtualClient, playerName: String, totem: Totem) : void
+            + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
+            + leaveLobby(lobbyID : String, client : VirtualClient) : void
+            + startLobby(lobbyID : String) : void
+            + getOpenLobbies(client : VirtualClient) : void
+            + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+        }
+
+        package messages {
+            package requests {
+                abstract class Request {
+                    + receive(serverController : ServerController, clientID : String) : void
+                }
+
+                class PickCardsRequest {
+                    - lobbyID : String
+                    - topRowPicks : List<Card>
+                    - bottomRowPicks : List<Card>
+
+                    + receive(serverController : ServerController, clientID : String) : void
+                }
+
+                class CreateLobbyRequest {
+
+                }
+
+                class JoinLobbyRequest {
+
+                }
+
+                class LeaveLobbyRequest {
+
+                }
+            }
+
+            package responses {
+                abstract class Response {
+                    + receive(clientController : ClientController) : void
+                }
+
+                class PickCardsResponse {
+                    - topRowPicks : List<Card>
+                    - bottomRowPicks : List<Card>
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class CreateLobbyResponse {
+
+                }
+
+                class JoinLobbyResponse {
+
+                }
+
+                class LeaveLobbyResponse {
+
+                }
+            }
+        }
+    }
+}
+
+' -----------------------------------
+' Associations
+' -----------------------------------
+
+VirtualClient <|.. ClientController
+VirtualClient <|.. ClientTCPInterface
+VirtualServer <|.. ServerController
+VirtualServer <|.. ServerTCPInterface
+
+PickCardsRequest -|> Request
+CreateLobbyRequest -|> Request
+JoinLobbyRequest -|> Request
+LeaveLobbyRequest -|> Request
+
+PickCardsResponse -|> Response
+CreateLobbyResponse -|> Response
+JoinLobbyResponse -|> Response
+LeaveLobbyResponse -|> Response
+
+' -----------------------------------
+' Layout
+' -----------------------------------
+
+
+@enduml
