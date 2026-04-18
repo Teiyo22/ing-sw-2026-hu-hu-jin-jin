@@ -5,7 +5,7 @@ skinparam packageStyle rectangle
 skinparam shadowing false
 skinparam linetype ortho
 
-package "model" as model {
+package "ing.model" as model {
 
   together {
     class Game {
@@ -275,58 +275,60 @@ package "model" as model {
           + applyGameEndEffects() : void
         }
 
-        class CavePaintingBuilding {
-          - bonusFood : int
+           together{
+            class CavePaintingBuilding {
+              - bonusFood : int
 
-          + CavePaintingBuilding(source : CavePaintingBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + applyEffect() : void
-        }
+              + CavePaintingBuilding(source : CavePaintingBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+              + applyEffect() : void
+            }
 
-        class ExtraActionBuilding {
-          + ExtraActionBuilding(source : ExtraActionBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + applyEffect(state : ExtraActionState) : void
-        }
+            class ExtraActionBuilding {
+              + ExtraActionBuilding(source : ExtraActionBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+              + applyEffect(state : ExtraActionState) : void
+            }
 
-        class HuntBuilding {
-          - bonusPP : int
-          - bonusFood : int
+            class HuntBuilding {
+              - bonusPP : int
+              - bonusFood : int
 
-          + HuntBuilding(source : HuntBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + applyEffect() : void
-        }
+              + HuntBuilding(source : HuntBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+              + applyEffect() : void
+            }
 
-        class OrderTileBuilding {
-          + OrderTileBuilding(source : OrderTileBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + applyEffect(slot : OrderSlot) : void
-        }
+            class RitualDoubleBonusBuilding {
+              + RitualDoubleBonusBuilding(source : RitualDoubleBonusBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+            }
 
-        class RitualDoubleBonusBuilding {
-          + RitualDoubleBonusBuilding(source : RitualDoubleBonusBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-        }
+            class RitualNoLossBuilding {
+              + RitualNoLossBuilding(source : RitualNoLossBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+            }
 
-        class RitualNoLossBuilding {
-          + RitualNoLossBuilding(source : RitualNoLossBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-        }
+            class RitualStarsBuilding {
+              - bonusStars : int
 
-        class RitualStarsBuilding {
-          - bonusStars : int
+              + RitualStarsBuilding(source : RitualStarsBuilding)
+              + clone() : AbstractCard
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+            }
+         }
 
-          + RitualStarsBuilding(source : RitualStarsBuilding)
-          + clone() : AbstractCard
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-        }
+         class OrderTileBuilding {
+                       + OrderTileBuilding(source : OrderTileBuilding)
+                       + clone() : AbstractCard
+                       + onPick(player : Player, buildingHandler : BuildingHandler) : void
+                       + applyEffect(slot : OrderSlot) : void
+                     }
 
         package cardPick {
           abstract class CardPickBuilding {
