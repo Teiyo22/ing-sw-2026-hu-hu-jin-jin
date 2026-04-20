@@ -37,7 +37,7 @@ public class Tribe {
     }
 
     public int getInventorCount() {
-        return inventors.size();
+        return inventors.values().stream().reduce(0, Integer::sum);
     }
 
     /**
@@ -109,7 +109,7 @@ public class Tribe {
      * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
      */
     public int getInventorBonusPP() {
-        int types = inventors.keySet().size();
+        int types = inventors.size();
         return getInventorCount() * types;
     }
 
