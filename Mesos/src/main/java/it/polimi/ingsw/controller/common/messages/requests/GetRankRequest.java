@@ -1,4 +1,11 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
-public class GetRankRequest {
+import it.polimi.ingsw.controller.server.ServerController;
+
+public class GetRankRequest extends Request{
+    private String lobbyID;
+
+    @Override
+    public void receive(ServerController serverController){}
+
 }

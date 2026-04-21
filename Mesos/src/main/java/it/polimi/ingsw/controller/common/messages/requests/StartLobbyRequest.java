@@ -1,4 +1,11 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
-public class StartLobbyRequest {
+import it.polimi.ingsw.controller.server.ServerController;
+
+public class StartLobbyRequest extends Request{
+    private String lobbyID;
+
+    @Override
+    public void receive(ServerController serverController){}
+
 }

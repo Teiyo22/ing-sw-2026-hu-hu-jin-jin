@@ -1,4 +1,10 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
-public class GetLeaderboardRequest {
+import it.polimi.ingsw.controller.server.ServerController;
+
+public class GetLeaderboardRequest extends Request {
+
+    @Override
+    public void receive(ServerController serverController){}
+
 }
