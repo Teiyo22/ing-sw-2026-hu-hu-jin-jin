@@ -1,8 +1,6 @@
 @startuml
 top to bottom direction
 skinparam classAttributeIconSize 0
-skinparam packageStyle rectangle
-skinparam shadowing false
 skinparam linetype ortho
 
 package "ing.model" as model {

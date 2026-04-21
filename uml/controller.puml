@@ -15,12 +15,12 @@ package controller {
             + [static] getInstance() : ServerController
 
             + addClient(client : VirtualClient) : void
-            + createLobby(lobbyName : String, playerNum : int, client : VirtualClient, playerName : String, totem: Totem) : void
-            + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
-            + leaveLobby(lobbyID : String, client : VirtualClient) : void
+            + createLobby(clientID : String, lobbyName : String, playerNum : int, playerName : String, totem: Totem) : void
+            + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
+            + leaveLobby(clientID : String, lobbyID : String) : void
             + startLobby(lobbyID : String) : void
-            + getOpenLobbies(client : VirtualClient) : void
-            + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+            + getWaitingLobbies(clientID : String) : void
+            + getLobbyInfo(lobbyID : String, clientID : String) : void
         }
 
         class LobbyController {
@@ -49,7 +49,11 @@ package controller {
             class ClientTCPInterface {
                 - clientHandler : ClientHandler
 
-                + handleMessage(msg : Message) : void
+                + handleMessage(request : Request) : void
+                + setWaitingLobbies(clientID : String, lobbies : List<Lobby>)
+                + showLobbyInfo(clientID : String, lobby : Lobby)
+                + setLobby(clientID : String, lobbyID : String, playerName : String, totem : Totem)
+
             }
 
             class NetworkServer {
@@ -77,13 +81,13 @@ package controller {
                 - clientController : ClientController
                 - serverHandler : NetworkClient
 
-                + handleMessage(Message : msg)
                 + addClient(client : VirtualClient) : void
-                + createLobby(client : VirtualClient, playerName: String, totem: Totem) : void
-                + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
+                + createLobby(clientID : String, playerNum : int, playerName : String, totem: Totem) : void
+                + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
+                + leaveLobby(clientID : String, lobbyID : String) : void
                 + startLobby(lobbyID : String) : void
-                + getOpenLobbies(client : VirtualClient) : void
-                + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+                + getWaitingLobbies(clientID : String) : void
+                + getLobbyInfo(clientID : String, lobbyID : String) : void
             }
 
 
@@ -97,34 +101,38 @@ package controller {
                 + connect(ip : String, tcpPort : int)
             }
         }
-
-        package states {
-
-        }
     }
 
     package common {
         interface VirtualClient {
             - id : String
-            - name : String
 
-            + setID(id : String) : void
+            + handleMessage(request : Request) : void
+            + setWaitingLobbies(String, lobbies : List<Lobby>) : void
+            + showLobbyInfo(lobby : Lobby) : void
+            + setLobby(String, lobbyID : String, playerName : String, totem : Totem) : void
+            + removeFromLobby(lobbyID : String) : void
+            + showRank() : void
+            + showLeaderboard() : void
         }
 
         interface VirtualServer {
             + addClient(client : VirtualClient) : void
-            + createLobby(client : VirtualClient, playerName: String, totem: Totem) : void
-            + joinLobby(lobbyID : String, client : VirtualClient, playerName : String, totem: Totem) : void
-            + leaveLobby(lobbyID : String, client : VirtualClient) : void
+            + createLobby(clientID : String, lobbyName : String, playerNum : int, playerName : String, totem: Totem) : void
+            + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
+            + leaveLobby(clientID : String, lobbyID : String) : void
             + startLobby(lobbyID : String) : void
-            + getOpenLobbies(client : VirtualClient) : void
-            + getLobbyInfo(lobbyID : String, client : VirtualClient) : void
+            + getWaitingLobbies(clientID : String) : void
+            + getLobbyInfo(lobbyID : String, clientID : String) : void
+            + getRank(lobbyID : String, clientID : String) : void
         }
 
         package messages {
             package requests {
                 abstract class Request {
-                    + receive(serverController : ServerController, clientID : String) : void
+                    - clientID : String
+
+                    + receive(serverController : ServerController) : void
                 }
 
                 class PickCardsRequest {
@@ -132,44 +140,119 @@ package controller {
                     - topRowPicks : List<Card>
                     - bottomRowPicks : List<Card>
 
-                    + receive(serverController : ServerController, clientID : String) : void
+                    + receive(serverController : ServerController) : void
                 }
 
                 class CreateLobbyRequest {
+                    - playerName : String
+                    - totem: Totem
 
+                    + receive(serverController : ServerController) : void
                 }
 
                 class JoinLobbyRequest {
+                    - lobbyID : String
+                    - playerName : String
+                    - totem: Totem
 
+                    + receive(serverController : ServerController) : void
                 }
 
                 class LeaveLobbyRequest {
+                    - lobbyID : String
 
+                    + receive(serverController : ServerController) : void
+                }
+
+                class StartLobbyRequest {
+                    - lobbyID : String
+
+                    + receive(serverController : ServerController) : void
+                }
+
+                class WaitingLobbyRequest {
+
+                    + receive(serverController : ServerController) : void
+                }
+
+                class LobbyInfoRequest {
+                    - lobbyID : String
+
+                    + receive(serverController : ServerController) : void
+                }
+
+                class GetRankRequest {
+                    - lobbyID : String
+
+                    + receive(serverController : ServerController) : void
+                }
+
+                class GetLeaderboardRequest {
+
+                    + receive(serverController : ServerController) : void
                 }
             }
 
             package responses {
                 abstract class Response {
+                    - clientID : String
+
                     + receive(clientController : ClientController) : void
                 }
 
                 class PickCardsResponse {
+                    - lobbyID : String
                     - topRowPicks : List<Card>
                     - bottomRowPicks : List<Card>
 
                     + receive(clientController : ClientController) : void
                 }
 
-                class CreateLobbyResponse {
-
-                }
-
                 class JoinLobbyResponse {
-
+                    - lobbyID : String
+                    - playerName : String
+                    - totem: Totem
+                    + receive(clientController : ClientController) : void
                 }
 
                 class LeaveLobbyResponse {
+                    - lobbyID : String
+                    + receive(clientController : ClientController) : void
+                }
 
+                class StartLobbyResponse {
+                    - lobbyID : String
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class WaitingLobbyResponse {
+                    - lobbies : Map<String, Integer>
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class LobbyInfoResponse {
+                    - lobby : Lobby
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class GetRankResponse {
+                    - lobbyID : String
+                    - ranking : Map<String, Integer>
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class GetLeaderboardResponse {
+                    - leaderboard : Leaderboard
+
+                    + receive(clientController : ClientController) : void
+                }
+
+                class SetIDResponse {
+                    + receive(clientController : ClientController) : void
                 }
             }
         }
@@ -189,11 +272,19 @@ PickCardsRequest -|> Request
 CreateLobbyRequest -|> Request
 JoinLobbyRequest -|> Request
 LeaveLobbyRequest -|> Request
+WaitingLobbyRequest -|> Request
+LobbyInfoRequest -|> Request
+GetRankRequest -|> Request
+GetLeaderboardRequest -|> Request
 
 PickCardsResponse -|> Response
-CreateLobbyResponse -|> Response
 JoinLobbyResponse -|> Response
 LeaveLobbyResponse -|> Response
+WaitingLobbyResponse -|> Response
+LobbyInfoResponse -|> Response
+GetRankResponse -|> Response
+GetLeaderboardResponse -|> Response
+SetIDResponse-|> Response
 
 ' -----------------------------------
 ' Layout
