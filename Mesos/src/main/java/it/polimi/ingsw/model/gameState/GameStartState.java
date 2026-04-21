@@ -44,7 +44,7 @@ public class GameStartState extends GameState{
             Player p = players.get(i);
 
             p.setFood(2 + (i + 1) / 2);
-            orderTile[i].setAssignedPlayer(p); ;
+            orderTile[i].setPlayer(p); ;
         }
     }
 
