@@ -1,4 +1,13 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
-public class StartLobbyResponse {
+import it.polimi.ingsw.controller.client.ClientController;
+
+public class StartLobbyResponse extends Response {
+    private int lobbyID;
+
+    @Override
+    public void receive(ClientController clientController){
+
+    }
 }
+
