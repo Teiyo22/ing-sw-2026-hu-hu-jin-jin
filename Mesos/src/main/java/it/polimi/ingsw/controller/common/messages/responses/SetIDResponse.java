@@ -1,4 +1,11 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
-public class SetIDResponse {
+import it.polimi.ingsw.controller.client.ClientController;
+
+public class SetIDResponse extends Response {
+
+    @Override
+    public void receive(ClientController clientController) {
+
+    }
 }
