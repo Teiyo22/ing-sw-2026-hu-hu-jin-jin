@@ -5,13 +5,13 @@ import it.polimi.ingsw.model.player.Totem;
 
 import java.rmi.Remote;
 
-public interface VirtualServer extends Remote {
-    void addClient(VirtualClient client);
-    void createLobby(String clientID, String lobbyName, int playerNum, String playerName, Totem totem);
-    void joinLobby(String clientID, String lobbyID, String playerName, Totem totem);
-    void leaveLobby(String clientID, String lobbyID);
-    void startLobby(String lobbyID);
-    void getWaitingLobbies(String clientID);
-    void getLobbyInfo(String lobbyID, String clientID);
-    void getRank(String lobbyID, String clientID);
+public abstract class VirtualServer implements Remote {
+    abstract void addClient(VirtualClient client);
+    abstract void createLobby(String clientID, String lobbyName, int playerNum, String playerName, Totem totem);
+    abstract void joinLobby(String clientID, String lobbyID, String playerName, Totem totem);
+    abstract void leaveLobby(String clientID, String lobbyID);
+    abstract void startLobby(String lobbyID);
+    abstract void getWaitingLobbies(String clientID);
+    abstract void getLobbyInfo(String lobbyID, String clientID);
+    abstract void getRank(String lobbyID, String clientID);
 }
