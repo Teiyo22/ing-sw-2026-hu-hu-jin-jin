@@ -1,0 +1,4 @@
+package it.polimi.ingsw.controller.common.messages.responses;
+
+public class PickCardsResponse {
+}
