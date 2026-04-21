@@ -169,6 +169,11 @@ package controller {
         }
 
         package messages {
+            abstract class Message {
+                - type : MessageType
+                - clientID : int
+            }
+
             enum MessageType {
                 PICK_CARDS
                 CREATE_LOBBY
@@ -184,8 +189,6 @@ package controller {
 
             package requests {
                 abstract class Request {
-                    - clientID :int
-
                     + receive(serverController : ServerController) : void
                 }
 
@@ -247,8 +250,6 @@ package controller {
 
             package responses {
                 abstract class Response {
-                    - clientID :int
-
                     + receive(clientController : ClientController) : void
                 }
 
@@ -321,6 +322,9 @@ VirtualClient <|.. ClientController
 VirtualClient <|.. ClientTCPInterface
 VirtualServer <|.. ServerController
 VirtualServer <|.. ServerTCPInterface
+
+Request -|> Message
+Response -|> Message
 
 PickCardsRequest -|> Request
 CreateLobbyRequest -|> Request
