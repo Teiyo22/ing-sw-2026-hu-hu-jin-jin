@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.player.Totem;
 
 import java.util.Map;
 
-public class ServerController implements VirtualServer {
+public class ServerController extends VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
@@ -21,33 +21,41 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void addClient(VirtualClient client) {
+
     }
 
     @Override
-    public void createLobby(String clientID, String lobbyName, int playerNum, String playerName, Totem totem) {
+    public void createLobby(int clientID, int playerNum, String playerName, Totem totem) {
+
     }
 
     @Override
-    public void joinLobby(String clientID, String lobbyID, String playerName, Totem totem) {
+    public void joinLobby(int clientID, String lobbyID, String playerName, Totem totem) {
+
     }
 
     @Override
-    public void leaveLobby(String clientID, String lobbyID) {
+    public void leaveLobby(int clientID, String lobbyID) {
+
     }
 
     @Override
-    public void startLobby(String lobbyID) {
+    public void startLobby(int clientID, String lobbyID) {
+
     }
 
     @Override
-    public void getWaitingLobbies(String clientID) {
+    public void getWaitingLobbies(int clientID) {
+
     }
 
     @Override
-    public void getLobbyInfo(String lobbyID, String clientID) {
+    public void getLobbyInfo(int clientID, String lobbyID) {
+
     }
 
     @Override
-    public void getRank(String lobbyID, String clientID) {
+    public void getRank(int clientID, String lobbyID) {
+
     }
 }
