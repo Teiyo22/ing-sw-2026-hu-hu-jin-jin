@@ -1,14 +1,51 @@
 package it.polimi.ingsw.controller.client;
 
+import it.polimi.ingsw.controller.common.LeaderboardEntry;
+import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.model.player.Totem;
 
-public class ClientController {
+import java.util.List;
+import java.util.Map;
+
+public class ClientController extends VirtualClient{
     private VirtualServer server;
+
+    @Override
+    public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
+
+    }
+
+    @Override
+    public void showLobbyInfo(int clientID, Lobby lobby) {
+
+    }
+
+    @Override
+    public void setLobby(int clientID, int lobbyID, String playerName, Totem totem) {
+
+    }
+
+    @Override
+    public void removeFromLobby(int clientID, int lobbyID) {
+
+    }
+
+    @Override
+    public void showRank(int clientID, Map<Integer, Integer> rankings) {
+
+    }
+
+    @Override
+    public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+
+    }
 
     public void connectRMI(String registryName, String ip, int rmiPort){
 
     }
+
     public void connectTCP(String ip, int tcpPort){
 
     }
