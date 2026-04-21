@@ -2,41 +2,52 @@ package it.polimi.ingsw.controller.client.network;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.player.Totem;
 
-public class ServerTCPInterface {
+public class ServerTCPInterface extends VirtualServer {
     private ClientController clientController;
     private NetworkClient serverHandler;
 
-    public void addCLient(VirtualClient client){
+
+    @Override
+    public void addClient(VirtualClient client) {
 
     }
 
-    public void createLobby(int clientID, int playerNum, String playerName, Totem totem){
+    @Override
+    public void createLobby(int clientID, int playerNum, String playerName, Totem totem) {
 
     }
 
-    public void joinLobby(int clientID, int lobbyID, String playerName, Totem totem){
+    @Override
+    public void joinLobby(int clientID, String lobbyID, String playerName, Totem totem) {
 
     }
 
-    public void leaveLobby(int clientID, int lobbyID){
+    @Override
+    public void leaveLobby(int clientID, String lobbyID) {
 
     }
 
-    public void startLobby(int clientID, int lobbyID){
+    @Override
+    public void startLobby(int clientID, String lobbyID) {
 
     }
 
-    public void startLobby(int lobbyID){
+    @Override
+    public void getWaitingLobbies(int clientID) {
 
     }
 
-    public List<Lobby> getWaitingLobbies(int clientID){
+    @Override
+    public void getLobbyInfo(int clientID, String lobbyID) {
 
     }
 
-    public Lobby getLobbyInfo(int clientID, int lobbyID){
+    @Override
+    public void getRank(int clientID, String lobbyID) {
 
     }
+
 }
