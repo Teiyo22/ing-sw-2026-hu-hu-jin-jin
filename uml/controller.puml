@@ -13,27 +13,31 @@ package controller {
             - clients: Map<String, VirtualClient>
 
             + [static] getInstance() : ServerController
-
+            + broadcast(response : Response) : void
             + addClient(client : VirtualClient) : void
-            + createLobby(clientID : String, lobbyName : String, playerNum : int, playerName : String, totem: Totem) : void
-            + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
-            + leaveLobby(clientID : String, lobbyID : String) : void
-            + startLobby(lobbyID : String) : void
-            + getWaitingLobbies(clientID : String) : void
-            + getLobbyInfo(lobbyID : String, clientID : String) : void
+            + createLobby(clientID :int, playerNum : int, playerName : String, totem: Totem) : void
+            + joinLobby(clientID :int, lobbyID : int, playerName : String, totem: Totem) : void
+            + leaveLobby(clientID : int, lobbyID : int) : void
+            + startLobby(clientID : int, lobbyID : int) : void
+            + getWaitingLobbies(clientID : int) : void
+            + getLobbyInfo(clientID : int, lobbyID : int) : void
+            + getRank(clientID : int, lobbyID : int) : void
+            + getLeaderboard(clientID : int, playerNum : int) : void
+            + requestPick(clientID: int, lobbyID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
         }
 
         class LobbyController {
-            - id : String
-            - name : String
+            - id : int
             - model : Game
-            - clients : List<VirtualClient>
+            - clients : Map<VirtualClient, String>
 
+            + broadcast(response : Response) : void
             + addPlayer(client : VirtualClient, playerName : String, totem: Totem) : void
             + removePlayer(client : VirtualClient) : void
             + setName(name : String) : void
-            + setID(id : String) : void
+            + setID(id : int) : void
             + getModel() : Game
+            + pickCards(clientID : int, topPicks : List<Card>, bottomPicks : List<Card>)
         }
 
         package network {
@@ -50,10 +54,13 @@ package controller {
                 - clientHandler : ClientHandler
 
                 + handleMessage(request : Request) : void
-                + setWaitingLobbies(clientID : String, lobbies : List<Lobby>)
-                + showLobbyInfo(clientID : String, lobby : Lobby)
-                + setLobby(clientID : String, lobbyID : String, playerName : String, totem : Totem)
-
+                + setWaitingLobbies(clientID : int, lobbies : List<Lobby>) : void
+                + showLobbyInfo(clientID : int, lobby : Lobby) : void
+                + setLobby(clientID : int, lobbyID : int, playerName : String, totem : Totem) : void
+                + removeFromLobby(clientID : int, lobbyID : int) : void
+                + showRank(clientID : int, rankings : Map<Integer, Integer>) : void
+                + showLeaderboard(clientID : int, leaderboard : List<LeaderboardEntry>) : void
+                + confirmPick(clientID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
             }
 
             class NetworkServer {
@@ -70,10 +77,25 @@ package controller {
 
     package client {
         class ClientController {
+            - view : View
             - server : VirtualServer
 
             + connectRMI(registryName : String, ip : String, rmiPort : int) : void
             + connectTCP(ip : String, tcpPort : int) : void
+
+            + setWaitingLobbies(clientID : int, lobbies : List<Lobby>) : void
+            + showLobbyInfo(clientID : int, lobby : Lobby) : void
+            + setLobby(clientID : int, lobbyID : int, playerName : String, totem : Totem) : void
+            + removeFromLobby(clientID : int, lobbyID : int) : void
+            + showRank(clientID : int, rankings : Map<Integer, Integer>) : void
+            + showLeaderboard(clientID : int, leaderboard : List<LeaderboardEntry>) : void
+            + confirmPick(clientID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
+        }
+
+        package model {
+            class ClientModel {
+
+            }
         }
 
         package network {
@@ -81,15 +103,18 @@ package controller {
                 - clientController : ClientController
                 - serverHandler : NetworkClient
 
+                + handleMessage(response : Response) : void
                 + addClient(client : VirtualClient) : void
-                + createLobby(clientID : String, playerNum : int, playerName : String, totem: Totem) : void
-                + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
-                + leaveLobby(clientID : String, lobbyID : String) : void
-                + startLobby(lobbyID : String) : void
-                + getWaitingLobbies(clientID : String) : void
-                + getLobbyInfo(clientID : String, lobbyID : String) : void
+                + createLobby(clientID :int, playerNum : int, playerName : String, totem: Totem) : void
+                + joinLobby(clientID :int, lobbyID : int, playerName : String, totem: Totem) : void
+                + leaveLobby(clientID : int, lobbyID : int) : void
+                + startLobby(clientID : int, lobbyID : int) : void
+                + getWaitingLobbies(clientID : int) : void
+                + getLobbyInfo(clientID : int, lobbyID : int) : void
+                + getRank(clientID : int, lobbyID : int) : void
+                + getLeaderboard(clientID : int, playerNum : int) : void
+                + requestPick(clientID: int, lobbyID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
             }
-
 
             class NetworkClient {
                 - serverInterface : ServerTCPInterface
@@ -104,39 +129,68 @@ package controller {
     }
 
     package common {
-        interface VirtualClient {
-            - id : String
+        abstract class VirtualClient {
+            - id : int
 
-            + handleMessage(request : Request) : void
-            + setWaitingLobbies(String, lobbies : List<Lobby>) : void
-            + showLobbyInfo(lobby : Lobby) : void
-            + setLobby(String, lobbyID : String, playerName : String, totem : Totem) : void
-            + removeFromLobby(lobbyID : String) : void
-            + showRank() : void
-            + showLeaderboard() : void
+            + setWaitingLobbies(clientID : int, lobbies : List<Lobby>) : void
+            + showLobbyInfo(clientID : int, lobby : Lobby) : void
+            + setLobby(clientID : int, lobbyID : int, playerName : String, totem : Totem) : void
+            + removeFromLobby(clientID : int, lobbyID : int) : void
+            + showRank(clientID : int, rankings : Map<Integer, Integer>) : void
+            + showLeaderboard(clientID : int, leaderboard : List<LeaderboardEntry>) : void
+            + confirmPick(clientID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
         }
 
-        interface VirtualServer {
+        abstract class VirtualServer {
             + addClient(client : VirtualClient) : void
-            + createLobby(clientID : String, lobbyName : String, playerNum : int, playerName : String, totem: Totem) : void
-            + joinLobby(clientID : String, lobbyID : String, playerName : String, totem: Totem) : void
-            + leaveLobby(clientID : String, lobbyID : String) : void
-            + startLobby(lobbyID : String) : void
-            + getWaitingLobbies(clientID : String) : void
-            + getLobbyInfo(lobbyID : String, clientID : String) : void
-            + getRank(lobbyID : String, clientID : String) : void
+            + createLobby(clientID :int, playerNum : int, playerName : String, totem: Totem) : void
+            + joinLobby(clientID :int, lobbyID : int, playerName : String, totem: Totem) : void
+            + leaveLobby(clientID : int, lobbyID : int) : void
+            + startLobby(clientID : int, lobbyID : int) : void
+            + getWaitingLobbies(clientID : int) : void
+            + getLobbyInfo(clientID : int, lobbyID : int) : void
+            + getRank(clientID : int, lobbyID : int) : void
+            + getLeaderboard(clientID : int, playerNum : int) : void
+            + requestPick(clientID: int, lobbyID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
+        }
+
+        class LeaderboardEntry {
+            - playerName : String
+            - points : int
+            - date : Date
+            - playerNum : int
+        }
+
+        class Lobby {
+            - lobbyID : int
+            - size : int
+            - players : Map<Integer, String>
+            - model : clientModel
         }
 
         package messages {
+            enum MessageType {
+                PICK_CARDS
+                CREATE_LOBBY
+                JOIN_LOBBY
+                LEAVE_LOBBY
+                START_LOBBY
+                WAITING_LOBBY
+                LOBBY_INFO
+                GET_RANK
+                GET_LEADERBOARD
+                SET_ID
+            }
+
             package requests {
                 abstract class Request {
-                    - clientID : String
+                    - clientID :int
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class PickCardsRequest {
-                    - lobbyID : String
+                    - lobbyID : int
                     - topRowPicks : List<Card>
                     - bottomRowPicks : List<Card>
 
@@ -151,7 +205,7 @@ package controller {
                 }
 
                 class JoinLobbyRequest {
-                    - lobbyID : String
+                    - lobbyID : int
                     - playerName : String
                     - totem: Totem
 
@@ -159,49 +213,47 @@ package controller {
                 }
 
                 class LeaveLobbyRequest {
-                    - lobbyID : String
+                    - lobbyID : int
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class StartLobbyRequest {
-                    - lobbyID : String
+                    - lobbyID : int
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class WaitingLobbyRequest {
-
                     + receive(serverController : ServerController) : void
                 }
 
                 class LobbyInfoRequest {
-                    - lobbyID : String
+                    - lobbyID : int
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class GetRankRequest {
-                    - lobbyID : String
+                    - lobbyID : int
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class GetLeaderboardRequest {
-
                     + receive(serverController : ServerController) : void
                 }
             }
 
             package responses {
                 abstract class Response {
-                    - clientID : String
+                    - clientID :int
 
                     + receive(clientController : ClientController) : void
                 }
 
                 class PickCardsResponse {
-                    - lobbyID : String
+                    - lobbyID : int
                     - topRowPicks : List<Card>
                     - bottomRowPicks : List<Card>
 
@@ -209,19 +261,21 @@ package controller {
                 }
 
                 class JoinLobbyResponse {
-                    - lobbyID : String
+                    - lobbyID : int
                     - playerName : String
                     - totem: Totem
+
                     + receive(clientController : ClientController) : void
                 }
 
                 class LeaveLobbyResponse {
-                    - lobbyID : String
+                    - lobbyID : int
+
                     + receive(clientController : ClientController) : void
                 }
 
                 class StartLobbyResponse {
-                    - lobbyID : String
+                    - lobbyID : int
 
                     + receive(clientController : ClientController) : void
                 }
@@ -239,7 +293,7 @@ package controller {
                 }
 
                 class GetRankResponse {
-                    - lobbyID : String
+                    - lobbyID : int
                     - ranking : Map<String, Integer>
 
                     + receive(clientController : ClientController) : void
