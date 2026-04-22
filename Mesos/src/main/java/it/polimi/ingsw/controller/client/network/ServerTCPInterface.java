@@ -29,17 +29,17 @@ public class ServerTCPInterface extends VirtualServer {
     }
 
     @Override
-    public void joinLobby(int clientID, String lobbyID, String playerName, Totem totem) {
+    public void joinLobby(int clientID, int lobbyID, String playerName, Totem totem) {
 
     }
 
     @Override
-    public void leaveLobby(int clientID, String lobbyID) {
+    public void leaveLobby(int clientID, int lobbyID) {
 
     }
 
     @Override
-    public void startLobby(int clientID, String lobbyID) {
+    public void startLobby(int clientID, int lobbyID) {
 
     }
 
@@ -49,12 +49,12 @@ public class ServerTCPInterface extends VirtualServer {
     }
 
     @Override
-    public void getLobbyInfo(int clientID, String lobbyID) {
+    public void getLobbyInfo(int clientID, int lobbyID) {
 
     }
 
     @Override
-    public void getRank(int clientID, String lobbyID) {
+    public void getRank(int clientID, int lobbyID) {
 
     }
 
