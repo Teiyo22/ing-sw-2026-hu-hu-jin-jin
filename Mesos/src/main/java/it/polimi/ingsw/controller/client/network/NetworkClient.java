@@ -8,12 +8,12 @@ import it.polimi.ingsw.controller.common.messages.responses.Response;
 
 import java.net.Socket;
 
-public class NetworkClient implements Runnable {
+public class NetworkClient extends Thread {
     private ServerTCPInterface server;
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private Gson gson;
+    private final Gson gson;
 
     public NetworkClient(){
         this.server = null;
