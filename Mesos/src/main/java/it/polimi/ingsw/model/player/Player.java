@@ -53,6 +53,10 @@ public class Player implements Comparable<Player>{
         tribe.addFood(delta);
     }
 
+    public void setFood(int food) {
+        tribe.setFood(food);
+    }
+
     /**
      * Enables "no loss ritual" modifier on the player's tribe.
      * When active, the tribe does not suffer losses during rituals.
@@ -69,11 +73,6 @@ public class Player implements Comparable<Player>{
         tribe.setDoubleRitualMod(true);
     }
 
-    /**
-     * Adds a building to the player's tribe.
-     *
-     * @param building the building to add
-     */
     public void addBuilding(AbstractBuilding building) {
         tribe.addBuilding(building);
     }
