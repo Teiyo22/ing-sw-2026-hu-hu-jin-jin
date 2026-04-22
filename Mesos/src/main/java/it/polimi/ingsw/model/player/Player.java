@@ -9,71 +9,70 @@ import java.util.List;
 public class Player implements Comparable<Player>{
     private final String name;
     private final Totem totem;
-    private final Tribe tribe;
-    private final List<AbstractBuilding> buildings;
-
-    private int food;
-    private int pp;
     private int rank;
 
-    private boolean noLossRitualMod;
-    private boolean doubleRitualMod;
+    private final Tribe tribe;
 
     public Player(String name, Totem totem) {
         this.name = name;
         this.totem = totem;
 
         this.tribe = new Tribe();
-        this.buildings = new ArrayList<>();
-        this.food = 0;
-        this.pp = 0;
         this.rank = 0;
     }
 
     public void addPP(int delta) {
-        pp += delta;
+        tribe.addPP(delta);
     }
 
     public void addFood(int delta) {
-        food += delta;
+        tribe.addFood(delta);
     }
 
     public void setFood(int n){
-        food = n;
+        tribe.setFood(n);
     }
 
-    public void setNoLossRitualMod(boolean b) { noLossRitualMod = b; }
+    public void setNoLossRitualMod(boolean b) {
+        tribe.setNoLossRitualMod(b);
+    }
 
-    public void setDoubleRitualMod(boolean b) { doubleRitualMod = b; }
+    public void setDoubleRitualMod(boolean b) {
+        tribe.setDoubleRitualMod(b);
+    }
 
     public void addBuilding(AbstractBuilding building) {
-        buildings.add(building);
+        tribe.addBuilding(building);
     }
 
     public int getFood() {
-        return food;
+        return tribe.getFood();
     }
 
     public int getPP() {
-        return pp;
+        return tribe.getPP();
     }
 
     public Tribe getTribe() {
         return tribe;
     }
 
-    public boolean getNoLossRitualMod() { return noLossRitualMod; }
+    public boolean getNoLossRitualMod() {
+        return tribe.getNoLossRitualMod();
+    }
 
-    public boolean getDoubleRitualMod() { return doubleRitualMod; }
+    public boolean getDoubleRitualMod() {
+        return tribe.getDoubleRitualMod();
+    }
 
     @Override
     public int compareTo(Player other) {
-        int res = Integer.compare(other.getPP(), this.pp);
+        int res = Integer.compare(other.getPP(), tribe.getPP());
 
         if(res != 0)
             return res;
 
-        res = Integer.compare(other.getFood(), this.food);
+        res = Integer.compare(other.getFood(), tribe.getFood());
 
         return res;
     }

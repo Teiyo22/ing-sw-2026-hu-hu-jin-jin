@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.Builder;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
@@ -11,6 +12,11 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Tribe {
+    private int food;
+    private int pp;
+
+    private final List<AbstractBuilding> buildings;
+
     private final Map<InventorType, Integer> inventors;
     private final int[] shamans;
     private final List<Builder> builders;
@@ -21,13 +27,22 @@ public class Tribe {
     private int stars;
     private int sustenanceDiscount;
 
+    private boolean noLossRitualMod;
+    private boolean doubleRitualMod;
+
     public Tribe() {
+        this.food = 0;
+        this.pp = 0;
+
+        this.buildings = new ArrayList<>();
+
         this.inventors = new HashMap<>();
         this.shamans = new int[3];
         this.builders = new ArrayList<>();
         this.collectors = 0;
         this.hunters = 0;
         this.artists = 0;
+
         this.stars = 0;
         this.sustenanceDiscount = 0;
     }
@@ -187,5 +202,49 @@ public class Tribe {
             min = getCollectorCount();
         }
         return min;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public void setFood(int food) {
+        this.food = food;
+    }
+
+    public void addFood(int foodDelta) {
+        this.food += foodDelta;
+    }
+
+    public int getPP() {
+        return pp;
+    }
+
+    public void addPP(int ppDelta) {
+        this.pp += ppDelta;
+    }
+
+    public List<AbstractBuilding> getBuildings() {
+        return buildings;
+    }
+
+    public void addBuilding(AbstractBuilding building) {
+        buildings.add(building);
+    }
+
+    public void setNoLossRitualMod(boolean b) {
+        noLossRitualMod = b;
+    }
+
+    public void setDoubleRitualMod(boolean b) {
+        doubleRitualMod = b;
+    }
+
+    public boolean getNoLossRitualMod() {
+        return noLossRitualMod;
+    }
+
+    public boolean getDoubleRitualMod() {
+        return doubleRitualMod;
     }
 }
