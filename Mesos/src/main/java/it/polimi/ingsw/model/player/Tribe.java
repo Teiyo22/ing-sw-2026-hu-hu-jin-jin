@@ -20,7 +20,7 @@ public class Tribe {
     private final Map<InventorType, Integer> inventors;
     private final List<Builder> builders;
     private final int[] shamans;
-    private int[] hunters;
+    private final int[] hunters;
     private int collectors;
     private int artists;
 
@@ -83,8 +83,8 @@ public class Tribe {
     }
 
     /**
-     * Get the discount provided by builders
-     * Each builder has his own discount so we sum them
+     * Get the discount provided by builders.
+     * The discount is the sum of all the discounts provided by the builders.
      */
     public int getBuilderDiscount() {
         int totDiscount = 0;
@@ -99,36 +99,40 @@ public class Tribe {
     }
 
     /**
-     * Add discount in sustenanceDiscount
+     * Add the provided discount to the total discount.
+     *
+     * @param discount is provided by either the collectors or the sustenance building.
      */
     public void addSustenanceDiscount(int discount) {
         this.sustenanceDiscount += discount;
     }
 
+    /**
+     * Add the provided number of stars to the total stars.
+     *
+     * @param stars is provided by either the shamans or the bonus stars building.
+     * */
     public void addStars(int stars) {
         this.stars += stars;
     }
 
-    /**
-     * Get the total stars possesed by the player
-     * Every shaman card has a number of stars, so we multiply that number with the number shamans with the same stars and sum them all
-     */
+
     public int getStars() {
         return stars;
     }
 
     /**
-     * So the invetor bonus PP is based on the number of inventors moltiplied for the numbers of types
+     * Get the bonus PP provided by the inventors.
+     * The bonus PP is the product of the number of unique inventor types and the number of inventors.
      */
     public int getInventorBonusPP() {
-        int types = inventors.keySet().size();
+        int types = inventors.size();
         return getInventorCount() * types;
     }
 
     /**
      * Get the builder bonus PP
-     * Every builder has his own bonus PP, so we sum all the bonuses we have
-     *
+     * Every builder has a bonus PP that is added to the total PP at the end of the game.
      */
     public int getBuilderBonusPP() {
         int totalBonus = 0;
@@ -139,8 +143,8 @@ public class Tribe {
     }
 
     /**
-     * Add an inventor in the tribe
-     * it checks the type of the inventor, if true it add 1 to the value, if false it adds a new type with value 1
+     * Add an inventor in the tribe.
+     * If {@link InventorType} is already present, increment the number of inventors, otherwise add it with value 1.
      */
     public void addInventor(Inventor inventor) {
         InventorType type = inventor.getInventorType();
@@ -152,7 +156,7 @@ public class Tribe {
     }
 
     /**
-     * Add shaman based on how many stars they have
+     * Add shaman based on the number of stars.
      */
     public void addShaman(Shaman shaman) {
         int shamanStars = shaman.getStar();
@@ -167,6 +171,9 @@ public class Tribe {
         collectors++;
     }
 
+    /**
+     * Add a hunter based on the presence of the icon.
+     * */
     public void addHunter(boolean hasIcon) {
         if(hasIcon)
             hunters[0]++;
@@ -179,7 +186,7 @@ public class Tribe {
     }
 
     /**
-     * Return the Character with the minimun number of cards
+     * Return the character with the minimum count.
      */
     public int getMinChar() {
         int min = 0;
