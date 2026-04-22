@@ -1,21 +1,21 @@
 package it.polimi.ingsw.controller.client.network;
 
 import com.google.gson.*;
-import it.polimi.ingsw.controller.server.network.ClientHandler;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 
 import java.net.Socket;
 
-public class NetworkClient {
-    private ClientHandler clientHandler;
+public class NetworkClient implements Runnable {
+    private ServerTCPInterface server;
     private Socket socket;
-    private JsonObject jsonObject;
+    private Gson gson;
 
-    public NetworkClient(String ip, int port){
+    public NetworkClient(){
 
     }
 
-    public void run(){
+    @Override
+    public void run() {
 
     }
 
