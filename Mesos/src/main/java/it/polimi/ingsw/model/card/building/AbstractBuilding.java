@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
 public abstract class AbstractBuilding extends AbstractCard implements Pickable {
-    protected Player owner = null;
+    transient protected Player owner = null;
     @Expose protected int cost;
     @Expose protected int pp;
 
@@ -19,7 +19,6 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
 
     public AbstractBuilding(AbstractBuilding source) {
         super(source);
-        this.owner = source.owner;
         this.cost = source.cost;
         this.pp = source.pp;
     }
