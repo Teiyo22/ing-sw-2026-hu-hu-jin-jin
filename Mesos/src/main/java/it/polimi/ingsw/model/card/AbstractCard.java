@@ -16,14 +16,29 @@ public abstract class AbstractCard {
         this.isFinal = isFinal;
     }
 
+    /**
+     * Copy constructor for AbstractCard.
+     * It is used to create copies of cards during the initialization of the game.
+     *
+     * @param source is the card template from which the new card is created.
+     * */
     public AbstractCard(AbstractCard source) {
         this.type = source.type;
         this.era = source.era;
         this.isFinal = source.isFinal;
     }
 
+    /**
+     * Returns a copy of the card.
+     * */
     public abstract AbstractCard clone();
 
+    /**
+     * Moves the card to the specified row.
+     * Depending on the card type, different methods in {@link Row} are called.
+     *
+     * @param row is the row where the card is moved.
+     * */
     public abstract void moveTo(Row row);
 
     public void setEra(int era) {
