@@ -2,13 +2,11 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 public class Hunter extends AbstractCharacter {
-    @Expose private final boolean hasIcon;
+    @Expose private boolean hasIcon;
 
     public Hunter(String type, int era, boolean isFinal, boolean hasIcon) {
         super(type, era, isFinal);
@@ -28,6 +26,7 @@ public class Hunter extends AbstractCharacter {
     @Override
     public void addToTribeOf(Player p) {
         p.getTribe().addHunter(hasIcon);
+
         if(hasIcon) {
             p.addFood(p.getTribe().getHunterCount());
         }

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.Visitable;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 public abstract class AbstractCharacter extends AbstractCard implements Pickable, Visitable {
     public AbstractCharacter(String type, int era, boolean isFinal) {
@@ -19,6 +18,13 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
 
     public abstract void addToTribeOf(Player p);
 
+    /**
+     * Adds the character to the player's tribe. Different methods are called depending on the character type.
+     * Also applies the effects of card pick buildings.
+     *
+     * @param player is the player who picked the card.
+     * @param buildingHandler is used to apply the effects of card pick buildings.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         addToTribeOf(player);
