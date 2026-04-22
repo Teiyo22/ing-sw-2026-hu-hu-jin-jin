@@ -4,10 +4,10 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.utils.ConfigLoader;
 
 public class Board {
-    final Game game;
-    final Deck deck;
-    final Row topRow;
-    final Row bottomRow;
+    transient final Game game;
+    Deck deck;
+    Row topRow;
+    Row bottomRow;
     OrderSlot[] orderTile;
     OfferTile[] offerTrack;
 
@@ -20,29 +20,23 @@ public class Board {
     }
 
     /**
-     * Init of OrderTile
+     * Initializes the offer track by loading the configurations associated with the game's player config.
      */
     public void initOfferTrack() {
         offerTrack = new ConfigLoader().loadOfferTile(game.getPlayerConfig().getOfferTrackConfigFile());
     }
 
     /**
-     * Init of OfferTrack
+     * Initializes the order tile by loading the configurations associated with the game's player config.
      */
     public void initOrderTile() {
         orderTile = new ConfigLoader().loadOrderSlot(game.getPlayerConfig().getOrderTileConfigFile());
     }
 
-    /**
-     * Returns the offerTrack
-     */
     public OfferTile[] getOfferTrack() {
         return offerTrack;
     }
 
-    /**
-     * Return the orderTile
-     */
     public OrderSlot[] getOrderTile() {
         return orderTile;
     }

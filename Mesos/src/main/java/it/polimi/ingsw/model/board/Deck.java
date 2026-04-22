@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.utils.*;
 import java.util.*;
 
 public class Deck {
-    final private PlayerConfig playerConfig;
-    private final Board board;
+    private PlayerConfig playerConfig;
+    private Board board;
 
     private Queue<AbstractCard> charEventCards;
     private Queue<AbstractCard> buildingCards;
@@ -23,7 +23,7 @@ public class Deck {
 
     /**
      *  Initializes the deck objects based on the number of players.
-     *  Each number is associated to a different deck config file.
+     *  Each number is associated with a different deck config file.
      *  Each deck config file contains different configurations for the cards
      * */
     public void init() {
@@ -35,6 +35,7 @@ public class Deck {
 
     /**
      * Draws a certain number of character/event cards.
+     *
      * @param num Number of drawn cards
      * @return List of character/event cards.
      * */
@@ -56,6 +57,7 @@ public class Deck {
 
     /**
      * Draws a certain number of building cards based on the current age.
+     *
      * @return List of building cards.
      * */
     public List<AbstractCard> drawBuildingCards() {
@@ -83,7 +85,9 @@ public class Deck {
 
 
     /**
-     * Initializes the character/event cards list of list card configurations
+     * Initializes the character and event cards from the card configurations.
+     *
+     * @param configs contains a list of templates for the character/event cards and the associated number of copies.
      * */
     private void initCards(List<CardConfig> configs) {
         charEventCards = CardFactory.generateCards(configs);
@@ -91,7 +95,10 @@ public class Deck {
 
 
     /**
-     * Initializes the building cards list of list card configurations
+     * Initializes the building cards from the card configurations.
+     * The buildings are separated from the character and event cards.
+     *
+     * @param configs contains a list of the templates for the building cards and the associated number of copies.
      * */
     private void initBuildingCards(List<CardConfig> configs) {
         buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount);

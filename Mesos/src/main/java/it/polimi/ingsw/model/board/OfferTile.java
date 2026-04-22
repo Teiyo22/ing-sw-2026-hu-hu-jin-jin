@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.player.Player;
 
 public class OfferTile {
-    private transient Player assignedPlayer = null; //transient is used to let Gson ignore this parameter
-    private final int bonusFood;
+    private transient Player assignedPlayer = null;
+    private int bonusFood;
     private int topRowPickable;
     private int bottomRowPickable;
 

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Row {
-    private final List<Sustenance> sustenanceEventCards;
-    private final List<AbstractEvent> eventCards;
-    private final List<AbstractCharacter> characterCards;
-    private final List<AbstractBuilding> buildingCards;
+    private List<Sustenance> sustenanceEventCards;
+    private List<AbstractEvent> eventCards;
+    private List<AbstractCharacter> characterCards;
+    private List<AbstractBuilding> buildingCards;
 
     public Row() {
         this.sustenanceEventCards = new ArrayList<>();
@@ -45,6 +45,9 @@ public class Row {
         return buildingCards;
     }
 
+    /**
+     * Returns the number of remaining pickable cards in the row.
+     * */
     public int getPickableCardCount() {
         return characterCards.size() + buildingCards.size();
     }
