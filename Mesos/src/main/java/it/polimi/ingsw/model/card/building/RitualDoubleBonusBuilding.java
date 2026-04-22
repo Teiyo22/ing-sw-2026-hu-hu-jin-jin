@@ -4,8 +4,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class RitualDoubleBonusBuilding extends AbstractBuilding {
-    public RitualDoubleBonusBuilding(String type, int era, boolean isFinal,
-                                     int cost, int pp, BuildingHandler buildingHandler) {
+    public RitualDoubleBonusBuilding(String type, int era, boolean isFinal, int cost, int pp) {
         super(type, era, isFinal, cost, pp);
     }
 
@@ -18,6 +17,9 @@ public class RitualDoubleBonusBuilding extends AbstractBuilding {
         return new RitualDoubleBonusBuilding(this);
     }
 
+    /**
+     * Enables the bonus PP doubling modifier for shamanic rituals.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);

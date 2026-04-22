@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card.building.gameEnd;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
 
 public class CharacterBonusBuilding extends GameEndBuilding {
     @Expose private int inventorBonusPP;
@@ -12,8 +11,7 @@ public class CharacterBonusBuilding extends GameEndBuilding {
     @Expose private int artistBonusPP;
     @Expose private int builderBonusPP;
 
-    public CharacterBonusBuilding(String type, int era, boolean isFinal,
-                                  int cost, int pp, BuildingHandler buildingHandler,
+    public CharacterBonusBuilding(String type, int era, boolean isFinal, int cost, int pp,
                                   int inventorBonusPP, int shamanBonusPP, int hunterBonusPP,
                                   int collectorBonusPP, int artistBonusPP, int builderBonusPP) {
         super(type, era, isFinal, cost, pp);
@@ -40,6 +38,9 @@ public class CharacterBonusBuilding extends GameEndBuilding {
         return new CharacterBonusBuilding(this);
     }
 
+    /**
+     * Adds bonus PP to the player depending on the number of characters of each type.
+     * */
     @Override
     public void applyEffect() {
         owner.addPP(

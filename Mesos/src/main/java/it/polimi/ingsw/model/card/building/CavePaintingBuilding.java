@@ -8,8 +8,7 @@ public class CavePaintingBuilding extends AbstractBuilding{
     @Expose private int bonusFood;
 
     public CavePaintingBuilding(String type, int era, boolean isFinal,
-                                int cost, int pp, BuildingHandler buildingHandler,
-                                int bonusFood) {
+                                int cost, int pp, int bonusFood) {
         super(type, era, isFinal, cost, pp);
         this.bonusFood = bonusFood;
     }
@@ -24,12 +23,19 @@ public class CavePaintingBuilding extends AbstractBuilding{
         return new CavePaintingBuilding(this);
     }
 
+    /**
+     * Adds the cave painting building to the player's building handler.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
         buildingHandler.addCavePaintingBuilding(this);
     }
 
+    /**
+     * The effect is applied during the cave painting event.
+     * Add bonus food to the owner depending on the number of artists.
+     * */
     public void applyEffect() {
         owner.addFood(owner.getTribe().getArtistCount()*bonusFood);
     }

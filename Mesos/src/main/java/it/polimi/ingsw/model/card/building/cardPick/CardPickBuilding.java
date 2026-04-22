@@ -16,12 +16,18 @@ public abstract class CardPickBuilding extends AbstractBuilding implements CardV
         super(source);
     }
 
+    /**
+     * Adds the card to the card pick buildings in the building handler.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
         buildingHandler.addCardPickBuilding(this);
     }
 
+    /**
+     * If the player that picked the card is the owner of the building, then apply its effect.
+     * */
     public void applyEffect(Visitable v, Player p) {
         if (p == owner) v.accept(this);
     }

@@ -18,7 +18,7 @@ public class InvetorPairBuildingTest {
 
     @BeforeEach
     void setUp(){
-        inventorPairBuilding=new InventorPairBuilding("InventorPairBuilding", 1, false, 2, 2, new BuildingHandler());
+        inventorPairBuilding=new InventorPairBuilding("InventorPairBuilding", 1, false, 2, 2);
         buildingHandler= new BuildingHandler();
         p= new Player("Gigio", Totem.BLACK);
     }

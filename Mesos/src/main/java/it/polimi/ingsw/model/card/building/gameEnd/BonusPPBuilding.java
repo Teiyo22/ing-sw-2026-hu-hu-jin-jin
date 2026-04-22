@@ -2,15 +2,12 @@ package it.polimi.ingsw.model.card.building.gameEnd;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
 
 public class BonusPPBuilding extends GameEndBuilding {
     @Expose
     private int bonusPP;
 
-    public BonusPPBuilding(String type, int era, boolean isFinal,
-                           int cost, int pp, BuildingHandler buildingHandler,
-                           int bonusPP) {
+    public BonusPPBuilding(String type, int era, boolean isFinal, int cost, int pp, int bonusPP) {
         super(type, era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
     }
@@ -25,6 +22,9 @@ public class BonusPPBuilding extends GameEndBuilding {
         return new BonusPPBuilding(this);
     }
 
+    /**
+     * Adds bonus PP to the player.
+     * */
     @Override
     public void applyEffect() {
         owner.addPP(bonusPP);

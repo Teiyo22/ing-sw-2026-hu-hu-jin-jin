@@ -6,9 +6,8 @@ import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
 public class NewFullSetBuilding extends CardPickBuilding{
-    int minForSet;
-    public NewFullSetBuilding(String type, int era, boolean isFinal,
-                              int cost, int pp, BuildingHandler buildingHandler) {
+    transient int minForSet;
+    public NewFullSetBuilding(String type, int era, boolean isFinal, int cost, int pp) {
         super(type, era, isFinal, cost, pp);
     }
 
@@ -21,15 +20,14 @@ public class NewFullSetBuilding extends CardPickBuilding{
         return new NewFullSetBuilding(this);
     }
 
+
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
-        owner = player;
-        buildingHandler.addCardPickBuilding(this);
+        super.onPick(player, buildingHandler);
         minForSet = owner.getTribe().getMinChar() + 1;
     }
 
-    /** Every picked card has the same effects.
-     * If a new set is formed (the character type with the least amount meets the required minimum) the bonus is added.*/
+
     @Override
     public void doForInventor(Inventor i) {
         checkAndAdd();
@@ -60,6 +58,11 @@ public class NewFullSetBuilding extends CardPickBuilding{
         checkAndAdd();
     }
 
+    /**
+     * Adds bonus pp after completing a full set of characters with different types.
+     * Previously completed sets are not counted. However, the non-completed set is still valid.
+     * The set completion is checked by monitoring the minimum number of characters for a specific type.
+     * */
     public void checkAndAdd() {
         if(owner.getTribe().getMinChar() >= minForSet){
             minForSet++;

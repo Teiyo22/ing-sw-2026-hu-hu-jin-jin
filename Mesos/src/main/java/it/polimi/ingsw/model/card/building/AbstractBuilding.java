@@ -24,11 +24,18 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         this.pp = source.pp;
     }
 
+    /**
+     * Sets the card owner, removes the food cost after discount, and adds the card to the player's building handler.
+     *
+     * @param player is the player who picked the card.
+     * @param buildingHandler is used to add the card to the building handler.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         owner = player;
         cost = Math.max(0, cost - player.getTribe().getBuilderDiscount());
         player.addFood(cost);
+        player.addBuilding(this);
     }
 
     @Override

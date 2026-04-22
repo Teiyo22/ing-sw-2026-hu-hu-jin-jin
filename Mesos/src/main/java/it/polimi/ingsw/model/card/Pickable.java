@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public interface Pickable {
-    public abstract void onPick(Player player, BuildingHandler buildingHandler);
+    void onPick(Player player, BuildingHandler buildingHandler);
 
-    public abstract void removeFrom(Row row);
+    void removeFrom(Row row);
 }

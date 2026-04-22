@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.card.building.cardPick;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.*;
-import it.polimi.ingsw.model.player.Player;
 
 public class SustenanceDiscountBuilding extends CardPickBuilding{
     @Expose int inventorDiscount;
@@ -14,8 +12,7 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
     @Expose int artistDiscount;
     @Expose int builderDiscount;
 
-    public SustenanceDiscountBuilding(String type, int era, boolean isFinal,
-                                      int cost, int pp, BuildingHandler buildingHandler, 
+    public SustenanceDiscountBuilding(String type, int era, boolean isFinal, int cost, int pp,
                                       int inventorDiscount, int shamanDiscount, int hunterDiscount,
                                       int artistDiscount, int collectorDiscount, int builderDiscount) {
         super(type, era, isFinal, cost, pp);
@@ -42,19 +39,9 @@ public class SustenanceDiscountBuilding extends CardPickBuilding{
         return new SustenanceDiscountBuilding(this);
     }
 
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        owner = player;
-        buildingHandler.addCardPickBuilding(this);
-
-        owner.getTribe().addSustenanceDiscount(
-                owner.getTribe().getInventorCount() * inventorDiscount +
-                owner.getTribe().getShamanCount() * shamanDiscount +
-                owner.getTribe().getHunterCount() * hunterDiscount +
-                owner.getTribe().getCollectorCount() * collectorDiscount +
-                owner.getTribe().getArtistCount() * artistDiscount +
-                owner.getTribe().getBuilderCount() * builderDiscount);
-    }
-
+    /**
+     * If the picked card is an inventor card, the discount associated to the inventor is added to the tribe.
+     * */
     @Override
     public void doForInventor(Inventor i) {
         owner.getTribe().addSustenanceDiscount(inventorDiscount);

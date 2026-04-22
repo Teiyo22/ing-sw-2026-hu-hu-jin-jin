@@ -8,8 +8,7 @@ public class RitualStarsBuilding extends AbstractBuilding {
     @Expose private int bonusStars;
 
     public RitualStarsBuilding(String type, int era, boolean isFinal,
-                               int cost, int pp, BuildingHandler buildingHandler,
-                               int bonusStars) {
+                               int cost, int pp, int bonusStars) {
         super(type, era, isFinal, cost, pp);
         this.bonusStars = bonusStars;
     }
@@ -24,6 +23,10 @@ public class RitualStarsBuilding extends AbstractBuilding {
         return new RitualStarsBuilding(this);
     }
 
+
+    /**
+     * Adds 3 stars to the tribe of the player who picked the card.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);

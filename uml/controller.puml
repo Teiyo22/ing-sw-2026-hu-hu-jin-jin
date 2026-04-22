@@ -94,7 +94,21 @@ package controller {
 
         package model {
             class ClientModel {
+                - tribes : Map<Integer, ClientTribe>
+                - orderTile :
+                - offerTrack :
+                - topRow : List<>
+                - bottomRow :
+            }
 
+            class ClientTribe {
+                - food : int
+                - pp : int
+                - stars : int
+                - buildingDiscount : int
+                - sustenanceDiscount : int
+                - characters : List<AbstractCard>
+                - buildings : List<AbstractBuilding>
             }
         }
 
@@ -142,7 +156,6 @@ package controller {
         }
 
         abstract class VirtualServer {
-            + addClient(client : VirtualClient) : void
             + createLobby(clientID :int, playerNum : int, playerName : String, totem: Totem) : void
             + joinLobby(clientID :int, lobbyID : int, playerName : String, totem: Totem) : void
             + leaveLobby(clientID : int, lobbyID : int) : void
@@ -164,8 +177,13 @@ package controller {
         class Lobby {
             - lobbyID : int
             - size : int
-            - players : Map<Integer, String>
-            - model : clientModel
+            - players : Map<Integer, PlayerID>
+            - model : ClientModel
+        }
+
+        class PlayerID {
+            - name : String
+            - totem : Totem
         }
 
         package messages {

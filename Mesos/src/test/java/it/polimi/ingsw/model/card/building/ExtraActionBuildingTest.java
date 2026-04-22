@@ -17,7 +17,7 @@ public class ExtraActionBuildingTest {
 
     @BeforeEach
     void setUp(){
-        extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding",1,false,2,3,new BuildingHandler());
+        extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding",1,false,2,3);
         p=new Player("Ciccio", Totem.BLACK);
     }
 

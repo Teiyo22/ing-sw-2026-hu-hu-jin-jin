@@ -14,6 +14,9 @@ public abstract class GameEndBuilding extends AbstractBuilding {
         super(source);
     }
 
+    /**
+     * Adds the card to the game end buildings in the building handler.
+     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);

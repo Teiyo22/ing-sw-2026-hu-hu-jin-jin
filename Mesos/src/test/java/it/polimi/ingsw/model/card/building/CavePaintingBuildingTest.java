@@ -13,7 +13,7 @@ public class CavePaintingBuildingTest {
 
     @BeforeEach
     void setUp(){
-        cavePaintingBuilding= new CavePaintingBuilding("CavePaintingBuilding",1,false, 3, 10,new BuildingHandler(), 4);
+        cavePaintingBuilding= new CavePaintingBuilding("CavePaintingBuilding",1,false, 3, 10, 4);
         p= new Player("Pipino", Totem.BLUE);
     }
 
