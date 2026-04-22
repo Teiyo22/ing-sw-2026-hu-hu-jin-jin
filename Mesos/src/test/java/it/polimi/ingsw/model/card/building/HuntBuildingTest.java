@@ -24,12 +24,12 @@ public class HuntBuildingTest {
         assertEquals(0,p.getFood());
         assertEquals(0,p.getPP());
 
-        p.getTribe().addHunter();
+        p.getTribe().addHunter(false);
         huntBuilding.applyEffect();
         assertEquals(2,p.getPP());
         assertEquals(4,p.getFood());
 
-        p.getTribe().addHunter();
+        p.getTribe().addHunter(false);
         huntBuilding.applyEffect();
         assertEquals(6,p.getPP());
         assertEquals(12,p.getFood());

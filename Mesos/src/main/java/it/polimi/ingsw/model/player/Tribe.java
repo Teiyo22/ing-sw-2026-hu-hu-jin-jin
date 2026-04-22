@@ -18,10 +18,10 @@ public class Tribe {
     private final List<AbstractBuilding> buildings;
 
     private final Map<InventorType, Integer> inventors;
-    private final int[] shamans;
     private final List<Builder> builders;
+    private final int[] shamans;
+    private int[] hunters;
     private int collectors;
-    private int hunters;
     private int artists;
 
     private int stars;
@@ -37,10 +37,10 @@ public class Tribe {
         this.buildings = new ArrayList<>();
 
         this.inventors = new HashMap<>();
-        this.shamans = new int[3];
         this.builders = new ArrayList<>();
+        this.hunters = new int[2];
+        this.shamans = new int[3];
         this.collectors = 0;
-        this.hunters = 0;
         this.artists = 0;
 
         this.stars = 0;
@@ -55,9 +55,6 @@ public class Tribe {
         return inventors.size();
     }
 
-    /**
-     * Get the number of one type of inventor
-     */
     public int getNumInventorType(InventorType type) {
         return inventors.get(type);
     }
@@ -78,7 +75,7 @@ public class Tribe {
     }
 
     public int getHunterCount() {
-        return hunters;
+        return hunters[0] + hunters[1];
     }
 
     public int getArtistCount() {
@@ -170,8 +167,11 @@ public class Tribe {
         collectors++;
     }
 
-    public void addHunter() {
-        hunters++;
+    public void addHunter(boolean hasIcon) {
+        if(hasIcon)
+            hunters[0]++;
+        else
+            hunters[1]++;
     }
 
     public void addArtist() {

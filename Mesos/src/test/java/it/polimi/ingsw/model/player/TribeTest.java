@@ -63,7 +63,7 @@ public class TribeTest {
 
     @Test
     void addHunterTest() {
-        t.addHunter();
+        t.addHunter(false);
         assertEquals(1, t.getHunterCount());
     }
 }
