@@ -78,12 +78,14 @@ public class ClientController extends VirtualClient{
     /** Connecting to the server using TCP.
      * Creates the NetworkClient and the ServerTCPInterface, which initializes the server reference in the first.
      * */
-    public void connectTCP(String ip, int tcpPort) throws UnknownHostException, IOException {
+    public void connectTCP(String ip, int tcpPort) {
         NetworkClient networkClient = new NetworkClient();
         this.server = new ServerTCPInterface(this, networkClient);
         try {
             networkClient.connect(ip, tcpPort);
         } catch (UnknownHostException e) {
+            System.out.println("Error in connecting TCP server: " + e.getMessage());
+        } catch (IOException e) {
             System.out.println("Error in connecting TCP server: " + e.getMessage());
         }
     }
