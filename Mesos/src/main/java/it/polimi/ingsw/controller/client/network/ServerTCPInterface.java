@@ -3,12 +3,20 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.Totem;
+
+import java.util.List;
 
 public class ServerTCPInterface extends VirtualServer {
     private ClientController clientController;
     private NetworkClient serverHandler;
 
+    public void handleMessage(Response response) {
+
+    }
 
     @Override
     public void addClient(VirtualClient client) {
@@ -50,4 +58,13 @@ public class ServerTCPInterface extends VirtualServer {
 
     }
 
+    @Override
+    public void getLeaderboard(int clientID, int playerNum) {
+
+    }
+
+    @Override
+    public void requestPick(int clientID, int lobbyID, List<AbstractBuilding> topPicks, List<AbstractCard> bottomPicks) {
+
+    }
 }

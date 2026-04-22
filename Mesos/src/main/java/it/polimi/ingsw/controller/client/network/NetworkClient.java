@@ -11,9 +11,8 @@ public class NetworkClient {
     private Socket socket;
     private JsonObject jsonObject;
 
-    public NetworkClient(ClientHandler clientHandler, Socket socket) {
-        this.clientHandler = clientHandler;
-        this.socket = socket;
+    public NetworkClient(String ip, int port){
+
     }
 
     public void run(){
