@@ -62,6 +62,7 @@ public class ClientController extends VirtualClient{
 
 
     /** Connecting to the server using RMI.
+     * @param registryName the name of the server in the registry.
      * */
     public void connectRMI(String registryName, String ip, int rmiPort){
         try {

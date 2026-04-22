@@ -23,6 +23,10 @@ public class NetworkClient extends Thread {
         this.gson = new Gson();
     }
 
+
+    /** The NetworkClient runs and listens to messages from the server.
+     * When a message is received it gets passed to the ServerTCPInterface to handle it.
+     * */
     @Override
     public void run() {
         String line;
@@ -36,6 +40,10 @@ public class NetworkClient extends Thread {
         }
     }
 
+
+    /** Method to serialize and send messages to the server.
+     * @param request The message to serialize and send.
+     * */
     public void sendMessage(Request request){
         String msg = gson.toJson(request);
         output.println(msg);
