@@ -42,8 +42,9 @@ public class GameStartState extends GameState{
 
         for(int i = 0; i < players.size(); i++) {
             Player p = players.get(i);
+            int initialFood = 2 + (i + 1) / 2;
 
-            p.setFood(2 + (i + 1) / 2);
+            p.initTribe(initialFood);
             orderTile[i].setPlayer(p); ;
         }
     }

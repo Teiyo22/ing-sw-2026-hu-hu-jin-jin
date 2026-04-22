@@ -28,8 +28,8 @@ public class PlayerTest {
     }
 
     @Test
-    void setNoLossRitualMod(){
-        p.setNoLossRitualMod(true);
+    void enableNoLossRitualMod(){
+        p.enableNoLossRitualMod();
         assertTrue(p.getNoLossRitualMod());
     }
 
@@ -38,13 +38,13 @@ public class PlayerTest {
         BuildingHandler buildinghandler= new BuildingHandler();
         AbstractBuilding b= new CavePaintingBuilding("CavePaintingBuilding",1,false,5,2,buildinghandler,2);
         p.addBuilding(b);
-        assertEquals(1,p.getBuilding().size());
+        assertEquals(1,p.getBuildings().size());
 
     }
 
     @Test
-    void setDoubleRitualModTest(){
-        p.setDoubleRitualMod(true);
+    void enableDoubleRitualModTest(){
+        p.enableDoubleRitualMod();
         assertTrue(p.getDoubleRitualMod());
     }
 
