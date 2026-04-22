@@ -34,9 +34,10 @@ public class Sustenance extends AbstractEvent {
     }
 
 
-    /** Apply the effects of the sustenance event:
-     * subtracts food to feed every member of a player's tribe.
-     * If there is not enough food it subtracts pp.*/
+    /**
+     * Subtracts food to all players based on the size of their tribe.
+     * If food is not enough, then a certain amount of pp is subtracted depending on the number of unfed tribesmen.
+     * */
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();

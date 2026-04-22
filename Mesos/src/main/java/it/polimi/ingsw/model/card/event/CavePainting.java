@@ -4,16 +4,12 @@ import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OrderSlot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CavePainting extends AbstractEvent{
-    @Expose private final int bonusPP;  //must be a positive number
-    @Expose private final int malusPP;  //must be a negative number
+    @Expose private int bonusPP;  //must be a positive number
+    @Expose private int malusPP;  //must be a negative number
     @Expose private int numArtistsBonus;
     @Expose private int numArtistsMalus;
 
@@ -40,8 +36,12 @@ public class CavePainting extends AbstractEvent{
         return new CavePainting(this);
     }
 
-    /** Apply the effects of the cave painting event:
-     * when called the method subtracts or adds pp depending on the number of artists the player owns.*/
+    /**
+     * Add/subtracts pp depending on the number of artists the player owns.
+     * If the number of artists is lower than or equal to {@code numArtistsMalus}, the player loses pp.
+     * Else if the number of artists is greater than or equal to {@code numArtistsBonus}, the player gains pp.
+     * Otherwise the player does not gain/lose pp.
+     * */
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();

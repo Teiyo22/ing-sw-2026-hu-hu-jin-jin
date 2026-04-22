@@ -4,11 +4,7 @@ import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OrderSlot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShamanicRitual extends AbstractEvent {
@@ -33,9 +29,10 @@ public class ShamanicRitual extends AbstractEvent {
         return new ShamanicRitual(this);
     }
 
-    /** Apply the effects of the shamanic ritual event:
-     * when called the method calculates the number of stars owned by the player with the least and most.
-     * Then it iterates and adds/subtracts pp if the player is amongst the ones with the most/least.*/
+    /**
+     * Depending on the number of minimum and maximum numbers of stars owned by the players,
+     * subtract/add pp to the players who have a number of stars equal to the minimum/maximum.
+     * */
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();

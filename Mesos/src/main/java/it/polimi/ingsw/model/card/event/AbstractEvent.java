@@ -13,6 +13,11 @@ public abstract class AbstractEvent extends AbstractCard {
         super(source);
     }
 
+    /**
+     * Applies the specific event effects to the game.
+     *
+     * @param game is used to get the reference to the players.
+     * */
     public abstract void onEvent(Game game);
 
     @Override

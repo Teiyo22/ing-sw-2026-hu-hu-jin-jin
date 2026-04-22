@@ -4,15 +4,11 @@ import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OrderSlot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hunt extends AbstractEvent {
-    @Expose private  int ppMultiplier;
+    @Expose private int ppMultiplier;
 
     public Hunt(String type, int era, boolean isFinal, int ppMultiplier) {
         super(type, era, isFinal);
@@ -29,8 +25,9 @@ public class Hunt extends AbstractEvent {
         return new Hunt(this);
     }
 
-    /** Apply the effects of the hunting event:
-     * when called the method adds food and pp depending on the number of hunters the player owns.*/
+    /**
+     * Adds food and pp depending on the number of hunters the player owns.
+     * */
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();
