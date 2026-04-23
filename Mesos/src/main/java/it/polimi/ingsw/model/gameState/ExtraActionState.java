@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;
-    private int solvedExtraActions=0;
+    private int solvedExtraActions = 0;
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -28,6 +28,10 @@ public class ExtraActionState extends GameState {
        currPlayer = player;
     }
 
+    /**
+     * Applies the effects of extra action buildings which effectively initialize the player for the extra action.
+     * If no player is found, then pass to {@link RoundEndState}
+     * */
     @Override
     public void update() {
         buildingHandler.applyExtraActionEffects(this, solvedExtraActions);

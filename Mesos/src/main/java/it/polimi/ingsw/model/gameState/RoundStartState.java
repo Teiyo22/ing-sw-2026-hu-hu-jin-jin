@@ -13,6 +13,10 @@ public class RoundStartState extends GameState {
         super(game, buildingHandler);
     }
 
+    /**
+     * Sets the current player based on the number of already assigned players.
+     * If all players have been assigned, the state changes to {@link RoundActionState}.
+     * */
     @Override
     public void update() {
         if(assignedSlots == game.getPlayers().size()){
@@ -25,6 +29,9 @@ public class RoundStartState extends GameState {
     }
 
 
+    /**
+     * Assigns the current player to the selected offer tile and increments the assigned slots counter.
+     * */
     public void assignTo(OfferTile offer){
         game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
         offer.setPlayer(currPlayer);

@@ -3,12 +3,10 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoundActionState extends GameState{
@@ -23,6 +21,11 @@ public class RoundActionState extends GameState{
         offerTrack = game.getBoard().getOfferTrack();
     }
 
+    /**
+     * Finds the next offer tile to be resolved and sets the player assigned to it as current player.
+     * If the offer tile also provides bonus food, the player gains the specified amount.
+     * If all offer tiles have been resolved, the state changes to {@link ExtraActionState}.
+     * */
     @Override
     public void update() {
         for(; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++);
@@ -57,6 +60,9 @@ public class RoundActionState extends GameState{
     }
 
 
+    /**
+     * After a player has finished his action turn, he is assigned to the correct order slot.
+     * */
     public void assignToOrderSlot(OfferTile offerTile) {
         OrderSlot orderSlot = game.getBoard().getOrderTile()[assignedPlayers];
 

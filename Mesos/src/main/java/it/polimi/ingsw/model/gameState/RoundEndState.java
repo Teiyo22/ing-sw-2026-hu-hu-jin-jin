@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Deck;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
@@ -25,6 +24,11 @@ public class RoundEndState extends GameState {
         this.deck = game.getBoard().getDeck();
     }
 
+    /**
+     * If the deck is not empty, resolves events and sets up the board for the next round.
+     * Then changes the state to {@link RoundStartState}.
+     * Else changes the state to {@link GameEndState}.
+     * */
     @Override
     public void update() {
         if(!deck.getCharEventCards().isEmpty()) {
@@ -37,6 +41,10 @@ public class RoundEndState extends GameState {
         game.getGameState().update();
     }
 
+    /**
+     * Resolves all events in the bottom row.
+     * Sustenance events are solved last.
+     * */
     private void resolveEvents() {
         List<AbstractEvent> events = bottom.getEventCards();
         for(AbstractEvent e: events){
@@ -49,6 +57,9 @@ public class RoundEndState extends GameState {
         }
     }
 
+    /**
+     * Moves all the cards from the top row to the bottom row and draws new cards for the latter.
+     * */
     private void setUp() {
         bottom.getEventCards().clear();
         bottom.getSustenanceEventCards().clear();
@@ -75,6 +86,11 @@ public class RoundEndState extends GameState {
         redrawCards();
     }
 
+    /**
+     * Draws new cards from the deck for the top row.
+     * If a card of the next era is drawn, then the buildings in the bottom row are discarded,
+     * the buildings in the top row are moved to the bottom row, and new buildings are drawn for the top row.
+     * */
     private void redrawCards() {
         List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() + 4);
         int ID = 0;

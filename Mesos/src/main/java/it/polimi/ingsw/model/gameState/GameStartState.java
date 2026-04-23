@@ -3,37 +3,35 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.board.Board;
 
 import java.util.Collections;
 import java.util.List;
-import java.lang.Math;
 
 public class GameStartState extends GameState{
-    private int playerCount = 0;
-
     public GameStartState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
     }
 
+    /**
+     * Starts the game by assigning each player to the order tile and distributing cards from the deck to the rows.
+     * Then, the state changes to {@link RoundStartState}.
+     * */
     @Override
     public void update() {
-        playerCount++;
-
-        if(playerCount == game.getPlayerConfig().getNum()) {
-            assignPlayersToOrderTile();
-            distributeCards();
-            game.setGameState(new RoundStartState(game, buildingHandler));
-            game.getGameState().update();
-        }
+        assignPlayersToOrderTile();
+        distributeCards();
+        game.setGameState(new RoundStartState(game, buildingHandler));
+        game.getGameState().update();
     }
 
+    /**
+     * Randomly assigns each player to the order tile and initializes their tribe with the correct amount of food.
+     * */
     private void assignPlayersToOrderTile(){
         List<Player> players = game.getPlayers();
         OrderSlot[] orderTile = game.getBoard().getOrderTile();
@@ -49,6 +47,12 @@ public class GameStartState extends GameState{
         }
     }
 
+    /**
+     * Distributes the cards from the deck starting from the bottom row.
+     * All drawn event cards are moved to the top row.
+     * The total starting number of character/event cards for each row depends on the number of players.
+     * Buildings are only drawn for the top row.
+     * */
     private void distributeCards() {
         List<AbstractCard> cards;
         Row topRow =  game.getBoard().getTopRow();
@@ -86,7 +90,6 @@ public class GameStartState extends GameState{
             ID++;
             card.moveTo(topRow);
         }
-
 
         cards = game.getBoard().getDeck().drawBuildingCards();
         for(AbstractCard card: cards){

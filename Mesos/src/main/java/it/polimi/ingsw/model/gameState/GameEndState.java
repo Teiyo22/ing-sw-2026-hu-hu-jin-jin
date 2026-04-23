@@ -11,7 +11,7 @@ import java.util.*;
 public class GameEndState extends GameState {
     private final Row bottom;
     private final Row top;
-    private List<Player> playersList;
+    private final List<Player> playersList;
 
     public GameEndState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -20,7 +20,10 @@ public class GameEndState extends GameState {
         this.bottom = game.getBoard().getBottomRow();
         this.top = game.getBoard().getTopRow();
     }
-
+    /**
+     * Resolves all remaining events in both the top and bottom rows.
+     * Assigns bonus PP to each player, applies game end buildings effects, and sets the leaderboard.
+     * */
     @Override
     public void update() {
         resolveEvents();
@@ -55,6 +58,9 @@ public class GameEndState extends GameState {
 
     }
 
+    /**
+     * Assigns the bonus PP provided by the tribe's builders, inventors, and artists.
+     * */
     private void assignBonusPP(Player p) {
         int bonusPP = bonusPP = p.getTribe().getBuilderBonusPP() +
                                 p.getTribe().getInventorBonusPP() +
@@ -62,6 +68,9 @@ public class GameEndState extends GameState {
         p.addPP(bonusPP);
     }
 
+    /**
+     * Computes the rankings based on the PP and food of each player.
+     * */
     private void setLeaderboard() {
         Player previous;
         Player current;
