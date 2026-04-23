@@ -8,8 +8,8 @@ public class Player implements Comparable<Player>{
     private final String name;
     private final Totem totem;
 
-    transient private int rank;
-    transient private Tribe tribe;
+    transient private int rank = 0;
+    transient private Tribe tribe = null;
 
     /**
      * Constructs a new {@code Player} with the given name and totem.
@@ -20,7 +20,6 @@ public class Player implements Comparable<Player>{
     public Player(String name, Totem totem) {
         this.name = name;
         this.totem = totem;
-        this.rank = 0;
     }
 
     /**
