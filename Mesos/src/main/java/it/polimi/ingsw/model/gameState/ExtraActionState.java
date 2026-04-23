@@ -19,6 +19,10 @@ public class ExtraActionState extends GameState {
        currPlayer = player;
     }
 
+    public Player getCurrPlayer(){
+        return currPlayer;
+    }
+
     /**
      * Applies the effects of extra action buildings which effectively initialize the player for the extra action.
      * If no player is found, then pass to {@link RoundEndState}

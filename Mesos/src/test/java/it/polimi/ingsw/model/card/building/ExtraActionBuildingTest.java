@@ -25,6 +25,6 @@ public class ExtraActionBuildingTest {
     void applyEffectTest(){
         extraActionState= new ExtraActionState(new Game(PlayerConfig.TWO), new BuildingHandler());
         extraActionBuilding.applyEffect(extraActionState);
-        assertEquals(p,extraActionState.getPlayer());
+        assertEquals(p,extraActionState.getCurrPlayer());
     }
 }

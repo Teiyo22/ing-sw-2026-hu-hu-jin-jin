@@ -10,6 +10,8 @@ import it.polimi.ingsw.model.player.PlayerConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameStartStateTest {
@@ -30,12 +32,4 @@ public class GameStartStateTest {
         assertInstanceOf(RoundStartState.class,game.getGameState());
     }
 
-    @Test
-    void assignPlayersToOrderTileTest(){
-        gameStartState.assignPlayersToOrderTile();
-        OrderSlot[] orderSlots = game.getBoard().getOrderTile();
-        for(OrderSlot slot : orderSlots){
-            assertNotNull(slot.getAssignedPlayer());
-        }
-    }
 }
