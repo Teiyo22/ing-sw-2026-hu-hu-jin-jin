@@ -1,6 +1,8 @@
     package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Player;
@@ -16,14 +18,18 @@ public class Game {
     private final Board board;
 
     private GameState gameState;
+    private final BuildingHandler buildingHandler;
 
     public Game(PlayerConfig playerConfig) {
         this.playerConfig = playerConfig;
         this.players = new ArrayList<>();
-        this.gameState = new GameStartState(this, new BuildingHandler());
         this.board = new Board(this);
         this.board.initOfferTrack();
         this.board.initOrderTile();
+
+        this.buildingHandler = new BuildingHandler();
+        this.gameState = new GameStartState(this, buildingHandler);
+        this.gameState.update();
     }
 
     public PlayerConfig getPlayerConfig() {
@@ -54,5 +60,36 @@ public class Game {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+
+    /**
+     * Picks the cards for a player and updates the game state.
+     * @param player is the player that picked the cards.
+     * @param topPicks are the cards picked from the top row.
+     * @param bottomPicks are the cards picked from the bottom row.
+     * */
+    private void pick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+        for(Pickable p: topPicks){
+            p.onPick(player, buildingHandler);
+            p.removeFrom(board.getTopRow());
+        }
+
+        for(Pickable p: bottomPicks){
+            p.onPick(player, buildingHandler);
+            p.removeFrom(board.getBottomRow());
+        }
+
+        gameState.update();
+    }
+
+    /**
+     * Assigns the player to the selected offer tile and updates the game state.
+     * @param player is the player that picked the offer tile.
+     * @param offer is the offer tile that the player picked.
+     * */
+    public void assignTo(Player player, OfferTile offer){
+        offer.setPlayer(player);
+        gameState.update();
     }
 }

@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public class RoundStartState extends GameState {
-    private Player currPlayer;
-    private int assignedSlots = 0;
+    private Player currPlayer = null;
+    private int assignedSlots = -1;
 
     public RoundStartState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -19,6 +19,11 @@ public class RoundStartState extends GameState {
      * */
     @Override
     public void update() {
+        if(currPlayer != null)
+            game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
+
+        assignedSlots++;
+
         if(assignedSlots == game.getPlayers().size()){
             game.setGameState(new RoundActionState(game, buildingHandler));
             game.getGameState().update();
@@ -26,17 +31,5 @@ public class RoundStartState extends GameState {
         }
 
         currPlayer = game.getPlayers().get(assignedSlots);
-    }
-
-
-    /**
-     * Assigns the current player to the selected offer tile and increments the assigned slots counter.
-     * */
-    public void assignTo(OfferTile offer){
-        game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
-        offer.setPlayer(currPlayer);
-
-        assignedSlots++;
-        update();
     }
 }

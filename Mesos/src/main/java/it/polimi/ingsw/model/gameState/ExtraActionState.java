@@ -9,19 +9,10 @@ import java.util.List;
 
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;
-    private int solvedExtraActions = 0;
+    private int solvedExtraActions = -1;
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
-    }
-
-    public void pickTop(List<Pickable> pickedCards) {
-        for(Pickable p: pickedCards) {
-            p.onPick(currPlayer, buildingHandler);
-            p.removeFrom(game.getBoard().getTopRow());
-        }
-        solvedExtraActions++;
-        update();
     }
 
     public void setCurrPlayer(Player player){
@@ -34,6 +25,7 @@ public class ExtraActionState extends GameState {
      * */
     @Override
     public void update() {
+        solvedExtraActions++;
         buildingHandler.applyExtraActionEffects(this, solvedExtraActions);
 
         if(currPlayer == null) {

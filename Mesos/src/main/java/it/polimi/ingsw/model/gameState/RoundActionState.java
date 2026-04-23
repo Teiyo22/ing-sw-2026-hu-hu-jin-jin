@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.List;
 
 public class RoundActionState extends GameState{
-    private Player currPlayer;
+    private Player currPlayer = null;
     private final OfferTile[] offerTrack;
 
     private int solvedOffers = 0;
@@ -28,6 +28,9 @@ public class RoundActionState extends GameState{
      * */
     @Override
     public void update() {
+        if (currPlayer != null)
+            assignToOrderSlot(offerTrack[solvedOffers]);
+
         for(; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++);
 
         if(offerTrack.length == solvedOffers){
@@ -40,25 +43,9 @@ public class RoundActionState extends GameState{
         offerTrack[solvedOffers].solveBonusFood();
     }
 
-    public void setPlayer(Player player){
+    public void setPlayer(Player player) {
         currPlayer = player;
     }
-
-
-    private void pick(List<Pickable> topPicks, List<Pickable> bottomPicks) {
-        for(Pickable p: topPicks){
-            p.onPick(currPlayer, buildingHandler);
-            p.removeFrom(game.getBoard().getTopRow());
-        }
-
-        for(Pickable p: bottomPicks){
-            p.onPick(currPlayer, buildingHandler);
-            p.removeFrom(game.getBoard().getBottomRow());
-        }
-
-        assignToOrderSlot(offerTrack[solvedOffers]);
-    }
-
 
     /**
      * After a player has finished his action turn, he is assigned to the correct order slot.
