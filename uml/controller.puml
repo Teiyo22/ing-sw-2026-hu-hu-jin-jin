@@ -79,6 +79,7 @@ package controller {
         class ClientController {
             - view : View
             - server : VirtualServer
+            - lobby : Lobby
 
             + connectRMI(registryName : String, ip : String, rmiPort : int) : void
             + connectTCP(ip : String, tcpPort : int) : void
@@ -90,26 +91,6 @@ package controller {
             + showRank(clientID : int, rankings : Map<Integer, Integer>) : void
             + showLeaderboard(clientID : int, leaderboard : List<LeaderboardEntry>) : void
             + confirmPick(clientID: int, topPicks : List<Card>, bottomPicks : List<Card>) : void
-        }
-
-        package model {
-            class ClientModel {
-                - tribes : Map<Integer, ClientTribe>
-                - orderTile :
-                - offerTrack :
-                - topRow : List<>
-                - bottomRow :
-            }
-
-            class ClientTribe {
-                - food : int
-                - pp : int
-                - stars : int
-                - buildingDiscount : int
-                - sustenanceDiscount : int
-                - characters : List<AbstractCard>
-                - buildings : List<AbstractBuilding>
-            }
         }
 
         package network {
@@ -156,6 +137,7 @@ package controller {
         }
 
         abstract class VirtualServer {
+            + addClient(client : VirtualClient) : void
             + createLobby(clientID :int, playerNum : int, playerName : String, totem: Totem) : void
             + joinLobby(clientID :int, lobbyID : int, playerName : String, totem: Totem) : void
             + leaveLobby(clientID : int, lobbyID : int) : void
@@ -177,13 +159,8 @@ package controller {
         class Lobby {
             - lobbyID : int
             - size : int
-            - players : Map<Integer, PlayerID>
-            - model : ClientModel
-        }
-
-        class PlayerID {
-            - name : String
-            - totem : Totem
+            - players : Map<Integer, Player>
+            - board : Board
         }
 
         package messages {
@@ -219,16 +196,14 @@ package controller {
                 }
 
                 class CreateLobbyRequest {
-                    - playerName : String
-                    - totem: Totem
+                    - player : Player
 
                     + receive(serverController : ServerController) : void
                 }
 
                 class JoinLobbyRequest {
                     - lobbyID : int
-                    - playerName : String
-                    - totem: Totem
+                    - player : Player
 
                     + receive(serverController : ServerController) : void
                 }
@@ -273,16 +248,16 @@ package controller {
 
                 class PickCardsResponse {
                     - lobbyID : int
-                    - topRowPicks : List<Card>
-                    - bottomRowPicks : List<Card>
+                    - updatedTribe : Tribe
+                    - updatedTopRow : Row
+                    - updatedBottomRow : Row
 
                     + receive(clientController : ClientController) : void
                 }
 
                 class JoinLobbyResponse {
                     - lobbyID : int
-                    - playerName : String
-                    - totem: Totem
+                    - player : Player
 
                     + receive(clientController : ClientController) : void
                 }
@@ -295,25 +270,28 @@ package controller {
 
                 class StartLobbyResponse {
                     - lobbyID : int
+                    - board : Board
+                    - tribes : Map<Integer, Tribe>
 
                     + receive(clientController : ClientController) : void
                 }
 
                 class WaitingLobbyResponse {
-                    - lobbies : Map<String, Integer>
+                    - lobbies : List<Lobby>
 
                     + receive(clientController : ClientController) : void
                 }
 
                 class LobbyInfoResponse {
-                    - lobby : Lobby
+                    - lobbyID : int
+                    - info : Map<Integer, Player>
 
                     + receive(clientController : ClientController) : void
                 }
 
                 class GetRankResponse {
                     - lobbyID : int
-                    - ranking : Map<String, Integer>
+                    - ranking : Map<Integer, Integer>
 
                     + receive(clientController : ClientController) : void
                 }
