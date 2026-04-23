@@ -18,6 +18,9 @@ import it.polimi.ingsw.model.card.event.ShamanicRitual;
 import java.lang.reflect.Type;
 
 public class CardDeserializer implements JsonDeserializer<AbstractCard> {
+    /**
+     * Provides the information about how to deserialize a card from json depending on its type.
+     * */
     @Override
     public AbstractCard deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();

@@ -7,6 +7,11 @@ import java.util.*;
 public class CardFactory {
     final static int maxEra = 3;
 
+    /**
+     * Generates the character/event cards ordered by era.
+     * @param configs contains a list of templates for the character/event cards and the associated number of copies.
+     * @return Queue of character/event cards.
+     * */
     public static Queue<AbstractCard> generateCards(List<CardConfig> configs) {
         List<List<AbstractCard>> cardsDividedByEra = new ArrayList<>();
         Queue<AbstractCard> cards = new LinkedList<>();
@@ -32,6 +37,12 @@ public class CardFactory {
         return cards;
     }
 
+    /**
+     * Generates the building cards ordered by era. The building count per era depends on the number of players
+     * @param configs contains a list of templates for the building cards and the associated number of copies.
+     * @param buildingsCountPerAge contains the number of buildings per era.
+     * @return queue of building cards.
+     * */
     public static Queue<AbstractCard> generateBuildingCards(List<CardConfig> configs, List<Integer> buildingsCountPerAge) {
         List<List<AbstractCard>> buildingsDividedByEra = new ArrayList<>();
         Queue<AbstractCard> buildings = new LinkedList<>();

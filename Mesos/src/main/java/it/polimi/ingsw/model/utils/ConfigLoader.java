@@ -13,40 +13,47 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class ConfigLoader {
-    /**It loads the offerTile from a json file
-     * @param path the path to the json file
-     * @return an array of orderTile
+    /**
+     * Loads the offerTile from a config file. The loaded configuration file depends on the player count.
+     * @param filePath the path to the file.
+     * @return an array of orderTile.
      */
-    public OfferTile[] loadOfferTile(String path){
+    public OfferTile[] loadOfferTile(String filePath){
         Gson gson= new Gson();
 
-        try(InputStream is= getClass().getResourceAsStream(path)) {
-            if(is == null) throw new RuntimeException(path + "not found");
+        try(InputStream is= getClass().getResourceAsStream(filePath)) {
+            if(is == null) throw new RuntimeException(filePath + "not found");
 
             InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
             return gson.fromJson(reader,OfferTile[].class);
         } catch (IOException e) {
-            throw new RuntimeException("Error"+path,e);
+            throw new RuntimeException("Error"+filePath,e);
         }
     }
 
-    /**It loads the orderSlot from a json file
-     * @param path is the path to the json file
-     * @return an array of orderSlot
+    /**
+     * Loads the orderSlot from a config file. The loaded configuration file depends on the player count.
+     * @param filePath is the path to the file.
+     * @return an array of orderSlot.
      */
-    public OrderSlot[] loadOrderSlot(String path){
+    public OrderSlot[] loadOrderSlot(String filePath){
         Gson gson= new Gson();
 
-        try(InputStream is= getClass().getResourceAsStream(path)){
-            if(is == null) throw new RuntimeException(path+"not found");
+        try(InputStream is= getClass().getResourceAsStream(filePath)){
+            if(is == null) throw new RuntimeException(filePath+"not found");
 
             InputStreamReader reader= new InputStreamReader(is, StandardCharsets.UTF_8);
             return gson.fromJson(reader, OrderSlot[].class);
         } catch (IOException e) {
-            throw new RuntimeException("Error"+path,e);
+            throw new RuntimeException("Error"+filePath,e);
         }
     }
 
+    /**
+     * Loads the deck configuration from a config file. The loaded configuration file depends on the player count.
+     * @param filePath is the path to the file.
+     * @return a deck configuration used to load the singular components of the deck.
+     * */
     public DeckConfig loadDeckConfig(String filePath) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(AbstractCard.class, new CardDeserializer())
