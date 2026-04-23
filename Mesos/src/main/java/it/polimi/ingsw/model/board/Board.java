@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.utils.ConfigLoader;
 
 public class Board {
     transient final Game game;
-    Deck deck;
+    transient Deck deck;
     Row topRow;
     Row bottomRow;
     OrderSlot[] orderTile;
