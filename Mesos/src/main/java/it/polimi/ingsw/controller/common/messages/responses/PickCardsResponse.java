@@ -15,17 +15,16 @@ public class PickCardsResponse extends Response {
     private List<AbstractCard> updatedTopRowPick;
     private List<AbstractCard> updatedBottomRowPick;
 
-    public PickCardsResponse(int clientID, int lobbyID,Tribe tribe, List<AbstractCard> topRowPick, List<AbstractCard> bottomRowPick){
+    public PickCardsResponse(int clientID, int lobbyID, List<AbstractCard> topRowPick, List<AbstractCard> bottomRowPick){
         super(clientID);
         this.lobbyID = lobbyID;
-        this.updatedTribe = tribe;
         this.updatedTopRowPick = topRowPick;
         this.updatedBottomRowPick = bottomRowPick;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.confirmPick(super.getClientID(), updatedTribe,updatedTopRowPick, updatedBottomRowPick);
+        clientController.confirmPick(super.getClientID(), updatedTopRowPick, updatedBottomRowPick);
     }
 }
 

@@ -7,17 +7,15 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.Map;
 
 public class LobbyInfoResponse extends Response{
-    private int lobbyID;
-    private Map<Integer, Player> info ;
+    private Lobby lobby;
 
-    public LobbyInfoResponse(int clientID ,int lobbyID, Map<Integer,Player> info){
+    public LobbyInfoResponse(int clientID ,Lobby lobby){
         super(clientID);
-        this.lobbyID = lobbyID;
-        this.info = info;
+        this.lobby = lobby;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showLobbyInfo(super.getClientID(), info);
+        clientController.showLobbyInfo(super.getClientID(), lobby);
     }
 }
