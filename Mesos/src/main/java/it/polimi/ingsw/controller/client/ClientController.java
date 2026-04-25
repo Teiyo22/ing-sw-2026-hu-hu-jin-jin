@@ -20,6 +20,7 @@ import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
     private VirtualServer server;
+    private Lobby lobby;
 
     public ClientController() {
         this.server = null;
@@ -36,8 +37,8 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, String playerName, Totem totem) {
-
+    public void setLobby(int clientID, int lobbyID, int lobbySize, Map<Integer, String> players, String playerName, Totem totem) {
+        this.lobby = new Lobby(lobbyID, lobbySize, players, playerName, totem);
     }
 
     @Override
