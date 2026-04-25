@@ -3,7 +3,11 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.messages.responses.*;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.List;
 import java.util.Map;
@@ -17,31 +21,44 @@ public class ClientTCPInterface extends VirtualClient {
 
     @Override
     public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
-
+        WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
+        clientHandler.sendMessage(response);
     }
 
     @Override
     public void showLobbyInfo(int clientID, Lobby lobby) {
-
+        LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobby );
+        clientHandler.sendMessage(response);
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, String playerName, Totem totem) {
+    public void setLobby(int clientID, int lobbyID, int playerNum, Map<Integer, String> players, String playerName, Totem totem) {
+        SetIDResponse response = new SetIDResponse(clientID, lobbyID, playerName, players, playerName, totem);
+        clientHandler.sendMessage(response);
 
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
-
+        LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
+        clientHandler.sendMessage(response);
     }
 
     @Override
-    public void showRank(int clientID, Map<Integer, Integer> rankings) {
-
+    public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
+        GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
+        clientHandler.sendMessage(response);
     }
 
     @Override
     public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+        GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
+        clientHandler.sendMessage(response);
+    }
 
+    @Override
+    public void confirmPick(int clientID, int lobbyID, List<AbstractCard> topRow, List<AbstractCard> bottomRow) {
+        PickCardsResponse response = new PickCardsResponse(clientID,lobbyID, topRow, bottomRow);
+        clientHandler.sendMessage(response);
     }
 }
