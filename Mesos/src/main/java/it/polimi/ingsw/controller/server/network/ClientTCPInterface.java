@@ -3,7 +3,9 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.*;
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
@@ -11,12 +13,19 @@ import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 
 public class ClientTCPInterface extends VirtualClient {
     private ClientHandler clientHandler;
+    private ServerController serverController;
 
-    public ClientTCPInterface(ClientHandler clientHandler) {
+    public ClientTCPInterface(ClientHandler clientHandler, ServerController serverController) {
         this.clientHandler = clientHandler;
+        this.serverController = serverController;
+    }
+
+    public void handleMessage(Request request){
+        request.receive(serverController);
     }
 
     @Override

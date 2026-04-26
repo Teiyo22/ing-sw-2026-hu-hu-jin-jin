@@ -60,7 +60,7 @@ public class ServerController extends VirtualServer {
         VirtualClient client = clients.get(clientID);
         Map<Integer, String> players = new HashMap<>();
         int lobbyID= nextLobbyID++;
-        LobbyController lobbyController = new LobbyController(clientID, lobbyID, playerNum, playerName, totem);
+        LobbyController lobbyController = new LobbyController(client, lobbyID, playerNum, playerName, totem);
 
         players.put(clientID, playerName);
         waitingLobbies.put(lobbyID, lobbyController);
@@ -147,7 +147,7 @@ public class ServerController extends VirtualServer {
     public synchronized void getRank(int clientID, int lobbyID) {
         VirtualClient client = clients.get(clientID);
         LobbyController lobby = runningLobbies.get(lobbyID);
-        client.showRank(clientID, lobby.getRank(clientID));
+        client.showRank(clientID, lobby.getRank());
     }
 
     @Override
@@ -157,10 +157,13 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void requestPick(int clientID, int lobbyID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks){
+    public synchronized void requestPick(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks){
         VirtualClient client = clients.get(clientID);
-        runningLobbies.get(lobbyID).pickCards(clientID, topPicks, bottomPicks);
-        client.confirmPick(clientID, topPicks, bottomPicks);
+        LobbyController runningLobby = runningLobbies.get(lobbyID);
+
+        runningLobby.pickCards(clientID, topPicks, bottomPicks);
+        client.confirmPick(clientID, runningLobby.getModel().getBoard().getTopRow(), runningLobby.getModel().getBoard().getBottomRow(),
+                runningLobby.getPlayerTribe(client));
     }
 
     public void start(String registryName, String ip, int tcpPort, int rmiPort) throws IOException {
