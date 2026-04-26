@@ -10,6 +10,12 @@ import java.util.Map;
 public abstract class VirtualClient implements Remote {
     protected int id;
 
+    public void setID(int clientID){
+        this.id = clientID;
+    }
+    public int getID(){
+        return id;
+    }
     public abstract void setWaitingLobbies(int clientID, List<Lobby> lobbies);
     public abstract void showLobbyInfo(int clientID, Lobby lobby);
     public abstract void setLobby(int clientID, int lobbyID, String playerName, Totem totem);
