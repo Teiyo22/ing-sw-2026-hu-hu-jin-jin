@@ -20,9 +20,9 @@ public class Game {
     private GameState gameState;
     private final BuildingHandler buildingHandler;
 
-    public Game(PlayerConfig playerConfig) {
+    public Game(PlayerConfig playerConfig, List<Player> players) {
         this.playerConfig = playerConfig;
-        this.players = new ArrayList<>();
+        this.players = players;
         this.board = new Board(this);
         this.board.initOfferTrack();
         this.board.initOrderTile();
