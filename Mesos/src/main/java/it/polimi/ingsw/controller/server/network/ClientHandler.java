@@ -16,6 +16,11 @@ public class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
 
+    public ClientHandler(Socket clientSocket, Gson gson){
+        this.socket = clientSocket;
+        this.gson = gson;
+    }
+
     @Override
     public void run() {
         String line;
