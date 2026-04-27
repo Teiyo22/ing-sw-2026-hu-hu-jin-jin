@@ -69,7 +69,7 @@ public class Game {
      * @param topPicks are the cards picked from the top row.
      * @param bottomPicks are the cards picked from the bottom row.
      * */
-    private void pick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void pick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         for(Pickable p: topPicks){
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getTopRow());
