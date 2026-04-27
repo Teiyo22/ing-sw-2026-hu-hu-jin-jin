@@ -1,0 +1,57 @@
+[
+    {
+        "type": "A",
+        "bonusFood": 3,
+        "topRowPickable": 0,
+        "bottomRowPickable": 0
+    },
+
+    {
+        "type": "B",
+        "bonusFood": 0,
+        "topRowPickable": 0,
+        "bottomRowPickable": 1
+    },
+
+    {
+        "type": "C",
+        "bonusFood": 0,
+        "topRowPickable": 1,
+        "bottomRowPickable": 0
+    },
+
+    {
+        "type": "D",
+        "bonusFood": 0,
+        "topRowPickable": 0,
+        "bottomRowPickable": 2
+    },
+
+    {
+        "type": "E",
+        "bonusFood": 0,
+        "topRowPickable": 1,
+        "bottomRowPickable": 1
+    },
+
+    {
+        "type": "F",
+        "bonusFood": 0,
+        "topRowPickable": 1,
+        "bottomRowPickable": 1
+    },
+
+    {
+        "type": "G",
+        "bonusFood": 0,
+        "topRowPickable": 2,
+        "bottomRowPickable": 0
+    },
+
+    {
+        "type": "H",
+        "bonusFood": 0,
+        "topRowPickable": 2,
+        "bottomRowPickable": 1
+    }
+]
