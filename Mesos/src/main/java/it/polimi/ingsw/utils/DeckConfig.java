@@ -1,11 +1,13 @@
 package it.polimi.ingsw.utils;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 
 public class DeckConfig {
-    private List<Integer> buildingsCountPerAge;
-    private List<CardConfig> buildingConfigs;
-    private List<CardConfig> cardConfigs;
+    @Expose private List<Integer> buildingsCountPerAge;
+    @Expose private List<CardConfig> buildingConfigs;
+    @Expose private List<CardConfig> cardConfigs;
 
     public List<CardConfig> getCardConfigs() {
         return cardConfigs;
