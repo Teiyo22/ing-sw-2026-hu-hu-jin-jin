@@ -146,7 +146,7 @@ public class ServerController extends VirtualServer {
 
     public void startServer(String ip, int tcpPort, int rmiPort) {
         try {
-            this.networkServer = new NetworkServer(this, ip, tcpPort);
+            this.networkServer = new NetworkServer(ip, tcpPort);
             this.networkServer.start();
             System.out.println("TCP Server started on" + ip + tcpPort);
         } catch (IOException e) {

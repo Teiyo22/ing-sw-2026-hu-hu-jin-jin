@@ -5,43 +5,35 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.server.ServerController;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
 
 public class NetworkServer extends Thread {
-    private String ip;
-    private int tcpPort;
     private ServerSocket serverSocket;
-    private ServerController serverController;
 
-    public NetworkServer(ServerController serverController, String ip, int tcpPort) throws IOException {
-        this.ip = ip;
-        this.tcpPort = tcpPort;
-        this.serverController = serverController;
-        serverSocket = new ServerSocket(tcpPort);
-
+    public NetworkServer(String ip, int tcpPort) throws IOException {
+        serverSocket = new ServerSocket();
+        serverSocket.bind(new InetSocketAddress(ip, tcpPort));
     }
 
     @Override
     public void run() {
-        Gson gson = new Gson();
-        Socket clientSocket = null;
-        while(true){
+        while(!Thread.currentThread().isInterrupted()){
             try {
-                if ((clientSocket = this.serverSocket.accept()) == null) break;
+                Socket clientSocket = serverSocket.accept();
+
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                ClientTCPInterface clientTCPInterface = new ClientTCPInterface(clientHandler);
+
+                clientHandler.setClientTCPInterface(clientTCPInterface);
+                clientHandler.start();
+
+                ServerController.getInstance().addClient(clientTCPInterface);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            ClientHandler clientHandler = new ClientHandler(clientSocket,gson);
-            ClientTCPInterface clientTCPInterface = new ClientTCPInterface(clientHandler, serverController);
-
-            serverController.addClient(clientTCPInterface);
-
-            clientHandler.setClientTCPInterface(clientTCPInterface);
-            clientHandler.start();
-
         }
-
     }
 }

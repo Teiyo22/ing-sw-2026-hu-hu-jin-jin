@@ -18,11 +18,9 @@ import java.util.ServiceConfigurationError;
 
 public class ClientTCPInterface extends VirtualClient {
     private ClientHandler clientHandler;
-    private ServerController serverController;
 
-    public ClientTCPInterface(ClientHandler clientHandler, ServerController serverController) {
+    public ClientTCPInterface(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.serverController = serverController;
     }
 
     public void handleMessage(Request request){
