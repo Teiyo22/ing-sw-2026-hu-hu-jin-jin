@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.player.Player;
 
 public class OfferTile {
     private transient Player assignedPlayer = null;
+    private String type;
     private int bonusFood;
     private int topRowPickable;
     private int bottomRowPickable;
