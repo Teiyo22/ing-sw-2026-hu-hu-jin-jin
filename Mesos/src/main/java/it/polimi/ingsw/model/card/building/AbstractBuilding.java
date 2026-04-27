@@ -42,6 +42,10 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         row.addBuilding(this);
     }
 
+    public int getPP() {
+        return pp;
+    }
+
     @Override
     public void removeFrom(Row row){
         row.getBuildingCards().remove(this);
