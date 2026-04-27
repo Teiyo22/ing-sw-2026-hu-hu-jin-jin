@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.util.List;
 
 public class DeckConfig {
-    @Expose private List<Integer> buildingsCountPerAge;
+    @Expose private int[][] buildingsCountPerAge;
     @Expose private List<CardConfig> buildingConfigs;
     @Expose private List<CardConfig> cardConfigs;
 
@@ -17,7 +17,7 @@ public class DeckConfig {
         return buildingConfigs;
     }
 
-    public List<Integer> getBuildingsCountPerAge() {
+    public int[][] getBuildingsCountPerAge() {
         return buildingsCountPerAge;
     }
 }

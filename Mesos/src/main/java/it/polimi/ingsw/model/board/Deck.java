@@ -16,7 +16,7 @@ public class Deck {
     private Queue<AbstractCard> charEventCards;
     private Queue<AbstractCard> buildingCards;
 
-    private List<Integer> ageBuildingsCount;
+    private int[] ageBuildingsCount;
     private int currentEra = 0;
 
     public Deck(PlayerConfig playerConfig, Board board) {
@@ -31,7 +31,7 @@ public class Deck {
      * */
     public void init() {
         DeckConfig deckConfig = new ConfigLoader().loadDeckConfig(playerConfig.getDeckConfigFile());
-        ageBuildingsCount = deckConfig.getBuildingsCountPerAge();
+        ageBuildingsCount = deckConfig.getBuildingsCountPerAge()[playerConfig.getNum() - 2];
         initCards(deckConfig.getCardConfigs());
         initBuildingCards(deckConfig.getBuildingConfigs());
     }
@@ -66,7 +66,7 @@ public class Deck {
     public List<AbstractCard> drawBuildingCards() {
         List<AbstractCard> buildings = new ArrayList<>();
 
-        for (int i = 0; i < ageBuildingsCount.get(currentEra); i++) {
+        for (int i = 0; i < ageBuildingsCount[currentEra]; i++) {
             if (!buildingCards.isEmpty())
                 buildings.add(buildingCards.poll());
             else {

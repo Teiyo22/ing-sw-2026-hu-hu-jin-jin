@@ -43,7 +43,7 @@ public class CardFactory {
      * @param buildingsCountPerAge contains the number of buildings per era.
      * @return queue of building cards.
      * */
-    public static Queue<AbstractCard> generateBuildingCards(List<CardConfig> configs, List<Integer> buildingsCountPerAge, int playerNum) {
+    public static Queue<AbstractCard> generateBuildingCards(List<CardConfig> configs, int[] buildingsCountPerAge, int playerNum) {
         List<List<AbstractCard>> buildingsDividedByEra = new ArrayList<>();
         Queue<AbstractCard> buildings = new LinkedList<>();
 
@@ -60,7 +60,7 @@ public class CardFactory {
 
             for (int i = 0; i < maxEra; i++) {
                 Collections.shuffle(buildingsDividedByEra.get(i));
-                for (int j = 0; i < buildingsCountPerAge.get(i); i++)
+                for (int j = 0; i < buildingsCountPerAge[i]; i++)
                     buildings.add(buildingsDividedByEra.get(i).get(j));
             }
         }
