@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.server.ServerController;
 
 public class StartLobbyRequest extends Request{
@@ -7,6 +8,7 @@ public class StartLobbyRequest extends Request{
 
     public StartLobbyRequest(int clientID, int lobbyID) {
         super(clientID);
+        this.type = MessageType.START_LOBBY;
         this.lobbyID = lobbyID;
     }
 

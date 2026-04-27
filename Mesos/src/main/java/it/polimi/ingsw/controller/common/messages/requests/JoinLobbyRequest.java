@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.player.Totem;
 
@@ -10,6 +11,7 @@ public class JoinLobbyRequest extends Request {
 
     public JoinLobbyRequest(int clientID, int lobbyID, String playerName, Totem totem) {
         super(clientID);
+        this.type = MessageType.JOIN_LOBBY;
         this.lobbyID = lobbyID;
         this.playerName = playerName;
         this.totem = totem;

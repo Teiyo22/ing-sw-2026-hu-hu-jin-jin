@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.server.ServerController;
 
 public class LeaveLobbyRequest extends Request{
@@ -7,6 +8,7 @@ public class LeaveLobbyRequest extends Request{
 
     public LeaveLobbyRequest(int clientID, int lobbyID) {
         super(clientID);
+        this.type = MessageType.LEAVE_LOBBY;
         this.lobbyID = lobbyID;
     }
 
