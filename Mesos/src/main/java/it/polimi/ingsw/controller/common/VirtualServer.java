@@ -8,7 +8,7 @@ import java.util.List;
 
 import java.rmi.Remote;
 
-public abstract class VirtualServer extends UnicastRemoteObject implements Remote {
+public abstract class VirtualServer implements Remote {
     public abstract void addClient(VirtualClient client);
     public abstract void createLobby(int clientID, int playerNum, String playerName, Totem totem);
     public abstract void joinLobby(int clientID, int lobbyID, String playerName, Totem totem);

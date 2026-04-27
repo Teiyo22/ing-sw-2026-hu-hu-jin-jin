@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
 import java.io.IOException;
@@ -174,6 +175,7 @@ public class ServerController extends VirtualServer {
         try {
             Registry registry = LocateRegistry.createRegistry(rmiPort);
             registry.rebind("mesos_server", this);
+            UnicastRemoteObject.exportObject(this, rmiPort);
             System.out.println("RMI server started on" + ip + rmiPort);
         } catch (RemoteException e) {
             System.err.println("Failed to start RMI server:" + e.getMessage());
