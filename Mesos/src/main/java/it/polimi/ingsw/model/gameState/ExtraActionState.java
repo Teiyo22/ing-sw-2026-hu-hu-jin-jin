@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.List;
 
 public class ExtraActionState extends GameState {
-    private Player currPlayer = null;
     private int solvedExtraActions = -1;
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {
@@ -17,10 +16,6 @@ public class ExtraActionState extends GameState {
 
     public void setCurrPlayer(Player player){
        currPlayer = player;
-    }
-
-    public Player getCurrPlayer(){
-        return currPlayer;
     }
 
     /**

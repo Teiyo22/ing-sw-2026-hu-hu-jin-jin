@@ -2,10 +2,13 @@ package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.player.Player;
 
 public abstract class GameState {
     final protected Game game;
     final protected BuildingHandler buildingHandler;
+
+    Player currPlayer = null;
 
     public GameState(Game game, BuildingHandler buildingHandler) {
         this.game = game;
@@ -17,4 +20,8 @@ public abstract class GameState {
     }
 
     public abstract void update();
+
+    public Player getCurrPlayer() {
+        return currPlayer;
+    }
 }
