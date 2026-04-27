@@ -62,7 +62,7 @@ public class GameEndState extends GameState {
      * Assigns the bonus PP provided by the tribe's builders, inventors, and artists.
      * */
     private void assignBonusPP(Player p) {
-        int bonusPP = bonusPP = p.getTribe().getBuilderBonusPP() +
+        int bonusPP = p.getTribe().getBuilderBonusPP() +
                                 p.getTribe().getInventorBonusPP() +
                                 10 * (p.getTribe().getArtistCount()/2);
         p.addPP(bonusPP);
