@@ -39,10 +39,12 @@ class RoundStartStateTest {
         roundStartState.update();
         assertNotNull(game.getBoard().getOrderTile()[0].getAssignedPlayer());
         assertNotNull(game.getBoard().getOrderTile()[1].getAssignedPlayer());
+        assertEquals(game.getBoard().getOrderTile()[0].getAssignedPlayer(), roundStartState.getCurrPlayer());
 
         ot1.setPlayer(p1);
         roundStartState.update();
         assertNull(game.getBoard().getOrderTile()[0].getAssignedPlayer());
+        assertEquals(game.getBoard().getOrderTile()[1].getAssignedPlayer(), roundStartState.getCurrPlayer());
 
         ot2.setPlayer(p2);
         roundStartState.update();
