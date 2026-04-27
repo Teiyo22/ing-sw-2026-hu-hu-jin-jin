@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.server;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.controller.common.messages.responses.Response;
 import it.polimi.ingsw.controller.server.network.NetworkServer;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
