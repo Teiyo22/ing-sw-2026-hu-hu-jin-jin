@@ -6,8 +6,9 @@ import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.board.Row;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -20,30 +21,46 @@ import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
     private VirtualServer server;
-    private Lobby lobby;
+    private Lobby currLobby;
+    private Map<Integer, Lobby> waitingLobbies;
+    private final Object lobbiesLock = new Object();
 
     public ClientController() {
         this.server = null;
     }
 
     @Override
-    public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
-
+    public void setWaitingLobbies(int clientID, Map<Integer, Lobby> lobbies) {
+        synchronized (lobbiesLock) {
+            waitingLobbies = lobbies;
+        }
     }
 
     @Override
-    public void showLobbyInfo(int clientID, Lobby lobby) {
-
+    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+        synchronized (lobbiesLock) {
+            if(waitingLobbies.containsKey(lobbyID)) {
+                waitingLobbies.get(lobbyID).setPlayers(players);
+            }
+        }
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, int lobbySize, Map<Integer, String> players, String playerName, Totem totem) {
-        this.lobby = new Lobby(lobbyID, lobbySize, players, playerName, totem);
+    public void setLobby(int clientID, int lobbyID, int lobbySize, Player player) {
+        synchronized (lobbiesLock) {
+            if (waitingLobbies.containsKey(lobbyID)) {
+                currLobby = waitingLobbies.get(lobbyID);
+                currLobby.addPlayer(clientID, player);
+            }
+        }
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
-
+        synchronized (lobbiesLock) {
+            currLobby = null;
+            waitingLobbies.get(lobbyID).removePlayer(clientID);
+        }
     }
 
     @Override
@@ -57,10 +74,9 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void confirmPick(int clientID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks) {
+    public void confirmPick(int clientID, Row topRow, Row bottomRow, Tribe tribe) {
 
     }
-
 
     /** Connecting to the server using RMI.
      * @param registryName the name of the server in the registry.
