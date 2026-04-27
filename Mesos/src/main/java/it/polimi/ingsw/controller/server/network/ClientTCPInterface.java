@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
@@ -66,8 +67,8 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void confirmPick(int clientID, int lobbyID, List<AbstractCard> topRow, List<AbstractCard> bottomRow) {
-        PickCardsResponse response = new PickCardsResponse(clientID,lobbyID, topRow, bottomRow);
+    public void confirmPick(int clientID, int lobbyID, Row topRow, Row bottomRow, Tribe tribe) {
+        PickCardsResponse response = new PickCardsResponse(clientID,lobbyID, topRow, bottomRow, tribe);
         clientHandler.sendMessage(response);
     }
 }

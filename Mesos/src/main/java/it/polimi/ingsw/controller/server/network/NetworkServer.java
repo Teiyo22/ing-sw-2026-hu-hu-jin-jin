@@ -35,6 +35,9 @@ public class NetworkServer extends Thread {
             }
             ClientHandler clientHandler = new ClientHandler(clientSocket,gson);
             ClientTCPInterface clientTCPInterface = new ClientTCPInterface(clientHandler, serverController);
+
+            serverController.addClient(clientTCPInterface);
+
             clientHandler.setClientTCPInterface(clientTCPInterface);
             clientHandler.start();
 
