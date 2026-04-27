@@ -52,7 +52,7 @@ public class Tribe {
     }
 
     public int getInventorCount() {
-        return inventors.size();
+        return inventors.values().stream().reduce(0, Integer::sum);
     }
 
     public int getNumInventorType(InventorType type) {
