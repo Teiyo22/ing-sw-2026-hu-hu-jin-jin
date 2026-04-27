@@ -188,14 +188,4 @@ public class ServerController extends VirtualServer {
         System.out.println("Server started");
     }
 
-    public void setUpRMI(int rmiPort, String registryName){
-        try{
-            Registry registry = LocateRegistry.createRegistry(rmiPort);
-            VirtualServer stub = (VirtualServer) UnicastRemoteObject.exportObject(this,0);
-            registry.rebind(registryName, stub);
-            System.out.println("Server registered on" + registryName);
-        }catch (RemoteException e){
-            System.err.println("Error RMI:" + e.getMessage());
-        }
-    }
 }
