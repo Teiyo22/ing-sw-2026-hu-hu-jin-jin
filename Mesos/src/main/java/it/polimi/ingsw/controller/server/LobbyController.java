@@ -64,7 +64,7 @@ public class LobbyController {
                 for(AbstractBuilding card: model.getBoard().getTopRow().getBuildingCards()){
                     if(card.getID() == pickedID){
 
-                        foundCard = (Pickable)card;
+                        foundCard = card;
                         break;
                     }
                 }
@@ -88,7 +88,7 @@ public class LobbyController {
                 for(AbstractBuilding card: model.getBoard().getBottomRow().getBuildingCards()){
                     if(card.getID() == pickedID){
 
-                        foundCard = (Pickable)card;
+                        foundCard = card;
                         break;
                     }
                 }
@@ -101,7 +101,7 @@ public class LobbyController {
     }
 
     public void setID(int id) {
-        this.id = id;
+        this.lobbyID = id;
     }
 
     public void setModel(Game game){
@@ -150,7 +150,7 @@ public class LobbyController {
            for(VirtualClient client: clients.keySet()){
                if(clients.get(client).getName() == leaderBoard.get(i).getName(){
 
-                   rank.put(client.getID, leaderBoard.get(i).getRank());
+                   rank.put(client.getID(), leaderBoard.get(i).getRank());
                    break;
                }
            }
