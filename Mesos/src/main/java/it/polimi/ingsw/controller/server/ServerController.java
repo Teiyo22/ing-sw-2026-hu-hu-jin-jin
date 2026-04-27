@@ -47,9 +47,9 @@ public class ServerController extends VirtualServer {
 
     @Override
     public synchronized void addClient(VirtualClient client) {
-        int clientID = nextClientID++;
-        client.setID(clientID);
-        clients.put(clientID, client);
+        client.setID(nextClientID);
+        clients.put(nextClientID, client);
+        nextClientID++;
     }
 
     @Override
