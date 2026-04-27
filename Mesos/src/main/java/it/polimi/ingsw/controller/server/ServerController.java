@@ -145,25 +145,20 @@ public class ServerController extends VirtualServer {
 
     @Override
     public synchronized void getRank(int clientID, int lobbyID) {
-        VirtualClient client = clients.get(clientID);
         LobbyController lobby = runningLobbies.get(lobbyID);
-        client.showRank(clientID, lobby.getRank());
+        lobby.showRank(clientID);
     }
 
     @Override
-    public void getLeaderboard(int clientID, int playerNum){
+    public void getLeaderboard(int clientID, int playerNum) {
 
 
     }
 
     @Override
-    public synchronized void requestPick(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks){
-        VirtualClient client = clients.get(clientID);
-        LobbyController runningLobby = runningLobbies.get(lobbyID);
-
-        runningLobby.pickCards(client, topPicks, bottomPicks);
-        client.confirmPick(clientID, lobbyID, runningLobby.getModel().getBoard().getTopRow(), runningLobby.getModel().getBoard().getBottomRow(),
-                runningLobby.getPlayerTribe(client));
+    public synchronized void requestPick(int clientID, int lobbyID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks) {
+        LobbyController lobby = runningLobbies.get(lobbyID);
+        lobby.pickCards(clientID, topPicks, bottomPicks);
     }
 
     public void startServer(String ip, int tcpPort, int rmiPort) {
