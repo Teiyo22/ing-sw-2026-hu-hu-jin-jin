@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public class RoundStartState extends GameState {
-    private Player currPlayer = null;
     private int assignedSlots = -1;
 
     public RoundStartState(Game game, BuildingHandler buildingHandler) {

@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.List;
 
 public class RoundActionState extends GameState{
-    private Player currPlayer = null;
     private final OfferTile[] offerTrack;
 
     private int solvedOffers = 0;
