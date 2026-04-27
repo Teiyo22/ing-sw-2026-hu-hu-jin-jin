@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.card.building.cardPick.InventorPairBuilding;
+import it.polimi.ingsw.model.card.building.cardPick.InvetorPairBuildingTest;
 import it.polimi.ingsw.model.card.character.Builder;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
@@ -61,21 +63,25 @@ class GameEndStateTest {
         players.add(new Player("Ciccio", Totem.BLACK));
         players.add(new Player("Gigio", Totem.WHITE));
         players.add(new Player("Alice", Totem.WHITE));
+        players.add(new Player("Bob", Totem.WHITE));
 
-        g = new Game(PlayerConfig.THREE, players);
+        g = new Game(PlayerConfig.FOUR, players);
         gameEndState = new GameEndState(g, new BuildingHandler());
         g.setGameState(gameEndState);
 
         Player p0 = players.get(0);
         Player p1 = players.get(1);
         Player p2 = players.get(2);
+        Player p3 = players.get(3);
 
         p0.setPP(0);
         p1.setPP(0);
         p2.setPP(0);
+        p3.setPP(0);
         p0.setFood(0);
         p1.setFood(0);
         p2.setFood(0);
+        p3.setFood(0);
 
         p0.getTribe().addBuilder(new Builder("Builder", 1, false, 2, 2));
         p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FLETCHER));
@@ -83,6 +89,7 @@ class GameEndStateTest {
         p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
         p2.getTribe().addArtist();
         p2.getTribe().addArtist();
+        p3.getTribe().addBuilding(new InventorPairBuilding("InventorPairBuilding", 1, false, 0, 2));
 
         g.getBoard().getTopRow().getEventCards().clear();
         g.getBoard().getTopRow().getSustenanceEventCards().clear();
@@ -91,8 +98,9 @@ class GameEndStateTest {
 
         gameEndState.update();
 
-//        assertEquals(2, p0.getPP());
+        assertEquals(2, p0.getPP());
         assertEquals(6, p1.getPP());
         assertEquals(10, p2.getPP());
+        assertEquals(2, p3.getPP());
     }
 }
