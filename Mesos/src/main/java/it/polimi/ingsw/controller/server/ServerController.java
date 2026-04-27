@@ -166,13 +166,26 @@ public class ServerController extends VirtualServer {
                 runningLobby.getPlayerTribe(client));
     }
 
-    public void start(String registryName, String ip, int tcpPort, int rmiPort) throws IOException {
-        this.networkServer = new NetworkServer(this, ip, tcpPort);
-        this.networkServer.start();
-        System.out.println("RMI Server started on" + ip + tcpPort);
+    public void startServer(String ip, int tcpPort, int rmiPort) {
+        try {
+            this.networkServer = new NetworkServer(this, ip, tcpPort);
+            this.networkServer.start();
+            System.out.println("TCP Server started on" + ip + tcpPort);
+        } catch (IOException e) {
+            System.err.println("Failed to Start TCP Server:" + e.getMessage());
+            System.exit(-1);
+        }
 
-        setUpRMI(rmiPort, registryName);
-        System.out.println("RMI server started on" + ip + rmiPort);
+        try {
+            Registry registry = LocateRegistry.createRegistry(rmiPort);
+            registry.rebind("mesos_server", this);
+            System.out.println("RMI server started on" + ip + rmiPort);
+        } catch (RemoteException e) {
+            System.err.println("Failed to start RMI server:" + e.getMessage());
+            System.exit(-1);
+        }
+
+        System.out.println("Server started");
     }
 
     public void setUpRMI(int rmiPort, String registryName){
