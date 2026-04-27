@@ -16,7 +16,7 @@ public abstract class VirtualClient implements Remote {
     public int getID(){
         return id;
     }
-    public abstract void setWaitingLobbies(int clientID, Map<Integer, Lobby> lobbies);
+    public abstract void setWaitingLobbies(int clientID, List<Lobby> lobbies);
     public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
     public abstract void setLobby(int clientID, int lobbyID, Player player);
     public abstract void removeFromLobby(int clientID, int lobbyID);

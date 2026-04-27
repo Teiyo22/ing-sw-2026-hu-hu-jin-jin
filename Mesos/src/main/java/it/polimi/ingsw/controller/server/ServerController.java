@@ -27,7 +27,7 @@ public class ServerController extends VirtualServer {
     private int nextClientID = 1;
     private int nextLobbyID = 1;
 
-    private ServerController(){
+    private ServerController() {
         this.clients = new HashMap<>();
         this.waitingLobbies = new HashMap<>();
         this.runningLobbies = new HashMap<>();
@@ -35,13 +35,13 @@ public class ServerController extends VirtualServer {
     }
 
     public static synchronized ServerController getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new ServerController();
         }
         return instance;
     }
 
-    public void broadcast(Response response){
+    public void broadcast(Response response) {
 
     }
 
@@ -53,34 +53,30 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void createLobby(int clientID, int playerNum, String playerName, Totem totem) {
+    public synchronized void createLobby(int clientID, int playerNum, Player player) {
         VirtualClient client = clients.get(clientID);
         Map<Integer, String> players = new HashMap<>();
-        int lobbyID= nextLobbyID++;
-        LobbyController lobbyController = new LobbyController(client, lobbyID, playerNum, playerName, totem);
 
-        players.put(clientID, playerName);
-        waitingLobbies.put(lobbyID, lobbyController);
+        LobbyController lobbyController = new LobbyController(nextLobbyID);
+        nextLobbyID++;
+
+        lobbyController.addPlayer(client, player);
+
+        waitingLobbies.put(lobbyController.getID(), lobbyController);
         client.setLobby(clientID, lobbyID, playerNum, players, playerName, totem);
     }
 
     @Override
-    public synchronized void joinLobby(int clientID, int lobbyID, String playerName, Totem totem) {
+    public synchronized void joinLobby(int clientID, int lobbyID, Player player) {
         VirtualClient client = clients.get(clientID);
         Map<Integer, String> players = new HashMap<>();
 
-        if(waitingLobbies.containsKey(lobbyID)){
+        if (waitingLobbies.containsKey(lobbyID)) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
-            lobbyController.addPlayer(clients.get(clientID), playerName, totem);
-            Map<VirtualClient, String> lobbyClients = lobbyController.getClients();
+            lobbyController.addPlayer(clients.get(clientID), player);
 
-            for(VirtualClient virtualClient : lobbyClients.keySet()){
-                players.put(virtualClient.getID(),lobbyClients.get(virtualClient));
-            }
-
-            client.setLobby(clientID, lobbyID, lobbyController.getPlayerNum(), players, playerName, totem);
-
-        }else{
+            lobbyController.joinLobby(clientID, player);
+        } else {
             System.err.println("Lobby not found or already started");
         }
 
@@ -92,18 +88,17 @@ public class ServerController extends VirtualServer {
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
         lobbyController.removePlayer(clients.get(clientID));
 
-        if(lobbyController.getClients().isEmpty()){
+        if (lobbyController.getClients().isEmpty())
             waitingLobbies.remove(lobbyID);
-        }
 
         client.removeFromLobby(clientID, lobbyID);
     }
 
     @Override
     public synchronized void startLobby(int clientID, int lobbyID) {
-        if(waitingLobbies.containsKey(lobbyID)){
+        if (waitingLobbies.containsKey(lobbyID)) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
-            waitingLobbies.remove(lobbyID,lobbyController);
+            waitingLobbies.remove(lobbyID, lobbyController);
             runningLobbies.put(lobbyID, lobbyController);
 
             lobbyController.startLobby();
@@ -115,8 +110,8 @@ public class ServerController extends VirtualServer {
         VirtualClient client = clients.get(clientID);
         List<Lobby> lobbies = new ArrayList<>();
 
-        for(LobbyController lobbyController : waitingLobbies.values()) {
-            Lobby lobby = new Lobby(lobbyController.getID(), lobbyController.getPlayerNum());
+        for (LobbyController lobbyController : waitingLobbies.values()) {
+            Lobby lobby = new Lobby(lobbyController.getID(), lobbyController.getSize());
             lobbies.add(lobby);
         }
         client.setWaitingLobbies(clientID, lobbies);
