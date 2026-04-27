@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller.client;
 
+import it.polimi.ingsw.controller.client.network.NetworkClient;
+import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -7,14 +9,21 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Totem;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
     private VirtualServer server;
+    private Lobby lobby;
 
     public ClientController() {
-
+        this.server = null;
     }
 
     @Override
@@ -28,8 +37,8 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, String playerName, Totem totem) {
-
+    public void setLobby(int clientID, int lobbyID, int lobbySize, Map<Integer, String> players, String playerName, Totem totem) {
+        this.lobby = new Lobby(lobbyID, lobbySize, players, playerName, totem);
     }
 
     @Override
@@ -52,11 +61,34 @@ public class ClientController extends VirtualClient{
 
     }
 
-    public void connectRMI(String registryName, String ip, int rmiPort){
 
+    /** Connecting to the server using RMI.
+     * @param registryName the name of the server in the registry.
+     * */
+    public void connectRMI(String registryName, String ip, int rmiPort){
+        try {
+            Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
+            this.server = (VirtualServer) registry.lookup(registryName);
+            server.addClient(this);
+        } catch (RemoteException e) {
+            System.out.println("Error in connecting RMI server: " + e.getMessage());
+        } catch (NotBoundException e) {
+            System.out.println("Error in connecting RMI server: " + e.getMessage());
+        }
     }
 
-    public void connectTCP(String ip, int tcpPort){
-
+    /** Connecting to the server using TCP.
+     * Creates the NetworkClient and the ServerTCPInterface, which initializes the server reference in the first.
+     * */
+    public void connectTCP(String ip, int tcpPort) {
+        NetworkClient networkClient = new NetworkClient();
+        this.server = new ServerTCPInterface(this, networkClient);
+        try {
+            networkClient.connect(ip, tcpPort);
+        } catch (UnknownHostException e) {
+            System.out.println("Error in connecting TCP server: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error in connecting TCP server: " + e.getMessage());
+        }
     }
 }
