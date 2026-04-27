@@ -41,10 +41,6 @@ public class ServerController extends VirtualServer {
         return instance;
     }
 
-    public void broadcast(Response response) {
-
-    }
-
     @Override
     public synchronized void addClient(VirtualClient client) {
         client.setID(nextClientID);
