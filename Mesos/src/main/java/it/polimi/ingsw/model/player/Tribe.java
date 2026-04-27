@@ -189,10 +189,7 @@ public class Tribe {
      * Return the character with the minimum count.
      */
     public int getMinChar() {
-        int min = 0;
-        if (getInventorCount() < min) {
-            min = getInventorCount();
-        }
+        int min = getInventorCount();
         if (getShamanCount() < min) {
             min = getShamanCount();
         }
