@@ -26,7 +26,10 @@ public class OrderSlot {
      * Increases/decreases the food of the player assigned to this slot depending on the foodDelta.
      * */
     public void solveDeltaFood(){
-        assignedPlayer.addFood(foodDelta);
+        if(getAssignedPlayer().getFood() + foodDelta < 0)
+            getAssignedPlayer().addPP(-2);
+        else
+            getAssignedPlayer().addFood(foodDelta);
     }
 
 }
