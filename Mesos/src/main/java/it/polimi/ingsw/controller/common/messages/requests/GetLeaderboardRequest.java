@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.server.ServerController;
 
 public class GetLeaderboardRequest extends Request {
@@ -7,6 +8,7 @@ public class GetLeaderboardRequest extends Request {
 
     public GetLeaderboardRequest(int clientID, int playerNum) {
         super(clientID);
+        this.type = MessageType.GET_LEADERBOARD;
         this.playerNum = playerNum;
     }
 
