@@ -10,7 +10,16 @@ public class PickCardsRequest extends Request{
     private List<AbstractCard> topRowPicks;
     private List<AbstractCard> bottomRowPicks;
 
+    public PickCardsRequest(int clientID, int lobbyID, List<AbstractCard> topRowPicks, List<AbstractCard> bottomRowPicks) {
+        super(clientID);
+        this.lobbyID = lobbyID;
+        this.topRowPicks = topRowPicks;
+        this.bottomRowPicks = bottomRowPicks;
+    }
+
     @Override
-    public void receive(ServerController serverController){}
+    public void receive(ServerController serverController){
+        serverController.requestPick(super.getClientID(), lobbyID, topRowPicks, bottomRowPicks);
+    }
 
 }
