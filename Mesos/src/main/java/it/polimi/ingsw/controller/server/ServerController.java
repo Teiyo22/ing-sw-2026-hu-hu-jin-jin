@@ -86,12 +86,10 @@ public class ServerController extends VirtualServer {
     public synchronized void leaveLobby(int clientID, int lobbyID) {
         VirtualClient client = clients.get(clientID);
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
-        lobbyController.removePlayer(clients.get(clientID));
+        lobbyController.removePlayer(client);
 
-        if (lobbyController.getClients().isEmpty())
+        if (lobbyController.getPlayers().isEmpty())
             waitingLobbies.remove(lobbyID);
-
-        client.removeFromLobby(clientID, lobbyID);
     }
 
     @Override
