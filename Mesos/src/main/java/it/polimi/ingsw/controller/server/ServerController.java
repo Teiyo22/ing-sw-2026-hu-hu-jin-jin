@@ -53,13 +53,13 @@ public class ServerController extends VirtualServer {
         VirtualClient client = clients.get(clientID);
         Map<Integer, String> players = new HashMap<>();
 
-        LobbyController lobbyController = new LobbyController(nextLobbyID);
+        LobbyController lobbyController = new LobbyController(nextLobbyID, playerNum);
         nextLobbyID++;
 
         lobbyController.addPlayer(client, player);
+        lobbyController.joinLobby(clientID, player);
 
         waitingLobbies.put(lobbyController.getID(), lobbyController);
-        client.setLobby(clientID, lobbyID, playerNum, players, playerName, totem);
     }
 
     @Override
