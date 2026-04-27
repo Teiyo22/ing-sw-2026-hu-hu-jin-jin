@@ -42,9 +42,7 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, int playerNum, Map<Integer, String> players, String playerName, Totem totem) {
-        SetIDResponse response = new SetIDResponse(clientID, lobbyID, playerName, players, playerName, totem);
-        clientHandler.sendMessage(response);
+    public void setLobby(int clientID, int lobbyID, Player player) {
 
     }
 
