@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.utils.ConfigLoader;
+import it.polimi.ingsw.utils.ConfigLoader;
 
 public class Board {
     transient final Game game;

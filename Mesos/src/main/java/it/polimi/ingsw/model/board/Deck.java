@@ -2,7 +2,10 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.PlayerConfig;
-import it.polimi.ingsw.model.utils.*;
+import it.polimi.ingsw.utils.CardConfig;
+import it.polimi.ingsw.utils.CardFactory;
+import it.polimi.ingsw.utils.ConfigLoader;
+import it.polimi.ingsw.utils.DeckConfig;
 
 import java.util.*;
 

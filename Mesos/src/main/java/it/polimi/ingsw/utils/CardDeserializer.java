@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.utils;
+package it.polimi.ingsw.utils;
 
 import com.google.gson.*;
 import it.polimi.ingsw.model.card.AbstractCard;
