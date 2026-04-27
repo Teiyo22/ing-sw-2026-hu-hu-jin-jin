@@ -60,6 +60,5 @@ public class RoundActionState extends GameState{
 
         solvedOffers++;
         assignedPlayers++;
-        update();
     }
 }
