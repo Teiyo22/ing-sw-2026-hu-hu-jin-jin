@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.card.AbstractCard;
 
 import java.rmi.Remote;

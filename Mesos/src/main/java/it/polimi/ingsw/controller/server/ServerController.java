@@ -4,12 +4,9 @@ import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
-import it.polimi.ingsw.controller.server.network.ClientTCPInterface;
 import it.polimi.ingsw.controller.server.network.NetworkServer;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.model.player.Player;
 
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -18,7 +15,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 public class ServerController extends VirtualServer {
@@ -129,18 +125,16 @@ public class ServerController extends VirtualServer {
     @Override
     public synchronized void getLobbyInfo(int clientID, int lobbyID) {
         VirtualClient client = clients.get(clientID);
-        Map<Integer, String> players = new HashMap<>();
+        Map<Integer, Player> players = new HashMap<>();
 
-        if(waitingLobbies.containsKey(lobbyID)){
+        if (waitingLobbies.containsKey(lobbyID)) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
-            Map<VirtualClient, String> lobbyClients = lobbyController.getClients();
 
-            for(VirtualClient virtualClient : lobbyClients.keySet()){
-                players.put(virtualClient.getID(),lobbyClients.get(virtualClient));
+            for (VirtualClient virtualClient : lobbyController.getPlayers().keySet()) {
+                players.put(virtualClient.getID(), lobbyController.getPlayers().get(virtualClient));
             }
 
-            Lobby lobby = new Lobby(lobbyController.getID(), lobbyController.getPlayerNum(), players);
-            client.showLobbyInfo(clientID,lobby);
+            client.showLobbyInfo(clientID, lobbyID, players);
         }
     }
 
