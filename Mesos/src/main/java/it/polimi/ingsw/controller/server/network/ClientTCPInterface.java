@@ -29,7 +29,7 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, int lobbySize, Player player) {
+    public void setLobby(int clientID, int lobbyID, Player player) {
 
     }
 

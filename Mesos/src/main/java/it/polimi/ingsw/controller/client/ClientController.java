@@ -46,7 +46,7 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, int lobbySize, Player player) {
+    public void setLobby(int clientID, int lobbyID, Player player) {
         synchronized (lobbiesLock) {
             if (waitingLobbies.containsKey(lobbyID)) {
                 currLobby = waitingLobbies.get(lobbyID);
