@@ -12,8 +12,9 @@ public class LobbyController {
     private Game model;
     private Map<VirtualClient, Player> players;
 
-    public LobbyController(int id) {
+    public LobbyController(int id, int size) {
         this.id = id;
+        this.size = size;
     }
 
     public void addPlayer(VirtualClient client, Player player) {
