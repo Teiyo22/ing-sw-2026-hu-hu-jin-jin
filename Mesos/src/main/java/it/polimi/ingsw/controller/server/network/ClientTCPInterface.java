@@ -24,7 +24,7 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     public void handleMessage(Request request){
-        request.receive(serverController);
+        request.receive(ServerController.getInstance());
     }
 
     @Override
@@ -34,14 +34,15 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void showLobbyInfo(int clientID, Lobby lobby) {
-        LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobby );
+    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+        LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
         clientHandler.sendMessage(response);
     }
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
-
+        JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
+    public void showRank(int clientID, int lobbyID,  Map<Integer, Integer> rankings) {
         GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
         clientHandler.sendMessage(response);
     }
@@ -63,8 +64,8 @@ public class ClientTCPInterface extends VirtualClient {
     }
 
     @Override
-    public void confirmPick(int clientID, int lobbyID, Row topRow, Row bottomRow, Tribe tribe) {
-        PickCardsResponse response = new PickCardsResponse(clientID,lobbyID, topRow, bottomRow, tribe);
+    public void confirmPick(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe)  {
+        PickCardsResponse response = new PickCardsResponse(clientID, updatedTopRow, updatedBottomRow, updatedTribe);
         clientHandler.sendMessage(response);
     }
 }
