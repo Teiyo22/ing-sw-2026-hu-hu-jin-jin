@@ -5,12 +5,10 @@ import it.polimi.ingsw.model.card.AbstractCard;
 
 public class CardConfig {
     @Expose private AbstractCard card;
-    @Expose private int quantity;
-    @Expose private int requiredPlayers;
+    @Expose private int[] quantity;
 
     public AbstractCard getCard() { return card; }
 
-    public Integer getQuantity() { return quantity; }
+    public int[] getQuantity() { return quantity; }
 
-    public Integer getRequiredPlayers() { return requiredPlayers; }
 }

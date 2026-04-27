@@ -93,7 +93,7 @@ public class Deck {
      * @param configs contains a list of templates for the character/event cards and the associated number of copies.
      * */
     private void initCards(List<CardConfig> configs) {
-        charEventCards = CardFactory.generateCards(configs);
+        charEventCards = CardFactory.generateCards(configs, playerConfig.getNum());
     }
 
 
@@ -104,7 +104,7 @@ public class Deck {
      * @param configs contains a list of the templates for the building cards and the associated number of copies.
      * */
     private void initBuildingCards(List<CardConfig> configs) {
-        buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount);
+        buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount, playerConfig.getNum());
     }
 
     public Queue<AbstractCard> getCharEventCards() {

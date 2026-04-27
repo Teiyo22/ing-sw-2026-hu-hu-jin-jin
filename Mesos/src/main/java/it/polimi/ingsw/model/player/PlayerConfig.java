@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.player;
 
 public enum PlayerConfig {
-    TWO(2, "/configs/deck/two.json", "/configs/offerTrack/two.json", "/configs/orderTile/two.json"),
-    THREE(3, "/configs/deck/three.json", "/configs/offerTrack/three.json", "/configs/orderTile/three.json"),
-    FOUR(4, "/configs/deck/four.json", "/configs/offerTrack/four.json", "/configs/orderTile/four.json") ,
-    FIVE(5, "/configs/deck/five.json", "/configs/offerTrack/five.json", "/configs/orderTile/five.json");
+    TWO(2, "/configs/deck/deck.json", "/configs/offerTrack/two.json", "/configs/orderTile/two.json"),
+    THREE(3, "/configs/deck/deck.json", "/configs/offerTrack/three.json", "/configs/orderTile/three.json"),
+    FOUR(4, "/configs/deck/deck.json", "/configs/offerTrack/four.json", "/configs/orderTile/four.json") ,
+    FIVE(5, "/configs/deck/deck.json", "/configs/offerTrack/five.json", "/configs/orderTile/five.json");
 
     private final int n;
     private final String deckConfigFile;
