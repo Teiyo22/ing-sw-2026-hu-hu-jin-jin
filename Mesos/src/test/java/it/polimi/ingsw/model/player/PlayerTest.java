@@ -50,7 +50,7 @@ public class PlayerTest {
 
     @Test
     void getTribeTest(){
-        assertNotNull(p.getTribe()); //non sono sicuro per il get in verità manco per gli altri
+        assertNotNull(p.getTribe());
     }
 
     @Test
