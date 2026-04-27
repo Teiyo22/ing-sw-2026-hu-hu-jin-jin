@@ -15,7 +15,7 @@ public class GetLeaderboardResponse extends Response{
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showLeaderboard(super.getClientID() ,leaderboards);
+        clientController.showLeaderboard(super.getClientID(), leaderboards);
     }
 
 }

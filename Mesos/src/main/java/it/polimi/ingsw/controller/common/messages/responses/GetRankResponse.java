@@ -6,17 +6,16 @@ import java.util.Map;
 
 public class GetRankResponse extends Response{
     private int lobbyID;
-    private Map<Integer, Integer> ranking;
+    private Map<Integer, Integer> rankings;
 
-    public GetRankResponse(int clientID, int lobbyID, Map<Integer,Integer> ranking){
+    public GetRankResponse(int clientID, int lobbyID,  Map<Integer,Integer> rankings){
         super(clientID);
-        this.lobbyID = lobbyID;
-        this.ranking = ranking;
+        this.rankings = rankings;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showRank(super.getClientID(), ranking);
+        clientController.showRank(super.getClientID(), lobbyID, rankings);
     }
 
 }

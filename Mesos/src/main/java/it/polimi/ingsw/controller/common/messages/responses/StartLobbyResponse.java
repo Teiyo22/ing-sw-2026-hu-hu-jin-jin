@@ -19,6 +19,7 @@ public class StartLobbyResponse extends Response {
     }
     @Override
     public void receive(ClientController clientController){
+        clientController.startLobby(clientID, lobbyID, board, tribes);
     }
 }
 

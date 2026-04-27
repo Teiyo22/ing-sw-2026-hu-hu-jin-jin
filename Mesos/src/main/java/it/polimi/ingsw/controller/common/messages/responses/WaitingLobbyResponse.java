@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.common.Lobby;
 
 import java.util.List;
 
-public class WaitingLobbyResponse extends Response{
+public class WaitingLobbyResponse extends Response {
     private List<Lobby> lobbies;
 
     public WaitingLobbyResponse(int clientID, List<Lobby> lobbies){
