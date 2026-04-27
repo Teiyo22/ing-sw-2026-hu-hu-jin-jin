@@ -56,6 +56,10 @@ public class Player implements Comparable<Player>{
         tribe.setFood(food);
     }
 
+    public void setPP(int pp) {
+        tribe.setPP(pp);
+    }
+
     /**
      * Enables "no loss ritual" modifier on the player's tribe.
      * When active, the tribe does not suffer losses during rituals.
