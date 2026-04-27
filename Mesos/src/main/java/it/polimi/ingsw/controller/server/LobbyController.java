@@ -2,16 +2,23 @@ package it.polimi.ingsw.controller.server;
 
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
+import java.util.Map;
 
 public class LobbyController {
     private int id;
+    private int size;
     private Game model;
-    private List<VirtualClient> clients;
+    private Map<VirtualClient, Player> players;
 
-    public void addPlayer(VirtualClient client, String playerName, Totem totem) {
+    public LobbyController(int id, int size) {
+        this.id = id;
+        this.size = size;
+    }
+
+    public void addPlayer(VirtualClient client, Player player) {
+        players.put(client, player);
     }
 
     public void removePlayer(VirtualClient client) {
@@ -23,5 +30,17 @@ public class LobbyController {
 
     public Game getModel() {
         return model;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public Map<VirtualClient, Player> getPlayers() {
+        return players;
     }
 }

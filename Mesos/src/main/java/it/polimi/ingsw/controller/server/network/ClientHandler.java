@@ -10,9 +10,15 @@ public class ClientHandler extends Thread {
     private Socket socket;
     private Gson gson;
 
+    ClientHandler(Socket socket){
+        this.socket = socket;
+    }
+
     public void run() {
     }
 
     public void sendMessage(Response response) {
     }
+
+
 }

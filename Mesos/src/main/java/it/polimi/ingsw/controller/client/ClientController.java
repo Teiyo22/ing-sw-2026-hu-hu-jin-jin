@@ -7,7 +7,8 @@ import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void showRank(int clientID, Map<Integer, Integer> rankings) {
+    public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
 
     }
 
@@ -74,7 +75,7 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void confirmPick(int clientID, Row topRow, Row bottomRow, Tribe tribe) {
+    public void confirmPick(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe) {
 
     }
 

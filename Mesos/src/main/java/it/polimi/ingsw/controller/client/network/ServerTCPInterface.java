@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.util.List;
@@ -37,8 +38,8 @@ public class ServerTCPInterface extends VirtualServer {
      * @param totem Player's selected totem.
      * */
     @Override
-    public void createLobby(int clientID, int playerNum, String playerName, Totem totem) {
-        CreateLobbyRequest request = new CreateLobbyRequest(clientID, playerNum, playerName, totem);
+    public void createLobby(int clientID, int playerNum, Player player) {
+        CreateLobbyRequest request = new CreateLobbyRequest(clientID, playerNum, player);
         serverHandler.sendMessage(request);
     }
 
@@ -49,8 +50,8 @@ public class ServerTCPInterface extends VirtualServer {
      * @param totem Player's selected totem.
      * */
     @Override
-    public void joinLobby(int clientID, int lobbyID, String playerName, Totem totem) {
-        JoinLobbyRequest request = new JoinLobbyRequest(clientID, lobbyID, playerName, totem);
+    public void joinLobby(int clientID, int lobbyID, Player player) {
+        JoinLobbyRequest request = new JoinLobbyRequest(clientID, lobbyID, player);
         serverHandler.sendMessage(request);
     }
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller.common;
 
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import java.rmi.Remote;
 
 public abstract class VirtualServer implements Remote {
     public abstract void addClient(VirtualClient client);
-    public abstract void createLobby(int clientID, int playerNum, String playerName, Totem totem);
-    public abstract void joinLobby(int clientID, int lobbyID, String playerName, Totem totem);
+    public abstract void createLobby(int clientID, int playerNum, Player player);
+    public abstract void joinLobby(int clientID, int lobbyID, Player player);
     public abstract void leaveLobby(int clientID, int lobbyID);
     public abstract void startLobby(int clientID, int lobbyID);
     public abstract void getWaitingLobbies(int clientID);
