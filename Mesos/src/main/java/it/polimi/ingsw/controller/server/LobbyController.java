@@ -148,7 +148,7 @@ public class LobbyController {
 
         for(int i = 0; i<leaderBoard.size(); i++){
            for(VirtualClient client: clients.keySet()){
-               if(clients.get(client).getName() == leaderBoard.get(i).getName(){
+               if(clients.get(client).getName() == leaderBoard.get(i).getName()){
 
                    rank.put(client.getID(), leaderBoard.get(i).getRank());
                    break;

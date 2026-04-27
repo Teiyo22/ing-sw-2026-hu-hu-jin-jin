@@ -17,4 +17,7 @@ public abstract class VirtualClient implements Remote {
     public abstract void showRank(int clientID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
     public abstract void confirmPick(int clientID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks);
+
+    public Integer getID() {
+    }
 }
