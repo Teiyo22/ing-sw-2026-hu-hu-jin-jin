@@ -1,0 +1,995 @@
+{
+    "buildingsCountPerAge": [1, 2, 3],
+
+    "buildingConfigs": [
+        {
+            "card": {
+                "type": "NewFullSetBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 4,
+                "pp": 3
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CollectorSustenanceDiscountBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 4,
+                "pp": 4,
+                "inventorDiscount": 0,
+                "shamanDiscount": 0,
+                "hunterDiscount": 0,
+                "collectorDiscount": 1,
+                "artistDiscount": 0,
+                "builderDiscount": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ArtistSustenanceDiscountBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 5,
+                "pp": 3,
+                "inventorDiscount": 0,
+                "shamanDiscount": 0,
+                "hunterDiscount": 0,
+                "collectorDiscount": 0,
+                "artistDiscount": 1,
+                "builderDiscount": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "RitualNoLossBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 5,
+                "pp": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "OrderTileBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 3,
+                "pp": 3
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "InventorPairBuilding",
+                "era": 1,
+                "isFinal": false,
+                "cost": 3,
+                "pp": 4
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "RitualDoubleBonusBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "RitualStarsBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 6,
+                "pp": 4,
+                "bonusStars": 3
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "InventorSustenanceDiscountBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 4,
+                "inventorDiscount": 1,
+                "shamanDiscount": 0,
+                "hunterDiscount": 0,
+                "collectorDiscount": 0,
+                "artistDiscount": 0,
+                "builderDiscount": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "HuntBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 2,
+                "bonusPP": 1,
+                "bonusFood": 1
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "BuilderBonusBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 6,
+                "pp": 4
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CavePaintingBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 5,
+                "pp": 6,
+                "bonusFood": 1
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "FullSetBuilding",
+                "era": 2,
+                "isFinal": false,
+                "cost": 5,
+                "pp": 6
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "HunterBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 8,
+                "pp": 8,
+                "inventorBonusPP": 0,
+                "shamanBonusPP": 0,
+                "hunterBonusPP": 3,
+                "collectorBonusPP": 0,
+                "artistBonusPP": 0,
+                "builderBonusPP": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CollectorBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 6,
+                "inventorBonusPP": 0,
+                "shamanBonusPP": 0,
+                "hunterBonusPP": 0,
+                "collectorBonusPP": 4,
+                "artistBonusPP": 0,
+                "builderBonusPP": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ShamanBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 4,
+                "inventorBonusPP": 0,
+                "shamanBonusPP": 4,
+                "hunterBonusPP": 0,
+                "collectorBonusPP": 0,
+                "artistBonusPP": 0,
+                "builderBonusPP": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "BuilderBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 6,
+                "pp": 3,
+                "inventorBonusPP": 0,
+                "shamanBonusPP": 0,
+                "hunterBonusPP": 0,
+                "collectorBonusPP": 0,
+                "artistBonusPP": 0,
+                "builderBonusPP": 4
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ArtistBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 7,
+                "pp": 4,
+                "inventorBonusPP": 0,
+                "shamanBonusPP": 0,
+                "hunterBonusPP": 0,
+                "collectorBonusPP": 0,
+                "artistBonusPP": 4,
+                "builderBonusPP": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "InventorBonusBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 6,
+                "pp": 6,
+                "inventorBonusPP": 2,
+                "shamanBonusPP": 0,
+                "hunterBonusPP": 0,
+                "collectorBonusPP": 0,
+                "artistBonusPP": 0,
+                "builderBonusPP": 0
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ExtraActionBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 9,
+                "pp": 3
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "BonusPPBuilding",
+                "era": 3,
+                "isFinal": false,
+                "cost": 8,
+                "pp": 8,
+                "bonusPP": 25
+            },
+
+            "quantity": [1, 1, 1, 1]
+        }
+    ],
+
+    "cardConfigs": [
+        {
+            "card": {
+                "type": "HunterWithIcon",
+                "era": 1,
+                "isFinal": false,
+                "hasIcon": true
+            },
+
+            "quantity": [2, 2, 2, 2]
+        },
+
+        {
+            "card": {
+                "type": "Hunter",
+                "era": 1,
+                "isFinal": false,
+                "hasIcon": false
+            },
+
+            "quantity": [1, 3, 3, 3]
+        },
+
+        {
+            "card": {
+                "type": "Builder1",
+                "era": 1,
+                "isFinal": false,
+                "bonusPP": 3,
+                "buildingDiscount": 1
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder2",
+                "era": 1,
+                "isFinal": false,
+                "bonusPP": 0,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder3",
+                "era": 1,
+                "isFinal": false,
+                "bonusPP": 1,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [0, 0, 0, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder4",
+                "era": 1,
+                "isFinal": false,
+                "bonusPP": 2,
+                "buildingDiscount": 1
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Collector",
+                "era": 1,
+                "isFinal": false
+            },
+
+            "quantity": [2, 3, 3, 4]
+        },
+
+        {
+            "card": {
+                "type": "Artist",
+                "era": 1,
+                "isFinal": false
+            },
+
+            "quantity": [3, 4, 5, 5]
+        },
+
+        {
+            "card": {
+                "type": "Tanner",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "TANNER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Boatwright",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "BOATWRIGHT"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Fletcher",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "FLETCHER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Baker",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "BAKER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Shepherd",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "SHEPHERD"
+            },
+
+            "quantity": [0, 0, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Musician",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "MUSICIAN"
+            },
+
+            "quantity": [0, 0, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Herborist",
+                "era": 1,
+                "isFinal": false,
+                "inventorType": "HERBORIST"
+            },
+
+            "quantity": [0, 0, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Shaman1",
+                "era": 1,
+                "isFinal": false,
+                "stars": 1
+            },
+
+            "quantity": [1, 1, 2, 2]
+        },
+
+        {
+            "card": {
+                "type": "Shaman2",
+                "era": 1,
+                "isFinal": false,
+                "stars": 2
+            },
+
+            "quantity": [1, 1, 1, 2]
+        },
+
+        {
+            "card": {
+                "type": "Hunter",
+                "era": 2,
+                "isFinal": false,
+                "hasIcon": false
+            },
+
+            "quantity": [2, 2, 2, 2]
+        },
+
+        {
+            "card": {
+                "type": "HunterWithIcon",
+                "era": 2,
+                "isFinal": false,
+                "hasIcon": true
+            },
+
+            "quantity": [1, 2, 3, 4]
+        },
+
+        {
+            "card": {
+                "type": "Builder3",
+                "era": 2,
+                "isFinal": false,
+                "bonusPP": 1,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder4",
+                "era": 2,
+                "isFinal": false,
+                "bonusPP": 2,
+                "buildingDiscount": 1
+            },
+
+            "quantity": [0, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder5",
+                "era": 2,
+                "isFinal": false,
+                "bonusPP": 3,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Collector",
+                "era": 2,
+                "isFinal": false
+            },
+
+            "quantity": [1, 2, 3, 4]
+        },
+
+        {
+            "card": {
+                "type": "Artist",
+                "era": 2,
+                "isFinal": false
+            },
+
+            "quantity": [3, 4, 4, 4]
+        },
+
+        {
+            "card": {
+                "type": "Manufacturer",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "MANUFACTURER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Fisherman",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "FISHERMAN"
+            },
+
+            "quantity": [0, 0, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Shepherd",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "SHEPHERD"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Musician",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "MUSICIAN"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Herborist",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "HERBORIST"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Tanner",
+                "era": 2,
+                "isFinal": false,
+                "inventorType": "TANNER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Shaman2",
+                "era": 2,
+                "isFinal": false,
+                "stars": 2
+            },
+
+            "quantity": [2, 2, 2, 3]
+        },
+
+        {
+            "card": {
+                "type": "Shaman1",
+                "era": 2,
+                "isFinal": false,
+                "stars": 1
+            },
+
+            "quantity": [0, 0, 0, 1]
+        },
+
+        {
+            "card": {
+                "type": "HunterWithIcon",
+                "era": 3,
+                "isFinal": false,
+                "hasIcon": true
+            },
+
+            "quantity": [1, 1, 1, 2]
+        },
+
+        {
+            "card": {
+                "type": "Hunter",
+                "era": 3,
+                "isFinal": false,
+                "hasIcon": false
+            },
+
+            "quantity": [2, 2, 2, 2]
+        },
+
+        {
+            "card": {
+                "type": "Builder6",
+                "era": 3,
+                "isFinal": false,
+                "bonusPP": 5,
+                "buildingDiscount": 1
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder5",
+                "era": 3,
+                "isFinal": false,
+                "bonusPP": 3,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder7",
+                "era": 3,
+                "isFinal": false,
+                "bonusPP": 4,
+                "buildingDiscount": 1
+            },
+
+            "quantity": [0, 0, 0, 1]
+        },
+
+        {
+            "card": {
+                "type": "Builder8",
+                "era": 3,
+                "isFinal": false,
+                "bonusPP": 2,
+                "buildingDiscount": 2
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Collector",
+                "era": 3,
+                "isFinal": false
+            },
+
+            "quantity": [1, 1, 2, 3]
+        },
+
+        {
+            "card": {
+                "type": "Artist",
+                "era": 3,
+                "isFinal": false
+            },
+
+            "quantity": [3, 3, 3, 4]
+        },
+
+        {
+            "card": {
+                "type": "Jeweler",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "JEWELER"
+            },
+
+            "quantity": [1, 1, 2, 2]
+        },
+
+        {
+            "card": {
+                "type": "Boatwright",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "BOATWRIGHT"
+            },
+
+            "quantity": [0, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Fletcher",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "FLETCHER"
+            },
+
+            "quantity": [0, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Manufacturer",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "MANUFACTURER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Fisherman",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "FISHERMAN"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Baker",
+                "era": 3,
+                "isFinal": false,
+                "inventorType": "BAKER"
+            },
+
+            "quantity": [1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Shaman2",
+                "era": 3,
+                "isFinal": false,
+                "stars": 2
+            },
+
+            "quantity": [1, 2, 3, 3]
+        },
+
+        {
+            "card": {
+                "type": "Shaman3",
+                "era": 3,
+                "isFinal": false,
+                "stars": 3
+            },
+
+            "quantity": [2, 2, 2, 3]
+        },
+
+        {
+            "card": {
+                "type": "Hunt1",
+                "era": 1,
+                "isFinal": false,
+                "ppMultiplier": 1
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Sustenance1",
+                "era": 1,
+                "isFinal": false,
+                "ppMultiplier": 1
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ShamanicRitual1",
+                "era": 1,
+                "isFinal": false,
+                "malusPP": 3,
+                "bonusPP": 5
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CavePainting1",
+                "era": 1,
+                "isFinal": false,
+                "malusPP": 2,
+                "bonusPP": 1,
+                "numArtistsMalus": 0,
+                "numArtistsBonus": 1
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Hunt2",
+                "era": 2,
+                "isFinal": false,
+                "ppMultiplier": 2
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Sustenance2",
+                "era": 2,
+                "isFinal": false,
+                "ppMultiplier": 2
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ShamanicRitual2",
+                "era": 2,
+                "isFinal": false,
+                "malusPP": 5,
+                "bonusPP": 10
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CavePainting2",
+                "era": 2,
+                "isFinal": false,
+                "malusPP": 2,
+                "bonusPP": 2,
+                "numArtistsMalus": 1,
+                "numArtistsBonus": 2
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Hunt3",
+                "era": 3,
+                "isFinal": false,
+                "ppMultiplier": 3
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "Sustenance3",
+                "era": 3,
+                "isFinal": true,
+                "ppMultiplier": 3
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "ShamanicRitual3",
+                "era": 3,
+                "isFinal": true,
+                "malusPP": 7,
+                "bonusPP": 15
+            },
+
+            "quantity":[1, 1, 1, 1]
+        },
+
+        {
+            "card": {
+                "type": "CavePainting3",
+                "era": 3,
+                "isFinal": false,
+                "malusPP": 2,
+                "bonusPP": 3,
+                "numArtistsMalus": 2,
+                "numArtistsBonus": 3
+            },
+
+            "quantity":[1, 1, 1, 1]
+        }
+    ]
+}
