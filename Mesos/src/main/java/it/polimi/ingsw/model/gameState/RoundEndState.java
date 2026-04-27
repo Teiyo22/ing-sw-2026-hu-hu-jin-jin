@@ -100,6 +100,11 @@ public class RoundEndState extends GameState {
                 bottom.getBuildingCards().clear();
                 deck.changeEra();
 
+                for(AbstractCard building: top.getBuildingCards()){
+                    building.moveTo(bottom);
+                }
+                top.getBuildingCards().clear();
+
                 List<AbstractCard> buildings = deck.drawBuildingCards();
                 for(AbstractCard building: buildings){
                     building.setID(ID);

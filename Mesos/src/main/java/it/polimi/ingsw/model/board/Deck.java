@@ -111,7 +111,19 @@ public class Deck {
         return charEventCards;
     }
 
+    public void setCharEventCards(Queue<AbstractCard> charEventCards) {
+        this.charEventCards = charEventCards;
+    }
+
+    public Queue<AbstractCard> getBuildingCards() {
+        return buildingCards;
+    }
+
+    public void setBuildingCards(Queue<AbstractCard> buildingCards) {
+        this.buildingCards = buildingCards;
+    }
+
     public int getCurrentEra() {
-        return currentEra;
+        return currentEra + 1;
     }
 }
