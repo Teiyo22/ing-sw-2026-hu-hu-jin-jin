@@ -161,7 +161,7 @@ public class ServerController extends VirtualServer {
         VirtualClient client = clients.get(clientID);
         LobbyController runningLobby = runningLobbies.get(lobbyID);
 
-        runningLobby.pickCards(clientID, topPicks, bottomPicks);
+        runningLobby.pickCards(client, topPicks, bottomPicks);
         client.confirmPick(clientID, runningLobby.getModel().getBoard().getTopRow(), runningLobby.getModel().getBoard().getBottomRow(),
                 runningLobby.getPlayerTribe(client));
     }
