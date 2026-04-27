@@ -145,7 +145,7 @@
 
         {
             "card": {
-                "type": "BuilderBonusBuilding",
+                "type": "BuilderDoublePPBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 6,
