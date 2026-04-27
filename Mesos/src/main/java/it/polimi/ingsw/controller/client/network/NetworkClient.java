@@ -5,8 +5,11 @@ import java.io.*;
 import java.net.UnknownHostException;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.utils.RequestSerializer;
+import it.polimi.ingsw.utils.ResponseDeserializer;
 
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class NetworkClient extends Thread {
     private ServerTCPInterface server;
@@ -20,7 +23,10 @@ public class NetworkClient extends Thread {
         this.socket = null;
         this.input = null;
         this.output = null;
-        this.gson = new Gson();
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Request.class, new RequestSerializer())
+                .registerTypeAdapter(Response.class, new ResponseDeserializer())
+                .create();
     }
 
 
@@ -51,8 +57,8 @@ public class NetworkClient extends Thread {
 
     public void connect(String ip, int tcpPort) throws UnknownHostException, IOException {
         this.socket = new Socket(ip, tcpPort);
-        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.output = new PrintWriter(socket.getOutputStream(), true);
+        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
         new Thread(this).start();
     }
 

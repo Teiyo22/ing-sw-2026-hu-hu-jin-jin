@@ -7,4 +7,8 @@ public abstract class Message {
     public int getClientID() {
         return clientID;
     }
+
+    public MessageType getType() {
+        return type;
+    }
 }
