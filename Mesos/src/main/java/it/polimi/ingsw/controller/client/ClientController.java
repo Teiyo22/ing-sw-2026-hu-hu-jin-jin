@@ -67,6 +67,15 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
+    public void createLobby(int clientID, Lobby lobby, Player player) {
+        synchronized (lobbiesLock) {
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
+            currLobby = lobby;
+            currLobby.addPlayer(clientID, player);
+        }
+    }
+
+    @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
 
     }

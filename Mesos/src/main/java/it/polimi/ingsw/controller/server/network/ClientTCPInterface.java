@@ -68,4 +68,10 @@ public class ClientTCPInterface extends VirtualClient {
         PickCardsResponse response = new PickCardsResponse(clientID, updatedTopRow, updatedBottomRow, updatedTribe);
         clientHandler.sendMessage(response);
     }
+
+    @Override
+    public void createLobby(int clientID, Lobby lobby, Player player) {
+        CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
+        clientHandler.sendMessage(response);
+    }
 }
