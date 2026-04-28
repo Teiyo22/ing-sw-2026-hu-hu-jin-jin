@@ -50,15 +50,18 @@ public class LobbyController {
         }
     }
 
-    public void removePlayer(VirtualClient client) {
+    public void removePlayer(VirtualClient removedClient) {
         size--;
 
-        players.remove(client);
+        players.remove(removedClient);
+
+        for(VirtualClient client: players.keySet()){
+            client.removeFromLobby(removedClient.getID(), lobbyID);
+        }
     }
 
 
     public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks){
-
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
         for(VirtualClient client: players.keySet()){
@@ -81,6 +84,8 @@ public class LobbyController {
     public void startLobby(){
         Map<Integer, Tribe> tribes = new HashMap<>();
 
+        model = new Game(getConfig(size), players.values());
+
         for(VirtualClient client: players.keySet()){
             tribes.put(client.getID(), players.get(client).getTribe());
         }
@@ -88,8 +93,6 @@ public class LobbyController {
         for(VirtualClient client: players.keySet()){
             client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
         }
-
-        model = new Game(getConfig(size), players.values());
     }
 
     public int getID(){
@@ -97,7 +100,7 @@ public class LobbyController {
         return lobbyID;
     }
 
-    public int getPlayerNum(){
+    public int getSize(){
 
         return size;
     }
@@ -106,12 +109,6 @@ public class LobbyController {
 
         return players;
     }
-
-    public Tribe getPlayerTribe(VirtualClient client){
-
-        return players.get(client).getTribe();
-    }
-
 
     public void showRank(int clientID){
         List<Player> leaderBoard = model.getPlayers();
