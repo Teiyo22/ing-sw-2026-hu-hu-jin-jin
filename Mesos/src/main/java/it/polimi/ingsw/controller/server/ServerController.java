@@ -50,13 +50,12 @@ public class ServerController extends VirtualServer {
     @Override
     public synchronized void createLobby(int clientID, int playerNum, Player player) {
         VirtualClient client = clients.get(clientID);
-        Map<Integer, String> players = new HashMap<>();
 
         LobbyController lobbyController = new LobbyController(nextLobbyID, playerNum);
         nextLobbyID++;
 
         lobbyController.addPlayer(client, player);
-        lobbyController.joinLobby(clientID, player);
+        lobbyController.createLobby(clientID, player);
 
         waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
@@ -90,10 +89,10 @@ public class ServerController extends VirtualServer {
     public synchronized void startLobby(int clientID, int lobbyID) {
         if (waitingLobbies.containsKey(lobbyID)) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
+            lobbyController.startLobby();
+
             waitingLobbies.remove(lobbyID, lobbyController);
             runningLobbies.put(lobbyID, lobbyController);
-
-            lobbyController.startLobby();
         }
     }
 
