@@ -5,9 +5,8 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
-import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
 
 import java.util.List;
 
@@ -117,7 +116,7 @@ public class ServerTCPInterface extends VirtualServer {
      * @param bottomPicks list of the cards that the player would like to pick from the bottom row.
      * */
     @Override
-    public void requestPick(int clientID, int lobbyID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks) {
+    public void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         PickCardsRequest request = new PickCardsRequest(clientID, lobbyID, topPicks, bottomPicks);
         serverHandler.sendMessage(request);
     }

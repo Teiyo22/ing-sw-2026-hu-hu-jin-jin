@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.NetworkServer;
-import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
 import java.rmi.server.UnicastRemoteObject;
@@ -137,9 +137,9 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void requestPick(int clientID, int lobbyID, List<AbstractCard> topPicks, List<AbstractCard> bottomPicks) {
+    public synchronized void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         LobbyController lobby = runningLobbies.get(lobbyID);
-        lobby.pickCards(clientID, topPicks, bottomPicks);
+        lobby.pickCards(clients.get(clientID), topPicks, bottomPicks);
     }
 
     public void startServer(String ip, int tcpPort, int rmiPort) {
