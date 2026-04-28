@@ -5,8 +5,8 @@ import java.io.*;
 import java.net.UnknownHostException;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
-import it.polimi.ingsw.utils.RequestSerializer;
-import it.polimi.ingsw.utils.ResponseDeserializer;
+import it.polimi.ingsw.utils.controller.RequestSerializer;
+import it.polimi.ingsw.utils.controller.ResponseDeserializer;
 
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;

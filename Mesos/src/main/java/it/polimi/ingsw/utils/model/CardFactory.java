@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utils;
+package it.polimi.ingsw.utils.model;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 

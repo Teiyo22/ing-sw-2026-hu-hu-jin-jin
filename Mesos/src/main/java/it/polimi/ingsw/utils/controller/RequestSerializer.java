@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utils;
+package it.polimi.ingsw.utils.controller;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
