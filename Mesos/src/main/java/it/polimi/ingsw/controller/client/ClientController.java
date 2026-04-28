@@ -40,40 +40,50 @@ public class ClientController extends VirtualClient{
             for (Lobby lobby : lobbies)
                 waitingLobbies.put(lobby.getLobbyID(), lobby);
         }
+
+        // TODO: show to view
     }
 
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         synchronized (lobbiesLock) {
-            if(waitingLobbies.containsKey(lobbyID)) {
-                waitingLobbies.get(lobbyID).setPlayers(players);
+            Lobby lobby = waitingLobbies.get(lobbyID);
+
+            if(lobby != null) {
+                currLobby = lobby;
+                lobby.setPlayers(players);
             }
+            // TODO: Handle missing lobby
         }
+
+        // TODO: show to view
     }
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
         synchronized (lobbiesLock) {
-            if(clientID != this.id)
-                currLobby = waitingLobbies.get(lobbyID);
-
             if(currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
+            // TODO: handle missing/wrong lobby
+            // TODO: what happens if the player tries to join multiple lobbies?
         }
+
+        // TODO: show to view
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
         synchronized (lobbiesLock) {
-            currLobby = null;
-            waitingLobbies.get(lobbyID).removePlayer(clientID);
+            if(currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.removePlayer(clientID);
         }
+
+        // TODO: show to view
     }
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
         synchronized (lobbiesLock) {
-            waitingLobbies.put(lobby.getLobbyID(), lobby);
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
         }
@@ -81,7 +91,13 @@ public class ClientController extends VirtualClient{
 
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+        synchronized (lobbiesLock) {
+            if(currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.initGame(tribes, board);
+            }
+        }
 
+        // TODO: show to view
     }
 
     @Override
@@ -95,8 +111,14 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void confirmPick(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe) {
-
+    public void confirmPick(int clientID, Board board, Tribe updatedTribe) {
+        synchronized (lobbiesLock) {
+            if (currLobby != null) {
+                currLobby.updateBoard(board);
+                currLobby.updateTribe(clientID, updatedTribe);
+            }
+        }
+        // TODO: show to view
     }
 
     /** Connecting to the server using RMI.
