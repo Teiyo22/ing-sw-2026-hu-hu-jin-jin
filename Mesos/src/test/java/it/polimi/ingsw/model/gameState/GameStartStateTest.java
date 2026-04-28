@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.gameState.GameStartState;
-import it.polimi.ingsw.model.gameState.RoundStartState;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 
@@ -12,7 +10,6 @@ import it.polimi.ingsw.model.player.Totem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 

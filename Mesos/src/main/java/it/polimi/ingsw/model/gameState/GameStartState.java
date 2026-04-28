@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;

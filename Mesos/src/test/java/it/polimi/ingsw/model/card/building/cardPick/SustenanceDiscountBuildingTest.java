@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building.cardPick;
 
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.model.card.building.SustenanceDiscountBuilding;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
@@ -47,7 +48,7 @@ public class SustenanceDiscountBuildingTest {
                 buildingHandler, 2, 0, 0,
                 0, 0, 0);
         building.onPick(player, buildingHandler);
-        building.doForInventor(new Inventor("Inventor", 1, false, InventorType.BAKER));
+        building.visit(new Inventor("Inventor", 1, false, InventorType.BAKER));
         assertEquals(2, player.getTribe().getSustenanceDiscount());
     }
 

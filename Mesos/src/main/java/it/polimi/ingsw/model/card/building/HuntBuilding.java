@@ -1,10 +1,13 @@
 package it.polimi.ingsw.model.card.building;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.BuildingVisitor;
+import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
-public class HuntBuilding extends AbstractBuilding{
+public class HuntBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose private int bonusPP;
     @Expose private int bonusFood;
 
@@ -35,12 +38,16 @@ public class HuntBuilding extends AbstractBuilding{
         buildingHandler.addHuntBuilding(this);
     }
 
-    /**
-     * The effect is applied during hunt events.
-     * Add bonus food and bonus PP to the owner depending on the number of hunters.
-     * */
-    public void applyEffect() {
-        owner.addFood(owner.getTribe().getHunterCount()*bonusFood);
-        owner.addPP(owner.getTribe().getHunterCount()*bonusPP);
+    @Override
+    public void accept(BuildingVisitor v) {
+        v.visit(this);
+    }
+
+    public int getBonusPP() {
+        return bonusPP;
+    }
+
+    public int getBonusFood() {
+        return bonusFood;
     }
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
-import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.card.building.OrderTileBuilding;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.board.OrderSlot;

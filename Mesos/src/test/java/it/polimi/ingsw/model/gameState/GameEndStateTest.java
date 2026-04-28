@@ -1,16 +1,14 @@
 package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.card.building.cardPick.InventorPairBuilding;
-import it.polimi.ingsw.model.card.building.cardPick.InvetorPairBuildingTest;
+import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.model.card.building.InventorPairBuilding;
 import it.polimi.ingsw.model.card.character.Builder;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

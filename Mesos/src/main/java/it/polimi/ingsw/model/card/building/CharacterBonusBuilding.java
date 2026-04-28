@@ -1,9 +1,13 @@
-package it.polimi.ingsw.model.card.building.gameEnd;
+package it.polimi.ingsw.model.card.building;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.BuildingVisitor;
+import it.polimi.ingsw.model.card.VisitableBuilding;
+import it.polimi.ingsw.model.player.Player;
 
-public class CharacterBonusBuilding extends GameEndBuilding {
+public class CharacterBonusBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose private int inventorBonusPP;
     @Expose private int shamanBonusPP;
     @Expose private int hunterBonusPP;
@@ -38,17 +42,38 @@ public class CharacterBonusBuilding extends GameEndBuilding {
         return new CharacterBonusBuilding(this);
     }
 
-    /**
-     * Adds bonus PP to the player depending on the number of characters of each type.
-     * */
+    public int getInventorBonusPP() {
+        return inventorBonusPP;
+    }
+
+    public int getShamanBonusPP() {
+        return shamanBonusPP;
+    }
+
+    public int getHunterBonusPP() {
+        return hunterBonusPP;
+    }
+
+    public int getCollectorBonusPP() {
+        return collectorBonusPP;
+    }
+
+    public int getArtistBonusPP() {
+        return artistBonusPP;
+    }
+
+    public int getBuilderBonusPP() {
+        return builderBonusPP;
+    }
+
     @Override
-    public void applyEffect() {
-        owner.addPP(
-                owner.getTribe().getInventorCount() * inventorBonusPP +
-                owner.getTribe().getShamanCount() * shamanBonusPP +
-                owner.getTribe().getHunterCount() * hunterBonusPP +
-                owner.getTribe().getCollectorCount() * collectorBonusPP +
-                owner.getTribe().getArtistCount() * artistBonusPP +
-                owner.getTribe().getBuilderCount() * builderBonusPP);
+    public void accept(BuildingVisitor v) {
+        v.visit(this);
+    }
+
+    @Override
+    public void onPick(Player player, BuildingHandler buildingHandler) {
+        super.onPick(player, buildingHandler);
+        buildingHandler.addGameEndBuilding(this);
     }
 }

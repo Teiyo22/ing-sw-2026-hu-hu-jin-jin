@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
 import it.polimi.ingsw.model.card.building.CavePaintingBuilding;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;

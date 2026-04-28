@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.model.card.building.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
@@ -50,4 +51,10 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     public void removeFrom(Row row){
         row.getBuildingCards().remove(this);
     }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+
 }

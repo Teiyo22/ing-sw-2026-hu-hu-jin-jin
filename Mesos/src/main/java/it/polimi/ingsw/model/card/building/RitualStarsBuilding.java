@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 

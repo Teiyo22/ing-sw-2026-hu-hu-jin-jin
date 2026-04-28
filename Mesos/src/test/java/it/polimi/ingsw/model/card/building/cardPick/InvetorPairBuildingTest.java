@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building.cardPick;
 
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.model.card.building.InventorPairBuilding;
 import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;

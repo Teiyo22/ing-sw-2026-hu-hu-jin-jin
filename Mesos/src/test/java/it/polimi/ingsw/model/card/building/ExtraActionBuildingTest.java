@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.gameState.ExtraActionState;
 import it.polimi.ingsw.model.player.Player;

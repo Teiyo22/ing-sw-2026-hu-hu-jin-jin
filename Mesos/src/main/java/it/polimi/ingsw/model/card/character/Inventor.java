@@ -2,8 +2,7 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
-import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
+import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Inventor extends AbstractCharacter{
@@ -31,7 +30,7 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public void accept(CardVisitor v) {
-        v.doForInventor(this);
+        v.visit(this);
     }
 
     public InventorType getInventorType() {
