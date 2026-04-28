@@ -35,6 +35,14 @@ public class LobbyController {
         players.put(client, player);
     }
 
+
+    public void createLobby(int clientID, Player player){
+
+        for(VirtualClient client: players.keySet()){
+            client.createLobby(clientID, size, player);
+        }
+    }
+
     public void joinLobby(int clientID, Player player){
 
         for(VirtualClient client: players.keySet()){
