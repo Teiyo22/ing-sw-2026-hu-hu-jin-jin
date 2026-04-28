@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.utils.controller.RequestDeserializer;
+import it.polimi.ingsw.utils.controller.ResponseSerializer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ClientHandler extends Thread {
     private ClientTCPInterface clientInterface;
@@ -17,8 +18,11 @@ public class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
 
-    public ClientHandler(Socket clientSocket){
+    public ClientHandler(Socket clientSocket) throws IOException {
         this.socket = clientSocket;
+        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
