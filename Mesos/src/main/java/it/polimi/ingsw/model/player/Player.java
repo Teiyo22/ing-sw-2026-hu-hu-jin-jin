@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import java.util.List;
 
 public class Player implements Comparable<Player>{
-    private final String name;
-    private final Totem totem;
+    private String name;
+    private Totem totem;
 
     transient private int rank = 0;
     transient private Tribe tribe = null;
@@ -131,5 +131,9 @@ public class Player implements Comparable<Player>{
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public void setTribe(Tribe tribe) {
+        this.tribe = tribe;
     }
 }

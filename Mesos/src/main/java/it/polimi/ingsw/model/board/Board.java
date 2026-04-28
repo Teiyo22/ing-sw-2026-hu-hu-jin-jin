@@ -52,4 +52,20 @@ public class Board {
     public Row getBottomRow() {
         return bottomRow;
     }
+
+    public void setTopRow(Row topRow) {
+        this.topRow = topRow;
+    }
+
+    public void setBottomRow(Row bottomRow) {
+        this.bottomRow = bottomRow;
+    }
+
+    public void setOfferTrack(OfferTile[] offerTrack) {
+        this.offerTrack = offerTrack;
+    }
+
+    public void setOrderTile(OrderSlot[] orderTile) {
+        this.orderTile = orderTile;
+    }
 }
