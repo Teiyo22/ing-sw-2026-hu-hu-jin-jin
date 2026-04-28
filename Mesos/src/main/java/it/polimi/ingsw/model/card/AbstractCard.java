@@ -7,6 +7,7 @@ public abstract class AbstractCard {
     protected int ID = -1;
 
     @Expose protected String type;
+    @Expose protected String resourceName;
     @Expose protected int era;
     @Expose protected boolean isFinal;
 
