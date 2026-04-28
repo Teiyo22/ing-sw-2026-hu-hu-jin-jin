@@ -34,8 +34,7 @@ public class ServerTCPInterface extends VirtualServer {
 
     /** Method to create a new lobby of a certain size and join it.
      * @param playerNum Game size (number of players in the game).
-     * @param playerName Player's username.
-     * @param totem Player's selected totem.
+     * @param player Player object containing the player's username and selected totem.
      * */
     @Override
     public void createLobby(int clientID, int playerNum, Player player) {
@@ -46,8 +45,7 @@ public class ServerTCPInterface extends VirtualServer {
 
     /** Method to join the selected lobby.
      * @param lobbyID ID of the lobby of interest.
-     * @param playerName Player's username.
-     * @param totem Player's selected totem.
+     * @param player Player object containing the player's username and selected totem.
      * */
     @Override
     public void joinLobby(int clientID, int lobbyID, Player player) {

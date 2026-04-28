@@ -68,9 +68,4 @@ public class ClientTCPInterface extends VirtualClient {
         PickCardsResponse response = new PickCardsResponse(clientID, updatedTopRow, updatedBottomRow, updatedTribe);
         clientHandler.sendMessage(response);
     }
-
-    @Override
-    public void confirmPick(int clientID, Row topRow, Row bottomRow, Tribe tribe) {
-
-    }
 }

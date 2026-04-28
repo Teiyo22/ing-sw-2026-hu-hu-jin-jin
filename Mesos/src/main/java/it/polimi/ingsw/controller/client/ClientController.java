@@ -8,6 +8,7 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -31,9 +32,10 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void setWaitingLobbies(int clientID, Map<Integer, Lobby> lobbies) {
+    public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
         synchronized (lobbiesLock) {
-            waitingLobbies = lobbies;
+            for (Lobby lobby : lobbies)
+                waitingLobbies.put(lobby.getLobbyID(), lobby);
         }
     }
 
