@@ -15,8 +15,8 @@ public class Lobby {
     private int size;
 
     transient private ClientController clientController;
-    transient Map<Integer, Player> players = null;
-    transient Board board = null;
+    transient private Map<Integer, Player> players = null;
+    transient private Board board = null;
 
     public Lobby(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -28,7 +28,7 @@ public class Lobby {
             players.put(clientID, player);
     }
 
-    void initGame(Map<Integer, Tribe> tribes, Board board) {
+    public void initGame(Map<Integer, Tribe> tribes, Board board) {
         this.board = board;
 
         for(Integer clientID: tribes.keySet()) {
@@ -36,30 +36,30 @@ public class Lobby {
         }
     }
 
-    void updateTribe(int clientID, Tribe tribe) {
+    public void updateTribe(int clientID, Tribe tribe) {
         players.get(clientID).setTribe(tribe);
     }
 
-    void updateRows(Row topRow, Row bottomRow) {
+    public void updateRows(Row topRow, Row bottomRow) {
         board.setTopRow(topRow);
         board.setBottomRow(bottomRow);
     }
 
-    void updateOfferTrack(OfferTile[] offerTrack) {
+    public void updateOfferTrack(OfferTile[] offerTrack) {
         board.setOfferTrack(offerTrack);
     }
 
-    void updateOrderTile(OrderSlot[] orderTile) {
+    public void updateOrderTile(OrderSlot[] orderTile) {
         board.setOrderTile(orderTile);
     }
 
-    void updateBoard(Board board) {
+    public void updateBoard(Board board) {
         updateRows(board.getTopRow(), board.getBottomRow());
         updateOfferTrack(board.getOfferTrack());
         updateOrderTile(board.getOrderTile());
     }
 
-    void removePlayer(int clientID) {
+    public void removePlayer(int clientID) {
         players.remove(clientID);
     }
 
