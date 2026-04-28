@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Map;
@@ -12,6 +13,7 @@ public class LobbyInfoResponse extends Response{
 
     public LobbyInfoResponse(int clientID, int lobbyID, Map<Integer, Player> players){
         super(clientID);
+        this.type = MessageType.LOBBY_INFO;
         this.lobbyID = lobbyID;
         this.players = players;
     }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -13,6 +14,7 @@ public class StartLobbyResponse extends Response {
 
     public StartLobbyResponse(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes){
         super(clientID);
+        this.type = MessageType.START_LOBBY;
         this.lobbyID = lobbyID;
         this.tribes = tribes;
         this.board = board;

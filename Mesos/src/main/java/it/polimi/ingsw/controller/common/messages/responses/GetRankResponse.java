@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class GetRankResponse extends Response{
 
     public GetRankResponse(int clientID, int lobbyID,  Map<Integer,Integer> rankings){
         super(clientID);
+        this.type = MessageType.GET_RANK;
         this.rankings = rankings;
     }
 

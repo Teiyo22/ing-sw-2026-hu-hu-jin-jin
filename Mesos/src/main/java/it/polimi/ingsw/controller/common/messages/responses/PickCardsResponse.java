@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.character.*;
@@ -17,6 +18,7 @@ public class PickCardsResponse extends Response {
 
     public PickCardsResponse(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe){
         super(clientID);
+        this.type = MessageType.PICK_CARDS;
         this.updatedTopRow = updatedTopRow;
         this.updatedBottomRow = updatedBottomRow;
         this.updatedTribe = updatedTribe;

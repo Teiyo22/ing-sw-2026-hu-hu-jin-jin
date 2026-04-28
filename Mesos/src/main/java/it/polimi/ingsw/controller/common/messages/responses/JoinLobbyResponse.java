@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
@@ -12,6 +13,7 @@ public class JoinLobbyResponse extends Response{
 
     public JoinLobbyResponse(int clientID, int lobbyID , Player player) {
         super(clientID);
+        this.type = MessageType.JOIN_LOBBY;
         this.lobbyID = lobbyID;
         this.player = player;
     }

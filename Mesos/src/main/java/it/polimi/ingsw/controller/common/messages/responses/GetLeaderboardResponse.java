@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class GetLeaderboardResponse extends Response{
 
     public GetLeaderboardResponse(int clientId ,List<LeaderboardEntry> leaderboards){
         super(clientId);
+        this.type = MessageType.GET_LEADERBOARD;
         this.leaderboards = leaderboards;
     }
 
