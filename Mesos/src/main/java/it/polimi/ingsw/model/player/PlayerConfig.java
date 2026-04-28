@@ -33,4 +33,13 @@ public enum PlayerConfig {
     public String getOrderTileConfigFile() {
         return orderTileConfigFile;
     }
+
+    public static PlayerConfig getPlayerConfig(int n) {
+        for (PlayerConfig c : PlayerConfig.values()) {
+            if (c.getNum() == n) {
+                return c;
+            }
+        }
+        return null;
+    }
 }
