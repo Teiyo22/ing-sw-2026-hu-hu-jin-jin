@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.server.network;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
 
@@ -16,9 +17,12 @@ public class ClientHandler extends Thread {
     private BufferedReader input;
     private PrintWriter output;
 
-    public ClientHandler(Socket clientSocket, Gson gson){
+    public ClientHandler(Socket clientSocket){
         this.socket = clientSocket;
-        this.gson = gson;
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Request.class, new RequestDeserializer())
+                .registerTypeAdapter(Response.class, new ResponseSerializer())
+                .create();
     }
 
     @Override
