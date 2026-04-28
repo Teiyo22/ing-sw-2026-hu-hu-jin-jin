@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class ClientController extends VirtualClient{
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
             this.server = (VirtualServer) registry.lookup(registryName);
+            UnicastRemoteObject.exportObject(this, rmiPort);
             server.addClient(this);
         } catch (RemoteException e) {
             System.out.println("Error in connecting RMI server: " + e.getMessage());
