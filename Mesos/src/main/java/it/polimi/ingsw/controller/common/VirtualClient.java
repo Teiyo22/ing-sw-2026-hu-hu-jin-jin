@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.card.AbstractCard;
@@ -26,4 +27,5 @@ public abstract class VirtualClient implements Remote {
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
     public abstract void confirmPick(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
+    public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
 }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
@@ -73,6 +74,11 @@ public class ClientController extends VirtualClient{
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
         }
+    }
+
+    @Override
+    public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+
     }
 
     @Override
