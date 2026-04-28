@@ -59,7 +59,7 @@ public class LobbyController {
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
         for(VirtualClient client: players.keySet()){
-            client.confirmPick(pickerClient.getID(), model.getBoard().getTopRow(), model.getBoard().getBottomRow(), players.get(pickerClient).getTribe());
+            client.confirmPick(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
         }
     }
 

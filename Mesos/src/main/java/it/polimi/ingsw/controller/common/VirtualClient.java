@@ -25,7 +25,7 @@ public abstract class VirtualClient implements Remote {
     public abstract void removeFromLobby(int clientID, int lobbyID);
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
-    public abstract void confirmPick(int clientID, Row updatedTopRow, Row updatedBottomRow, Tribe updatedTribe);
+    public abstract void confirmPick(int clientID, Board board, Tribe updatedTribe);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
 }
