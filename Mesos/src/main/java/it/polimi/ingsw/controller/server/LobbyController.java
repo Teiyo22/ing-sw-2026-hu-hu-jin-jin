@@ -57,9 +57,13 @@ public class LobbyController {
     }
 
 
-    public void pickCards(VirtualClient client, List<Pickable> topPicks, List<Pickable> bottomPicks){
+    public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks){
 
-        model.pick(players.get(client), topPicks, bottomPicks);
+        model.pick(players.get(pickerClient), topPicks, bottomPicks);
+
+        for(VirtualClient client: players.keySet()){
+            client.confirmPick(pickerClient.getID(), model.getBoard().getTopRow(), model.getBoard().getBottomRow(), players.get(pickerClient).getTribe());
+        }
     }
 
     public void setID(int id) {
