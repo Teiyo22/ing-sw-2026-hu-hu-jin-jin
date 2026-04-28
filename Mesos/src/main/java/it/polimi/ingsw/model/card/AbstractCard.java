@@ -25,6 +25,7 @@ public abstract class AbstractCard {
      * */
     public AbstractCard(AbstractCard source) {
         this.type = source.type;
+        this.resourceName = source.resourceName;
         this.era = source.era;
         this.isFinal = source.isFinal;
     }
