@@ -17,87 +17,41 @@ import java.util.stream.Collectors;
 
 public class LobbyController {
     private int lobbyID;
-    private int playerNum;
+    private int size;
     private Game model;
-    private Map<VirtualClient, Player> clients;
+    private Map<VirtualClient, Player> players;
 
 
-    public LobbyController(VirtualClient client, int lobbyID, int playerNum, String playerName, Totem totem){
+    public LobbyController(int lobbyID, int size){
         this.lobbyID = lobbyID;
-        this.playerNum = playerNum;
-        clients = new HashMap<>();
-
-        addPlayer(client, playerName, totem);
+        this.size = size;
+        players = new HashMap<>();
     }
 
 
-    public void addPlayer(VirtualClient client, String playerName, Totem totem) {
-        playerNum++;
+    public void addPlayer(VirtualClient client, Player player) {
+        size++;
 
-        clients.put(client, new Player(playerName, totem));
+        players.put(client, player);
+    }
+
+    public void joinLobby(int clientID, Player player){
+
+        for(VirtualClient client: players.keySet()){
+            client.setLobby(clientID, lobbyID, player);
+        }
     }
 
     public void removePlayer(VirtualClient client) {
-        playerNum--;
+        size--;
 
-        clients.remove(client);
+        players.remove(client);
     }
 
 
-    public void pickCards(VirtualClient client, List<Integer> topPicks, List<Integer> bottomPicks){
-        List<Pickable> topPickCards = new ArrayList<>();
-        List<Pickable> bottomPickCards = new ArrayList<>();
-        Pickable foundCard;
+    public void pickCards(VirtualClient client, List<Pickable> topPicks, List<Pickable> bottomPicks){
 
-        for(Integer pickedID: topPicks){
-            foundCard = null;
-
-            for(AbstractCharacter card: model.getBoard().getTopRow().getCharacterCards()){
-                if(card.getID() == pickedID){
-
-                    foundCard = card;
-                    break;
-                }
-            }
-
-            if(foundCard == null){
-                for(AbstractBuilding card: model.getBoard().getTopRow().getBuildingCards()){
-                    if(card.getID() == pickedID){
-
-                        foundCard = card;
-                        break;
-                    }
-                }
-            }
-
-            topPickCards.add(foundCard);
-        }
-
-        for(Integer pickedID: bottomPicks){
-            foundCard = null;
-
-            for(AbstractCharacter card: model.getBoard().getBottomRow().getCharacterCards()){
-                if(card.getID() == pickedID){
-
-                    foundCard = card;
-                    break;
-                }
-            }
-
-            if(foundCard == null){
-                for(AbstractBuilding card: model.getBoard().getBottomRow().getBuildingCards()){
-                    if(card.getID() == pickedID){
-
-                        foundCard = card;
-                        break;
-                    }
-                }
-            }
-
-            bottomPickCards.add(foundCard);
-        }
-
-        model.pick(clients.get(client), topPickCards, bottomPickCards);
+        model.pick(players.get(client), topPicks, bottomPicks);
     }
 
     public void setID(int id) {
@@ -113,42 +67,49 @@ public class LobbyController {
     }
 
     public void startLobby(){
-        List<Player> players = new ArrayList<>();
+        Map<Integer, Tribe> tribes = new HashMap<>();
 
-        for(Player p: clients.values()){
-            players.add(p);
+        for(VirtualClient client: players.keySet()){
+            tribes.put(client.getID(), players.get(client).getTribe());
         }
 
-        model = new Game(getConfig(playerNum), players);
+        for(VirtualClient client: players.keySet()){
+            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+        }
+
+        model = new Game(getConfig(size), players.values());
     }
 
+    public int getID(){
 
-    public int getID(){return lobbyID;}
+        return lobbyID;
+    }
 
-    public int getPlayerNum(){return playerNum;}
+    public int getPlayerNum(){
 
-    public Map<VirtualClient, String> getClients(){
-        Map<VirtualClient, String>  clientNameMap= clients.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getName()));
+        return size;
+    }
 
-        return clientNameMap;
+    public Map<VirtualClient, Player> getPlayers(){
+
+        return players;
     }
 
     public Tribe getPlayerTribe(VirtualClient client){
 
-        return clients.get(client).getTribe();
+        return players.get(client).getTribe();
     }
 
 
-    public Map<Integer, Integer> getRank(){
+    public void showRank(int clientID){
         List<Player> leaderBoard = model.getPlayers();
         Map<Integer, Integer> rank = new HashMap<>();
 
         leaderBoard.sort(null);
 
         for(int i = 0; i<leaderBoard.size(); i++){
-           for(VirtualClient client: clients.keySet()){
-               if(clients.get(client).getName() == leaderBoard.get(i).getName()){
+           for(VirtualClient client: players.keySet()){
+               if(players.get(client).getName() == leaderBoard.get(i).getName()){
 
                    rank.put(client.getID(), leaderBoard.get(i).getRank());
                    break;
@@ -156,6 +117,8 @@ public class LobbyController {
            }
         }
 
-        return rank;
+        for(VirtualClient client: players.keySet()){
+            client.showRank(clientID, lobbyID, rank);
+        }
     }
 }
