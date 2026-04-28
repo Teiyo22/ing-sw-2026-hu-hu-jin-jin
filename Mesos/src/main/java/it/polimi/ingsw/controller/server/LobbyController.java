@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server;
 
+import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
@@ -37,9 +38,10 @@ public class LobbyController {
 
 
     public void createLobby(int clientID, Player player){
-
+        Lobby lobby = new Lobby(lobbyID, size);
+        
         for(VirtualClient client: players.keySet()){
-            client.createLobby(clientID, size, player);
+            client.createLobby(clientID, lobby, player);
         }
     }
 
