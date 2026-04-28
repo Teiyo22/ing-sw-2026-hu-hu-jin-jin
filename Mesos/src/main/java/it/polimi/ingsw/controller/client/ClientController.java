@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.rmi.NotBoundException;
@@ -52,10 +53,11 @@ public class ClientController extends VirtualClient{
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
         synchronized (lobbiesLock) {
-            if (waitingLobbies.containsKey(lobbyID)) {
+            if(clientID != this.id)
                 currLobby = waitingLobbies.get(lobbyID);
+
+            if(currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
-            }
         }
     }
 
