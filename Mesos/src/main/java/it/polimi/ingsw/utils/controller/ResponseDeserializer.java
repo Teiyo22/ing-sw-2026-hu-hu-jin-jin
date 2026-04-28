@@ -1,8 +1,7 @@
 package it.polimi.ingsw.utils.controller;
 
 import com.google.gson.*;
-import it.polimi.ingsw.controller.common.messages.responses.PickCardsResponse;
-import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.controller.common.messages.responses.*;
 
 import java.lang.reflect.Type;
 
@@ -14,6 +13,15 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
 
         return switch (type) {
             case "PICK_CARDS" -> context.deserialize(jsonObject, PickCardsResponse.class);
+            case "CREATE_LOBBY" -> context.deserialize(jsonObject, CreateLobbyResponse.class);
+            case "JOIN_LOBBY" -> context.deserialize(jsonObject, JoinLobbyResponse.class);
+            case "LEAVE_LOBBY" -> context.deserialize(jsonObject, LeaveLobbyResponse.class);
+            case "START_LOBBY" -> context.deserialize(jsonObject, StartLobbyResponse.class);
+            case "WAITING_LOBBY" -> context.deserialize(jsonObject, WaitingLobbyResponse.class);
+            case "LOBBY_INFO" -> context.deserialize(jsonObject, LobbyInfoResponse.class);
+            case "GET_RANK" -> context.deserialize(jsonObject, GetRankResponse.class);
+            case "GET_LEADERBOARD" -> context.deserialize(jsonObject, GetLeaderboardResponse.class);
+            case "SET_ID" -> context.deserialize(jsonObject, SetIDResponse.class);
             default -> throw new JsonParseException("Response type not found: " + type);
         };
     }
