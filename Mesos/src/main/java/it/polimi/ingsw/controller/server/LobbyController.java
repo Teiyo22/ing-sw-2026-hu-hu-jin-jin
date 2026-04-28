@@ -93,10 +93,6 @@ public class LobbyController {
         return size;
     }
 
-    public Map<VirtualClient, Player> getPlayers(){
-        return players;
-    }
-
     public void showRank(int clientID){
         Map<Integer, Integer> rank = new HashMap<>();
 
