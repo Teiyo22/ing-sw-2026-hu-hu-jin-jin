@@ -74,7 +74,7 @@ public class LobbyController {
     public void startLobby(){
         Map<Integer, Tribe> tribes = new HashMap<>();
 
-        model = new Game(PlayerConfig.getPlayerConfig(size), players.values());
+        model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
         for(VirtualClient client: players.keySet()){
             tribes.put(client.getID(), players.get(client).getTribe());
