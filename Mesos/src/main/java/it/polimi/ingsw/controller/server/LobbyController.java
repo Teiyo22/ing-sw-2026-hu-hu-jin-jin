@@ -102,7 +102,7 @@ public class LobbyController {
 
         for(VirtualClient client: players.keySet()){
             if (client.getID() == clientID)
-                client.showRank(clientID, rank);
+                client.showRank(clientID, lobbyID, rank);
         }
     }
 
