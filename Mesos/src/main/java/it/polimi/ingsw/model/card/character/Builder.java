@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.cardPick.CardVisitor;
+import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Builder extends AbstractCharacter{
@@ -41,6 +41,6 @@ public class Builder extends AbstractCharacter{
 
     @Override
     public void accept(CardVisitor v){
-        v.doForBuilder(this);
+        v.visit(this);
     }
 }

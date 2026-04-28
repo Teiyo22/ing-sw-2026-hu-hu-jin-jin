@@ -3,11 +3,8 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.card.Pickable;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
-
-import java.util.List;
 
 public class RoundActionState extends GameState{
     private final OfferTile[] offerTrack;
@@ -60,6 +57,5 @@ public class RoundActionState extends GameState{
 
         solvedOffers++;
         assignedPlayers++;
-        update();
     }
 }

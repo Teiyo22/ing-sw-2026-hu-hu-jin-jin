@@ -1,10 +1,13 @@
 package it.polimi.ingsw.model.card.building;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.BuildingVisitor;
+import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
-public class CavePaintingBuilding extends AbstractBuilding{
+public class CavePaintingBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose private int bonusFood;
 
     public CavePaintingBuilding(String type, int era, boolean isFinal,
@@ -32,11 +35,12 @@ public class CavePaintingBuilding extends AbstractBuilding{
         buildingHandler.addCavePaintingBuilding(this);
     }
 
-    /**
-     * The effect is applied during the cave painting event.
-     * Add bonus food to the owner depending on the number of artists.
-     * */
-    public void applyEffect() {
-        owner.addFood(owner.getTribe().getArtistCount()*bonusFood);
+    @Override
+    public void accept(BuildingVisitor v) {
+        v.visit(this);
+    }
+
+    public int getBonusFood() {
+        return bonusFood;
     }
 }

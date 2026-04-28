@@ -216,6 +216,10 @@ public class Tribe {
         this.food = food;
     }
 
+    public void setPP(int pp) {
+        this.pp = pp;
+    }
+
     public void addFood(int foodDelta) {
         this.food += foodDelta;
     }

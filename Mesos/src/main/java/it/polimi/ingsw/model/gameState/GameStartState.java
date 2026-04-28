@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gameState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
@@ -59,7 +59,7 @@ public class GameStartState extends GameState{
         Row bottomRow = game.getBoard().getBottomRow();
         int ID = 0;
 
-        int drawCount = game.getPlayerConfig().getNum() + 4;
+        int drawCount = game.getPlayerConfig().getNum() + 1;
         do {
             cards = game.getBoard().getDeck().drawCards(drawCount);
             for(AbstractCard card: cards){
@@ -77,12 +77,10 @@ public class GameStartState extends GameState{
             bottomRow.getEventCards().clear();
             bottomRow.getSustenanceEventCards().clear();
 
-            drawCount = game.getPlayerConfig().getNum() + 4 - bottomRow.getCharacterCards().size();
+            drawCount = game.getPlayerConfig().getNum() + 1 - bottomRow.getCharacterCards().size();
         } while(drawCount > 0);
 
-        drawCount = game.getPlayerConfig().getNum() + 1 -
-                    topRow.getEventCards().size() -
-                    topRow.getSustenanceEventCards().size();
+        drawCount = game.getPlayerConfig().getNum() + 4 - topRow.getEventCards().size() - topRow.getSustenanceEventCards().size();
 
         cards = game.getBoard().getDeck().drawCards(drawCount);
         for(AbstractCard card: cards){

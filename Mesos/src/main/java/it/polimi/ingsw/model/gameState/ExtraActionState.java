@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.Pickable;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
-
-import java.util.List;
 
 public class ExtraActionState extends GameState {
     private int solvedExtraActions = -1;

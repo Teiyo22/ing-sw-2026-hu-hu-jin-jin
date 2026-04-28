@@ -5,6 +5,7 @@
         {
             "card": {
                 "type": "NewFullSetBuilding",
+                "resourceName": "NewFullSetBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 4,
@@ -16,7 +17,8 @@
 
         {
             "card": {
-                "type": "CollectorSustenanceDiscountBuilding",
+                "type": "SustenanceDiscountBuilding",
+                "resourceName": "CollectorSustenanceDiscountBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 4,
@@ -34,7 +36,8 @@
 
         {
             "card": {
-                "type": "ArtistSustenanceDiscountBuilding",
+                "type": "SustenanceDiscountBuilding",
+                "resourceName": "ArtistSustenanceDiscountBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 5,
@@ -53,6 +56,7 @@
         {
             "card": {
                 "type": "RitualNoLossBuilding",
+                "resourceName": "RitualNoLossBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 5,
@@ -65,6 +69,7 @@
         {
             "card": {
                 "type": "OrderTileBuilding",
+                "resourceName": "OrderTileBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 3,
@@ -77,6 +82,7 @@
         {
             "card": {
                 "type": "InventorPairBuilding",
+                "resourceName": "InventorPairBuilding",
                 "era": 1,
                 "isFinal": false,
                 "cost": 3,
@@ -89,6 +95,7 @@
         {
             "card": {
                 "type": "RitualDoubleBonusBuilding",
+                "resourceName": "RitualDoubleBonusBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 7,
@@ -101,6 +108,7 @@
         {
             "card": {
                 "type": "RitualStarsBuilding",
+                "resourceName": "RitualStarsBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 6,
@@ -113,7 +121,8 @@
 
         {
             "card": {
-                "type": "InventorSustenanceDiscountBuilding",
+                "type": "SustenanceDiscountBuilding",
+                "resourceName": "InventorSustenanceDiscountBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 7,
@@ -132,6 +141,7 @@
         {
             "card": {
                 "type": "HuntBuilding",
+                "resourceName": "HuntBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 7,
@@ -146,6 +156,7 @@
         {
             "card": {
                 "type": "BuilderDoublePPBuilding",
+                "resourceName": "BuilderDoublePPBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 6,
@@ -158,6 +169,7 @@
         {
             "card": {
                 "type": "CavePaintingBuilding",
+                "resourceName": "CavePaintingBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 5,
@@ -171,6 +183,7 @@
         {
             "card": {
                 "type": "FullSetBuilding",
+                "resourceName": "FullSetBuilding",
                 "era": 2,
                 "isFinal": false,
                 "cost": 5,
@@ -182,7 +195,8 @@
 
         {
             "card": {
-                "type": "HunterBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "HunterBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 8,
@@ -200,7 +214,8 @@
 
         {
             "card": {
-                "type": "CollectorBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "CollectorBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 7,
@@ -218,7 +233,8 @@
 
         {
             "card": {
-                "type": "ShamanBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "ShamanBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 7,
@@ -236,7 +252,8 @@
 
         {
             "card": {
-                "type": "BuilderBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "BuilderBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 6,
@@ -254,7 +271,8 @@
 
         {
             "card": {
-                "type": "ArtistBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "ArtistBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 7,
@@ -272,7 +290,8 @@
 
         {
             "card": {
-                "type": "InventorBonusBuilding",
+                "type": "CharacterBonusBuilding",
+                "resourceName": "InventorBonusBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 6,
@@ -291,6 +310,7 @@
         {
             "card": {
                 "type": "ExtraActionBuilding",
+                "resourceName": "ExtraActionBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 9,
@@ -303,6 +323,7 @@
         {
             "card": {
                 "type": "BonusPPBuilding",
+                "resourceName": "BonusPPBuilding",
                 "era": 3,
                 "isFinal": false,
                 "cost": 8,
@@ -317,7 +338,8 @@
     "cardConfigs": [
         {
             "card": {
-                "type": "HunterWithIcon",
+                "type": "Hunter",
+                "resourceName": "HunterWithIcon",
                 "era": 1,
                 "isFinal": false,
                 "hasIcon": true
@@ -329,6 +351,7 @@
         {
             "card": {
                 "type": "Hunter",
+                "resourceName": "Hunter",
                 "era": 1,
                 "isFinal": false,
                 "hasIcon": false
@@ -339,7 +362,8 @@
 
         {
             "card": {
-                "type": "Builder1",
+                "type": "Builder",
+                "resourceName": "Builder1",
                 "era": 1,
                 "isFinal": false,
                 "bonusPP": 3,
@@ -351,7 +375,8 @@
 
         {
             "card": {
-                "type": "Builder2",
+                "type": "Builder",
+                "resourceName": "Builder2",
                 "era": 1,
                 "isFinal": false,
                 "bonusPP": 0,
@@ -363,7 +388,8 @@
 
         {
             "card": {
-                "type": "Builder3",
+                "type": "Builder",
+                "resourceName": "Builder3",
                 "era": 1,
                 "isFinal": false,
                 "bonusPP": 1,
@@ -375,7 +401,8 @@
 
         {
             "card": {
-                "type": "Builder4",
+                "type": "Builder",
+                "resourceName": "Builder4",
                 "era": 1,
                 "isFinal": false,
                 "bonusPP": 2,
@@ -388,6 +415,7 @@
         {
             "card": {
                 "type": "Collector",
+                "resourceName": "Collector",
                 "era": 1,
                 "isFinal": false
             },
@@ -398,6 +426,7 @@
         {
             "card": {
                 "type": "Artist",
+                "resourceName": "Artist",
                 "era": 1,
                 "isFinal": false
             },
@@ -407,7 +436,8 @@
 
         {
             "card": {
-                "type": "Tanner",
+                "type": "Inventor",
+                "resourceName": "Tanner",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "TANNER"
@@ -418,7 +448,8 @@
 
         {
             "card": {
-                "type": "Boatwright",
+                "type": "Inventor",
+                "resourceName": "Boatwright",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "BOATWRIGHT"
@@ -429,7 +460,8 @@
 
         {
             "card": {
-                "type": "Fletcher",
+                "type": "Inventor",
+                "resourceName": "Fletcher",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "FLETCHER"
@@ -440,7 +472,8 @@
 
         {
             "card": {
-                "type": "Baker",
+                "type": "Inventor",
+                "resourceName": "Baker",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "BAKER"
@@ -451,7 +484,8 @@
 
         {
             "card": {
-                "type": "Shepherd",
+                "type": "Inventor",
+                "resourceName": "Shepherd",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "SHEPHERD"
@@ -462,7 +496,8 @@
 
         {
             "card": {
-                "type": "Musician",
+                "type": "Inventor",
+                "resourceName": "Musician",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "MUSICIAN"
@@ -473,7 +508,8 @@
 
         {
             "card": {
-                "type": "Herborist",
+                "type": "Inventor",
+                "resourceName": "Herborist",
                 "era": 1,
                 "isFinal": false,
                 "inventorType": "HERBORIST"
@@ -484,7 +520,8 @@
 
         {
             "card": {
-                "type": "Shaman1",
+                "type": "Shaman",
+                "resourceName": "Shaman1",
                 "era": 1,
                 "isFinal": false,
                 "stars": 1
@@ -495,7 +532,8 @@
 
         {
             "card": {
-                "type": "Shaman2",
+                "type": "Shaman",
+                "resourceName": "Shaman2",
                 "era": 1,
                 "isFinal": false,
                 "stars": 2
@@ -507,6 +545,7 @@
         {
             "card": {
                 "type": "Hunter",
+                "resourceName": "Hunter",
                 "era": 2,
                 "isFinal": false,
                 "hasIcon": false
@@ -517,7 +556,8 @@
 
         {
             "card": {
-                "type": "HunterWithIcon",
+                "type": "Hunter",
+                "resourceName": "HunterWithIcon",
                 "era": 2,
                 "isFinal": false,
                 "hasIcon": true
@@ -528,7 +568,8 @@
 
         {
             "card": {
-                "type": "Builder3",
+                "type": "Builder",
+                "resourceName": "Builder3",
                 "era": 2,
                 "isFinal": false,
                 "bonusPP": 1,
@@ -540,7 +581,8 @@
 
         {
             "card": {
-                "type": "Builder4",
+                "type": "Builder",
+                "resourceName": "Builder4",
                 "era": 2,
                 "isFinal": false,
                 "bonusPP": 2,
@@ -552,7 +594,8 @@
 
         {
             "card": {
-                "type": "Builder5",
+                "type": "Builder",
+                "resourceName": "Builder5",
                 "era": 2,
                 "isFinal": false,
                 "bonusPP": 3,
@@ -565,6 +608,7 @@
         {
             "card": {
                 "type": "Collector",
+                "resourceName": "Collector",
                 "era": 2,
                 "isFinal": false
             },
@@ -575,6 +619,7 @@
         {
             "card": {
                 "type": "Artist",
+                "resourceName": "Artist",
                 "era": 2,
                 "isFinal": false
             },
@@ -584,7 +629,8 @@
 
         {
             "card": {
-                "type": "Manufacturer",
+                "type": "Inventor",
+                "resourceName": "Manufacturer",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "MANUFACTURER"
@@ -595,7 +641,8 @@
 
         {
             "card": {
-                "type": "Fisherman",
+                "type": "Inventor",
+                "resourceName": "Fisherman",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "FISHERMAN"
@@ -606,7 +653,8 @@
 
         {
             "card": {
-                "type": "Shepherd",
+                "type": "Inventor",
+                "resourceName": "Shepherd",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "SHEPHERD"
@@ -617,7 +665,8 @@
 
         {
             "card": {
-                "type": "Musician",
+                "type": "Inventor",
+                "resourceName": "Musician",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "MUSICIAN"
@@ -628,7 +677,8 @@
 
         {
             "card": {
-                "type": "Herborist",
+                "type": "Inventor",
+                "resourceName": "Herborist",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "HERBORIST"
@@ -639,7 +689,8 @@
 
         {
             "card": {
-                "type": "Tanner",
+                "type": "Inventor",
+                "resourceName": "Tanner",
                 "era": 2,
                 "isFinal": false,
                 "inventorType": "TANNER"
@@ -650,7 +701,8 @@
 
         {
             "card": {
-                "type": "Shaman2",
+                "type": "Shaman",
+                "resourceName": "Shaman2",
                 "era": 2,
                 "isFinal": false,
                 "stars": 2
@@ -661,7 +713,8 @@
 
         {
             "card": {
-                "type": "Shaman1",
+                "type": "Shaman",
+                "resourceName": "Shaman1",
                 "era": 2,
                 "isFinal": false,
                 "stars": 1
@@ -672,7 +725,8 @@
 
         {
             "card": {
-                "type": "HunterWithIcon",
+                "type": "Hunter",
+                "resourceName": "HunterWithIcon",
                 "era": 3,
                 "isFinal": false,
                 "hasIcon": true
@@ -684,6 +738,7 @@
         {
             "card": {
                 "type": "Hunter",
+                "resourceName": "Hunter",
                 "era": 3,
                 "isFinal": false,
                 "hasIcon": false
@@ -694,7 +749,8 @@
 
         {
             "card": {
-                "type": "Builder6",
+                "type": "Builder",
+                "resourceName": "Builder6",
                 "era": 3,
                 "isFinal": false,
                 "bonusPP": 5,
@@ -706,7 +762,8 @@
 
         {
             "card": {
-                "type": "Builder5",
+                "type": "Builder",
+                "resourceName": "Builder5",
                 "era": 3,
                 "isFinal": false,
                 "bonusPP": 3,
@@ -718,7 +775,8 @@
 
         {
             "card": {
-                "type": "Builder7",
+                "type": "Builder",
+                "resourceName": "Builder7",
                 "era": 3,
                 "isFinal": false,
                 "bonusPP": 4,
@@ -730,7 +788,8 @@
 
         {
             "card": {
-                "type": "Builder8",
+                "type": "Builder",
+                "resourceName": "Builder8",
                 "era": 3,
                 "isFinal": false,
                 "bonusPP": 2,
@@ -743,6 +802,7 @@
         {
             "card": {
                 "type": "Collector",
+                "resourceName": "Collector",
                 "era": 3,
                 "isFinal": false
             },
@@ -753,6 +813,7 @@
         {
             "card": {
                 "type": "Artist",
+                "resourceName": "Artist",
                 "era": 3,
                 "isFinal": false
             },
@@ -762,7 +823,8 @@
 
         {
             "card": {
-                "type": "Jeweler",
+                "type": "Inventor",
+                "resourceName": "Jeweler",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "JEWELER"
@@ -773,7 +835,8 @@
 
         {
             "card": {
-                "type": "Boatwright",
+                "type": "Inventor",
+                "resourceName": "Boatwright",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "BOATWRIGHT"
@@ -784,7 +847,8 @@
 
         {
             "card": {
-                "type": "Fletcher",
+                "type": "Inventor",
+                "resourceName": "Fletcher",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "FLETCHER"
@@ -795,7 +859,8 @@
 
         {
             "card": {
-                "type": "Manufacturer",
+                "type": "Inventor",
+                "resourceName": "Manufacturer",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "MANUFACTURER"
@@ -806,7 +871,8 @@
 
         {
             "card": {
-                "type": "Fisherman",
+                "type": "Inventor",
+                "resourceName": "Fisherman",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "FISHERMAN"
@@ -817,7 +883,8 @@
 
         {
             "card": {
-                "type": "Baker",
+                "type": "Inventor",
+                "resourceName": "Baker",
                 "era": 3,
                 "isFinal": false,
                 "inventorType": "BAKER"
@@ -828,7 +895,8 @@
 
         {
             "card": {
-                "type": "Shaman2",
+                "type": "Shaman",
+                "resourceName": "Shaman2",
                 "era": 3,
                 "isFinal": false,
                 "stars": 2
@@ -839,7 +907,8 @@
 
         {
             "card": {
-                "type": "Shaman3",
+                "type": "Shaman",
+                "resourceName": "Shaman3",
                 "era": 3,
                 "isFinal": false,
                 "stars": 3
@@ -850,7 +919,8 @@
 
         {
             "card": {
-                "type": "Hunt1",
+                "type": "Hunt",
+                "resourceName": "Hunt1",
                 "era": 1,
                 "isFinal": false,
                 "ppMultiplier": 1
@@ -861,7 +931,8 @@
 
         {
             "card": {
-                "type": "Sustenance1",
+                "type": "Sustenance",
+                "resourceName": "Sustenance1",
                 "era": 1,
                 "isFinal": false,
                 "ppMultiplier": 1
@@ -872,7 +943,8 @@
 
         {
             "card": {
-                "type": "ShamanicRitual1",
+                "type": "ShamanicRitual",
+                "resourceName": "ShamanicRitual1",
                 "era": 1,
                 "isFinal": false,
                 "malusPP": 3,
@@ -884,7 +956,8 @@
 
         {
             "card": {
-                "type": "CavePainting1",
+                "type": "CavePainting",
+                "resourceName": "CavePainting1",
                 "era": 1,
                 "isFinal": false,
                 "malusPP": 2,
@@ -898,7 +971,8 @@
 
         {
             "card": {
-                "type": "Hunt2",
+                "type": "Hunt",
+                "resourceName": "Hunt2",
                 "era": 2,
                 "isFinal": false,
                 "ppMultiplier": 2
@@ -909,7 +983,8 @@
 
         {
             "card": {
-                "type": "Sustenance2",
+                "type": "Sustenance",
+                "resourceName": "Sustenance2",
                 "era": 2,
                 "isFinal": false,
                 "ppMultiplier": 2
@@ -920,7 +995,8 @@
 
         {
             "card": {
-                "type": "ShamanicRitual2",
+                "type": "ShamanicRitual",
+                "resourceName": "ShamanicRitual2",
                 "era": 2,
                 "isFinal": false,
                 "malusPP": 5,
@@ -932,7 +1008,8 @@
 
         {
             "card": {
-                "type": "CavePainting2",
+                "type": "CavePainting",
+                "resourceName": "CavePainting2",
                 "era": 2,
                 "isFinal": false,
                 "malusPP": 2,
@@ -946,7 +1023,8 @@
 
         {
             "card": {
-                "type": "Hunt3",
+                "type": "Hunt",
+                "resourceName": "Hunt3",
                 "era": 3,
                 "isFinal": false,
                 "ppMultiplier": 3
@@ -957,7 +1035,8 @@
 
         {
             "card": {
-                "type": "Sustenance3",
+                "type": "Sustenance",
+                "resourceName": "Sustenance3",
                 "era": 3,
                 "isFinal": true,
                 "ppMultiplier": 3
@@ -968,7 +1047,8 @@
 
         {
             "card": {
-                "type": "ShamanicRitual3",
+                "type": "ShamanicRitual",
+                "resourceName": "ShamanicRitual3",
                 "era": 3,
                 "isFinal": true,
                 "malusPP": 7,
@@ -980,7 +1060,8 @@
 
         {
             "card": {
-                "type": "CavePainting3",
+                "type": "CavePainting",
+                "resourceName": "CavePainting3",
                 "era": 3,
                 "isFinal": false,
                 "malusPP": 2,

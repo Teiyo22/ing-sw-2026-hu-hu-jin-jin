@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card.building;
 
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.*;
 
 import org.junit.jupiter.api.BeforeEach;

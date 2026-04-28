@@ -6,27 +6,25 @@ import it.polimi.ingsw.model.card.BuildingVisitor;
 import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
-public class ExtraActionBuilding extends AbstractBuilding implements VisitableBuilding {
-    public ExtraActionBuilding(String type, int era, boolean isFinal, int cost, int pp) {
+public class BuilderBonusBuilding extends AbstractBuilding implements VisitableBuilding {
+    public BuilderBonusBuilding(String type, int era, boolean isFinal,
+                                int cost, int pp) {
         super(type, era, isFinal, cost, pp);
     }
 
-    public ExtraActionBuilding(ExtraActionBuilding source) {
+    public BuilderBonusBuilding(BuilderBonusBuilding source) {
         super(source);
     }
 
     @Override
     public AbstractCard clone() {
-        return new ExtraActionBuilding(this);
+        return new BuilderBonusBuilding(this);
     }
 
-    /**
-     * Adds the card to the list of extra actions buildings in the building handler.
-     * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addExtraActionBuilding(this);
+        buildingHandler.addGameEndBuilding(this);
     }
 
     @Override

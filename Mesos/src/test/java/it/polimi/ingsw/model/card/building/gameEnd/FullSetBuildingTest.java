@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.building.gameEnd;
 
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.model.card.building.FullSetBuilding;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Totem;

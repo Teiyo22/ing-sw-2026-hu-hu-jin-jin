@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Deck;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.BuildingHandler;
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
@@ -99,6 +99,11 @@ public class RoundEndState extends GameState {
             if (card.getEra() > deck.getCurrentEra()) {
                 bottom.getBuildingCards().clear();
                 deck.changeEra();
+
+                for(AbstractCard building: top.getBuildingCards()){
+                    building.moveTo(bottom);
+                }
+                top.getBuildingCards().clear();
 
                 List<AbstractCard> buildings = deck.drawBuildingCards();
                 for(AbstractCard building: buildings){
