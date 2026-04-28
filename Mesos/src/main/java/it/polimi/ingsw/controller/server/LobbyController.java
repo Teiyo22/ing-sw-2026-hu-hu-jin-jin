@@ -3,18 +3,14 @@ package it.polimi.ingsw.controller.server;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Tribe;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LobbyController {
     private int lobbyID;
@@ -31,8 +27,6 @@ public class LobbyController {
 
 
     public void addPlayer(VirtualClient client, Player player) {
-        size++;
-
         players.put(client, player);
     }
 
@@ -40,21 +34,18 @@ public class LobbyController {
     public void createLobby(int clientID, Player player){
         Lobby lobby = new Lobby(lobbyID, size);
         
-        for(VirtualClient client: players.keySet()){
+        for(VirtualClient client: players.keySet()) {
             client.createLobby(clientID, lobby, player);
         }
     }
 
     public void joinLobby(int clientID, Player player){
-
         for(VirtualClient client: players.keySet()){
             client.setLobby(clientID, lobbyID, player);
         }
     }
 
     public void removePlayer(VirtualClient removedClient) {
-        size--;
-
         players.remove(removedClient);
 
         for(VirtualClient client: players.keySet()){
@@ -71,10 +62,6 @@ public class LobbyController {
         }
     }
 
-    public void setID(int id) {
-        this.lobbyID = id;
-    }
-
     public void setModel(Game game){
         this.model = game;
     }
@@ -86,7 +73,7 @@ public class LobbyController {
     public void startLobby(){
         Map<Integer, Tribe> tribes = new HashMap<>();
 
-        model = new Game(getConfig(size), players.values());
+        model = new Game(PlayerConfig.getPlayerConfig(size), players.values());
 
         for(VirtualClient client: players.keySet()){
             tribes.put(client.getID(), players.get(client).getTribe());
@@ -98,38 +85,27 @@ public class LobbyController {
     }
 
     public int getID(){
-
         return lobbyID;
     }
 
     public int getSize(){
-
         return size;
     }
 
     public Map<VirtualClient, Player> getPlayers(){
-
         return players;
     }
 
     public void showRank(int clientID){
-        List<Player> leaderBoard = model.getPlayers();
         Map<Integer, Integer> rank = new HashMap<>();
 
-        leaderBoard.sort(null);
-
-        for(int i = 0; i<leaderBoard.size(); i++){
-           for(VirtualClient client: players.keySet()){
-               if(players.get(client).getName() == leaderBoard.get(i).getName()){
-
-                   rank.put(client.getID(), leaderBoard.get(i).getRank());
-                   break;
-               }
-           }
+        for(VirtualClient client: players.keySet()) {
+            rank.put(client.getID(), players.get(client).getRank());
         }
 
         for(VirtualClient client: players.keySet()){
-            client.showRank(clientID, lobbyID, rank);
+            if (client.getID() == clientID)
+                client.showRank(clientID, rank);
         }
     }
 }
