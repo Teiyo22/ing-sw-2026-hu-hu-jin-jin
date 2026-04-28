@@ -81,4 +81,11 @@ public class ClientTCPInterface extends VirtualClient {
         StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
         clientHandler.sendMessage(response);
     }
+
+    @Override
+    public void setID(int clientID) {
+        super.setID(clientID);
+        SetIDResponse response = new SetIDResponse(clientID);
+        clientHandler.sendMessage(response);
+    }
 }
