@@ -1,99 +1,66 @@
 package it.polimi.ingsw.controller.server;
 
+import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.Map;
 import javax.swing.*;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LobbyController {
-    private int id;
+    private int lobbyID;
     private int size;
     private Game model;
     private Map<VirtualClient, Player> players;
 
-    public LobbyController(int id, int size) {
-        this.id = id;
+
+    public LobbyController(int lobbyID, int size){
+        this.lobbyID = lobbyID;
         this.size = size;
+        players = new HashMap<>();
     }
+
 
     public void addPlayer(VirtualClient client, Player player) {
         players.put(client, player);
     }
 
-    public void removePlayer(VirtualClient client) {
-        players.remove(client);
+
+    public void createLobby(int clientID, Player player){
+        Lobby lobby = new Lobby(lobbyID, size);
+        
+        for(VirtualClient client: players.keySet()) {
+            client.createLobby(clientID, lobby, player);
+        }
+    }
+
+    public void joinLobby(int clientID, Player player){
+        for(VirtualClient client: players.keySet()){
+            client.setLobby(clientID, lobbyID, player);
+        }
+    }
+
+    public void removePlayer(VirtualClient removedClient) {
+        players.remove(removedClient);
+
+        for(VirtualClient client: players.keySet()){
+            client.removeFromLobby(removedClient.getID(), lobbyID);
+        }
     }
 
 
-    public void pickCards(VirtualClient client, List<Integer> topPicks, List<Integer> bottomPicks){
-        List<Pickable> topPickCards = new ArrayList<>();
-        List<Pickable> bottomPickCards = new ArrayList<>();
-        Pickable foundCard;
+    public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks){
+        model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
-        for(Integer pickedID: topPicks){
-            foundCard = null;
-
-            for(AbstractCharacter card: model.getBoard().getTopRow().getCharacterCards()){
-                if(card.getID() == pickedID){
-
-                    foundCard = card;
-                    break;
-                }
-            }
-
-            if(foundCard == null){
-                for(AbstractBuilding card: model.getBoard().getTopRow().getBuildingCards()){
-                    if(card.getID() == pickedID){
-
-                        foundCard = (Pickable)card;
-                        break;
-                    }
-                }
-            }
-
-            topPickCards.add(foundCard);
+        for(VirtualClient client: players.keySet()){
+            client.confirmPick(pickerClient.getID(), model.getBoard().getTopRow(), model.getBoard().getBottomRow(), players.get(pickerClient).getTribe());
         }
-
-        for(Integer pickedID: bottomPicks){
-            foundCard = null;
-
-            for(AbstractCharacter card: model.getBoard().getBottomRow().getCharacterCards()){
-                if(card.getID() == pickedID){
-
-                    foundCard = card;
-                    break;
-                }
-            }
-
-            if(foundCard == null){
-                for(AbstractBuilding card: model.getBoard().getBottomRow().getBuildingCards()){
-                    if(card.getID() == pickedID){
-
-                        foundCard = (Pickable)card;
-                        break;
-                    }
-                }
-            }
-
-            bottomPickCards.add(foundCard);
-        }
-
-        model.pick(players.get(client), topPickCards, bottomPickCards);
-    }
-
-    public void setID(int id) {
-        this.id = id;
     }
 
     public void setModel(Game game){
@@ -105,46 +72,42 @@ public class LobbyController {
     }
 
     public void startLobby(){
-        List<Player> players = new ArrayList<>();
+        Map<Integer, Tribe> tribes = new HashMap<>();
 
-        for(Player p: players.values()){
-            players.add(p);
+        model = new Game(PlayerConfig.getPlayerConfig(size), players.values());
+
+        for(VirtualClient client: players.keySet()){
+            tribes.put(client.getID(), players.get(client).getTribe());
         }
 
-        model = new Game(getConfig(playerNum), players);
+        for(VirtualClient client: players.keySet()){
+            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+        }
     }
 
-
     public int getID(){
-        return id;
+        return lobbyID;
     }
 
     public int getSize(){
         return size;
     }
 
-    public Tribe getPlayerTribe(VirtualClient client){
-        return players.get(client).getTribe();
+    public Map<VirtualClient, Player> getPlayers(){
+        return players;
     }
 
-
-    public Map<Integer, Integer> getRank(){
-        List<Player> leaderBoard = model.getPlayers();
+    public void showRank(int clientID){
         Map<Integer, Integer> rank = new HashMap<>();
 
-        leaderBoard.sort(null);
-
-        for(int i = 0; i<leaderBoard.size(); i++){
-           for(VirtualClient client: players.keySet()){
-               if(players.get(client).getName() == leaderBoard.get(i).getName(){
-
-                   rank.put(client.getID, leaderBoard.get(i).getRank());
-                   break;
-               }
-           }
+        for(VirtualClient client: players.keySet()) {
+            rank.put(client.getID(), players.get(client).getRank());
         }
 
-        return rank;
+        for(VirtualClient client: players.keySet()){
+            if (client.getID() == clientID)
+                client.showRank(clientID, rank);
+        }
     }
 
     public Map<VirtualClient, Player> getPlayers() {

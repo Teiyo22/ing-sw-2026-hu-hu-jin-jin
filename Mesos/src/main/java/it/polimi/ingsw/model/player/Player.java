@@ -93,6 +93,8 @@ public class Player implements Comparable<Player>{
         return tribe;
     }
 
+    public String getName(){return name;}
+
     public boolean getNoLossRitualMod() {
         return tribe.getNoLossRitualMod();
     }
