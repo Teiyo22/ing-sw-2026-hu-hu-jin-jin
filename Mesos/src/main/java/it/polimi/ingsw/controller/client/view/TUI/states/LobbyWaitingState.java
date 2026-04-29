@@ -17,6 +17,8 @@ public class LobbyWaitingState extends ViewState {
     public void render() {
         Lobby lobby = super.getController().getCurrLobby();
 
+        full = lobby.getPlayers().size() == lobby.getSize();
+
         List<String> playerNames = lobby.getPlayers().values().stream().map(Player::getName).toList();
         String players = String.join(", ", playerNames);
         System.out.println("Lobby " + lobby.getLobbyID());
