@@ -53,6 +53,18 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
+    public void removeClient(VirtualClient client) {
+        clients.remove(client.getID());
+
+        for(LobbyController lobby: runningLobbies.values())
+            lobby.removePlayer(client);
+        
+        for(LobbyController lobby: waitingLobbies.values())
+            lobby.removePlayer(client);
+    }
+
+    // Should be synchronized
+    @Override
     public void createLobby(int clientID, int playerNum, Player player) {
         VirtualClient client = clients.get(clientID);
         int id = nextLobbyID.getAndIncrement();
