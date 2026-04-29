@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
@@ -23,8 +24,10 @@ public class ServerController extends VirtualServer {
     private final Map<Integer, LobbyController> waitingLobbies;
     private final Map<Integer, LobbyController> runningLobbies;
     private final Map<Integer, VirtualClient> clients;
-    private int nextClientID = 1;
-    private int nextLobbyID = 1;
+
+
+    private AtomicInteger nextClientID = new AtomicInteger(1);
+    private AtomicInteger nextLobbyID = new AtomicInteger(1);
 
     private final Object lobbiesLock = new Object();
     private final Object clientsLock = new Object();
@@ -45,20 +48,21 @@ public class ServerController extends VirtualServer {
 
     @Override
     public void addClient(VirtualClient client) {
+        int id = nextClientID.getAndIncrement();
+
         synchronized (clientsLock) {
-            client.setID(nextClientID);
-            clients.put(nextClientID, client);
-            nextClientID++;
+            client.setID(id);
+            clients.put(id, client);
         }
     }
 
     @Override
     public void createLobby(int clientID, int playerNum, Player player) {
         VirtualClient client = clients.get(clientID);
+        int id = nextLobbyID.getAndIncrement();
 
         synchronized (lobbiesLock) {
-            LobbyController lobbyController = new LobbyController(nextLobbyID, playerNum);
-            nextLobbyID++;
+            LobbyController lobbyController = new LobbyController(id, playerNum);
 
             lobbyController.addPlayer(client, player);
             lobbyController.createLobby(clientID, player);
