@@ -28,6 +28,7 @@ public class ClientController extends VirtualClient{
     private Lobby currLobby;
     private Map<Integer, Lobby> waitingLobbies;
     private final Object lobbiesLock = new Object();
+    private String playerName;
 
     public ClientController() {
         this.server = null;
@@ -47,6 +48,10 @@ public class ClientController extends VirtualClient{
 
     public Map<Integer, Lobby> getWaitingLobbies() {
         return waitingLobbies;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override
@@ -77,8 +82,10 @@ public class ClientController extends VirtualClient{
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
         synchronized (lobbiesLock) {
-            if(currLobby != null && currLobby.getLobbyID() == lobbyID)
+            if(currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby.addPlayer(clientID, player);
+                playerName = player.getName();
+            }
             // TODO: handle missing/wrong lobby
             // TODO: what happens if the player tries to join multiple lobbies?
         }

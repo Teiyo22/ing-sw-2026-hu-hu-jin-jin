@@ -27,4 +27,15 @@ public class OfferTile {
         assignedPlayer.addFood(bonusFood);
     }
 
+    public int getTopRowPickable() {
+        return topRowPickable;
+    }
+
+    public int  getBottomRowPickable() {
+        return bottomRowPickable;
+    }
+
+    public int getBonusFood() {
+        return bonusFood;
+    }
 }
