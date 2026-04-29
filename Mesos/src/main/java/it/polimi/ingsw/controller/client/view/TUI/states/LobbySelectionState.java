@@ -93,6 +93,9 @@ public class LobbySelectionState extends ViewState {
 
     }
 
+
+    /** Input is handled differently depending on the stage of interaction.
+     * This method already checks that the inserted lobby ID is valid (ID of a lobby in waitingLobbies).*/
     @Override
     public void handleInput(String input) {
         switch (action) {
@@ -115,8 +118,12 @@ public class LobbySelectionState extends ViewState {
             case JOIN -> {
                 if (lobbyID == -1) {
                     try {
-                        lobbyID = Integer.parseInt(input);
-                        render();
+                        if (checkLobbyID(Integer.parseInt(input))) {
+                            lobbyID = Integer.parseInt(input);
+                            render();
+                        } else {
+                            System.out.println("Invalid lobby ID. The ID is either wrong or the lobby is no longer available.");
+                        }
                     }  catch (NumberFormatException e) {
                         System.out.println("Invalid input: lobby ID must be a number.");
                     }
@@ -163,8 +170,12 @@ public class LobbySelectionState extends ViewState {
             }
             case SEE_DETAILS -> {
                 try {
-                    lobbyID = Integer.parseInt(input);
-                    super.getController().getServer().getLobbyInfo(super.getController().getID(), lobbyID);
+                    if (checkLobbyID(Integer.parseInt(input))) {
+                        lobbyID = Integer.parseInt(input);
+                        super.getController().getServer().getLobbyInfo(super.getController().getID(), lobbyID);
+                    } else {
+                        System.out.println("Invalid lobby ID. The ID is either wrong or the lobby is no longer available.");
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input: lobby ID must be a number.");
                 }
@@ -173,6 +184,13 @@ public class LobbySelectionState extends ViewState {
 
     }
 
+
+    /** The method saves the available totems so that they can be used when the player chooses one by its index.
+     * This guarantees that the desired totem doesn't change by computing the available totems again at a different time.
+     * The server must check that the requested totem is still available and not taken by another player who sent a request at the same time.
+     * */
+
+    //TODO: add totem check on server side and manage errors.
     private void setAvailableTotems(Lobby lobby) {
         availableTotems = Arrays.stream(Totem.values()).toList();
         if (lobby != null) {
@@ -186,5 +204,9 @@ public class LobbySelectionState extends ViewState {
         for (int i = 1; i <= availableTotems.size(); i++) {
             System.out.println(i + ". " + availableTotems.get(i-1));
         }
+    }
+
+    private boolean checkLobbyID(int id) {
+        return super.getController().getWaitingLobbies().containsKey(id);
     }
 }
