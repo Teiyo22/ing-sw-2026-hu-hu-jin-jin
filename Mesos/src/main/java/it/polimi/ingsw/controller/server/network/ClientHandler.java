@@ -38,6 +38,8 @@ public class ClientHandler extends Thread {
                 Request request = gson.fromJson(line, Request.class);
                 clientInterface.handleMessage(request);
             }
+            
+            socket.close();
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
         }
