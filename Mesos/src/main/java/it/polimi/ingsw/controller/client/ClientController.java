@@ -29,6 +29,7 @@ public class ClientController extends VirtualClient{
     private Map<Integer, Lobby> waitingLobbies;
     private final Object lobbiesLock = new Object();
     private String playerName;
+    Map<Integer, Integer> rankings;
 
     public ClientController() {
         this.server = null;
@@ -52,6 +53,10 @@ public class ClientController extends VirtualClient{
 
     public String getPlayerName() {
         return playerName;
+    }
+
+    public Map<Integer, Integer> getRankings() {
+        return rankings;
     }
 
     @Override
@@ -126,7 +131,8 @@ public class ClientController extends VirtualClient{
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-
+        this.rankings = rankings;
+        view.transitionTo(ViewStates.GAME_END);
     }
 
     @Override
