@@ -31,4 +31,10 @@ public class BuilderBonusBuilding extends AbstractBuilding implements VisitableB
     public void accept(BuildingVisitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP());
+    }
 }

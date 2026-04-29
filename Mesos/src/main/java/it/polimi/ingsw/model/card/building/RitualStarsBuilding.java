@@ -33,4 +33,10 @@ public class RitualStarsBuilding extends AbstractBuilding {
         super.onPick(player, buildingHandler);
         owner.getTribe().addStars(3);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus Stars: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP(), bonusStars);
+    }
 }

@@ -46,6 +46,9 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     public int getPP() {
         return pp;
     }
+    public int getCost() {
+        return cost;
+    }
 
     @Override
     public void removeFrom(Row row){

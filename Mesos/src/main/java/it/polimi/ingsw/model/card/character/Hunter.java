@@ -36,4 +36,9 @@ public class Hunter extends AbstractCharacter {
     public void accept(CardVisitor v){
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Icon: %b ]", super.getType(), super.getEra(), hasIcon);
+    }
 }

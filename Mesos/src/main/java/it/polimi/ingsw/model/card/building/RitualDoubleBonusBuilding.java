@@ -26,4 +26,10 @@ public class RitualDoubleBonusBuilding extends AbstractBuilding {
         super.onPick(player, buildingHandler);
         owner.enableDoubleRitualMod();
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP());
+    }
 }

@@ -27,4 +27,9 @@ public class Artist extends AbstractCharacter {
     public void accept(CardVisitor v){
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d ]", super.getType(), super.getEra());
+    }
 }

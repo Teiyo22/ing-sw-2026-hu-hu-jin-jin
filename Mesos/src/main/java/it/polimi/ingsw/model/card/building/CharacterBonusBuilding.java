@@ -7,6 +7,10 @@ import it.polimi.ingsw.model.card.BuildingVisitor;
 import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class CharacterBonusBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose private int inventorBonusPP;
     @Expose private int shamanBonusPP;
@@ -75,5 +79,27 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
         buildingHandler.addGameEndBuilding(this);
+    }
+
+    @Override
+    public String toString() {
+        String res = String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus PP for character type: ",
+                super.getType(), super.getEra(), super.getCost(), super.getPP());
+
+        Map<String, Integer> bonuses = new HashMap<>();
+        bonuses.put("Inventor", inventorBonusPP);
+        bonuses.put("Shaman", shamanBonusPP);
+        bonuses.put("Hunter", hunterBonusPP);
+        bonuses.put("Collector", collectorBonusPP);
+        bonuses.put("Artist", artistBonusPP);
+        bonuses.put("Builder", builderBonusPP);
+
+        bonuses = bonuses.entrySet().stream().filter(e -> e.getValue() > 0).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+        for(String key : bonuses.keySet()) {
+            res += key + " +" + bonuses.get(key);
+        }
+        res += " ]";
+
+        return res;
     }
 }
