@@ -17,6 +17,8 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
@@ -29,7 +31,9 @@ public class ServerController extends VirtualServer {
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
-    private final Object lobbiesLock = new Object();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock rlock = lock.readLock();
+    private final Lock wlock = lock.writeLock();
 
     private ServerController() {
         this.clients = new ConcurrentHashMap<>();
