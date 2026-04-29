@@ -12,6 +12,7 @@ import java.util.Map;
 
 public abstract class VirtualClient implements Remote {
     protected int id;
+    protected Lobby currLobby;
 
     public void setID(int clientID){
         this.id = clientID;
@@ -28,4 +29,11 @@ public abstract class VirtualClient implements Remote {
     public abstract void confirmPick(int clientID, Board board, Tribe updatedTribe);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
+
+    public int getCurrLobbyID() {
+        if (currLobby != null)
+            return currLobby.getLobbyID();
+        else
+            return -1;
+    }
 }
