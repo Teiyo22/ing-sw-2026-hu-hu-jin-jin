@@ -2,21 +2,18 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
+import it.polimi.ingsw.controller.client.view.VirtualView;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.rmi.NotBoundException;
@@ -25,6 +22,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
+    private VirtualView view;
     private VirtualServer server;
     private Lobby currLobby;
     private Map<Integer, Lobby> waitingLobbies;
