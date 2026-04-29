@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.List;
 
 public class LobbyWaitingState extends ViewState {
-    private boolean full;
+    private boolean full = false;
 
     public LobbyWaitingState(ClientController controller) {
         super(controller);
@@ -16,8 +16,6 @@ public class LobbyWaitingState extends ViewState {
     @Override
     public void render() {
         Lobby lobby = super.getController().getCurrLobby();
-
-        full = lobby.getPlayers().size() == lobby.getSize();
 
         List<String> playerNames = lobby.getPlayers().values().stream().map(Player::getName).toList();
         String players = String.join(", ", playerNames);
