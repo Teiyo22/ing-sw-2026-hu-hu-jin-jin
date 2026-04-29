@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
+import it.polimi.ingsw.controller.client.view.ViewStates;
 import it.polimi.ingsw.controller.client.view.VirtualView;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
@@ -39,7 +40,7 @@ public class ClientController extends VirtualClient{
                 waitingLobbies.put(lobby.getLobbyID(), lobby);
         }
 
-        // TODO: show to view
+        view.update();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class ClientController extends VirtualClient{
             // TODO: Handle missing lobby
         }
 
-        // TODO: show to view
+        view.update();
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ClientController extends VirtualClient{
             // TODO: what happens if the player tries to join multiple lobbies?
         }
 
-        // TODO: show to view
+        view.transitionTo(ViewStates.LOBBY_WAITING);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class ClientController extends VirtualClient{
                 currLobby.removePlayer(clientID);
         }
 
-        // TODO: show to view
+        view.transitionTo(ViewStates.LOBBY_SELECTION);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class ClientController extends VirtualClient{
             }
         }
 
-        // TODO: show to view
+        view.transitionTo(ViewStates.ROUND_START);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class ClientController extends VirtualClient{
                 currLobby.updateTribe(clientID, updatedTribe);
             }
         }
-        // TODO: show to view
+        view.update();
     }
 
     /** Connecting to the server using RMI.

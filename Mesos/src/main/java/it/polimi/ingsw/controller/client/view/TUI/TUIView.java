@@ -28,8 +28,9 @@ public class TUIView extends VirtualView implements Runnable {
             case CONNECTION -> state = new ConnectionState(super.getClientController());
             case START -> state = new StartingState(super.getClientController());
             case LOBBY_SELECTION ->  state = new LobbySelectionState(super.getClientController());
-            case OFFER_SELECTION ->   state = new OfferSelectionState(super.getClientController());
-            case ACTION -> state  = new ActionState(super.getClientController());
+            case LOBBY_WAITING ->   state = new LobbyWaitingState(super.getClientController());
+            case ROUND_START ->   state = new OfferSelectionState(super.getClientController());
+            case ROUND_ACTION -> state  = new ActionState(super.getClientController());
             case GAME_END -> state  = new GameEndState(super.getClientController());
         }
     }

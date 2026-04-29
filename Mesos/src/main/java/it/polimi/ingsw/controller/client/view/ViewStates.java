@@ -4,7 +4,8 @@ public enum ViewStates {
     CONNECTION,
     START,
     LOBBY_SELECTION,
-    OFFER_SELECTION,
-    ACTION,
+    LOBBY_WAITING,
+    ROUND_START,
+    ROUND_ACTION,
     GAME_END
 }
