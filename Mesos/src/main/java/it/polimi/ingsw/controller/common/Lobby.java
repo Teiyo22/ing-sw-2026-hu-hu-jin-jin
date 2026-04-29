@@ -75,4 +75,12 @@ public class Lobby {
     public void setPlayers(Map<Integer, Player> players) {
         this.players = players;
     }
+
+    public Map<Integer, Player> getPlayers() {
+        return players;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 }

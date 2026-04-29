@@ -37,6 +37,18 @@ public class ClientController extends VirtualClient{
         this.view = view;
     }
 
+    public VirtualServer getServer() {
+        return server;
+    }
+
+    public Lobby getCurrLobby() {
+        return currLobby;
+    }
+
+    public Map<Integer, Lobby> getWaitingLobbies() {
+        return waitingLobbies;
+    }
+
     @Override
     public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
         synchronized (lobbiesLock) {

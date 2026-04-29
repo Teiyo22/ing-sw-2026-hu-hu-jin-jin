@@ -99,6 +99,10 @@ public class Player implements Comparable<Player>{
 
     public String getName(){return name;}
 
+    public Totem getTotem() {
+        return totem;
+    }
+
     public boolean getNoLossRitualMod() {
         return tribe.getNoLossRitualMod();
     }
