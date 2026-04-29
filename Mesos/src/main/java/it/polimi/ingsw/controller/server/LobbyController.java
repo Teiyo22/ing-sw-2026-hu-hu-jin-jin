@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.*;
 
 public class LobbyController {
-    private ServerController serverController;
-
     private int lobbyID;
     private int size;
     private Map<VirtualClient, Player> players;
@@ -23,8 +21,7 @@ public class LobbyController {
     private Game model = null;
 
 
-    public LobbyController(ServerController serverController, int lobbyID, int size){
-        this.serverController = serverController;
+    public LobbyController(int lobbyID, int size){
         this.lobbyID = lobbyID;
         this.size = size;
         players = new HashMap<>();
@@ -61,13 +58,13 @@ public class LobbyController {
                 client.removeFromLobby(removedClient.getID(), lobbyID);
 
                 if (players.isEmpty())
-                    serverController.removeWaitingLobby(lobbyID);
+                    ServerController.getInstance().removeWaitingLobby(lobbyID);
             }
 
         else
             for (VirtualClient client : players.keySet()) {
                 client.terminateLobby(lobbyID);
-                serverController.removeRunningLobby(lobbyID);
+                ServerController.getInstance().removeRunningLobby(lobbyID);
             }
 
     }
