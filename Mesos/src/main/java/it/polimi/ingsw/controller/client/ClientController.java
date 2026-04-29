@@ -33,6 +33,10 @@ public class ClientController extends VirtualClient{
         this.server = null;
     }
 
+    public void setView(VirtualView view) {
+        this.view = view;
+    }
+
     @Override
     public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
         synchronized (lobbiesLock) {
