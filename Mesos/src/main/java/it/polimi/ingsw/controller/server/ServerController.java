@@ -15,28 +15,26 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
-
     private NetworkServer networkServer;
+
     private final Map<Integer, LobbyController> waitingLobbies;
     private final Map<Integer, LobbyController> runningLobbies;
     private final Map<Integer, VirtualClient> clients;
 
-
-    private AtomicInteger nextClientID = new AtomicInteger(1);
-    private AtomicInteger nextLobbyID = new AtomicInteger(1);
+    private final AtomicInteger nextClientID = new AtomicInteger(1);
+    private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
     private final Object lobbiesLock = new Object();
-    private final Object clientsLock = new Object();
 
     private ServerController() {
-        this.clients = new HashMap<>();
-        this.waitingLobbies = new HashMap<>();
-        this.runningLobbies = new HashMap<>();
-
+        this.clients = new ConcurrentHashMap<>();
+        this.waitingLobbies = new ConcurrentHashMap<>();
+        this.runningLobbies = new ConcurrentHashMap<>();
     }
 
     public static ServerController getInstance() {
@@ -50,10 +48,8 @@ public class ServerController extends VirtualServer {
     public void addClient(VirtualClient client) {
         int id = nextClientID.getAndIncrement();
 
-        synchronized (clientsLock) {
-            client.setID(id);
-            clients.put(id, client);
-        }
+        client.setID(id);
+        clients.put(id, client);
     }
 
     @Override
@@ -61,15 +57,11 @@ public class ServerController extends VirtualServer {
         VirtualClient client = clients.get(clientID);
         int id = nextLobbyID.getAndIncrement();
 
-        synchronized (lobbiesLock) {
-            LobbyController lobbyController = new LobbyController(id, playerNum);
+        LobbyController lobbyController = new LobbyController(id, playerNum);
+        lobbyController.addPlayer(client, player);
+        lobbyController.createLobby(clientID, player);
 
-            lobbyController.addPlayer(client, player);
-            lobbyController.createLobby(clientID, player);
-            waitingLobbies.put(lobbyController.getID(), lobbyController);
-        }
-
-
+        waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
 
     @Override
