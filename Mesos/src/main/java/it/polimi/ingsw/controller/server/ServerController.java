@@ -94,6 +94,14 @@ public class ServerController extends VirtualServer {
         waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
 
+    public void removeRunningLobby(int lobbyID) {
+        runningLobbies.remove(lobbyID);
+    }
+
+    public void removeWaitingLobby(int lobbyID) {
+        waitingLobbies.remove(lobbyID);
+    }
+
     @Override
     public void joinLobby(int clientID, int lobbyID, Player player) {
         VirtualClient client = clients.get(clientID);

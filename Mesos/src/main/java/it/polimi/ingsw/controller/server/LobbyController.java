@@ -14,13 +14,17 @@ import java.util.List;
 import java.util.*;
 
 public class LobbyController {
+    private ServerController serverController;
+
     private int lobbyID;
     private int size;
-    private Game model;
     private Map<VirtualClient, Player> players;
 
+    private Game model = null;
 
-    public LobbyController(int lobbyID, int size){
+
+    public LobbyController(ServerController serverController, int lobbyID, int size){
+        this.serverController = serverController;
         this.lobbyID = lobbyID;
         this.size = size;
         players = new HashMap<>();
@@ -47,11 +51,25 @@ public class LobbyController {
     }
 
     public void removePlayer(VirtualClient removedClient) {
+        if(!players.containsKey(removedClient))
+            return;
+
         players.remove(removedClient);
 
-        for(VirtualClient client: players.keySet()){
-            client.removeFromLobby(removedClient.getID(), lobbyID);
-        }
+        if (model == null)
+            for (VirtualClient client : players.keySet()) {
+                client.removeFromLobby(removedClient.getID(), lobbyID);
+
+                if (players.isEmpty())
+                    serverController.removeWaitingLobby(lobbyID);
+            }
+
+        else
+            for (VirtualClient client : players.keySet()) {
+                client.terminateLobby(lobbyID);
+                serverController.removeRunningLobby(lobbyID);
+            }
+
     }
 
 
