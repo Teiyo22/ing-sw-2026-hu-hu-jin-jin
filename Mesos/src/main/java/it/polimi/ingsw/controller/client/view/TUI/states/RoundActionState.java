@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller.client.view.TUI.states;
 
 import it.polimi.ingsw.controller.client.ClientController;
 
-public class OfferSelectionState extends ViewState {
-    public OfferSelectionState(ClientController controller) {
+public class RoundActionState extends ViewState {
+    public RoundActionState(ClientController controller) {
         super(controller);
     }
 

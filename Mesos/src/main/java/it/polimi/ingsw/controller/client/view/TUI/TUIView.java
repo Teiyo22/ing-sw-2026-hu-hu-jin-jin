@@ -26,11 +26,10 @@ public class TUIView extends VirtualView implements Runnable {
     public void transitionTo(ViewStates newState) {
         switch (newState) {
             case CONNECTION -> state = new ConnectionState(super.getClientController());
-            case START -> state = new StartingState(super.getClientController());
             case LOBBY_SELECTION ->  state = new LobbySelectionState(super.getClientController());
             case LOBBY_WAITING ->   state = new LobbyWaitingState(super.getClientController());
-            case ROUND_START ->   state = new OfferSelectionState(super.getClientController());
-            case ROUND_ACTION -> state  = new ActionState(super.getClientController());
+            case ROUND_START ->   state = new RoundStartState(super.getClientController());
+            case ROUND_ACTION -> state  = new RoundActionState(super.getClientController());
             case GAME_END -> state  = new GameEndState(super.getClientController());
         }
     }
@@ -40,7 +39,9 @@ public class TUIView extends VirtualView implements Runnable {
         state.render();
         while (true) {
             String input = scanner.nextLine();
-            state.handleInput(input);
+            synchronized (this) {
+                state.handleInput(input);
+            }
         }
     }
 }

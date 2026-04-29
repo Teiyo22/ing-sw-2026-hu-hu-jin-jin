@@ -44,7 +44,7 @@ public class ClientController extends VirtualClient{
                 waitingLobbies.put(lobby.getLobbyID(), lobby);
         }
 
-        view.update();
+        view.transitionTo(ViewStates.LOBBY_SELECTION);
     }
 
     @Override
@@ -90,6 +90,8 @@ public class ClientController extends VirtualClient{
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
         }
+
+        view.transitionTo(ViewStates.LOBBY_WAITING);
     }
 
     @Override
@@ -133,6 +135,7 @@ public class ClientController extends VirtualClient{
             this.server = (VirtualServer) registry.lookup(registryName);
             UnicastRemoteObject.exportObject(this, rmiPort);
             server.addClient(this);
+            server.getWaitingLobbies(super.getID());
         } catch (RemoteException e) {
             System.out.println("Error in connecting RMI server: " + e.getMessage());
         } catch (NotBoundException e) {
@@ -148,6 +151,7 @@ public class ClientController extends VirtualClient{
         this.server = new ServerTCPInterface(this, networkClient);
         try {
             networkClient.connect(ip, tcpPort);
+            server.getWaitingLobbies(super.getID());
         } catch (UnknownHostException e) {
             System.out.println("Error in connecting TCP server: " + e.getMessage());
         } catch (IOException e) {

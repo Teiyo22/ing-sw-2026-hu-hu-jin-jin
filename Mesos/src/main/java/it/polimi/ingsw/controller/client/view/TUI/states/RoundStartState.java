@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller.client.view.TUI.states;
 
 import it.polimi.ingsw.controller.client.ClientController;
 
-public class ActionState extends ViewState {
-    public ActionState(ClientController controller) {
+public class RoundStartState extends ViewState {
+    public RoundStartState(ClientController controller) {
         super(controller);
     }
 
