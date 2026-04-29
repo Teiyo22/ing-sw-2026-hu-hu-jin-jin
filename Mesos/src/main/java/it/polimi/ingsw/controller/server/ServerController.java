@@ -20,11 +20,14 @@ public class ServerController extends VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
-    private Map<Integer, LobbyController> waitingLobbies;
-    private Map<Integer, LobbyController> runningLobbies;
-    private Map<Integer, VirtualClient> clients;
+    private final Map<Integer, LobbyController> waitingLobbies;
+    private final Map<Integer, LobbyController> runningLobbies;
+    private final Map<Integer, VirtualClient> clients;
     private int nextClientID = 1;
     private int nextLobbyID = 1;
+
+    private final Object lobbiesLock = new Object();
+    private final Object clientsLock = new Object();
 
     private ServerController() {
         this.clients = new HashMap<>();
@@ -33,7 +36,7 @@ public class ServerController extends VirtualServer {
 
     }
 
-    public static synchronized ServerController getInstance() {
+    public static ServerController getInstance() {
         if (instance == null) {
             instance = new ServerController();
         }
@@ -41,52 +44,63 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void addClient(VirtualClient client) {
-        client.setID(nextClientID);
-        clients.put(nextClientID, client);
-        nextClientID++;
+    public void addClient(VirtualClient client) {
+        synchronized (clientsLock) {
+            client.setID(nextClientID);
+            clients.put(nextClientID, client);
+            nextClientID++;
+        }
     }
 
     @Override
-    public synchronized void createLobby(int clientID, int playerNum, Player player) {
+    public void createLobby(int clientID, int playerNum, Player player) {
         VirtualClient client = clients.get(clientID);
 
-        LobbyController lobbyController = new LobbyController(nextLobbyID, playerNum);
-        nextLobbyID++;
+        synchronized (lobbiesLock) {
+            LobbyController lobbyController = new LobbyController(nextLobbyID, playerNum);
+            nextLobbyID++;
 
-        lobbyController.addPlayer(client, player);
-        lobbyController.createLobby(clientID, player);
-
-        waitingLobbies.put(lobbyController.getID(), lobbyController);
-    }
-
-    @Override
-    public synchronized void joinLobby(int clientID, int lobbyID, Player player) {
-        VirtualClient client = clients.get(clientID);
-
-        if (waitingLobbies.containsKey(lobbyID)) {
-            LobbyController lobbyController = waitingLobbies.get(lobbyID);
             lobbyController.addPlayer(client, player);
-
-            lobbyController.joinLobby(clientID, player);
-        } else {
-            System.err.println("Lobby not found or already started");
+            lobbyController.createLobby(clientID, player);
+            waitingLobbies.put(lobbyController.getID(), lobbyController);
         }
 
+
     }
 
     @Override
-    public synchronized void leaveLobby(int clientID, int lobbyID) {
+    public void joinLobby(int clientID, int lobbyID, Player player) {
         VirtualClient client = clients.get(clientID);
-        LobbyController lobbyController = waitingLobbies.get(lobbyID);
-        lobbyController.removePlayer(client);
 
-        if (lobbyController.getPlayers().isEmpty())
-            waitingLobbies.remove(lobbyID);
+        synchronized (lobbiesLock) {
+            LobbyController lobbyController = waitingLobbies.get(lobbyID);
+
+            if(lobbyController != null && lobbyController.getPlayers().size() < lobbyController.getSize()) {
+                lobbyController.addPlayer(client, player);
+                lobbyController.joinLobby(clientID, player);
+            }
+
+            // TODO: Handle not joinable lobby
+        }
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID) {
+    public void leaveLobby(int clientID, int lobbyID) {
+        VirtualClient client = clients.get(clientID);
+
+        synchronized (lobbiesLock) {
+            LobbyController lobbyController = waitingLobbies.get(lobbyID);
+            lobbyController.removePlayer(client);
+
+            if (lobbyController.getPlayers().isEmpty())
+                waitingLobbies.remove(lobbyID);
+        }
+
+
+    }
+
+    @Override
+    public void startLobby(int clientID, int lobbyID) {
         if (waitingLobbies.containsKey(lobbyID)) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
             lobbyController.startLobby();
@@ -97,7 +111,7 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void getWaitingLobbies(int clientID) {
+    public void getWaitingLobbies(int clientID) {
         VirtualClient client = clients.get(clientID);
         List<Lobby> lobbies = new ArrayList<>();
 
@@ -109,7 +123,7 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void getLobbyInfo(int clientID, int lobbyID) {
+    public void getLobbyInfo(int clientID, int lobbyID) {
         VirtualClient client = clients.get(clientID);
         Map<Integer, Player> players = new HashMap<>();
 
@@ -125,7 +139,7 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void getRank(int clientID, int lobbyID) {
+    public void getRank(int clientID, int lobbyID) {
         LobbyController lobby = runningLobbies.get(lobbyID);
         lobby.showRank(clientID);
     }
@@ -137,7 +151,7 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public synchronized void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         LobbyController lobby = runningLobbies.get(lobbyID);
         lobby.pickCards(clients.get(clientID), topPicks, bottomPicks);
     }
