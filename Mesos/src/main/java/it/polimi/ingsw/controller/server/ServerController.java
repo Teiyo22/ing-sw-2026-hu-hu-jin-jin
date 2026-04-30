@@ -241,6 +241,8 @@ public class ServerController extends VirtualServer {
 
     public void stopServer() {
         connectionMonitor.stop();
+        listenerService.shutdownNow();
+        retryService.shutdownNow();
         TCPCleanup();
         RMICleanup();
     }
@@ -256,7 +258,7 @@ public class ServerController extends VirtualServer {
     }
 
     private void TCPCleanup() {
-        networkServer.interrupt();
+        networkServer.cleanup();
     }
 
     public void scheduleRetry(Runnable task) {

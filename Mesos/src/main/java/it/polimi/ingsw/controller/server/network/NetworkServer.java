@@ -33,4 +33,11 @@ public class NetworkServer extends Thread {
             }
         }
     }
+
+    public void cleanup() {
+        try {
+            this.interrupt();
+            serverSocket.close();
+        } catch (IOException ignore) {}
+    }
 }
