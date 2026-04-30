@@ -114,18 +114,11 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public void joinLobby(int clientID, int lobbyID, Player player) {
-        VirtualClient client = clients.get(clientID);
-
+    public void joinLobby(VirtualClient client, int lobbyID, Player player) {
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-        if (lobbyController != null && lobbyController.getPlayers().size() < lobbyController.getSize()) {
-            lobbyController.addPlayer(client, player);
-            lobbyController.joinLobby(clientID, player);
-        }
-
-        // TODO: Handle not joinable lobby
-
+        if (lobbyController != null)
+            lobbyController.joinLobby(client, player);
     }
 
     @Override
@@ -166,19 +159,19 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public void getLobbyInfo(int clientID, int lobbyID) {
-        VirtualClient client = clients.get(clientID);
-        Map<Integer, Player> players = new HashMap<>();
+    public void getLobbyInfo(VirtualClient client, int lobbyID) {
+         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-        if (waitingLobbies.containsKey(lobbyID)) {
-            LobbyController lobbyController = waitingLobbies.get(lobbyID);
+         if(lobbyController != null)
+             lobbyController.getLobbyInfo(client);
 
-            for (VirtualClient virtualClient : lobbyController.getPlayers().keySet()) {
-                players.put(virtualClient.getID(), lobbyController.getPlayers().get(virtualClient));
-            }
-
-            client.showLobbyInfo(clientID, lobbyID, players);
-        }
+         else {
+             try {
+                 client.deleteLobby(lobbyID);
+             } catch (RemoteException e) {
+                 onClientDisconnected(client);
+             }
+         }
     }
 
     @Override

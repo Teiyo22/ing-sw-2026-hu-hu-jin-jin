@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.rmi.RemoteException;
 import java.util.Map;
 import javax.swing.*;
 import java.util.List;
@@ -21,7 +22,7 @@ public class LobbyController {
     private Game model = null;
 
 
-    public LobbyController(int lobbyID, int size){
+    public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
         this.size = size;
         players = new HashMap<>();
@@ -33,15 +34,52 @@ public class LobbyController {
     }
 
 
+    public synchronized void joinLobby(VirtualClient newClient, Player player) {
+        int clientID;
 
-    public void joinLobby(int clientID, Player player){
-        for(VirtualClient client: players.keySet()){
-            client.setLobby(clientID, lobbyID, player);
+        try {
+             clientID = newClient.getID();
+        } catch (RemoteException e) {
+            ServerController.getInstance().onClientDisconnected(newClient);
+            System.err.println("Failed to contact client, Client disconnected");
+            return;
+        }
+
+        if (players.size() < size) {
+            players.put(newClient, player);
+
+            for (VirtualClient client : players.keySet())
+                try {
+                    client.setLobby(clientID, lobbyID, player);
+                } catch (RemoteException e) {
+                    ServerController.getInstance().onClientDisconnected(client);
+                }
+
+        } else {
+            getLobbyInfo(newClient);
         }
     }
 
-    public void removePlayer(VirtualClient removedClient) {
-        if(!players.containsKey(removedClient))
+    public synchronized void getLobbyInfo(VirtualClient client) {
+        Map<Integer, Player> lobbyPlayers = new HashMap<>();
+
+        for(Map.Entry<VirtualClient, Player> entry: players.entrySet()) {
+            try {
+                lobbyPlayers.put(entry.getKey().getID(), entry.getValue());
+            } catch (RemoteException e) {
+                ServerController.getInstance().onClientDisconnected(entry.getKey());
+            }
+        }
+
+        try {
+            client.showLobbyInfo(client.getID(), lobbyID, lobbyPlayers);
+        } catch (RemoteException e) {
+            ServerController.getInstance().onClientDisconnected(client);
+        }
+    }
+
+    public synchronized void removePlayer(VirtualClient removedClient) {
+        if (!players.containsKey(removedClient))
             return;
 
         players.remove(removedClient);
