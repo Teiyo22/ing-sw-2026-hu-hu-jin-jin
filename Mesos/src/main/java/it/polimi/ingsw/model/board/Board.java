@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.utils.model.ConfigLoader;
+
+import java.util.Arrays;
 
 public class Board {
     transient Game game = null;
@@ -71,5 +75,37 @@ public class Board {
 
     public Game getGame() {
         return game;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("Order tile: " + String.join(", ",
+                Arrays.stream(orderTile).map(o -> o.getAssignedPlayer().getName()).toList()) + "\n");
+
+        res.append("Turn: ").append(game.getGameState().getCurrPlayer().getName()).append("\n");
+
+        res.append("TOP ROW\n");
+        if (!topRow.getCharacterCards().isEmpty()) {
+            for(AbstractCharacter c : topRow.getCharacterCards()){
+                res.append("    ").append(c.toString()).append("\n");
+            }
+        }
+        if(!topRow.getBuildingCards().isEmpty()) {
+            for(AbstractBuilding c : topRow.getBuildingCards()){
+                res.append("    ").append(c.toString()).append("\n");
+            }
+        }
+        res.append("BOTTOM ROW\n");
+        if (!bottomRow.getCharacterCards().isEmpty()) {
+            for(AbstractCharacter c : bottomRow.getCharacterCards()){
+                res.append("    ").append(c.toString()).append("\n");
+            }
+        }
+        if(!bottomRow.getBuildingCards().isEmpty()) {
+            for(AbstractBuilding c : bottomRow.getBuildingCards()){
+                res.append("    ").append(c.toString()).append("\n");
+            }
+        }
+        return res.toString();
     }
 }
