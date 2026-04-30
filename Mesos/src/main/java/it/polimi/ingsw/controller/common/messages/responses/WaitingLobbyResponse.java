@@ -17,6 +17,6 @@ public class WaitingLobbyResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.setWaitingLobbies(super.getClientID(), lobbies);
+        clientController.showWaitingLobbies(super.getClientID(), lobbies);
     }
 }

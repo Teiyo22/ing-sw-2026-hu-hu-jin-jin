@@ -15,7 +15,7 @@ public abstract class ClientInterface extends VirtualClient {
     protected int currLobbyID = 0;
 
     public abstract void setID(int clientID);
-    public abstract void setWaitingLobbies(int clientID, List<Lobby> lobbies);
+    public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
     public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
     public abstract void setLobby(int clientID, int lobbyID, Player player);
     public abstract void removeFromLobby(int clientID, int lobbyID);

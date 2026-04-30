@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class ClientHandler extends Thread {
-    private ClientTCPInterface clientInterface;
+    private TCPClientInterface tcpClientInterface;
     private Socket socket;
     private Gson gson;
     private BufferedReader input;
@@ -37,13 +37,13 @@ public class ClientHandler extends Thread {
         try {
             while ((line = input.readLine()) != null) {
                 Request request = gson.fromJson(line, Request.class);
-                clientInterface.handleMessage(request);
+                tcpClientInterface.handleMessage(request);
             }
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
         } finally {
             clientHandlerCleanup();
-            ServerController.getInstance().disconnectClient(clientInterface);
+            ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }
 
@@ -59,8 +59,8 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void setClientTCPInterface(ClientTCPInterface clientInterface){
-        this.clientInterface = clientInterface;
+    public void setClientTCPInterface(TCPClientInterface tcpClientInterface){
+        this.tcpClientInterface = tcpClientInterface;
     }
 
     public void clientHandlerCleanup() {

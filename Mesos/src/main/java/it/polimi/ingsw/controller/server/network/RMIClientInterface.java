@@ -30,9 +30,9 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void setWaitingLobbies(int clientID, List<Lobby> lobbies)  {
+    public void showWaitingLobbies(int clientID, List<Lobby> lobbies)  {
         try {
-            wrappedClient.setWaitingLobbies(clientID, lobbies);
+            wrappedClient.showWaitingLobbies(clientID, lobbies);
         } catch (IOException e) {
 
         }

@@ -57,7 +57,7 @@ public class ServerController extends VirtualServer {
     }
 
     // Good
-    public void addClient(ClientTCPInterface client) {
+    public void addClient(TCPClientInterface client) {
         int id = nextClientID.getAndIncrement();
 
         clients.put(id, client);
@@ -177,7 +177,7 @@ public class ServerController extends VirtualServer {
         for (LobbyController lobbyController : waitingLobbies.values())
             lobbies.add(lobbyController.getLobby());
 
-        client.setWaitingLobbies(clientID, lobbies);
+        client.showWaitingLobbies(clientID, lobbies);
     }
 
     // Good
