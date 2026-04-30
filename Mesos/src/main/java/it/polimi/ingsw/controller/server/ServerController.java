@@ -9,11 +9,10 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
@@ -56,7 +55,7 @@ public class ServerController extends VirtualServer {
 
         try {
             client.setID(id);
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             onClientDisconnected(client);
             System.err.println("Failed to contact client, Client disconnected");
         }
@@ -90,7 +89,7 @@ public class ServerController extends VirtualServer {
         try {
             client.createLobby(client.getID(), lobbyController.getLobby(), player);
             waitingLobbies.put(lobbyController.getID(), lobbyController);
-        } catch (RemoteException e) {
+        } catch (IOException e) {
            onClientDisconnected(client);
            System.err.println("Failed to contact client, Client disconnected");
         }
@@ -155,7 +154,7 @@ public class ServerController extends VirtualServer {
 
         try {
             client.setWaitingLobbies(client.getID(), lobbies);
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             onClientDisconnected(client);
         }
     }
@@ -185,7 +184,7 @@ public class ServerController extends VirtualServer {
     public void handleMissingLobby(VirtualClient client, int lobbyID) {
         try {
             client.deleteLobby(lobbyID);
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             onClientDisconnected(client);
         }
     }

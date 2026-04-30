@@ -43,10 +43,11 @@ public class ClientHandler extends Thread {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
         } finally {
             clientHandlerCleanup();
+            ServerController.getInstance().onClientDisconnected(clientInterface);
         }
     }
 
-    public void sendMessage(Response response) {
+    public void sendMessage(Response response) throws IOException {
         try {
             String message = gson.toJson(response);
             output.write(message);
@@ -54,7 +55,7 @@ public class ClientHandler extends Thread {
             output.flush();
         } catch (IOException e) {
             clientHandlerCleanup();
-            System.out.println("Error while sending message in TCP, client disconnected");
+            throw new IOException();
         }
     }
 
@@ -64,8 +65,6 @@ public class ClientHandler extends Thread {
 
     public void clientHandlerCleanup() {
         try {
-            ServerController.getInstance().onClientDisconnected(clientInterface);
-
             if (socket != null && !socket.isClosed())
                 socket.close();
         } catch (IOException e) {

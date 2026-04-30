@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.rmi.RemoteException;
+import java.io.IOException;
 import java.util.Map;
 import javax.swing.*;
 import java.util.List;
@@ -39,7 +39,7 @@ public class LobbyController {
 
         try {
              clientID = newClient.getID();
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             ServerController.getInstance().onClientDisconnected(newClient);
             System.err.println("Failed to contact client, Client disconnected");
             return;
@@ -51,7 +51,7 @@ public class LobbyController {
             for (VirtualClient client : players.keySet())
                 try {
                     client.setLobby(clientID, lobbyID, player);
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     ServerController.getInstance().onClientDisconnected(client);
                 }
 
@@ -66,14 +66,14 @@ public class LobbyController {
         for(Map.Entry<VirtualClient, Player> entry: players.entrySet()) {
             try {
                 lobbyPlayers.put(entry.getKey().getID(), entry.getValue());
-            } catch (RemoteException e) {
+            } catch (IOException e) {
                 ServerController.getInstance().onClientDisconnected(entry.getKey());
             }
         }
 
         try {
             client.showLobbyInfo(client.getID(), lobbyID, lobbyPlayers);
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             ServerController.getInstance().onClientDisconnected(client);
         }
     }
@@ -129,7 +129,7 @@ public class LobbyController {
         for (VirtualClient client : players.keySet()) {
             try {
                 tribes.put(client.getID(), players.get(client).getTribe());
-            } catch (RemoteException e) {
+            } catch (IOException e) {
                 ServerController.getInstance().onClientDisconnected(client);
                 abortStart();
                 return false;
@@ -139,7 +139,7 @@ public class LobbyController {
         for (VirtualClient client : players.keySet()) {
             try {
                 client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
-            } catch (RemoteException e) {
+            } catch (IOException e) {
                 ServerController.getInstance().onClientDisconnected(client);
                 abortStart();
                 return false;
@@ -157,7 +157,7 @@ public class LobbyController {
         for (VirtualClient client : players.keySet()) {
             try {
                 client.abortStart(lobbyID);
-            } catch (RemoteException e) {
+            } catch (IOException e) {
                 ServerController.getInstance().onClientDisconnected(client);
             }
         }

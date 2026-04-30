@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 

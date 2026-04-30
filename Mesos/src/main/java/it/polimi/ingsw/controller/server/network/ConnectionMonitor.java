@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.ServerController;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -31,7 +32,7 @@ public class ConnectionMonitor {
                 try {
                     client.ping();
                     lastSeen.put(client, System.currentTimeMillis());
-                } catch (Exception e) {
+                } catch (IOException e) {
                     long silence = System.currentTimeMillis() - lastSeen.get(client);
 
                     if (silence > timeout * 1000) {
@@ -43,7 +44,6 @@ public class ConnectionMonitor {
     }
 
     public void handleDisconnection(VirtualClient client) {
-        System.out.println("Client " + client.getID() + " disconnected"); // TODO : substitute with a logger
         ServerController.getInstance().onClientDisconnected(client);
     }
 
