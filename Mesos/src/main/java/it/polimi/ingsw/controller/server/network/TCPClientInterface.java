@@ -37,6 +37,7 @@ public class TCPClientInterface extends ClientInterface {
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         currLobbyID = lobbyID;
+
         try {
             LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
             clientHandler.sendMessage(response);
@@ -48,6 +49,7 @@ public class TCPClientInterface extends ClientInterface {
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
         currLobbyID = lobbyID;
+
         try {
             JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
             clientHandler.sendMessage(response);
@@ -58,6 +60,8 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
+        if (clientID == this.id) currLobbyID = -1;
+
         try {
             LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
             clientHandler.sendMessage(response);
@@ -132,8 +136,11 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void stopLobby(int lobbyID) {
-        try {
+        currLobbyID = -1;
 
+        try {
+            StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
+            clientHandler.sendMessage(message);
         } catch (IOException e) {
 
         }
@@ -141,8 +148,11 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void deleteLobby(int lobbyID) {
-        try {
+        if (currLobbyID == lobbyID) currLobbyID = -1;
 
+        try {
+            DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
+            clientHandler.sendMessage(message);
         } catch (IOException e) {
 
         }

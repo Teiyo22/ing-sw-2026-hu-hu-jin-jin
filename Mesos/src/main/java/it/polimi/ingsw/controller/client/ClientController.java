@@ -7,16 +7,12 @@ import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.rmi.NotBoundException;
@@ -24,7 +20,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class ClientController extends VirtualClient{
+public class ClientController extends VirtualClient {
     private VirtualServer server;
     protected Lobby currLobby;
     private Map<Integer, Lobby> waitingLobbies;
@@ -35,7 +31,17 @@ public class ClientController extends VirtualClient{
     }
 
     @Override
-    public void setWaitingLobbies(int clientID, List<Lobby> lobbies) {
+    public void stopLobby(int lobbyID) {
+
+    }
+
+    @Override
+    public void deleteLobby(int lobbyID) {
+
+    }
+
+    @Override
+    public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
         synchronized (lobbiesLock) {
             for (Lobby lobby : lobbies)
                 waitingLobbies.put(lobby.getLobbyID(), lobby);
