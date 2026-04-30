@@ -28,12 +28,6 @@ public class LobbyController {
         players = new HashMap<>();
     }
 
-
-    public void addPlayer(VirtualClient client, Player player) {
-        players.put(client, player);
-    }
-
-
     public synchronized void joinLobby(VirtualClient newClient, Player player) {
         int clientID;
 
@@ -109,14 +103,6 @@ public class LobbyController {
         }
     }
 
-    public void setModel(Game game) {
-        this.model = game;
-    }
-
-    public Game getModel() {
-        return model;
-    }
-
     public synchronized boolean startLobby() {
         if(size != players.size()) {
             abortStart();
@@ -163,14 +149,6 @@ public class LobbyController {
         }
     }
 
-    public int getID() {
-        return lobbyID;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
     public void showRank(int clientID) {
         Map<Integer, Integer> rank = new HashMap<>();
 
@@ -190,5 +168,17 @@ public class LobbyController {
 
     public Lobby getLobby() {
         return new Lobby(lobbyID, size);
+    }
+
+    public int getID() {
+        return lobbyID;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void addPlayer(VirtualClient client, Player player) {
+        players.put(client, player);
     }
 }
