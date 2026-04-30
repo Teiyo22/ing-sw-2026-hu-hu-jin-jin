@@ -11,13 +11,13 @@ import java.rmi.Remote;
 
 public abstract class VirtualServer implements Remote {
     public abstract void addClient(VirtualClient client);
-    public abstract void createLobby(int clientID, int playerNum, Player player);
-    public abstract void joinLobby(int clientID, int lobbyID, Player player);
-    public abstract void leaveLobby(int clientID, int lobbyID);
-    public abstract void startLobby(int clientID, int lobbyID);
-    public abstract void getWaitingLobbies(int clientID);
-    public abstract void getLobbyInfo(int clientID, int lobbyID);
-    public abstract void getRank(int clientID, int lobbyID);
-    public abstract void getLeaderboard(int clientID, int playerNum);
-    public abstract void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
+    public abstract void createLobby(VirtualClient client, int playerNum, Player player);
+    public abstract void joinLobby(VirtualClient client, int lobbyID, Player player);
+    public abstract void leaveLobby(VirtualClient client, int lobbyID);
+    public abstract void startLobby(VirtualClient client, int lobbyID);
+    public abstract void getWaitingLobbies(VirtualClient client);
+    public abstract void getLobbyInfo(VirtualClient client, int lobbyID);
+    public abstract void getRank(VirtualClient client, int lobbyID);
+    public abstract void getLeaderboard(VirtualClient client, int playerNum);
+    public abstract void requestPick(VirtualClient client, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
 }
