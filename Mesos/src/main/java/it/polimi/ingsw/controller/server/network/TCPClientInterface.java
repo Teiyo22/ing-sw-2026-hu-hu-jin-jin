@@ -48,7 +48,7 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
-        currLobbyID = lobbyID;
+        if (clientID == this.id) currLobbyID = lobbyID;
 
         try {
             JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
@@ -103,6 +103,8 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
+        currLobbyID = lobby.getLobbyID();
+
         try {
             CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
             clientHandler.sendMessage(response);

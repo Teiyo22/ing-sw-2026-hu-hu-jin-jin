@@ -40,6 +40,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players)  {
+        currLobbyID = lobbyID;
+
         try {
             wrappedClient.showLobbyInfo(clientID, lobbyID, players);
         } catch (IOException e) {
@@ -49,6 +51,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player)  {
+        if (clientID == this.id) currLobbyID = lobbyID;
+
         try {
             wrappedClient.setLobby(clientID, lobbyID, player);
         } catch (IOException e) {
@@ -58,6 +62,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID)  {
+        if (clientID == this.id) currLobbyID = -1;
+
         try {
             wrappedClient.removeFromLobby(clientID, lobbyID);
         } catch (IOException e) {
@@ -94,6 +100,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player)  {
+        currLobbyID = lobby.getLobbyID();
+
         try {
             wrappedClient.createLobby(clientID, lobby, player);
         } catch (IOException e) {
@@ -112,6 +120,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void stopLobby(int lobbyID)  {
+        if (currLobbyID == lobbyID) currLobbyID = -1;
+
         try {
             wrappedClient.stopLobby(lobbyID);
         } catch (IOException e) {
@@ -121,6 +131,8 @@ public class RMIClientInterface extends ClientInterface {
 
     @Override
     public void deleteLobby(int lobbyID)  {
+        if (currLobbyID == lobbyID) currLobbyID = -1;
+
         try {
             wrappedClient.deleteLobby(lobbyID);
         } catch (IOException e) {
