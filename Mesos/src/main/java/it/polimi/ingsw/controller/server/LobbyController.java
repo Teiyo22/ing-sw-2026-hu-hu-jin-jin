@@ -53,20 +53,21 @@ public class LobbyController {
 
         players.remove(removedClient);
 
-        if (model == null)
+        if (model == null) {
             for (VirtualClient client : players.keySet()) {
                 client.removeFromLobby(removedClient.getID(), lobbyID);
-
-                if (players.isEmpty())
-                    ServerController.getInstance().removeWaitingLobby(lobbyID);
             }
 
-        else
+            if (players.isEmpty())
+                ServerController.getInstance().removeWaitingLobby(lobbyID);
+        }
+
+        else {
             for (VirtualClient client : players.keySet()) {
                 client.terminateLobby(lobbyID);
                 ServerController.getInstance().removeRunningLobby(lobbyID);
             }
-
+        }
     }
 
 
