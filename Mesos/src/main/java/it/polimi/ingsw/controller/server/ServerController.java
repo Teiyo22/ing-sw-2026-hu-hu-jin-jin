@@ -120,12 +120,7 @@ public class ServerController extends VirtualServer {
         synchronized (lobbiesLock) {
             LobbyController lobbyController = waitingLobbies.get(lobbyID);
             lobbyController.removePlayer(client);
-
-            if (lobbyController.getPlayers().isEmpty())
-                waitingLobbies.remove(lobbyID);
         }
-
-
     }
 
     @Override
