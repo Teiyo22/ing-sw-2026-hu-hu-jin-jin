@@ -59,21 +59,14 @@ public class ServerController extends VirtualServer {
 
         clients.remove(client.getID());
 
-        int lobbyID = client.getCurrLobbyID();
-        if (lobbyID == -1)
-            return;
+        // TODO: handle lobby synchronization
+        for(LobbyController lobby: runningLobbies.values()) {
+            lobby.removePlayer(client);
+        }
 
-        LobbyController lobbyController;
-
-        wlock.lock();
-        lobbyController = runningLobbies.get(lobbyID);
-        if (lobbyController != null)
-            lobbyController.removePlayer(client);
-
-        lobbyController = waitingLobbies.get(lobbyID);
-        if (lobbyController != null)
-            lobbyController.removePlayer(client);
-        wlock.unlock();
+        for(LobbyController lobby: waitingLobbies.values()) {
+            lobby.removePlayer(client);
+        }
     }
 
     // Should be synchronized

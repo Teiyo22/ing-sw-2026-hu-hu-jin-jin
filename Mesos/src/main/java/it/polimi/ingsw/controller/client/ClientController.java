@@ -26,6 +26,7 @@ import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
     private VirtualServer server;
+    protected Lobby currLobby;
     private Map<Integer, Lobby> waitingLobbies;
     private final Object lobbiesLock = new Object();
 
