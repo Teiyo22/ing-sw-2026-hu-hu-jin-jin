@@ -30,7 +30,7 @@ public class ServerController extends VirtualServer {
 
     private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
-    private final Map<Integer, VirtualClient> clients = new ConcurrentHashMap<>();
+    private final Set<VirtualClient> clients = ConcurrentHashMap.newKeySet();
 
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
@@ -51,9 +51,15 @@ public class ServerController extends VirtualServer {
     public void addClient(VirtualClient client) {
         int id = nextClientID.getAndIncrement();
 
-        client.setID(id);
-        clients.put(id, client);
+        clients.add(client);
         connectionMonitor.registerClient(client);
+
+        try {
+            client.setID(id);
+        } catch (RemoteException e) {
+            onClientDisconnected(client);
+            System.err.println("Failed to contact client, Client disconnected");
+        }
     }
 
     public void onClientDisconnected(VirtualClient client) {
