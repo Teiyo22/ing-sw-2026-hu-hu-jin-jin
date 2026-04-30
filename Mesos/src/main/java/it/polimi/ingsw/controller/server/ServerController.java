@@ -134,14 +134,14 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID) {
-        if (waitingLobbies.containsKey(lobbyID)) {
-            LobbyController lobbyController = waitingLobbies.get(lobbyID);
-            lobbyController.startLobby();
+    public void startLobby(VirtualClient client, int lobbyID) {
+        LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
+        if(lobbyController != null && lobbyController.startLobby()) {
             waitingLobbies.remove(lobbyID, lobbyController);
             runningLobbies.put(lobbyID, lobbyController);
-        }
+        } else if (lobbyController == null)
+            handleMissingLobby(client, lobbyID);
     }
 
     @Override

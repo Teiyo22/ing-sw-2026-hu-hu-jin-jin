@@ -117,17 +117,49 @@ public class LobbyController {
         return model;
     }
 
-    public void startLobby() {
-        Map<Integer, Tribe> tribes = new HashMap<>();
+    public synchronized boolean startLobby() {
+        if(size != players.size()) {
+            abortStart();
+            return false;
+        }
 
+        Map<Integer, Tribe> tribes = new HashMap<>();
         model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
         for (VirtualClient client : players.keySet()) {
-            tribes.put(client.getID(), players.get(client).getTribe());
+            try {
+                tribes.put(client.getID(), players.get(client).getTribe());
+            } catch (RemoteException e) {
+                ServerController.getInstance().onClientDisconnected(client);
+                abortStart();
+                return false;
+            }
         }
 
         for (VirtualClient client : players.keySet()) {
-            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+            try {
+                client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+            } catch (RemoteException e) {
+                ServerController.getInstance().onClientDisconnected(client);
+                abortStart();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void abortStart() {
+        model = null;
+        for (Player player : players.values())
+            player.setTribe(null);
+
+        for (VirtualClient client : players.keySet()) {
+            try {
+                client.abortStart(lobbyID);
+            } catch (RemoteException e) {
+                ServerController.getInstance().onClientDisconnected(client);
+            }
         }
     }
 
