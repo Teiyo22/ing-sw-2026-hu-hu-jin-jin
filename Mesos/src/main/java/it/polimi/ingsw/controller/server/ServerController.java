@@ -102,6 +102,15 @@ public class ServerController extends VirtualServer {
 
     public void removeWaitingLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
+
+        for (VirtualClient client: clients) {
+            try {
+                client.deleteLobby(lobbyID);
+            } catch (RemoteException e) {
+                onClientDisconnected(client);
+                System.err.println("Failed to contact client, Client disconnected");
+            }
+        }
     }
 
     @Override
