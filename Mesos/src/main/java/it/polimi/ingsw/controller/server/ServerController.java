@@ -150,15 +150,19 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public void getWaitingLobbies(int clientID) {
-        VirtualClient client = clients.get(clientID);
+    public void getWaitingLobbies(VirtualClient client) {
         List<Lobby> lobbies = new ArrayList<>();
 
         for (LobbyController lobbyController : waitingLobbies.values()) {
             Lobby lobby = new Lobby(lobbyController.getID(), lobbyController.getSize());
             lobbies.add(lobby);
         }
-        client.setWaitingLobbies(clientID, lobbies);
+
+        try {
+            client.setWaitingLobbies(client.getID(), lobbies);
+        } catch (RemoteException e) {
+            onClientDisconnected(client);
+        }
     }
 
     @Override
