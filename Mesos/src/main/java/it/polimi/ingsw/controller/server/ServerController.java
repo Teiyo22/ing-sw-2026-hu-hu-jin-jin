@@ -26,9 +26,9 @@ public class ServerController extends VirtualServer {
     private NetworkServer networkServer;
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
 
-    private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();;
-    private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();;
-    private final Map<Integer, VirtualClient> clients = new ConcurrentHashMap<>();;
+    private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
+    private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
+    private final Map<Integer, VirtualClient> clients = new ConcurrentHashMap<>();
 
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
@@ -209,4 +209,23 @@ public class ServerController extends VirtualServer {
         System.out.println("Server started");
     }
 
+    public void stopServer() {
+        connectionMonitor.stop();
+        TCPCleanup();
+        RMICleanup();
+    }
+
+    private void RMICleanup() {
+        try {
+            Registry registry = LocateRegistry.getRegistry();
+            registry.unbind("mesos_server");
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (RemoteException | NotBoundException e) {
+            System.err.println("Failed to cleanly stop RMI server");
+        }
+    }
+
+    private void TCPCleanup() {
+        networkServer.interrupt();
+    }
 }
