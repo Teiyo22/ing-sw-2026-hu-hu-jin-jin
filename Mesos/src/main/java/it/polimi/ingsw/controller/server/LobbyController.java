@@ -101,7 +101,7 @@ public class LobbyController {
         requester.showRank(requester.getID(), lobbyID, rank);
     }
 
-    public Map<VirtualClient, Player> getPlayers() {
+    public Map<ClientInterface, Player> getPlayers() {
         return players;
     }
 
@@ -117,7 +117,7 @@ public class LobbyController {
         return size;
     }
 
-    public void addPlayer(VirtualClient client, Player player) {
+    public void addPlayer(ClientInterface client, Player player) {
         players.put(client, player);
     }
 }
