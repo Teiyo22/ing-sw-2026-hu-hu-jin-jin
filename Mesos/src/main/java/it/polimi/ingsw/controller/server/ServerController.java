@@ -22,11 +22,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
-    private NetworkServer networkServer;
 
-    private final Map<Integer, LobbyController> waitingLobbies;
-    private final Map<Integer, LobbyController> runningLobbies;
-    private final Map<Integer, VirtualClient> clients;
+    private NetworkServer networkServer;
+    private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
+
+    private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();;
+    private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();;
+    private final Map<Integer, VirtualClient> clients = new ConcurrentHashMap<>();;
 
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
@@ -34,12 +36,6 @@ public class ServerController extends VirtualServer {
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock rlock = lock.readLock();
     private final Lock wlock = lock.writeLock();
-
-    private ServerController() {
-        this.clients = new ConcurrentHashMap<>();
-        this.waitingLobbies = new ConcurrentHashMap<>();
-        this.runningLobbies = new ConcurrentHashMap<>();
-    }
 
     public static ServerController getInstance() {
         if (instance == null) {
@@ -54,11 +50,11 @@ public class ServerController extends VirtualServer {
 
         client.setID(id);
         clients.put(id, client);
+        connectionMonitor.registerClient(client);
     }
 
-    @Override
-    public void removeClient(VirtualClient client) {
-        if(client == null)
+    public void onClientDisconnected(VirtualClient client) {
+        if (client == null)
             return;
 
         clients.remove(client.getID());
@@ -68,17 +64,16 @@ public class ServerController extends VirtualServer {
             return;
 
         LobbyController lobbyController;
-        
+
         wlock.lock();
         lobbyController = runningLobbies.get(lobbyID);
-        if(lobbyController != null)
+        if (lobbyController != null)
             lobbyController.removePlayer(client);
 
         lobbyController = waitingLobbies.get(lobbyID);
-        if(lobbyController != null)
+        if (lobbyController != null)
             lobbyController.removePlayer(client);
         wlock.unlock();
-
     }
 
     // Should be synchronized
@@ -210,6 +205,7 @@ public class ServerController extends VirtualServer {
             System.exit(-1);
         }
 
+        connectionMonitor.start();
         System.out.println("Server started");
     }
 

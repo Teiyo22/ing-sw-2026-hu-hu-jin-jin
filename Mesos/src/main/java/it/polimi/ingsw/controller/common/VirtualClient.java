@@ -30,6 +30,7 @@ public abstract class VirtualClient implements Remote {
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void terminateLobby(int lobbyID);
+    public abstract void ping() throws Exception;
 
     public int getCurrLobbyID() {
         if (currLobby != null)

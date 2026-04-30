@@ -11,7 +11,6 @@ import java.rmi.Remote;
 
 public abstract class VirtualServer implements Remote {
     public abstract void addClient(VirtualClient client);
-    public abstract void removeClient(VirtualClient client);
     public abstract void createLobby(int clientID, int playerNum, Player player);
     public abstract void joinLobby(int clientID, int lobbyID, Player player);
     public abstract void leaveLobby(int clientID, int lobbyID);

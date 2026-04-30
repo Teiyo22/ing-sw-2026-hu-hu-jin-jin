@@ -26,7 +26,6 @@ import java.rmi.registry.Registry;
 
 public class ClientController extends VirtualClient{
     private VirtualServer server;
-    private Lobby currLobby;
     private Map<Integer, Lobby> waitingLobbies;
     private final Object lobbiesLock = new Object();
 
@@ -120,6 +119,9 @@ public class ClientController extends VirtualClient{
         }
         // TODO: show to view
     }
+
+    @Override
+    public void ping() { ; }
 
     /** Connecting to the server using RMI.
      * @param registryName the name of the server in the registry.

@@ -88,4 +88,10 @@ public class ClientTCPInterface extends VirtualClient {
         SetIDResponse response = new SetIDResponse(clientID);
         clientHandler.sendMessage(response);
     }
+
+    @Override
+    public void ping() {
+        PingMessage message = new PingMessage(this.id);
+        clientHandler.sendMessage(message);
+    }
 }
