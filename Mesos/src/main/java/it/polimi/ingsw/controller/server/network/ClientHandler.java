@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
 
@@ -16,12 +17,12 @@ public class ClientHandler extends Thread {
     private Socket socket;
     private Gson gson;
     private BufferedReader input;
-    private PrintWriter output;
+    private BufferedWriter output;
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.socket = clientSocket;
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-        this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
@@ -38,19 +39,37 @@ public class ClientHandler extends Thread {
                 Request request = gson.fromJson(line, Request.class);
                 clientInterface.handleMessage(request);
             }
-            
-            socket.close();
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
+        } finally {
+            clientHandlerCleanup();
         }
     }
 
     public void sendMessage(Response response) {
-        String message = gson.toJson(response);
-        output.println(message);
+        try {
+            String message = gson.toJson(response);
+            output.write(message);
+            output.newLine();
+            output.flush();
+        } catch (IOException e) {
+            clientHandlerCleanup();
+            System.out.println("Error while sending message in TCP, client disconnected");
+        }
     }
 
     public void setClientTCPInterface(ClientTCPInterface clientInterface){
         this.clientInterface = clientInterface;
+    }
+
+    public void clientHandlerCleanup() {
+        try {
+            ServerController.getInstance().onClientDisconnected(clientInterface);
+
+            if (socket != null && !socket.isClosed())
+                socket.close();
+        } catch (IOException e) {
+
+        }
     }
 }
