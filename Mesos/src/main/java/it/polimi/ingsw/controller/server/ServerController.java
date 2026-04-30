@@ -66,7 +66,8 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-        clients.remove(client.getID());
+        clients.remove(client);
+        connectionMonitor.unregisterClient(client);
 
         // TODO: handle lobby synchronization
         for(LobbyController lobby: runningLobbies.values()) {
