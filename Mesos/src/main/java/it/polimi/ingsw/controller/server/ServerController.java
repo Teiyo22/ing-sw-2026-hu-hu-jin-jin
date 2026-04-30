@@ -67,9 +67,6 @@ public class ServerController extends VirtualServer {
     }
 
     public void disconnectClient(ClientInterface client) {
-        if (client == null)
-            return;
-
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
         client.setConnected(false);
