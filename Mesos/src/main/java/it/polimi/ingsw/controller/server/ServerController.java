@@ -3,8 +3,7 @@ package it.polimi.ingsw.controller.server;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.controller.server.network.ConnectionMonitor;
-import it.polimi.ingsw.controller.server.network.NetworkServer;
+import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
@@ -29,7 +28,7 @@ public class ServerController extends VirtualServer {
 
     private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
-    private final Set<VirtualClient> clients = ConcurrentHashMap.newKeySet();
+    private final Map<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
 
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
@@ -45,148 +44,176 @@ public class ServerController extends VirtualServer {
         return instance;
     }
 
-    // Should be synchronized
+    // Good
     @Override
     public void addClient(VirtualClient client) {
+        RMIClientInterface wrapper = new RMIClientInterface(client);
         int id = nextClientID.getAndIncrement();
 
-        clients.add(client);
-        connectionMonitor.registerClient(client);
+        clients.put(id, wrapper);
+        connectionMonitor.registerClient(wrapper);
 
-        try {
-            client.setID(id);
-        } catch (IOException e) {
-            onClientDisconnected(client);
-            System.err.println("Failed to contact client, Client disconnected");
-        }
+        wrapper.setID(id);
     }
 
-    public void onClientDisconnected(VirtualClient client) {
+    // Good
+    public void addClient(ClientTCPInterface client) {
+        int id = nextClientID.getAndIncrement();
+
+        clients.put(id, client);
+        connectionMonitor.registerClient(client);
+
+        client.setID(id);
+    }
+
+    // Good
+    public void disconnectClient(ClientInterface client) {
         if (client == null)
             return;
 
-        clients.remove(client);
+        clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
 
-        // TODO: handle lobby synchronization
-        for(LobbyController lobby: runningLobbies.values()) {
-            lobby.removePlayer(client);
-        }
+        LobbyController lobbyController;
 
-        for(LobbyController lobby: waitingLobbies.values()) {
-            lobby.removePlayer(client);
-        }
+        lobbyController = runningLobbies.get(client.getCurrLobbyID());
+        if (lobbyController != null)
+            lobbyController.removePlayer(client);
+
+        lobbyController = waitingLobbies.get(client.getCurrLobbyID());
+        if (lobbyController != null)
+            lobbyController.removePlayer(client);
     }
 
-    // Should be synchronized
+    // Good
     @Override
-    public void createLobby(VirtualClient client, int playerNum, Player player) {
+    public void createLobby(int clientID, int playerNum, Player player) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         int id = nextLobbyID.getAndIncrement();
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
 
-        try {
-            client.createLobby(client.getID(), lobbyController.getLobby(), player);
-            waitingLobbies.put(lobbyController.getID(), lobbyController);
-        } catch (IOException e) {
-           onClientDisconnected(client);
-           System.err.println("Failed to contact client, Client disconnected");
-        }
+        client.createLobby(clientID, lobbyController.getLobby(), player);
+        waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
 
+    // Good
     public void removeRunningLobby(int lobbyID) {
         runningLobbies.remove(lobbyID);
     }
 
+    // Good
     public void removeWaitingLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
-        for (VirtualClient client: clients) {
-            try {
-                client.deleteLobby(lobbyID);
-            } catch (RemoteException e) {
-                onClientDisconnected(client);
-                System.err.println("Failed to contact client, Client disconnected");
-            }
-        }
+        for(ClientInterface clientInterface: clients.values())
+            clientInterface.deleteLobby(lobbyID);
     }
 
+    // Good
     @Override
-    public void joinLobby(VirtualClient client, int lobbyID, Player player) {
+    public void joinLobby(int clientID, int lobbyID, Player player) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            handleMissingLobby(client, lobbyID);
+            client.deleteLobby(lobbyID);
     }
 
+    // Good
     @Override
-    public void leaveLobby(VirtualClient client, int lobbyID) {
+    public void leaveLobby(int clientID, int lobbyID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if(lobbyController != null)
             lobbyController.removePlayer(client);
         else
-            handleMissingLobby(client, lobbyID);
+            client.deleteLobby(lobbyID);
     }
 
+    // TODO:
     @Override
-    public void startLobby(VirtualClient client, int lobbyID) {
+    public void startLobby(int clientID, int lobbyID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if(lobbyController != null && lobbyController.startLobby()) {
             waitingLobbies.remove(lobbyID, lobbyController);
             runningLobbies.put(lobbyID, lobbyController);
         } else if (lobbyController == null)
-            handleMissingLobby(client, lobbyID);
+            client.deleteLobby(lobbyID);
     }
 
+    // Good
     @Override
-    public void getWaitingLobbies(VirtualClient client) {
+    public void getWaitingLobbies(int clientID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         List<Lobby> lobbies = new ArrayList<>();
 
-        for (LobbyController lobbyController : waitingLobbies.values()) {
-            Lobby lobby = new Lobby(lobbyController.getID(), lobbyController.getSize());
-            lobbies.add(lobby);
-        }
+        for (LobbyController lobbyController : waitingLobbies.values())
+            lobbies.add(lobbyController.getLobby());
 
-        try {
-            client.setWaitingLobbies(client.getID(), lobbies);
-        } catch (IOException e) {
-            onClientDisconnected(client);
-        }
+        client.setWaitingLobbies(clientID, lobbies);
     }
 
+    // Good
     @Override
-    public void getLobbyInfo(VirtualClient client, int lobbyID) {
+    public void getLobbyInfo(int clientID, int lobbyID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
          LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
          if(lobbyController != null)
              lobbyController.getLobbyInfo(client);
          else
-             handleMissingLobby(client, lobbyID);
+             client.deleteLobby(lobbyID);
     }
+
 
     @Override
     public void getRank(int clientID, int lobbyID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
         LobbyController lobby = runningLobbies.get(lobbyID);
-        lobby.showRank(clientID);
+        if(lobby != null)
+            lobby.showRank(client);
+        else
+            client.deleteLobby(lobbyID);
     }
 
     @Override
     public void getLeaderboard(int clientID, int playerNum) {
 
-
-    }
-
-    public void handleMissingLobby(VirtualClient client, int lobbyID) {
-        try {
-            client.deleteLobby(lobbyID);
-        } catch (IOException e) {
-            onClientDisconnected(client);
-        }
     }
 
     @Override

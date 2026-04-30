@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller.server.network;
 
-import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.ServerController;
 
 import java.io.IOException;
@@ -16,19 +15,19 @@ public class ConnectionMonitor {
     private final long interval = 5; // [s]
     private final long timeout = 15; // [s]
 
-    private final Map<VirtualClient, Long> lastSeen = new ConcurrentHashMap<>();
+    private final Map<ClientInterface, Long> lastSeen = new ConcurrentHashMap<>();
 
-    public void registerClient(VirtualClient client) {
+    public void registerClient(ClientInterface client) {
         lastSeen.put(client, System.currentTimeMillis());
     }
 
-    public void unregisterClient(VirtualClient client) {
+    public void unregisterClient(ClientInterface client) {
         lastSeen.remove(client);
     }
 
     public void start() {
         scheduler.scheduleAtFixedRate(() -> {
-            for (VirtualClient client : lastSeen.keySet()) {
+            for (ClientInterface client : lastSeen.keySet()) {
                 try {
                     client.ping();
                     lastSeen.put(client, System.currentTimeMillis());
@@ -43,8 +42,8 @@ public class ConnectionMonitor {
         }, 0, interval, TimeUnit.SECONDS);
     }
 
-    public void handleDisconnection(VirtualClient client) {
-        ServerController.getInstance().onClientDisconnected(client);
+    public void handleDisconnection(ClientInterface client) {
+        ServerController.getInstance().disconnectClient(client);
     }
 
     public void stop() {

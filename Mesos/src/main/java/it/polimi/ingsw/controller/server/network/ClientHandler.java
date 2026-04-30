@@ -43,7 +43,7 @@ public class ClientHandler extends Thread {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
         } finally {
             clientHandlerCleanup();
-            ServerController.getInstance().onClientDisconnected(clientInterface);
+            ServerController.getInstance().disconnectClient(clientInterface);
         }
     }
 
