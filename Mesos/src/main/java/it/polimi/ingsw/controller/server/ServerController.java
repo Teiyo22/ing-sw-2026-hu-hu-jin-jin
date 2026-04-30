@@ -119,6 +119,13 @@ public class ServerController extends VirtualServer {
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
+        else {
+            try {
+                client.deleteLobby(lobbyID);
+            } catch (RemoteException e) {
+                onClientDisconnected(client);
+            }
+        }
     }
 
     @Override
