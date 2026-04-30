@@ -81,15 +81,19 @@ public class ServerController extends VirtualServer {
 
     // Should be synchronized
     @Override
-    public void createLobby(int clientID, int playerNum, Player player) {
-        VirtualClient client = clients.get(clientID);
+    public void createLobby(VirtualClient client, int playerNum, Player player) {
         int id = nextLobbyID.getAndIncrement();
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
-        waitingLobbies.put(lobbyController.getID(), lobbyController);
 
-        client.createLobby(clientID, lobbyController.getLobby(), player);
+        try {
+            client.createLobby(client.getID(), lobbyController.getLobby(), player);
+            waitingLobbies.put(lobbyController.getID(), lobbyController);
+        } catch (RemoteException e) {
+           onClientDisconnected(client);
+           System.err.println("Failed to contact client, Client disconnected");
+        }
     }
 
     public void removeRunningLobby(int lobbyID) {
