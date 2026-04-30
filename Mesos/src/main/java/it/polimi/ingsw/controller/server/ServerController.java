@@ -15,16 +15,18 @@ import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
+    private final ExecutorService listenerService = Executors.newFixedThreadPool(28);
+    private final ScheduledExecutorService retryService = Executors.newScheduledThreadPool(4);
+
+    private final long retryDelay = 3L;
 
     private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
@@ -33,9 +35,7 @@ public class ServerController extends VirtualServer {
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock rlock = lock.readLock();
-    private final Lock wlock = lock.writeLock();
+    private Object lobbiesLock = new Object();
 
     public static ServerController getInstance() {
         if (instance == null) {
@@ -44,7 +44,6 @@ public class ServerController extends VirtualServer {
         return instance;
     }
 
-    // Good
     @Override
     public void addClient(VirtualClient client) {
         RMIClientInterface wrapper = new RMIClientInterface(client);
@@ -53,26 +52,27 @@ public class ServerController extends VirtualServer {
         clients.put(id, wrapper);
         connectionMonitor.registerClient(wrapper);
 
+        wrapper.setConnected(true);
         wrapper.setID(id);
     }
 
-    // Good
     public void addClient(TCPClientInterface client) {
         int id = nextClientID.getAndIncrement();
 
         clients.put(id, client);
         connectionMonitor.registerClient(client);
 
+        client.setConnected(true);
         client.setID(id);
     }
 
-    // Good
     public void disconnectClient(ClientInterface client) {
         if (client == null)
             return;
 
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
+        client.setConnected(false);
 
         LobbyController lobbyController;
 
@@ -85,7 +85,6 @@ public class ServerController extends VirtualServer {
             lobbyController.removePlayer(client);
     }
 
-    // Good
     @Override
     public void createLobby(int clientID, int playerNum, Player player) {
         ClientInterface client = clients.get(clientID);
@@ -102,12 +101,10 @@ public class ServerController extends VirtualServer {
         waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
 
-    // Good
     public void removeRunningLobby(int lobbyID) {
         runningLobbies.remove(lobbyID);
     }
 
-    // Good
     public void removeWaitingLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
@@ -115,7 +112,6 @@ public class ServerController extends VirtualServer {
             clientInterface.deleteLobby(lobbyID);
     }
 
-    // Good
     @Override
     public void joinLobby(int clientID, int lobbyID, Player player) {
         ClientInterface client = clients.get(clientID);
@@ -131,7 +127,6 @@ public class ServerController extends VirtualServer {
             client.deleteLobby(lobbyID);
     }
 
-    // Good
     @Override
     public void leaveLobby(int clientID, int lobbyID) {
         ClientInterface client = clients.get(clientID);
@@ -147,7 +142,6 @@ public class ServerController extends VirtualServer {
             client.deleteLobby(lobbyID);
     }
 
-    // TODO:
     @Override
     public void startLobby(int clientID, int lobbyID) {
         ClientInterface client = clients.get(clientID);
@@ -157,14 +151,16 @@ public class ServerController extends VirtualServer {
 
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-        if(lobbyController != null && lobbyController.startLobby()) {
+        if (lobbyController == null)
+            client.deleteLobby(lobbyID);
+        else if (lobbyController.startLobby()) {
             waitingLobbies.remove(lobbyID, lobbyController);
             runningLobbies.put(lobbyID, lobbyController);
-        } else if (lobbyController == null)
-            client.deleteLobby(lobbyID);
+        }
+
+        // TODO: handle already started lobby
     }
 
-    // Good
     @Override
     public void getWaitingLobbies(int clientID) {
         ClientInterface client = clients.get(clientID);
@@ -180,7 +176,6 @@ public class ServerController extends VirtualServer {
         client.showWaitingLobbies(clientID, lobbies);
     }
 
-    // Good
     @Override
     public void getLobbyInfo(int clientID, int lobbyID) {
         ClientInterface client = clients.get(clientID);
@@ -225,7 +220,7 @@ public class ServerController extends VirtualServer {
     public void startServer(String ip, int tcpPort, int rmiPort) {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
-            this.networkServer.start();
+            listenerService.submit(networkServer);
             System.out.println("TCP Server started on" + ip + tcpPort);
         } catch (IOException e) {
             System.err.println("Failed to Start TCP Server:" + e.getMessage());
@@ -264,5 +259,13 @@ public class ServerController extends VirtualServer {
 
     private void TCPCleanup() {
         networkServer.interrupt();
+    }
+
+    public void scheduleRetry(Runnable task) {
+        retryService.schedule(task, retryDelay, TimeUnit.SECONDS);
+    }
+
+    public void submitListener(Runnable task) {
+        listenerService.submit(task);
     }
 }

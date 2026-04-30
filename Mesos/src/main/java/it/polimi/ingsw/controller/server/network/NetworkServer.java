@@ -25,7 +25,7 @@ public class NetworkServer extends Thread {
                 TCPClientInterface tcpClientInterface = new TCPClientInterface(clientHandler);
 
                 clientHandler.setClientTCPInterface(tcpClientInterface);
-                clientHandler.start();
+                ServerController.getInstance().submitListener(clientHandler);
 
                 ServerController.getInstance().addClient(tcpClientInterface);
             } catch (IOException e) {

@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.player.Tribe;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class TCPClientInterface extends ClientInterface {
     private ClientHandler clientHandler;
@@ -26,125 +27,158 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
+        if (!isConnected)
+            return;
+
         try {
             WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {showWaitingLobbies(clientID, lobbies);});
         }
     }
 
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+        if (!isConnected)
+            return;
+
         currLobbyID = lobbyID;
 
         try {
             LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {showLobbyInfo(clientID, lobbyID, players);});
         }
     }
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
+        if (!isConnected)
+            return;
+
         if (clientID == this.id) currLobbyID = lobbyID;
 
         try {
             JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {setLobby(clientID, lobbyID, player);});
         }
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
+        if (!isConnected)
+            return;
+
         if (clientID == this.id) currLobbyID = -1;
 
         try {
             LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {removeFromLobby(clientID, lobbyID);});
         }
     }
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
+        if (!isConnected)
+            return;
+
         try {
             GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {showRank(clientID, lobbyID, rankings);});
         }
     }
 
     @Override
     public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+        if (!isConnected)
+            return;
+
         try {
             GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {showLeaderboard(clientID, leaderboard);});
         }
 
     }
 
     @Override
     public void confirmPick(int clientID, Board updatedBoard, Tribe updatedTribe) {
+        if (!isConnected)
+            return;
+
         try {
             PickCardsResponse response = new PickCardsResponse(clientID, updatedBoard, updatedTribe);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {confirmPick(clientID, updatedBoard, updatedTribe);});
         }
     }
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
+        if (!isConnected)
+            return;
+
         currLobbyID = lobby.getLobbyID();
 
         try {
             CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {createLobby(clientID, lobby, player);});
         }
     }
 
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+        if (!isConnected)
+            return;
+
         try {
             StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {startLobby(clientID, lobbyID, board, tribes);});
         }
     }
 
     @Override
     public void setID(int clientID) {
+        if (!isConnected)
+            return;
+
         this.id = clientID;
 
         try {
             SetIDResponse response = new SetIDResponse(clientID);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {setID(clientID);});
         }
 
     }
 
     @Override
     public void stopLobby(int lobbyID) {
+        if (!isConnected)
+            return;
+
         currLobbyID = -1;
 
         try {
             StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
             clientHandler.sendMessage(message);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {stopLobby(lobbyID);});
         }
     }
 
@@ -156,7 +190,7 @@ public class TCPClientInterface extends ClientInterface {
             DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
             clientHandler.sendMessage(message);
         } catch (IOException e) {
-
+            ServerController.getInstance().scheduleRetry(() -> {deleteLobby(lobbyID);});
         }
     }
 

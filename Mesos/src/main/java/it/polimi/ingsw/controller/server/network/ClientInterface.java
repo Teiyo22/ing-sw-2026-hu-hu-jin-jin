@@ -13,6 +13,7 @@ import java.util.Map;
 
 public abstract class ClientInterface extends VirtualClient {
     protected int currLobbyID = 0;
+    protected boolean isConnected = false;
 
     public abstract void setID(int clientID);
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
@@ -34,5 +35,9 @@ public abstract class ClientInterface extends VirtualClient {
 
     public int getCurrLobbyID() {
         return currLobbyID;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 }
