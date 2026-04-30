@@ -17,6 +17,7 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
@@ -35,7 +36,7 @@ public class ServerController extends VirtualServer {
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
-    private Object lobbiesLock = new Object();
+    private ReentrantLock lock = new ReentrantLock(true);
 
     public static ServerController getInstance() {
         if (instance == null) {

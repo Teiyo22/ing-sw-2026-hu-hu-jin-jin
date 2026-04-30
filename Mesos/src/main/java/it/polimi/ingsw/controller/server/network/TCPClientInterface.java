@@ -30,12 +30,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        try {
-            WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -45,12 +41,8 @@ public class TCPClientInterface extends ClientInterface {
 
         currLobbyID = lobbyID;
 
-        try {
-            LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -60,12 +52,8 @@ public class TCPClientInterface extends ClientInterface {
 
         if (clientID == this.id) currLobbyID = lobbyID;
 
-        try {
-            JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -75,12 +63,8 @@ public class TCPClientInterface extends ClientInterface {
 
         if (clientID == this.id) currLobbyID = -1;
 
-        try {
-            LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -88,12 +72,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        try {
-            GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -101,12 +81,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        try {
-            GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
+        clientHandler.sendMessage(response);
 
     }
 
@@ -115,12 +91,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        try {
-            PickCardsResponse response = new PickCardsResponse(clientID, updatedBoard, updatedTribe);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        PickCardsResponse response = new PickCardsResponse(clientID, updatedBoard, updatedTribe);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -130,12 +102,8 @@ public class TCPClientInterface extends ClientInterface {
 
         currLobbyID = lobby.getLobbyID();
 
-        try {
-            CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -143,12 +111,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        try {
-            StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
+        clientHandler.sendMessage(response);
     }
 
     @Override
@@ -158,12 +122,8 @@ public class TCPClientInterface extends ClientInterface {
 
         this.id = clientID;
 
-        try {
-            SetIDResponse response = new SetIDResponse(clientID);
-            clientHandler.sendMessage(response);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        SetIDResponse response = new SetIDResponse(clientID);
+        clientHandler.sendMessage(response);
 
     }
 
@@ -174,24 +134,16 @@ public class TCPClientInterface extends ClientInterface {
 
         currLobbyID = -1;
 
-        try {
-            StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
-            clientHandler.sendMessage(message);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
+        clientHandler.sendMessage(message);
     }
 
     @Override
     public void deleteLobby(int lobbyID) {
         if (currLobbyID == lobbyID) currLobbyID = -1;
 
-        try {
-            DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
-            clientHandler.sendMessage(message);
-        } catch (IOException e) {
-            ServerController.getInstance().disconnectClient(this);
-        }
+        DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
+        clientHandler.sendMessage(message);
     }
 
     @Override
