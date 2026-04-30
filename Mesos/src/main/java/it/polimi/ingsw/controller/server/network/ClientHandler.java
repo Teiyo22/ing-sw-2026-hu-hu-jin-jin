@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.requests.Request;
 import it.polimi.ingsw.controller.common.messages.responses.Response;
-import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
 
@@ -42,8 +41,7 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
         } finally {
-            clientHandlerCleanup();
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
+            closeSocket();
         }
     }
 
@@ -54,7 +52,7 @@ public class ClientHandler extends Thread {
             output.newLine();
             output.flush();
         } catch (IOException e) {
-            clientHandlerCleanup();
+            closeSocket();
             throw new IOException();
         }
     }
@@ -63,12 +61,10 @@ public class ClientHandler extends Thread {
         this.tcpClientInterface = tcpClientInterface;
     }
 
-    public void clientHandlerCleanup() {
+    public void closeSocket() {
         try {
             if (socket != null && !socket.isClosed())
                 socket.close();
-        } catch (IOException e) {
-
-        }
+        } catch (IOException ignore) { }
     }
 }

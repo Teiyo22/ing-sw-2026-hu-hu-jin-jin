@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public abstract class ClientInterface extends VirtualClient {
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void stopLobby(int lobbyID);
     public abstract void deleteLobby(int lobbyID);
-    public abstract void ping() throws IOException;
+    public abstract void ping() throws IOException, RemoteException;
 
     public int getID() {
         return id;

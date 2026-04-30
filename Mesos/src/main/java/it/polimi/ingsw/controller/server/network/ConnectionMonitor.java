@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.server.ServerController;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -31,12 +32,14 @@ public class ConnectionMonitor {
                 try {
                     client.ping();
                     lastSeen.put(client, System.currentTimeMillis());
-                } catch (IOException e) {
+                } catch (RemoteException e) {
                     long silence = System.currentTimeMillis() - lastSeen.get(client);
 
-                    if (silence > timeout * 1000) {
+                    if (silence > timeout * 1000)
                         handleDisconnection(client);
-                    }
+
+                } catch (IOException e) {
+                    handleDisconnection(client);
                 }
             }
         }, 0, interval, TimeUnit.SECONDS);

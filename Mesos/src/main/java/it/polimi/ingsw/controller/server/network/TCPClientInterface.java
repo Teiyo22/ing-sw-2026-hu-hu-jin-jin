@@ -34,7 +34,7 @@ public class TCPClientInterface extends ClientInterface {
             WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showWaitingLobbies(clientID, lobbies);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -49,7 +49,7 @@ public class TCPClientInterface extends ClientInterface {
             LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showLobbyInfo(clientID, lobbyID, players);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -64,7 +64,7 @@ public class TCPClientInterface extends ClientInterface {
             JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {setLobby(clientID, lobbyID, player);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -79,7 +79,7 @@ public class TCPClientInterface extends ClientInterface {
             LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {removeFromLobby(clientID, lobbyID);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -92,7 +92,7 @@ public class TCPClientInterface extends ClientInterface {
             GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showRank(clientID, lobbyID, rankings);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -105,7 +105,7 @@ public class TCPClientInterface extends ClientInterface {
             GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showLeaderboard(clientID, leaderboard);});
+            ServerController.getInstance().disconnectClient(this);
         }
 
     }
@@ -119,7 +119,7 @@ public class TCPClientInterface extends ClientInterface {
             PickCardsResponse response = new PickCardsResponse(clientID, updatedBoard, updatedTribe);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {confirmPick(clientID, updatedBoard, updatedTribe);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -134,7 +134,7 @@ public class TCPClientInterface extends ClientInterface {
             CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {createLobby(clientID, lobby, player);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -147,7 +147,7 @@ public class TCPClientInterface extends ClientInterface {
             StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {startLobby(clientID, lobbyID, board, tribes);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -162,7 +162,7 @@ public class TCPClientInterface extends ClientInterface {
             SetIDResponse response = new SetIDResponse(clientID);
             clientHandler.sendMessage(response);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {setID(clientID);});
+            ServerController.getInstance().disconnectClient(this);
         }
 
     }
@@ -178,7 +178,7 @@ public class TCPClientInterface extends ClientInterface {
             StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
             clientHandler.sendMessage(message);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {stopLobby(lobbyID);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 
@@ -190,7 +190,7 @@ public class TCPClientInterface extends ClientInterface {
             DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
             clientHandler.sendMessage(message);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {deleteLobby(lobbyID);});
+            ServerController.getInstance().disconnectClient(this);
         }
     }
 

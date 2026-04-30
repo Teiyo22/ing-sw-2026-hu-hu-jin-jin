@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -178,7 +179,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void ping() throws IOException {
+    public void ping() throws IOException, RemoteException {
         wrappedClient.ping();
     }
 }
