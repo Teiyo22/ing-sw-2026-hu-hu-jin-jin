@@ -21,6 +21,10 @@ public class ConnectionMonitor {
         lastSeen.put(client, System.currentTimeMillis());
     }
 
+    public void unregisterClient(VirtualClient client) {
+        lastSeen.remove(client);
+    }
+
     public void start() {
         scheduler.scheduleAtFixedRate(() -> {
             for (VirtualClient client : lastSeen.keySet()) {
