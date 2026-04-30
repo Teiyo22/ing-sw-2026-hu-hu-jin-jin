@@ -3,10 +3,12 @@ package it.polimi.ingsw.controller.server;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.server.network.ConnectionMonitor;
 import it.polimi.ingsw.controller.server.network.NetworkServer;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
+import java.rmi.NotBoundException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
@@ -44,6 +46,7 @@ public class ServerController extends VirtualServer {
         return instance;
     }
 
+    // Should be synchronized
     @Override
     public void addClient(VirtualClient client) {
         int id = nextClientID.getAndIncrement();
@@ -77,9 +80,9 @@ public class ServerController extends VirtualServer {
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
-        lobbyController.createLobby(clientID, player);
-
         waitingLobbies.put(lobbyController.getID(), lobbyController);
+
+        client.createLobby(clientID, lobbyController.getLobby(), player);
     }
 
     public void removeRunningLobby(int lobbyID) {
@@ -94,16 +97,15 @@ public class ServerController extends VirtualServer {
     public void joinLobby(int clientID, int lobbyID, Player player) {
         VirtualClient client = clients.get(clientID);
 
-        synchronized (lobbiesLock) {
-            LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-            if(lobbyController != null && lobbyController.getPlayers().size() < lobbyController.getSize()) {
-                lobbyController.addPlayer(client, player);
-                lobbyController.joinLobby(clientID, player);
-            }
-
-            // TODO: Handle not joinable lobby
+        if (lobbyController != null && lobbyController.getPlayers().size() < lobbyController.getSize()) {
+            lobbyController.addPlayer(client, player);
+            lobbyController.joinLobby(clientID, player);
         }
+
+        // TODO: Handle not joinable lobby
+
     }
 
     @Override

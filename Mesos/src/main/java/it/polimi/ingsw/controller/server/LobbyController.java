@@ -33,13 +33,6 @@ public class LobbyController {
     }
 
 
-    public void createLobby(int clientID, Player player){
-        Lobby lobby = new Lobby(lobbyID, size);
-        
-        for(VirtualClient client: players.keySet()) {
-            client.createLobby(clientID, lobby, player);
-        }
-    }
 
     public void joinLobby(int clientID, Player player){
         for(VirtualClient client: players.keySet()){
@@ -69,7 +62,6 @@ public class LobbyController {
             }
         }
     }
-
 
     public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks){
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
@@ -124,5 +116,9 @@ public class LobbyController {
 
     public Map<VirtualClient, Player> getPlayers() {
         return players;
+    }
+
+    public Lobby getLobby() {
+        return new Lobby(lobbyID, size);
     }
 }

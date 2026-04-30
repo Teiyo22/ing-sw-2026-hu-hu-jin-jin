@@ -14,7 +14,7 @@ public class Lobby {
     private int lobbyID;
     private int size;
 
-    transient private ClientController clientController;
+    transient private ClientController clientController = null;
     transient private Map<Integer, Player> players = null;
     transient private Board board = null;
 
