@@ -101,15 +101,15 @@ public class LobbyController {
         }
     }
 
-    public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks){
+    public void pickCards(VirtualClient pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
-        for(VirtualClient client: players.keySet()){
+        for (VirtualClient client : players.keySet()) {
             client.confirmPick(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
         }
     }
 
-    public void setModel(Game game){
+    public void setModel(Game game) {
         this.model = game;
     }
 
@@ -117,36 +117,36 @@ public class LobbyController {
         return model;
     }
 
-    public void startLobby(){
+    public void startLobby() {
         Map<Integer, Tribe> tribes = new HashMap<>();
 
         model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
-        for(VirtualClient client: players.keySet()){
+        for (VirtualClient client : players.keySet()) {
             tribes.put(client.getID(), players.get(client).getTribe());
         }
 
-        for(VirtualClient client: players.keySet()){
+        for (VirtualClient client : players.keySet()) {
             client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
         }
     }
 
-    public int getID(){
+    public int getID() {
         return lobbyID;
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
 
-    public void showRank(int clientID){
+    public void showRank(int clientID) {
         Map<Integer, Integer> rank = new HashMap<>();
 
-        for(VirtualClient client: players.keySet()) {
+        for (VirtualClient client : players.keySet()) {
             rank.put(client.getID(), players.get(client).getRank());
         }
 
-        for(VirtualClient client: players.keySet()){
+        for (VirtualClient client : players.keySet()) {
             if (client.getID() == clientID)
                 client.showRank(clientID, lobbyID, rank);
         }
