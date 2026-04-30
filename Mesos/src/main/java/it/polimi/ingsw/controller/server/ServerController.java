@@ -119,23 +119,18 @@ public class ServerController extends VirtualServer {
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
-        else {
-            try {
-                client.deleteLobby(lobbyID);
-            } catch (RemoteException e) {
-                onClientDisconnected(client);
-            }
-        }
+        else
+            handleMissingLobby(client, lobbyID);
     }
 
     @Override
-    public void leaveLobby(int clientID, int lobbyID) {
-        VirtualClient client = clients.get(clientID);
+    public void leaveLobby(VirtualClient client, int lobbyID) {
+        LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-        synchronized (lobbiesLock) {
-            LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        if(lobbyController != null)
             lobbyController.removePlayer(client);
-        }
+        else
+            handleMissingLobby(client, lobbyID);
     }
 
     @Override
@@ -171,14 +166,8 @@ public class ServerController extends VirtualServer {
 
          if(lobbyController != null)
              lobbyController.getLobbyInfo(client);
-
-         else {
-             try {
-                 client.deleteLobby(lobbyID);
-             } catch (RemoteException e) {
-                 onClientDisconnected(client);
-             }
-         }
+         else
+             handleMissingLobby(client, lobbyID);
     }
 
     @Override
@@ -191,6 +180,14 @@ public class ServerController extends VirtualServer {
     public void getLeaderboard(int clientID, int playerNum) {
 
 
+    }
+
+    public void handleMissingLobby(VirtualClient client, int lobbyID) {
+        try {
+            client.deleteLobby(lobbyID);
+        } catch (RemoteException e) {
+            onClientDisconnected(client);
+        }
     }
 
     @Override
