@@ -17,7 +17,8 @@ import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerController extends VirtualServer {
     private static ServerController instance;
@@ -36,7 +37,9 @@ public class ServerController extends VirtualServer {
     private final AtomicInteger nextClientID = new AtomicInteger(1);
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
-    private ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock readLock = lock.readLock();
+    private final Lock writeLock = lock.writeLock();
 
     public static ServerController getInstance() {
         if (instance == null) {
@@ -50,37 +53,42 @@ public class ServerController extends VirtualServer {
         RMIClientInterface wrapper = new RMIClientInterface(client);
         int id = nextClientID.getAndIncrement();
 
-        wrapper.setConnected(true);
-        wrapper.setID(id);
-
         clients.put(id, wrapper);
         connectionMonitor.registerClient(wrapper);
+
+        wrapper.setConnected(true);
+        wrapper.setID(id);
     }
 
     public void addClient(TCPClientInterface client) {
         int id = nextClientID.getAndIncrement();
 
-        client.setConnected(true);
-        client.setID(id);
-
         clients.put(id, client);
         connectionMonitor.registerClient(client);
+
+        client.setConnected(true);
+        client.setID(id);
     }
 
     public void disconnectClient(ClientInterface client) {
+        client.setConnected(false);
+
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
-        client.setConnected(false);
 
         LobbyController lobbyController;
 
+        writeLock.lock();
         lobbyController = runningLobbies.get(client.getCurrLobbyID());
         if (lobbyController != null)
             lobbyController.removePlayer(client);
+        writeLock.unlock();
 
+        writeLock.lock();
         lobbyController = waitingLobbies.get(client.getCurrLobbyID());
         if (lobbyController != null)
             lobbyController.removePlayer(client);
+        writeLock.unlock();
     }
 
     @Override
@@ -94,9 +102,9 @@ public class ServerController extends VirtualServer {
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
+        waitingLobbies.put(lobbyController.getID(), lobbyController);
 
         client.createLobby(clientID, lobbyController.getLobby(), player);
-        waitingLobbies.put(lobbyController.getID(), lobbyController);
     }
 
     public void removeRunningLobby(int lobbyID) {
@@ -104,10 +112,11 @@ public class ServerController extends VirtualServer {
     }
 
     public void removeWaitingLobby(int lobbyID) {
-        waitingLobbies.remove(lobbyID);
+        LobbyController removedLobby = waitingLobbies.remove(lobbyID);
 
-        for(ClientInterface clientInterface: clients.values())
-            clientInterface.deleteLobby(lobbyID);
+        if (removedLobby != null)
+            for (ClientInterface clientInterface : clients.values())
+                clientInterface.deleteLobby(lobbyID);
     }
 
     @Override
@@ -117,12 +126,15 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
+
+        readLock.lock();
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
             client.deleteLobby(lobbyID);
+        readLock.unlock();
     }
 
     @Override
@@ -132,12 +144,14 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
+        writeLock.lock();
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-        if(lobbyController != null)
+        if (lobbyController != null)
             lobbyController.removePlayer(client);
         else
             client.deleteLobby(lobbyID);
+        writeLock.unlock();
     }
 
     @Override
@@ -147,16 +161,16 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
+        writeLock.lock();
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController == null)
             client.deleteLobby(lobbyID);
         else if (lobbyController.startLobby()) {
-            waitingLobbies.remove(lobbyID, lobbyController);
+            removeWaitingLobby(lobbyID);
             runningLobbies.put(lobbyID, lobbyController);
         }
-
-        // TODO: handle already started lobby
+        writeLock.unlock();
     }
 
     @Override
@@ -181,12 +195,14 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-         LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        readLock.lock();
+        LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
-         if(lobbyController != null)
-             lobbyController.getLobbyInfo(client);
-         else
-             client.deleteLobby(lobbyID);
+        if (lobbyController != null)
+            lobbyController.getLobbyInfo(client);
+        else
+            client.deleteLobby(lobbyID);
+        readLock.unlock();
     }
 
 
@@ -198,7 +214,7 @@ public class ServerController extends VirtualServer {
             return;
 
         LobbyController lobby = runningLobbies.get(lobbyID);
-        if(lobby != null)
+        if (lobby != null)
             lobby.showRank(client);
         else
             client.deleteLobby(lobbyID);
@@ -213,30 +229,35 @@ public class ServerController extends VirtualServer {
     public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         ClientInterface client = clients.get(clientID);
 
-        if(client == null)
+        if (client == null)
             return;
 
+
+        readLock.lock();
         LobbyController lobby = runningLobbies.get(lobbyID);
 
-        if(lobby != null)
+        if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
             client.deleteLobby(lobbyID);
+        readLock.unlock();
     }
 
     @Override
     public void requestOffer(int clientID, int lobbyID, int offerIndex) {
         ClientInterface client = clients.get(clientID);
 
-        if(client == null)
+        if (client == null)
             return;
 
+        readLock.lock();
         LobbyController lobby = runningLobbies.get(lobbyID);
 
-        if(lobby != null)
+        if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
             client.deleteLobby(lobbyID);
+        readLock.unlock();
     }
 
     public void startServer(String ip, int tcpPort, int rmiPort) {
