@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
+import it.polimi.ingsw.controller.client.network.RMIServerInterface;
+import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
 import it.polimi.ingsw.controller.client.state.ClientState;
 import it.polimi.ingsw.controller.client.state.NetworkSelectionState;
@@ -28,7 +30,7 @@ import java.rmi.registry.Registry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientController extends VirtualClient {
-    private VirtualServer server = null;
+    private ServerInterface server = null;
     private ClientState clientState;
 
     protected Lobby currLobby = null;
@@ -161,7 +163,9 @@ public class ClientController extends VirtualClient {
     public void connectRMI(String registryName, String ip, int rmiPort) {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
-            this.server = (VirtualServer) registry.lookup(registryName);
+            VirtualServer serverStub = (VirtualServer) registry.lookup(registryName);
+            this.server = new RMIServerInterface(this, serverStub);
+
             UnicastRemoteObject.exportObject(this, rmiPort);
             server.addClient(this);
         } catch (RemoteException e) {
