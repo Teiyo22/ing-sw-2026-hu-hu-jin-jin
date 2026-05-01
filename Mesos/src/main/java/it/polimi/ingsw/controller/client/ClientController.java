@@ -147,6 +147,11 @@ public class ClientController extends VirtualClient {
     public void ping() {
     }
 
+    @Override
+    public void setID(int clientID) {
+        id = clientID;
+    }
+
     /**
      * Connecting to the server using RMI.
      *
