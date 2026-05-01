@@ -25,7 +25,7 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
             case "SET_ID" -> context.deserialize(jsonObject, SetIDResponse.class);
             case "STOP_LOBBY" -> context.deserialize(jsonObject, StopLobbyMessage.class);
             case "PING" -> context.deserialize(jsonObject, PingMessage.class);
-            case "DELETE_LOBBY" -> context.deserialize(jsonObject, DeleteLobbyMessage.class);
+            case "REMOVE_LOBBY" -> context.deserialize(jsonObject, RemoveLobbyMessage.class);
             default -> throw new JsonParseException("Response type not found: " + type);
         };
     }

@@ -27,6 +27,6 @@ public abstract class VirtualClient implements Remote {
     public abstract void createLobby(int clientID, Lobby lobby, Player player) throws RemoteException;
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
     public abstract void stopLobby(int lobbyID) throws RemoteException;
-    public abstract void deleteLobby(int lobbyID) throws RemoteException;
+    public abstract void removeLobby(int lobbyID) throws RemoteException;
     public abstract void ping() throws IOException, RemoteException;
 }

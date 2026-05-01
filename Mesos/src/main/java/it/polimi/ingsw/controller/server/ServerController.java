@@ -116,7 +116,7 @@ public class ServerController extends VirtualServer {
 
         if (removedLobby != null)
             for (ClientInterface clientInterface : clients.values())
-                clientInterface.deleteLobby(lobbyID);
+                clientInterface.removeLobby(lobbyID);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         readLock.unlock();
     }
 
@@ -150,7 +150,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.removePlayer(client);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         writeLock.unlock();
     }
 
@@ -165,7 +165,7 @@ public class ServerController extends VirtualServer {
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController == null)
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         else if (lobbyController.startLobby()) {
             removeWaitingLobby(lobbyID);
             runningLobbies.put(lobbyID, lobbyController);
@@ -201,7 +201,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         readLock.unlock();
     }
 
@@ -217,7 +217,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.showRank(client);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         readLock.unlock();
     }
 
@@ -256,7 +256,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            client.deleteLobby(lobbyID);
+            client.removeLobby(lobbyID);
         readLock.unlock();
     }
 

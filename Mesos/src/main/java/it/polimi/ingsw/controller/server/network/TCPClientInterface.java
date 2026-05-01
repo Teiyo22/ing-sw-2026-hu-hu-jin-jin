@@ -138,10 +138,10 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void deleteLobby(int lobbyID) {
+    public void removeLobby(int lobbyID) {
         if (currLobbyID == lobbyID) currLobbyID = -1;
 
-        DeleteLobbyMessage message = new DeleteLobbyMessage(this.id, lobbyID);
+        RemoveLobbyMessage message = new RemoveLobbyMessage(this.id, lobbyID);
         clientHandler.sendMessage(message);
     }
 
