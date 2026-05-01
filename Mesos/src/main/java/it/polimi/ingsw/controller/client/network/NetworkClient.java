@@ -15,7 +15,7 @@ public class NetworkClient extends Thread {
     private ServerTCPInterface server;
     private Socket socket;
     private BufferedReader input;
-    private PrintWriter output;
+    private BufferedWriter output;
     private final Gson gson;
 
     public NetworkClient(){
@@ -43,6 +43,8 @@ public class NetworkClient extends Thread {
             }
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
+        } finally {
+            cleanup();
         }
     }
 
@@ -52,17 +54,32 @@ public class NetworkClient extends Thread {
      * */
     public void sendMessage(Request request){
         String msg = gson.toJson(request);
-        output.println(msg);
+        try {
+            output.write(msg);
+            output.newLine();
+            output.flush();
+        } catch (IOException e) {
+            System.out.println("Error while sending message in TCP: " + e.getMessage());
+        }
+
     }
 
     public void connect(String ip, int tcpPort) throws UnknownHostException, IOException {
         this.socket = new Socket(ip, tcpPort);
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-        this.output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         new Thread(this).start();
     }
 
     public void setServer(ServerTCPInterface server) {
         this.server = server;
+    }
+
+    public void cleanup() {
+        try {
+            this.interrupt();
+            if (socket != null && !socket.isClosed())
+                socket.close();
+        } catch (IOException ignore) { }
     }
 }
