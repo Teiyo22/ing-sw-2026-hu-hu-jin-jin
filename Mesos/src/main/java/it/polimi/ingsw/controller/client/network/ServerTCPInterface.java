@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.requests.*;
-import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 

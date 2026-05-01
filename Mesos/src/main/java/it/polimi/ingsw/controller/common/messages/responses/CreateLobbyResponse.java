@@ -3,9 +3,10 @@ package it.polimi.ingsw.controller.common.messages.responses;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.player.Player;
 
-public class CreateLobbyResponse extends Response{
+public class CreateLobbyResponse extends Response {
     Lobby lobby;
     Player player;
 

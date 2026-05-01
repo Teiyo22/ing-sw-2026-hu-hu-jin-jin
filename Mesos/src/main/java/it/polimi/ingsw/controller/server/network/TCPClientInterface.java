@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller.server.network;
 
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
-import it.polimi.ingsw.controller.common.messages.requests.Request;
+import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.player.Tribe;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class TCPClientInterface extends ClientInterface {
     private ClientHandler clientHandler;

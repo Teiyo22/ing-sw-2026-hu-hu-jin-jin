@@ -2,10 +2,11 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Response;
 
 import java.util.Map;
 
-public class GetRankResponse extends Response{
+public class GetRankResponse extends Response {
     private int lobbyID;
     private Map<Integer, Integer> rankings;
 

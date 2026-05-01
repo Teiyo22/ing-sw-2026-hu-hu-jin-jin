@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.common.messages.responses;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Response;
 
 import java.util.List;
 

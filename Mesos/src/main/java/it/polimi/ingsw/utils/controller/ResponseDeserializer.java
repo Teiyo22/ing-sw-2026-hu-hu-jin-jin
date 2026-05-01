@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils.controller;
 
 import com.google.gson.*;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 
 import java.lang.reflect.Type;

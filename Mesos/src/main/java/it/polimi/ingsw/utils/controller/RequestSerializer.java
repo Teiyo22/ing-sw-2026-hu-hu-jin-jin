@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 
 import java.lang.reflect.Type;

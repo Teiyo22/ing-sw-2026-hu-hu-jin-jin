@@ -3,8 +3,8 @@ package it.polimi.ingsw.controller.client.network;
 import com.google.gson.*;
 import java.io.*;
 import java.net.UnknownHostException;
-import it.polimi.ingsw.controller.common.messages.requests.Request;
-import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.controller.common.messages.Request;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
 

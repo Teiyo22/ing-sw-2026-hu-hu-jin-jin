@@ -1,6 +1,5 @@
-package it.polimi.ingsw.controller.common.messages.requests;
+package it.polimi.ingsw.controller.common.messages;
 
-import it.polimi.ingsw.controller.common.messages.Message;
 import it.polimi.ingsw.controller.server.ServerController;
 
 public abstract class Request extends Message {

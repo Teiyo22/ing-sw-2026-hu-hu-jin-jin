@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
 
 public class GetLeaderboardRequest extends Request {

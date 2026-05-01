@@ -2,8 +2,9 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
+import it.polimi.ingsw.controller.common.messages.Response;
 
-public class LeaveLobbyResponse extends Response{
+public class LeaveLobbyResponse extends Response {
     private int lobbyID;
 
     public LeaveLobbyResponse(int clientID, int lobbyID){

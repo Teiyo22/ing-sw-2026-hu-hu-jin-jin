@@ -1,7 +1,6 @@
-package it.polimi.ingsw.controller.common.messages.responses;
+package it.polimi.ingsw.controller.common.messages;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.Message;
 
 public abstract  class Response extends Message {
     public Response(int clientID) {

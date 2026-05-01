@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller.server.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.polimi.ingsw.controller.common.messages.requests.Request;
-import it.polimi.ingsw.controller.common.messages.responses.Response;
+import it.polimi.ingsw.controller.common.messages.Request;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
