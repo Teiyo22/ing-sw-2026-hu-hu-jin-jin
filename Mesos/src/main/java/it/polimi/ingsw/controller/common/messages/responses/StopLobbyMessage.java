@@ -1,12 +1,14 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.MessageType;
 
 public class StopLobbyMessage extends Response {
     int lobbyID;
 
     public StopLobbyMessage(int clientID, int lobbyID) {
         super(clientID);
+        this.type = MessageType.STOP_LOBBY;
         this.lobbyID = lobbyID;
     }
 

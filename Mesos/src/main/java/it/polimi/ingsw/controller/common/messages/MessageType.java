@@ -10,5 +10,8 @@ public enum MessageType {
     LOBBY_INFO,
     GET_RANK,
     GET_LEADERBOARD,
-    SET_ID
+    SET_ID,
+    STOP_LOBBY,
+    PING,
+    PICK_OFFER,
 }
