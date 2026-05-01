@@ -50,21 +50,21 @@ public class ServerController extends VirtualServer {
         RMIClientInterface wrapper = new RMIClientInterface(client);
         int id = nextClientID.getAndIncrement();
 
-        clients.put(id, wrapper);
-        connectionMonitor.registerClient(wrapper);
-
         wrapper.setConnected(true);
         wrapper.setID(id);
+
+        clients.put(id, wrapper);
+        connectionMonitor.registerClient(wrapper);
     }
 
     public void addClient(TCPClientInterface client) {
         int id = nextClientID.getAndIncrement();
 
-        clients.put(id, client);
-        connectionMonitor.registerClient(client);
-
         client.setConnected(true);
         client.setID(id);
+
+        clients.put(id, client);
+        connectionMonitor.registerClient(client);
     }
 
     public void disconnectClient(ClientInterface client) {
