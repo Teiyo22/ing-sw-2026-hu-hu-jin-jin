@@ -113,14 +113,15 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void confirmPick(int clientID, Board board, Tribe updatedTribe)  {
+    public void updateModel(int clientID, Board board, Tribe updatedTribe)  {
         if (!isConnected)
             return;
 
         try {
-            wrappedClient.confirmPick(clientID, board, updatedTribe);
+            wrappedClient.updateModel(clientID, board, updatedTribe);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {confirmPick(clientID, board, updatedTribe);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                updateModel(clientID, board, updatedTribe);});
         }
     }
 

@@ -15,7 +15,7 @@ public class ResponseSerializer implements JsonSerializer<Response> {
         MessageType type = src.getType();
 
         return switch (type) {
-            case PICK_CARDS -> context.serialize(src, PickCardsResponse.class);
+            case UPDATE_MODEL -> context.serialize(src, UpdateModelResponse.class);
             case CREATE_LOBBY -> context.serialize(src, CreateLobbyResponse.class);
             case JOIN_LOBBY -> context.serialize(src, JoinLobbyResponse.class);
             case LEAVE_LOBBY -> context.serialize(src, LeaveLobbyResponse.class);

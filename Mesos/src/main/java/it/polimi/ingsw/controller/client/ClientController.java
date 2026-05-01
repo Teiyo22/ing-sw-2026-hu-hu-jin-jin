@@ -136,7 +136,7 @@ public class ClientController extends VirtualClient {
     }
 
     @Override
-    public void confirmPick(int clientID, Board board, Tribe updatedTribe) {
+    public void updateModel(int clientID, Board board, Tribe updatedTribe) {
         if (currLobby != null) {
             currLobby.updateBoard(board);
             currLobby.updateTribe(clientID, updatedTribe);

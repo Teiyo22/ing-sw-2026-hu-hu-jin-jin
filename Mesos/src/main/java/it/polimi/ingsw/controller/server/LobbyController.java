@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.server;
 
 import it.polimi.ingsw.controller.common.Lobby;
-import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.Pickable;
@@ -79,7 +78,7 @@ public class LobbyController {
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
         for (ClientInterface client : players.keySet())
-            client.confirmPick(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
+            client.updateModel(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
     }
 
     private boolean validateCardPick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -95,7 +94,7 @@ public class LobbyController {
         model.assignTo(player, model.getBoard().getOfferTrack()[offerIndex]);
 
         for (ClientInterface client : players.keySet())
-            client.confirmPick(pickerClient.getID(), model.getBoard(), player.getTribe());
+            client.updateModel(pickerClient.getID(), model.getBoard(), player.getTribe());
     }
 
     private boolean validateOfferPick(Player player, int offerIndex) {

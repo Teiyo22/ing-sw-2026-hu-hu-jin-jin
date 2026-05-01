@@ -7,20 +7,20 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Tribe;
 
 
-public class PickCardsResponse extends Response {
+public class UpdateModelResponse extends Response {
     private Tribe updatedTribe;
     private Board updatedBoard;
 
-    public PickCardsResponse(int clientID, Board updatedBoard, Tribe updatedTribe){
+    public UpdateModelResponse(int clientID, Board updatedBoard, Tribe updatedTribe){
         super(clientID);
-        this.type = MessageType.PICK_CARDS;
+        this.type = MessageType.UPDATE_MODEL;
         this.updatedBoard = updatedBoard;
         this.updatedTribe = updatedTribe;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.confirmPick(super.getClientID(), updatedBoard, updatedTribe);
+        clientController.updateModel(super.getClientID(), updatedBoard, updatedTribe);
     }
 }
 

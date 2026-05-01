@@ -86,11 +86,11 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void confirmPick(int clientID, Board updatedBoard, Tribe updatedTribe) {
+    public void updateModel(int clientID, Board updatedBoard, Tribe updatedTribe) {
         if (!isConnected)
             return;
 
-        PickCardsResponse response = new PickCardsResponse(clientID, updatedBoard, updatedTribe);
+        UpdateModelResponse response = new UpdateModelResponse(clientID, updatedBoard, updatedTribe);
         clientHandler.sendMessage(response);
     }
 

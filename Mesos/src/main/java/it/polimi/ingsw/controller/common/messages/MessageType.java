@@ -12,6 +12,7 @@ public enum MessageType {
     LOBBY_INFO,
     PICK_OFFER,
     PICK_CARDS,
+    UPDATE_MODEL,
     GET_RANK,
     GET_LEADERBOARD,
     PING,
