@@ -1,18 +1,18 @@
 package it.polimi.ingsw.controller.common.messages;
 
 public enum MessageType {
-    PICK_CARDS,
+    SET_ID,
     CREATE_LOBBY,
+    DELETE_LOBBY,
     JOIN_LOBBY,
     LEAVE_LOBBY,
     START_LOBBY,
+    STOP_LOBBY,
     WAITING_LOBBY,
     LOBBY_INFO,
+    PICK_OFFER,
+    PICK_CARDS,
     GET_RANK,
     GET_LEADERBOARD,
-    SET_ID,
-    STOP_LOBBY,
     PING,
-    PICK_OFFER,
-    DELETE_LOBBY
 }
