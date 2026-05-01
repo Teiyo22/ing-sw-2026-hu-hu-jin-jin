@@ -92,7 +92,7 @@ public class ClientController extends VirtualClient {
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, Player player) {
+    public void addToLobby(int clientID, int lobbyID, Player player) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.addPlayer(clientID, player);
 

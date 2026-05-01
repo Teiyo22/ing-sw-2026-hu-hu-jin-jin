@@ -19,7 +19,7 @@ public abstract class VirtualClient implements Remote {
 
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies) throws RemoteException;
     public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) throws RemoteException;
-    public abstract void setLobby(int clientID, int lobbyID, Player player) throws RemoteException;
+    public abstract void addToLobby(int clientID, int lobbyID, Player player) throws RemoteException;
     public abstract void removeFromLobby(int clientID, int lobbyID) throws RemoteException;
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) throws RemoteException;
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) throws RemoteException;

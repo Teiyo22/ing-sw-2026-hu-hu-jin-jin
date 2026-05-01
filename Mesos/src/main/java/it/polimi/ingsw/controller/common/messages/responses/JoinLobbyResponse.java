@@ -18,6 +18,6 @@ public class JoinLobbyResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.setLobby(super.getClientID(), lobbyID, player);
+        clientController.addToLobby(super.getClientID(), lobbyID, player);
     }
 }

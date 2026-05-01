@@ -32,7 +32,7 @@ public class LobbyController {
             players.putIfAbsent(newClient, player);
 
             for (ClientInterface client : players.keySet())
-                client.setLobby(newClient.getID(), lobbyID, player);
+                client.addToLobby(newClient.getID(), lobbyID, player);
 
         } else
             getLobbyInfo(newClient);

@@ -61,16 +61,17 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, Player player)  {
+    public void addToLobby(int clientID, int lobbyID, Player player)  {
         if (!isConnected)
             return;
 
         if (clientID == this.id) currLobbyID = lobbyID;
 
         try {
-            wrappedClient.setLobby(clientID, lobbyID, player);
+            wrappedClient.addToLobby(clientID, lobbyID, player);
         } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {setLobby(clientID, lobbyID, player);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                addToLobby(clientID, lobbyID, player);});
         }
     }
 

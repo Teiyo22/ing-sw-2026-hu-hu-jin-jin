@@ -45,7 +45,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void setLobby(int clientID, int lobbyID, Player player) {
+    public void addToLobby(int clientID, int lobbyID, Player player) {
         if (!isConnected)
             return;
 
