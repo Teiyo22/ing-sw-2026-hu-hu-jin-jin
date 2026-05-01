@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.player.Tribe;
 import java.util.Map;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LobbyController {
     private int lobbyID;
@@ -24,12 +25,12 @@ public class LobbyController {
     public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
         this.size = size;
-        players = new HashMap<>();
+        players = new ConcurrentHashMap<>();
     }
 
-    public synchronized void joinLobby(ClientInterface newClient, Player player) {
+    public void joinLobby(ClientInterface newClient, Player player) {
         if (players.size() < size) {
-            players.put(newClient, player);
+            players.putIfAbsent(newClient, player);
 
             for (ClientInterface client : players.keySet())
                 client.setLobby(newClient.getID(), lobbyID, player);
@@ -69,7 +70,7 @@ public class LobbyController {
         }
     }
 
-    public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         Player player = players.get(pickerClient);
 
         if (!validateCardPick(player, topPicks, bottomPicks))
@@ -85,7 +86,7 @@ public class LobbyController {
         return player == model.getGameState().getCurrPlayer();
     }
 
-    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
+    public synchronized void pickOffer(ClientInterface pickerClient, int offerIndex) {
         Player player = players.get(pickerClient);
 
         if (!validateOfferPick(player, offerIndex))
@@ -119,7 +120,7 @@ public class LobbyController {
         return true;
     }
 
-    public void showRank(ClientInterface requester) {
+    public synchronized void showRank(ClientInterface requester) {
         Map<Integer, Integer> rank = new HashMap<>();
 
         for (ClientInterface client : players.keySet())
@@ -128,9 +129,6 @@ public class LobbyController {
         requester.showRank(requester.getID(), lobbyID, rank);
     }
 
-    public Map<ClientInterface, Player> getPlayers() {
-        return players;
-    }
 
     public Lobby getLobby() {
         return new Lobby(lobbyID, size);
