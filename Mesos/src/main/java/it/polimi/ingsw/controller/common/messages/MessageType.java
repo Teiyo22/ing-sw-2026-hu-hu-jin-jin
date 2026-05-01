@@ -14,4 +14,5 @@ public enum MessageType {
     STOP_LOBBY,
     PING,
     PICK_OFFER,
+    DELETE_LOBBY
 }
