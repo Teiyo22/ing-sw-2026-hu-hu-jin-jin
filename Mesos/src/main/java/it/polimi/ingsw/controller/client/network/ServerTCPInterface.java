@@ -120,4 +120,15 @@ public class ServerTCPInterface extends VirtualServer {
         PickCardsRequest request = new PickCardsRequest(clientID, lobbyID, topPicks, bottomPicks);
         serverHandler.sendMessage(request);
     }
+
+
+    /** Method to request a specific offer from the server.
+     * @param lobbyID ID of the player's lobby
+     * @param offerIndex index of the offer of interest.
+     * */
+    @Override
+    public void requestOffer(int clientID, int lobbyID, int offerIndex) {
+        PickOfferRequest request = new PickOfferRequest(clientID, lobbyID, offerIndex);
+        serverHandler.sendMessage(request);
+    }
 }
