@@ -2,6 +2,12 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
+import it.polimi.ingsw.controller.client.state.ClientState;
+import it.polimi.ingsw.controller.client.state.NetworkSelectionState;
+import it.polimi.ingsw.controller.client.state.gameplay.GamePlayState;
+import it.polimi.ingsw.controller.client.state.lobby.LobbyInfoState;
+import it.polimi.ingsw.controller.client.state.lobby.LobbyListState;
+import it.polimi.ingsw.controller.client.state.lobby.LobbyModeState;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -19,91 +25,102 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientController extends VirtualClient {
-    private VirtualServer server;
-    protected Lobby currLobby;
-    private Map<Integer, Lobby> waitingLobbies;
+    private VirtualServer server = null;
+    private ClientState clientState;
+
+    protected Lobby currLobby = null;
+    private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
     private final Object lobbiesLock = new Object();
 
     public ClientController() {
-        this.server = null;
+        // TODO: missing view
+        this.clientState = new NetworkSelectionState(this);
+        this.clientState.updateView();
     }
 
     @Override
     public void stopLobby(int lobbyID) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.isStarted()) {
+            currLobby = null;
+            waitingLobbies = null;
+            clientState = new LobbyModeState(this);
+        }
 
+        clientState.updateView();
     }
 
     @Override
     public void deleteLobby(int lobbyID) {
+        waitingLobbies.remove(lobbyID);
 
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID && !currLobby.isStarted()) {
+            currLobby = null;
+            clientState = new LobbyListState(this);
+        }
+
+        clientState.updateView();
     }
 
     @Override
     public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
-        synchronized (lobbiesLock) {
-            for (Lobby lobby : lobbies)
-                waitingLobbies.put(lobby.getLobbyID(), lobby);
-        }
+        waitingLobbies.clear();
 
-        // TODO: show to view
+        for (Lobby lobby : lobbies)
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
+
+        clientState = new LobbyListState(this);
+        clientState.updateView();
     }
 
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
-        synchronized (lobbiesLock) {
-            Lobby lobby = waitingLobbies.get(lobbyID);
+        Lobby lobby = waitingLobbies.get(lobbyID);
 
-            if(lobby != null) {
-                currLobby = lobby;
-                lobby.setPlayers(players);
-            }
-            // TODO: Handle missing lobby
-        }
+        if (lobby != null) {
+            currLobby = lobby;
+            lobby.setPlayers(players);
+            clientState = new LobbyInfoState(this);
+        } else
+            clientState = new LobbyListState(this);
 
-        // TODO: show to view
+        clientState.updateView();
     }
 
     @Override
     public void setLobby(int clientID, int lobbyID, Player player) {
-        synchronized (lobbiesLock) {
-            if(currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.addPlayer(clientID, player);
-            // TODO: handle missing/wrong lobby
-            // TODO: what happens if the player tries to join multiple lobbies?
-        }
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.addPlayer(clientID, player);
 
-        // TODO: show to view
+        clientState.updateView();
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
-        synchronized (lobbiesLock) {
-            if(currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.removePlayer(clientID);
-        }
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.removePlayer(clientID);
 
-        // TODO: show to view
+        clientState.updateView();
     }
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
-        synchronized (lobbiesLock) {
-            currLobby = lobby;
-            currLobby.addPlayer(clientID, player);
-        }
+        currLobby = lobby;
+        currLobby.addPlayer(clientID, player);
+
+        clientState = new LobbyInfoState(this);
+        clientState.updateView();
     }
 
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
-        synchronized (lobbiesLock) {
-            if(currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                currLobby.initGame(tribes, board);
-            }
-        }
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.initGame(tribes, board);
 
-        // TODO: show to view
+        clientState = new GamePlayState(this, null);
+        clientState.updateView();
     }
 
     @Override
@@ -118,22 +135,25 @@ public class ClientController extends VirtualClient {
 
     @Override
     public void confirmPick(int clientID, Board board, Tribe updatedTribe) {
-        synchronized (lobbiesLock) {
-            if (currLobby != null) {
-                currLobby.updateBoard(board);
-                currLobby.updateTribe(clientID, updatedTribe);
-            }
+        if (currLobby != null) {
+            currLobby.updateBoard(board);
+            currLobby.updateTribe(clientID, updatedTribe);
         }
-        // TODO: show to view
+
+        clientState.updateView();
     }
 
     @Override
-    public void ping() { ; }
+    public void ping() {
+    }
 
-    /** Connecting to the server using RMI.
+    /**
+     * Connecting to the server using RMI.
+     *
      * @param registryName the name of the server in the registry.
-     * */
-    public void connectRMI(String registryName, String ip, int rmiPort){
+     *
+     */
+    public void connectRMI(String registryName, String ip, int rmiPort) {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
             this.server = (VirtualServer) registry.lookup(registryName);
@@ -146,9 +166,11 @@ public class ClientController extends VirtualClient {
         }
     }
 
-    /** Connecting to the server using TCP.
+    /**
+     * Connecting to the server using TCP.
      * Creates the NetworkClient and the ServerTCPInterface, which initializes the server reference in the first.
-     * */
+     *
+     */
     public void connectTCP(String ip, int tcpPort) {
         NetworkClient networkClient = new NetworkClient();
         this.server = new ServerTCPInterface(this, networkClient);
