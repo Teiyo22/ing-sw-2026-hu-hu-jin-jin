@@ -116,7 +116,7 @@ public class ServerTCPInterface extends VirtualServer {
      * @param bottomPicks list of the cards that the player would like to pick from the bottom row.
      * */
     @Override
-    public void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         PickCardsRequest request = new PickCardsRequest(clientID, lobbyID, topPicks, bottomPicks);
         serverHandler.sendMessage(request);
     }

@@ -21,7 +21,7 @@ public class PickCardsRequest extends Request{
 
     @Override
     public void receive(ServerController serverController){
-        serverController.requestPick(super.getClientID(), lobbyID, topRowPicks, bottomRowPicks);
+        serverController.requestCards(super.getClientID(), lobbyID, topRowPicks, bottomRowPicks);
     }
 
 }

@@ -210,9 +210,33 @@ public class ServerController extends VirtualServer {
     }
 
     @Override
-    public void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+        ClientInterface client = clients.get(clientID);
+
+        if(client == null)
+            return;
+
         LobbyController lobby = runningLobbies.get(lobbyID);
-        lobby.pickCards(clients.get(clientID), topPicks, bottomPicks);
+
+        if(lobby != null)
+            lobby.pickCards(client, topPicks, bottomPicks);
+        else
+            client.deleteLobby(lobbyID);
+    }
+
+    @Override
+    public void requestOffer(int clientID, int lobbyID, int offerIndex) {
+        ClientInterface client = clients.get(clientID);
+
+        if(client == null)
+            return;
+
+        LobbyController lobby = runningLobbies.get(lobbyID);
+
+        if(lobby != null)
+            lobby.pickOffer(client, offerIndex);
+        else
+            client.deleteLobby(lobbyID);
     }
 
     public void startServer(String ip, int tcpPort, int rmiPort) {

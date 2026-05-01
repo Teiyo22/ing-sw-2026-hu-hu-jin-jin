@@ -70,10 +70,37 @@ public class LobbyController {
     }
 
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+        Player player = players.get(pickerClient);
+
+        if (!validateCardPick(player, topPicks, bottomPicks))
+            return;
+
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
         for (ClientInterface client : players.keySet())
             client.confirmPick(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
+    }
+
+    private boolean validateCardPick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+        return player == model.getGameState().getCurrPlayer();
+    }
+
+    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
+        Player player = players.get(pickerClient);
+
+        if (!validateOfferPick(player, offerIndex))
+            return;
+
+        model.assignTo(player, model.getBoard().getOfferTrack()[offerIndex]);
+
+        for (ClientInterface client : players.keySet())
+            client.confirmPick(pickerClient.getID(), model.getBoard(), player.getTribe());
+    }
+
+    private boolean validateOfferPick(Player player, int offerIndex) {
+        return player == model.getGameState().getCurrPlayer() &&
+               offerIndex >= 0 && offerIndex < model.getBoard().getOfferTrack().length &&
+               model.getBoard().getOfferTrack()[offerIndex].getAssignedPlayer() == null;
     }
 
     public synchronized boolean startLobby() {

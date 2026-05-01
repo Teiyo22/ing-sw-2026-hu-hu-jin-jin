@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
 
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
@@ -19,5 +18,6 @@ public abstract class VirtualServer implements Remote {
     public abstract void getLobbyInfo(int clientID, int lobbyID);
     public abstract void getRank(int clientID, int lobbyID);
     public abstract void getLeaderboard(int clientID, int playerNum);
-    public abstract void requestPick(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
+    public abstract void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
+    public abstract void requestOffer(int clientID, int lobbyID, int offerIndex);
 }
