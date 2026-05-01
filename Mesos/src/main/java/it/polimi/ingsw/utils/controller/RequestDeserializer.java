@@ -21,6 +21,7 @@ public class RequestDeserializer implements JsonDeserializer<Request> {
             case "LOBBY_INFO" -> context.deserialize(jsonObject, LobbyInfoRequest.class);
             case "GET_RANK" -> context.deserialize(jsonObject, GetRankRequest.class);
             case "GET_LEADERBOARD" -> context.deserialize(jsonObject, GetLeaderboardRequest.class);
+            case "PICK_OFFER" -> context.deserialize(jsonObject, PickOfferRequest.class);
             default -> throw new JsonParseException("Request type not found: " + type);
         };
     }
