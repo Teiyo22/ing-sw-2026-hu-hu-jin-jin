@@ -6,6 +6,8 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -264,9 +266,9 @@ public class ServerController extends VirtualServer {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             listenerService.submit(networkServer);
-            System.out.println("TCP Server started on" + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.SERVR, "TCP Server successfully started on " + ip + tcpPort);
         } catch (IOException e) {
-            System.err.println("Failed to Start TCP Server:" + e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + tcpPort);
             System.exit(-1);
         }
 
@@ -274,14 +276,14 @@ public class ServerController extends VirtualServer {
             Registry registry = LocateRegistry.createRegistry(rmiPort);
             registry.rebind("mesos_server", this);
             UnicastRemoteObject.exportObject(this, rmiPort);
-            System.out.println("RMI server started on" + ip + rmiPort);
+            Logger.getInstance().print(LoggerLevel.SERVR, "RMI Server successfully started on " + ip + tcpPort);
         } catch (RemoteException e) {
-            System.err.println("Failed to start RMI server:" + e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, "RMI Server failed to start on " + ip + tcpPort);
             System.exit(-1);
         }
 
         connectionMonitor.start();
-        System.out.println("Server started");
+        Logger.getInstance().print(LoggerLevel.SERVR, "Server successfully started");
     }
 
     public void stopServer() {
@@ -298,7 +300,7 @@ public class ServerController extends VirtualServer {
             registry.unbind("mesos_server");
             UnicastRemoteObject.unexportObject(this, true);
         } catch (RemoteException | NotBoundException e) {
-            System.err.println("Failed to cleanly stop RMI server");
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to cleanly stop RMI server");
         }
     }
 
