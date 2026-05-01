@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
-import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
+import it.polimi.ingsw.controller.client.network.TCPServerInterface;
 import it.polimi.ingsw.controller.client.state.ClientState;
 import it.polimi.ingsw.controller.client.state.NetworkSelectionState;
 import it.polimi.ingsw.controller.client.state.gameplay.GamePlayState;
@@ -178,7 +178,7 @@ public class ClientController extends VirtualClient {
      */
     public void connectTCP(String ip, int tcpPort) {
         NetworkClient networkClient = new NetworkClient();
-        this.server = new ServerTCPInterface(this, networkClient);
+        this.server = new TCPServerInterface(this, networkClient);
         try {
             networkClient.connect(ip, tcpPort);
         } catch (UnknownHostException e) {

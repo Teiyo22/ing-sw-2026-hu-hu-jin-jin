@@ -10,11 +10,11 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
 
-public class ServerTCPInterface extends VirtualServer {
+public class TCPServerInterface extends VirtualServer {
     private ClientController clientController;
     private NetworkClient serverHandler;
 
-    public ServerTCPInterface(ClientController clientController,  NetworkClient serverHandler) {
+    public TCPServerInterface(ClientController clientController, NetworkClient serverHandler) {
         this.clientController = clientController;
         this.serverHandler = serverHandler;
         serverHandler.setServer(this);

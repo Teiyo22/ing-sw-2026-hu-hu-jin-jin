@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class NetworkClient extends Thread {
-    private ServerTCPInterface server;
+    private TCPServerInterface server;
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
@@ -71,7 +71,7 @@ public class NetworkClient extends Thread {
         new Thread(this).start();
     }
 
-    public void setServer(ServerTCPInterface server) {
+    public void setServer(TCPServerInterface server) {
         this.server = server;
     }
 
