@@ -42,12 +42,16 @@ public class LobbyController {
             // TODO : send error message to newClient
             return;
 
+        if (!players.containsKey(newClient))
+            // TODO : send error message to newClient
+            return;
+
         if (!validatePlayerInfo(newPlayer))
             // TODO : send error message to newClient
             return;
 
         listeners.remove(newClient);
-        players.putIfAbsent(newClient, newPlayer);
+        players.put(newClient, newPlayer);
 
         for (ClientInterface lobbyClient : players.keySet())
             lobbyClient.addToLobby(newClient.getID(), lobbyID, newPlayer);
@@ -183,5 +187,9 @@ public class LobbyController {
 
     public void addPlayer(ClientInterface client, Player player) {
         players.put(client, player);
+    }
+
+    public boolean isEmpty() {
+        return players.isEmpty();
     }
 }
