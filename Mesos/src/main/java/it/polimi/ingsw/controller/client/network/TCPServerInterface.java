@@ -130,4 +130,9 @@ public class TCPServerInterface extends ServerInterface {
         PickOfferRequest request = new PickOfferRequest(clientID, lobbyID, offerIndex);
         serverHandler.sendMessage(request);
     }
+
+    @Override
+    public void disconnect() {
+        serverHandler.cleanup();
+    }
 }

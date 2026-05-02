@@ -27,12 +27,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.*;
 
 public class ClientController extends VirtualClient {
     private ServerInterface server = null;
     private ClientState clientState;
+    private ScheduledExecutorService retryService = null;
 
     protected Lobby currLobby = null;
     private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
@@ -180,6 +180,7 @@ public class ClientController extends VirtualClient {
 
             UnicastRemoteObject.exportObject(this, rmiPort);
             server.addClient(this);
+            retryService = Executors.newScheduledThreadPool(1);
         } catch (RemoteException e) {
             System.out.println("Error in connecting RMI server: " + e.getMessage());
         } catch (NotBoundException e) {
@@ -202,5 +203,14 @@ public class ClientController extends VirtualClient {
         } catch (IOException e) {
             System.out.println("Error in connecting TCP server: " + e.getMessage());
         }
+    }
+
+    public void scheduleRetry(Runnable runnable){
+        if(retryService != null && !retryService.isShutdown())
+            retryService.schedule(runnable, 3, TimeUnit.SECONDS);
+    }
+
+    public void close() {
+        server.disconnect();
     }
 }

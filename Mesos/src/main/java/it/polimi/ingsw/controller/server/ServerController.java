@@ -312,7 +312,8 @@ public class ServerController extends VirtualServer {
     }
 
     public void scheduleRetry(Runnable task) {
-        retryService.schedule(task, retryDelay, TimeUnit.SECONDS);
+        if (!retryService.isShutdown())
+            retryService.schedule(task, retryDelay, TimeUnit.SECONDS);
     }
 
     public void submitListener(Runnable task) {

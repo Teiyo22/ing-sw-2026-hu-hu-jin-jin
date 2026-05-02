@@ -26,4 +26,9 @@ public abstract class ServerInterface extends VirtualServer {
     public abstract void getLeaderboard(int clientID, int playerNum);
     public abstract void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
     public abstract void requestOffer(int clientID, int lobbyID, int offerIndex);
+    public abstract void disconnect();
+
+    public ClientController getClientController() {
+        return clientController;
+    }
 }

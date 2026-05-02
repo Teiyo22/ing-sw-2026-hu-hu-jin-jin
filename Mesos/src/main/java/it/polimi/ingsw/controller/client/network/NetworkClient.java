@@ -2,9 +2,13 @@ package it.polimi.ingsw.controller.client.network;
 
 import com.google.gson.*;
 import java.io.*;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+
+import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
 
@@ -41,10 +45,10 @@ public class NetworkClient extends Thread {
                 Response response = gson.fromJson(line, Response.class);
                 server.handleMessage(response);
             }
+        } catch (SocketException ignore) {
         } catch (IOException e) {
             System.out.println("Error while reading message in TCP: " + e.getMessage());
-        } finally {
-            cleanup();
+            server.getClientController().close();
         }
     }
 
@@ -77,7 +81,6 @@ public class NetworkClient extends Thread {
 
     public void cleanup() {
         try {
-            this.interrupt();
             if (socket != null && !socket.isClosed())
                 socket.close();
         } catch (IOException ignore) { }
