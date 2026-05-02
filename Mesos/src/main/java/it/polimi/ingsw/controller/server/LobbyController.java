@@ -105,11 +105,11 @@ public class LobbyController {
             for (ClientInterface lobbyClient : players.keySet())
                 lobbyClient.removeFromLobby(removedClient.getID(), lobbyID);
 
-            for (ClientInterface client : players.keySet())
-                client.removeFromLobby(removedClient.getID(), lobbyID);
+            for (ClientInterface listener : listeners)
+                listener.removeFromLobby(removedClient.getID(), lobbyID);
         } else {
             for (ClientInterface client : players.keySet())
-                client.stopLobby(lobbyID);
+                client.removeLobby(lobbyID);
         }
 
         return true;
