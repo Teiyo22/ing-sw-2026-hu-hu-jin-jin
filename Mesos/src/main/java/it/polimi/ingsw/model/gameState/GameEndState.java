@@ -34,6 +34,9 @@ public class GameEndState extends GameState {
 
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
+
+        game.getLobbyController().setFinished(true);
+        game.getLobbyController().setRunning(false);
     }
 
     private void resolveEvents() {

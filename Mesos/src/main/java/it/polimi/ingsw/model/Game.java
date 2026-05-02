@@ -1,5 +1,6 @@
     package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.server.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.Pickable;
@@ -11,6 +12,8 @@ import it.polimi.ingsw.model.player.Totem;
 import java.util.List;
 
 public class Game {
+    private final LobbyController lobbyController;
+
     private final PlayerConfig playerConfig;
     private final List<Player> players;
     private final Board board;
@@ -18,7 +21,8 @@ public class Game {
     private GameState gameState;
     private final BuildingHandler buildingHandler;
 
-    public Game(PlayerConfig playerConfig, List<Player> players) {
+    public Game(LobbyController lobbyController, PlayerConfig playerConfig, List<Player> players) {
+        this.lobbyController = lobbyController;
         this.playerConfig = playerConfig;
         this.players = players;
         this.board = new Board(this);
@@ -60,6 +64,9 @@ public class Game {
         return gameState;
     }
 
+    public LobbyController getLobbyController() {
+        return lobbyController;
+    }
 
     /**
      * Picks the cards for a player and updates the game state.

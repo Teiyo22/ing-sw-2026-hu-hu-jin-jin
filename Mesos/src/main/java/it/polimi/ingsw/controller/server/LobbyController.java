@@ -128,7 +128,7 @@ public class LobbyController {
             // TODO : send error message to startClient
             return false;
 
-        model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
+        model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
         Map<Integer, Tribe> tribes = new HashMap<>();
         for (ClientInterface client : players.keySet())
@@ -215,5 +215,13 @@ public class LobbyController {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }
