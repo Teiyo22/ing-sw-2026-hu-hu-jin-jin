@@ -5,11 +5,14 @@ import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 
 public class ClientHandler extends Thread {
@@ -40,9 +43,7 @@ public class ClientHandler extends Thread {
                 tcpClientInterface.handleMessage(request);
             }
         } catch (IOException e) {
-            System.out.println("Error while reading message in TCP: " + e.getMessage());
-        } finally {
-            cleanup();
+            Logger.getInstance().print(LoggerLevel.SERVR, "Disconnected from client: " + tcpClientInterface.getID());
         }
     }
 
@@ -63,10 +64,6 @@ public class ClientHandler extends Thread {
 
     public void cleanup() {
         try {
-            ServerController.getInstance().submitListener(
-                () -> { ServerController.getInstance().disconnectClient(tcpClientInterface); }
-            );
-
             if (socket != null && !socket.isClosed())
                 socket.close();
         } catch (IOException ignore) { }

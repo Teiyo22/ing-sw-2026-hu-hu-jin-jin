@@ -150,4 +150,9 @@ public class TCPClientInterface extends ClientInterface {
         PingMessage message = new PingMessage(this.id);
         clientHandler.sendMessage(message);
     }
+
+    @Override
+    public void cleanup() {
+        clientHandler.cleanup();
+    }
 }

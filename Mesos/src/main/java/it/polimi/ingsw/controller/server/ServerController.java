@@ -302,10 +302,15 @@ public class ServerController extends VirtualServer {
 
     public void stopServer() {
         connectionMonitor.stop();
+
+        for (ClientInterface client : clients.values())
+            client.cleanup();
+        networkServer.cleanup();
+
+        RMICleanup();
+
         listenerService.shutdownNow();
         retryService.shutdownNow();
-        TCPCleanup();
-        RMICleanup();
     }
 
     private void RMICleanup() {
@@ -316,10 +321,6 @@ public class ServerController extends VirtualServer {
         } catch (RemoteException | NotBoundException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to cleanly stop RMI server");
         }
-    }
-
-    private void TCPCleanup() {
-        networkServer.cleanup();
     }
 
     public void scheduleRetry(Runnable task) {
