@@ -43,7 +43,7 @@ public class ClientHandler extends Thread {
                 tcpClientInterface.handleMessage(request);
             }
         } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.SERVR, "Disconnected from client: " + tcpClientInterface.getID());
+            Logger.getInstance().print(LoggerLevel.SERVR, "Disconnected from TCP client: " + tcpClientInterface.getID());
         }
     }
 
@@ -64,8 +64,10 @@ public class ClientHandler extends Thread {
 
     public void cleanup() {
         try {
-            if (socket != null && !socket.isClosed())
+            if (socket != null && !socket.isClosed()) {
                 socket.close();
+                Logger.getInstance().print(LoggerLevel.SERVR, "TCP Client Socket successfully closed");
+            }
         } catch (IOException ignore) { }
     }
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller.server.network;
 
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -17,7 +19,7 @@ public class NetworkServer extends Thread {
 
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()){
+        while(!Thread.currentThread().isInterrupted() && !serverSocket.isClosed()){
             try {
                 Socket clientSocket = serverSocket.accept();
 
@@ -29,15 +31,17 @@ public class NetworkServer extends Thread {
 
                 ServerController.getInstance().addClient(tcpClientInterface);
             } catch (IOException e) {
-                ServerController.getInstance().stopServer();
+                Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failure: " + e.getMessage());
             }
         }
     }
 
     public void cleanup() {
         try {
-            if (serverSocket != null && !serverSocket.isClosed())
+            if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
+                Logger.getInstance().print(LoggerLevel.SERVR, "TCP Server Socket successfully closed");
+            }
         } catch (IOException ignore) {}
     }
 }
