@@ -63,7 +63,10 @@ public class ClientHandler extends Thread {
 
     public void cleanup() {
         try {
-            new Thread(() -> { ServerController.getInstance().disconnectClient(tcpClientInterface); }).start();
+            ServerController.getInstance().submitListener(
+                () -> { ServerController.getInstance().disconnectClient(tcpClientInterface); }
+            );
+
             if (socket != null && !socket.isClosed())
                 socket.close();
         } catch (IOException ignore) { }

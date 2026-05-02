@@ -29,15 +29,15 @@ public class NetworkServer extends Thread {
 
                 ServerController.getInstance().addClient(tcpClientInterface);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                ServerController.getInstance().stopServer();
             }
         }
     }
 
     public void cleanup() {
         try {
-            this.interrupt();
-            serverSocket.close();
+            if (serverSocket != null && !serverSocket.isClosed())
+                serverSocket.close();
         } catch (IOException ignore) {}
     }
 }
