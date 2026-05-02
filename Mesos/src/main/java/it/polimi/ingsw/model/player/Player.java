@@ -140,4 +140,8 @@ public class Player implements Comparable<Player>{
     public void setTribe(Tribe tribe) {
         this.tribe = tribe;
     }
+
+    public Totem getTotem() {
+        return totem;
+    }
 }

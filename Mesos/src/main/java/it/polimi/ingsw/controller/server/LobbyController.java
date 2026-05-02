@@ -16,57 +16,113 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LobbyController {
     private int lobbyID;
     private int size;
-    private Map<ClientInterface, Player> players;
+
+    private final Map<ClientInterface, Player> players = new ConcurrentHashMap<>();
+    private final List<ClientInterface> listeners = new ArrayList<>();
 
     private Game model = null;
+    private boolean running = false;
 
 
     public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
         this.size = size;
-        players = new ConcurrentHashMap<>();
     }
 
-    public void joinLobby(ClientInterface newClient, Player player) {
-        if (players.size() < size) {
-            players.putIfAbsent(newClient, player);
+    public synchronized void joinLobby(ClientInterface newClient, Player newPlayer) {
+        // To avoid sending the same info twice and letting a player not "listening" to the lobby join
+        if (!listeners.contains(newClient))
+            return;
 
-            for (ClientInterface client : players.keySet())
-                client.addToLobby(newClient.getID(), lobbyID, player);
+        if (running)
+            // TODO : send error message to newClient
+            return;
 
-        } else
-            getLobbyInfo(newClient);
+        if (players.size() == size)
+            // TODO : send error message to newClient
+            return;
+
+        if (!validatePlayerInfo(newPlayer))
+            // TODO : send error message to newClient
+            return;
+
+        listeners.remove(newClient);
+        players.putIfAbsent(newClient, newPlayer);
+
+        for (ClientInterface lobbyClient : players.keySet())
+            lobbyClient.addToLobby(newClient.getID(), lobbyID, newPlayer);
+
+        for (ClientInterface lobbyListener : listeners)
+            lobbyListener.addToLobby(newClient.getID(), lobbyID, newPlayer);
+
+    }
+
+    private boolean validatePlayerInfo(Player newPlayer) {
+        for (Player lobbyPlayer : players.values())
+            if (newPlayer.getTotem() == lobbyPlayer.getTotem() || newPlayer.getName().equals(lobbyPlayer.getName()))
+                return false;
+        return true;
     }
 
     public synchronized void getLobbyInfo(ClientInterface client) {
+        if (listeners.contains(client))
+            return;
+
+        if (running)
+            // TODO: send error message to client
+            return;
+
+        listeners.add(client);
+
         Map<Integer, Player> lobbyPlayers = new HashMap<>();
 
-        for(Map.Entry<ClientInterface, Player> entry: players.entrySet())
-            lobbyPlayers.put(entry.getKey().getID(), entry.getValue());
+        for (ClientInterface lobbyClient : players.keySet())
+            lobbyPlayers.put(lobbyClient.getID(), players.get(lobbyClient));
 
         client.showLobbyInfo(client.getID(), lobbyID, lobbyPlayers);
     }
 
-    public synchronized void removePlayer(ClientInterface removedClient) {
-        if (!players.containsKey(removedClient))
-            return;
+    public synchronized boolean removeFromLobby(ClientInterface removedClient) {
+        listeners.remove(removedClient);
 
-        players.remove(removedClient);
+        Player removedPlayer = players.remove(removedClient);
+        if (removedPlayer == null)
+            return false;
 
-        if (model == null) {
+        if (!running) {
+            for (ClientInterface lobbyClient : players.keySet())
+                lobbyClient.removeFromLobby(removedClient.getID(), lobbyID);
+
             for (ClientInterface client : players.keySet())
                 client.removeFromLobby(removedClient.getID(), lobbyID);
-
-            if (players.isEmpty())
-                ServerController.getInstance().removeWaitingLobby(lobbyID);
-        }
-
-        else {
+        } else {
             for (ClientInterface client : players.keySet())
                 client.stopLobby(lobbyID);
-
-            ServerController.getInstance().removeRunningLobby(lobbyID);
         }
+
+        return true;
+    }
+
+    public synchronized boolean startLobby(ClientInterface startClient) {
+        if (running)
+            // TODO : send error message to startClient
+            return false;
+
+        if (size != players.size())
+            // TODO : send error message to startClient
+            return false;
+
+        model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
+
+        Map<Integer, Tribe> tribes = new HashMap<>();
+        for (ClientInterface client : players.keySet())
+            tribes.put(client.getID(), players.get(client).getTribe());
+
+        for (ClientInterface client : players.keySet())
+            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+
+        running = true;
+        return true;
     }
 
     public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -99,24 +155,8 @@ public class LobbyController {
 
     private boolean validateOfferPick(Player player, int offerIndex) {
         return player == model.getGameState().getCurrPlayer() &&
-               offerIndex >= 0 && offerIndex < model.getBoard().getOfferTrack().length &&
-               model.getBoard().getOfferTrack()[offerIndex].getAssignedPlayer() == null;
-    }
-
-    public synchronized boolean startLobby() {
-        if(size != players.size())
-            return false;
-
-        Map<Integer, Tribe> tribes = new HashMap<>();
-        model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
-
-        for (ClientInterface client : players.keySet())
-            tribes.put(client.getID(), players.get(client).getTribe());
-
-        for (ClientInterface client : players.keySet())
-            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
-
-        return true;
+                offerIndex >= 0 && offerIndex < model.getBoard().getOfferTrack().length &&
+                model.getBoard().getOfferTrack()[offerIndex].getAssignedPlayer() == null;
     }
 
     public synchronized void showRank(ClientInterface requester) {
