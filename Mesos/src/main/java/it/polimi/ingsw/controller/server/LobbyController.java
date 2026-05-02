@@ -176,6 +176,10 @@ public class LobbyController {
     }
 
     public synchronized void showRank(ClientInterface requester) {
+        if (!finished)
+            // TODO : send error message to requester
+            return;
+
         Map<Integer, Integer> rank = new HashMap<>();
 
         for (ClientInterface client : players.keySet())
