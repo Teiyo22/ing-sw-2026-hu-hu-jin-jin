@@ -52,7 +52,7 @@ public class ClientController extends VirtualClient {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
-                clientState = (waitingLobbies == null) ? new LobbyModeState(this)
+                clientState = (waitingLobbies.isEmpty()) ? new LobbyModeState(this)
                         : new LobbyListState(this);
             }
 
@@ -124,7 +124,7 @@ public class ClientController extends VirtualClient {
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.contains(this.id)) {
-                waitingLobbies = null;
+                waitingLobbies.clear();
 
                 currLobby.initGame(tribes, board);
                 clientState = new GamePlayState(this, null);
