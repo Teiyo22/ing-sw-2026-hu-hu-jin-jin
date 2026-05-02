@@ -34,6 +34,7 @@ public class ServerController extends VirtualServer {
 
     private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
+    private final Map<Integer, LobbyController> savedLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
 
     private final AtomicInteger nextClientID = new AtomicInteger(1);
@@ -92,8 +93,14 @@ public class ServerController extends VirtualServer {
                 removeWaitingLobby(lobbyID);
 
         lobbyController = runningLobbies.get(lobbyID);
-        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
-            runningLobbies.remove(lobbyID);
+        if (lobbyController != null && lobbyController.removeFromLobby(removedClient)) {
+            if (lobbyController.isRunning())
+                runningLobbies.remove(lobbyID);
+            else if (lobbyController.isEmpty()) {
+                runningLobbies.remove(lobbyID);
+                savedLobbies.remove(lobbyID);
+            }
+        }
 
         writeLock.unlock();
     }

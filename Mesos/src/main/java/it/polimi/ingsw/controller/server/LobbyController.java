@@ -192,4 +192,8 @@ public class LobbyController {
     public boolean isEmpty() {
         return players.isEmpty();
     }
+
+    public boolean isRunning() {
+        return running;
+    }
 }
