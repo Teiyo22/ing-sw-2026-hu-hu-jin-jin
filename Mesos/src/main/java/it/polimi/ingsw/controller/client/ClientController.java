@@ -28,6 +28,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ClientController extends VirtualClient {
     private ServerInterface server = null;
@@ -35,7 +36,8 @@ public class ClientController extends VirtualClient {
 
     protected Lobby currLobby = null;
     private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
-    private final Object lobbiesLock = new Object();
+
+    private final Object lock = new Object();
 
     public ClientController() {
         // TODO: missing view
@@ -47,13 +49,16 @@ public class ClientController extends VirtualClient {
     public void removeLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby = null;
-            clientState = (waitingLobbies == null) ? new LobbyModeState(this)
-                                                   : new LobbyListState(this);
-        }
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby = null;
+                clientState = (waitingLobbies == null) ? new LobbyModeState(this)
+                        : new LobbyListState(this);
+            }
 
-        clientState.updateView();
+            clientState.updateView();
+
+        }
     }
 
     @Override
@@ -63,56 +68,69 @@ public class ClientController extends VirtualClient {
         for (Lobby lobby : lobbies)
             waitingLobbies.put(lobby.getLobbyID(), lobby);
 
-        clientState = new LobbyListState(this);
-        clientState.updateView();
+        synchronized (lock) {
+            clientState = new LobbyListState(this);
+            clientState.updateView();
+        }
     }
 
     @Override
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
-        Lobby lobby = waitingLobbies.get(lobbyID);
+        synchronized (lock) {
+            Lobby lobby = waitingLobbies.get(lobbyID);
+            if (lobby != null) {
+                currLobby = lobby;
+                lobby.setPlayers(players);
+                clientState = new LobbyInfoState(this);
+            } else
+                clientState = new LobbyListState(this);
 
-        if (lobby != null) {
-            currLobby = lobby;
-            lobby.setPlayers(players);
-            clientState = new LobbyInfoState(this);
-        } else
-            clientState = new LobbyListState(this);
-
-        clientState.updateView();
+            clientState.updateView();
+        }
     }
 
     @Override
     public void addToLobby(int clientID, int lobbyID, Player player) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.addPlayer(clientID, player);
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.addPlayer(clientID, player);
 
-        clientState.updateView();
+            clientState.updateView();
+        }
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.removePlayer(clientID);
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.removePlayer(clientID);
 
-        clientState.updateView();
+            clientState.updateView();
+        }
     }
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
-        currLobby = lobby;
-        currLobby.addPlayer(clientID, player);
+        synchronized (lock) {
+            currLobby = lobby;
+            currLobby.addPlayer(clientID, player);
 
-        clientState = new LobbyInfoState(this);
-        clientState.updateView();
+            clientState = new LobbyInfoState(this);
+            clientState.updateView();
+        }
     }
 
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.initGame(tribes, board);
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.contains(this.id)) {
+                waitingLobbies = null;
 
-        clientState = new GamePlayState(this, null);
-        clientState.updateView();
+                currLobby.initGame(tribes, board);
+                clientState = new GamePlayState(this, null);
+                clientState.updateView();
+            }
+        }
     }
 
     @Override
@@ -127,12 +145,14 @@ public class ClientController extends VirtualClient {
 
     @Override
     public void updateModel(int clientID, Board board, Tribe updatedTribe) {
-        if (currLobby != null) {
-            currLobby.updateBoard(board);
-            currLobby.updateTribe(clientID, updatedTribe);
-        }
+        synchronized (lock) {
+            if (currLobby != null) {
+                currLobby.updateBoard(board);
+                currLobby.updateTribe(clientID, updatedTribe);
+            }
 
-        clientState.updateView();
+            clientState.updateView();
+        }
     }
 
     @Override
@@ -142,6 +162,8 @@ public class ClientController extends VirtualClient {
     @Override
     public void setID(int clientID) {
         id = clientID;
+        clientState = new LobbyModeState(this);
+        clientState.updateView();
     }
 
     /**
