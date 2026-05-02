@@ -40,7 +40,7 @@ public class NetworkServer extends Thread {
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
-                Logger.getInstance().print(LoggerLevel.SERVR, "TCP Server Socket successfully closed");
+                Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server Socket successfully closed");
             }
         } catch (IOException ignore) {}
     }

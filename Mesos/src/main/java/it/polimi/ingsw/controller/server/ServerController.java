@@ -268,7 +268,7 @@ public class ServerController extends VirtualServer {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             listenerService.submit(networkServer);
-            Logger.getInstance().print(LoggerLevel.SERVR, "TCP Server successfully started on " + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + tcpPort);
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + tcpPort);
             System.exit(-1);
@@ -278,14 +278,14 @@ public class ServerController extends VirtualServer {
             Registry registry = LocateRegistry.createRegistry(rmiPort);
             registry.rebind("mesos_server", this);
             UnicastRemoteObject.exportObject(this, rmiPort);
-            Logger.getInstance().print(LoggerLevel.SERVR, "RMI Server successfully started on " + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully started on " + ip + tcpPort);
         } catch (RemoteException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "RMI Server failed to start on " + ip + tcpPort);
             System.exit(-1);
         }
 
         connectionMonitor.start();
-        Logger.getInstance().print(LoggerLevel.SERVR, "Server successfully started");
+        Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
     }
 
     public void stopServer() {
