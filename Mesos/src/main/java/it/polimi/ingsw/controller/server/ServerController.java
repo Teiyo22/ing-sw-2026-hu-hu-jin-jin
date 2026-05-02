@@ -78,10 +78,11 @@ public class ServerController extends VirtualServer {
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
 
-        removeFromLobbies(client, client.getCurrLobbyID());
+        if (!removeFromLobby(client, client.getCurrLobbyID()))
+            removeFromAllLobbies(client);
     }
 
-    private boolean removeFromLobbies(ClientInterface removedClient, int lobbyID) {
+    private boolean removeFromLobby(ClientInterface removedClient, int lobbyID) {
         LobbyController lobbyController;
         boolean removed = false;
 
@@ -104,6 +105,14 @@ public class ServerController extends VirtualServer {
         writeLock.unlock();
 
         return removed;
+    }
+
+    private void removeFromAllLobbies(ClientInterface removedClient) {
+        for (LobbyController lobbyController : lobbies.values())
+            lobbyController.removeFromLobby(removedClient);
+
+        for (LobbyController lobbyController : savedLobbies.values())
+            lobbyController.removeFromLobby(removedClient);
     }
 
     @Override
@@ -148,9 +157,8 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-        writeLock.lock();
-        removeFromLobbies(client, lobbyID);
-        writeLock.unlock();
+        if(!removeFromLobby(client, lobbyID))
+            removeFromAllLobbies(client);
     }
 
     @Override
