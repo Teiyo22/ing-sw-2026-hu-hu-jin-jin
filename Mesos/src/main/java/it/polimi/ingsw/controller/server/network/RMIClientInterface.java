@@ -153,20 +153,6 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void stopLobby(int lobbyID)  {
-        if (!isConnected)
-            return;
-
-        if (currLobbyID == lobbyID) currLobbyID = -1;
-
-        try {
-            wrappedClient.stopLobby(lobbyID);
-        } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {stopLobby(lobbyID);});
-        }
-    }
-
-    @Override
     public void removeLobby(int lobbyID)  {
         if (!isConnected)
             return;

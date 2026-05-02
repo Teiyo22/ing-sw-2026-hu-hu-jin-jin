@@ -44,23 +44,13 @@ public class ClientController extends VirtualClient {
     }
 
     @Override
-    public void stopLobby(int lobbyID) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.isStarted()) {
-            currLobby = null;
-            waitingLobbies = null;
-            clientState = new LobbyModeState(this);
-        }
-
-        clientState.updateView();
-    }
-
-    @Override
     public void removeLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby = null;
-            clientState = new LobbyListState(this);
+            clientState = (waitingLobbies == null) ? new LobbyModeState(this)
+                                                   : new LobbyListState(this);
         }
 
         clientState.updateView();

@@ -127,17 +127,6 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void stopLobby(int lobbyID) {
-        if (!isConnected)
-            return;
-
-        currLobbyID = -1;
-
-        StopLobbyMessage message = new StopLobbyMessage(this.id, lobbyID);
-        clientHandler.sendMessage(message);
-    }
-
-    @Override
     public void removeLobby(int lobbyID) {
         if (currLobbyID == lobbyID) currLobbyID = -1;
 

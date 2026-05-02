@@ -25,7 +25,6 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case GET_RANK -> context.serialize(src, GetRankResponse.class);
             case GET_LEADERBOARD -> context.serialize(src, GetLeaderboardResponse.class);
             case SET_ID -> context.serialize(src, SetIDResponse.class);
-            case STOP_LOBBY -> context.serialize(src, StopLobbyMessage.class);
             case PING -> context.serialize(src, PingMessage.class);
             case REMOVE_LOBBY -> context.serialize(src, RemoveLobbyMessage.class);
             default -> throw new IllegalArgumentException("Unknown message type: " + type);
