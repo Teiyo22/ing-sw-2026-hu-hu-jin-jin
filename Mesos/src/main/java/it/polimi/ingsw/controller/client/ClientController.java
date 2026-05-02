@@ -58,7 +58,7 @@ public class ClientController extends VirtualClient {
     public void removeLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID && !currLobby.isStarted()) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby = null;
             clientState = new LobbyListState(this);
         }

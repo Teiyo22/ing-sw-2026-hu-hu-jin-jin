@@ -172,18 +172,11 @@ public class ServerController extends VirtualServer {
         writeLock.lock();
         LobbyController lobbyController = lobbies.get(lobbyID);
 
-        if (lobbyController == null)
+        if (lobbyController != null)
+            lobbyController.startLobby(client);
+        else
             ; // TODO : send error message to client
-        else if (lobbyController.startLobby(client))
-            removeWaitingLobby(lobbyID);
         writeLock.unlock();
-    }
-
-    private void removeWaitingLobby(int lobbyID) {
-        lobbies.remove(lobbyID);
-
-        for (ClientInterface client : clients.values())
-            client.removeLobby(lobbyID);
     }
 
     @Override

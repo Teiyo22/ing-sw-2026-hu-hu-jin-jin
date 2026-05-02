@@ -115,18 +115,21 @@ public class LobbyController {
         return true;
     }
 
-    public synchronized boolean startLobby(ClientInterface startClient) {
+    public synchronized void startLobby(ClientInterface startClient) {
         if (finished)
             // TODO : send error message to startClient
-            return false;
+            ;
 
         if (running)
             // TODO : send error message to startClient
-            return false;
+            ;
 
         if (size != players.size())
             // TODO : send error message to startClient
-            return false;
+            ;
+
+        for (ClientInterface listener : listeners)
+            listener.removeFromLobby(startClient.getID(), lobbyID);
 
         model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
@@ -138,7 +141,6 @@ public class LobbyController {
             client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
 
         running = true;
-        return true;
     }
 
     public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {

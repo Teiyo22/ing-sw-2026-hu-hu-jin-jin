@@ -13,7 +13,7 @@ import java.util.Map;
 public class Lobby {
     private int lobbyID;
     private int size;
-    private boolean started = false;
+    private boolean running = false;
 
     transient private ClientController clientController = null;
     transient private Map<Integer, Player> players = null;
@@ -31,11 +31,12 @@ public class Lobby {
 
     public void initGame(Map<Integer, Tribe> tribes, Board board) {
         this.board = board;
-        started = true;
 
         for(Integer clientID: tribes.keySet()) {
             players.get(clientID).setTribe(tribes.get(clientID));
         }
+
+        running = true;
     }
 
     public void updateTribe(int clientID, Tribe tribe) {
@@ -79,6 +80,10 @@ public class Lobby {
     }
 
     public boolean isStarted() {
-        return started;
+        return running;
+    }
+
+    public boolean contains(int clientID) {
+        return players.containsKey(clientID);
     }
 }
