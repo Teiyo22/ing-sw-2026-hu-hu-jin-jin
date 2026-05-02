@@ -32,8 +32,7 @@ public class ServerController extends VirtualServer {
 
     private final long retryDelay = 3L;
 
-    private final Map<Integer, LobbyController> waitingLobbies = new ConcurrentHashMap<>();
-    private final Map<Integer, LobbyController> runningLobbies = new ConcurrentHashMap<>();
+    private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> savedLobbies = new ConcurrentHashMap<>();
     private final Map<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
 
@@ -82,27 +81,29 @@ public class ServerController extends VirtualServer {
         removeFromLobbies(client, client.getCurrLobbyID());
     }
 
-    private void removeFromLobbies(ClientInterface removedClient, int lobbyID) {
+    private boolean removeFromLobbies(ClientInterface removedClient, int lobbyID) {
         LobbyController lobbyController;
+        boolean removed = false;
 
         writeLock.lock();
-        lobbyController = waitingLobbies.get(lobbyID);
-
-        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
-            if (lobbyController.isEmpty())
-                removeWaitingLobby(lobbyID);
-
-        lobbyController = runningLobbies.get(lobbyID);
+        lobbyController = lobbies.get(lobbyID);
         if (lobbyController != null && lobbyController.removeFromLobby(removedClient)) {
-            if (lobbyController.isRunning())
-                runningLobbies.remove(lobbyID);
-            else if (lobbyController.isEmpty()) {
-                runningLobbies.remove(lobbyID);
-                savedLobbies.remove(lobbyID);
+            if (lobbyController.isEmpty()) {
+                lobbies.remove(lobbyID);
+                savedLobbies.remove(lobbyID, lobbyController);
             }
+            else if (lobbyController.isRunning())
+                lobbies.remove(lobbyID);
+
+            removed = true;
         }
 
+        lobbyController = savedLobbies.get(lobbyID);
+        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
+            removed = true;
         writeLock.unlock();
+
+        return removed;
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ServerController extends VirtualServer {
         lobbyController.addPlayer(client, player);
 
         writeLock.lock();
-        waitingLobbies.put(lobbyController.getID(), lobbyController);
+        lobbies.put(lobbyController.getID(), lobbyController);
         client.createLobby(clientID, lobbyController.getLobby(), player);
         writeLock.unlock();
     }
@@ -131,7 +132,7 @@ public class ServerController extends VirtualServer {
             return;
 
         readLock.lock();
-        LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
@@ -160,19 +161,17 @@ public class ServerController extends VirtualServer {
             return;
 
         writeLock.lock();
-        LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController == null)
             ; // TODO : send error message to client
-        else if (lobbyController.startLobby(client)) {
+        else if (lobbyController.startLobby(client))
             removeWaitingLobby(lobbyID);
-            runningLobbies.put(lobbyID, lobbyController);
-        }
         writeLock.unlock();
     }
 
     private void removeWaitingLobby(int lobbyID) {
-        waitingLobbies.remove(lobbyID);
+        lobbies.remove(lobbyID);
 
         for (ClientInterface client : clients.values())
             client.removeLobby(lobbyID);
@@ -185,11 +184,12 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-        List<Lobby> lobbies = new ArrayList<>();
-
         readLock.lock();
-        for (LobbyController lobbyController : waitingLobbies.values())
-            lobbies.add(lobbyController.getLobby());
+        List<Lobby> lobbies = this.lobbies.values().stream()
+            .filter(lobbyController -> !lobbyController.isRunning())
+            .filter(lobbyController ->  !lobbyController.isFinished())
+            .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
+            .toList();
 
         client.showWaitingLobbies(clientID, lobbies);
         readLock.unlock();
@@ -203,7 +203,7 @@ public class ServerController extends VirtualServer {
             return;
 
         readLock.lock();
-        LobbyController lobbyController = waitingLobbies.get(lobbyID);
+        LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
@@ -220,11 +220,13 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-        LobbyController lobby = runningLobbies.get(lobbyID);
+        readLock.lock();
+        LobbyController lobby = lobbies.get(lobbyID);
         if (lobby != null)
             lobby.showRank(client);
         else
-            client.removeLobby(lobbyID);
+            ; // TODO : send error message to client
+        readLock.unlock();
     }
 
     @Override
@@ -239,14 +241,13 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-
         readLock.lock();
-        LobbyController lobby = runningLobbies.get(lobbyID);
+        LobbyController lobby = lobbies.get(lobbyID);
 
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            client.removeLobby(lobbyID);
+            ; // TODO : send error message to client
         readLock.unlock();
     }
 
@@ -258,12 +259,12 @@ public class ServerController extends VirtualServer {
             return;
 
         readLock.lock();
-        LobbyController lobby = runningLobbies.get(lobbyID);
+        LobbyController lobby = lobbies.get(lobbyID);
 
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            client.removeLobby(lobbyID);
+            ; // TODO : send error message to client
         readLock.unlock();
     }
 
