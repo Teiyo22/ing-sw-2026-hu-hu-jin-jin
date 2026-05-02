@@ -100,9 +100,6 @@ public class ServerController extends VirtualServer {
             removed = true;
         }
 
-        lobbyController = savedLobbies.get(lobbyID);
-        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
-            removed = true;
         writeLock.unlock();
 
         return removed;
@@ -110,9 +107,6 @@ public class ServerController extends VirtualServer {
 
     private void removeFromAllLobbies(ClientInterface removedClient) {
         for (LobbyController lobbyController : lobbies.values())
-            lobbyController.removeFromLobby(removedClient);
-
-        for (LobbyController lobbyController : savedLobbies.values())
             lobbyController.removeFromLobby(removedClient);
     }
 
