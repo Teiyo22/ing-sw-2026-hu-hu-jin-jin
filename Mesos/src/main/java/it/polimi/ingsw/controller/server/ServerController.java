@@ -78,18 +78,23 @@ public class ServerController extends VirtualServer {
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
 
+        removeFromLobbies(client, client.getCurrLobbyID());
+    }
+
+    private void removeFromLobbies(ClientInterface removedClient, int lobbyID) {
         LobbyController lobbyController;
 
         writeLock.lock();
-        lobbyController = runningLobbies.get(client.getCurrLobbyID());
-        if (lobbyController != null)
-            lobbyController.removePlayer(client);
-        writeLock.unlock();
+        lobbyController = waitingLobbies.get(lobbyID);
 
-        writeLock.lock();
-        lobbyController = waitingLobbies.get(client.getCurrLobbyID());
-        if (lobbyController != null)
-            lobbyController.removePlayer(client);
+        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
+            if (lobbyController.isEmpty())
+                removeWaitingLobby(lobbyID);
+
+        lobbyController = runningLobbies.get(lobbyID);
+        if (lobbyController != null && lobbyController.removeFromLobby(removedClient))
+            runningLobbies.remove(lobbyID);
+
         writeLock.unlock();
     }
 
@@ -104,21 +109,11 @@ public class ServerController extends VirtualServer {
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
+
+        writeLock.lock();
         waitingLobbies.put(lobbyController.getID(), lobbyController);
-
         client.createLobby(clientID, lobbyController.getLobby(), player);
-    }
-
-    public void removeRunningLobby(int lobbyID) {
-        runningLobbies.remove(lobbyID);
-    }
-
-    public void removeWaitingLobby(int lobbyID) {
-        LobbyController removedLobby = waitingLobbies.remove(lobbyID);
-
-        if (removedLobby != null)
-            for (ClientInterface clientInterface : clients.values())
-                clientInterface.removeLobby(lobbyID);
+        writeLock.unlock();
     }
 
     @Override
@@ -128,14 +123,13 @@ public class ServerController extends VirtualServer {
         if (client == null)
             return;
 
-
         readLock.lock();
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            client.removeLobby(lobbyID);
+            ; // TODO : send error message to client
         readLock.unlock();
     }
 
@@ -147,12 +141,7 @@ public class ServerController extends VirtualServer {
             return;
 
         writeLock.lock();
-        LobbyController lobbyController = waitingLobbies.get(lobbyID);
-
-        if (lobbyController != null)
-            lobbyController.removePlayer(client);
-        else
-            client.removeLobby(lobbyID);
+        removeFromLobbies(client, lobbyID);
         writeLock.unlock();
     }
 
@@ -167,12 +156,19 @@ public class ServerController extends VirtualServer {
         LobbyController lobbyController = waitingLobbies.get(lobbyID);
 
         if (lobbyController == null)
-            client.removeLobby(lobbyID);
-        else if (lobbyController.startLobby()) {
+            ; // TODO : send error message to client
+        else if (lobbyController.startLobby(client)) {
             removeWaitingLobby(lobbyID);
             runningLobbies.put(lobbyID, lobbyController);
         }
         writeLock.unlock();
+    }
+
+    private void removeWaitingLobby(int lobbyID) {
+        waitingLobbies.remove(lobbyID);
+
+        for (ClientInterface client : clients.values())
+            client.removeLobby(lobbyID);
     }
 
     @Override
@@ -184,10 +180,12 @@ public class ServerController extends VirtualServer {
 
         List<Lobby> lobbies = new ArrayList<>();
 
+        readLock.lock();
         for (LobbyController lobbyController : waitingLobbies.values())
             lobbies.add(lobbyController.getLobby());
 
         client.showWaitingLobbies(clientID, lobbies);
+        readLock.unlock();
     }
 
     @Override
@@ -203,7 +201,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            client.removeLobby(lobbyID);
+            ; // TODO : send error message to client
         readLock.unlock();
     }
 
