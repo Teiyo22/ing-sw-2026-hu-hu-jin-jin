@@ -22,7 +22,7 @@ public class LobbyController {
 
     private Game model = null;
     private boolean running = false;
-
+    private boolean finished = false;
 
     public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -32,6 +32,10 @@ public class LobbyController {
     public synchronized void joinLobby(ClientInterface newClient, Player newPlayer) {
         // To avoid sending the same info twice and letting a player not "listening" to the lobby join
         if (!listeners.contains(newClient))
+            return;
+
+        if (finished)
+            // TODO : send error message to newClient
             return;
 
         if (running)
@@ -72,6 +76,10 @@ public class LobbyController {
         if (listeners.contains(client))
             return;
 
+        if (finished)
+            // TODO: send error message to client
+            return;
+
         if (running)
             // TODO: send error message to client
             return;
@@ -108,6 +116,10 @@ public class LobbyController {
     }
 
     public synchronized boolean startLobby(ClientInterface startClient) {
+        if (finished)
+            // TODO : send error message to startClient
+            return false;
+
         if (running)
             // TODO : send error message to startClient
             return false;
@@ -195,5 +207,9 @@ public class LobbyController {
 
     public boolean isRunning() {
         return running;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }
