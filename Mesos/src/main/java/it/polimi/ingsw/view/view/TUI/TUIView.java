@@ -41,6 +41,10 @@ public class TUIView extends VirtualView implements Runnable {
         }
     }
 
+    public void renderError(String errorMessage){
+        System.out.println("ERROR: " + errorMessage);
+    }
+
     @Override
     public void run() {
         state.render();
