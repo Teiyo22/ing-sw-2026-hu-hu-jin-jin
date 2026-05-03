@@ -148,7 +148,7 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -176,7 +176,7 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.startLobby(client);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         writeLock.unlock();
     }
 
@@ -211,7 +211,7 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -228,7 +228,7 @@ public class ServerController implements VirtualServer {
         if (lobby != null)
             lobby.showRank(client);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -250,7 +250,7 @@ public class ServerController implements VirtualServer {
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -267,7 +267,7 @@ public class ServerController implements VirtualServer {
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            ; // TODO : send error message to client
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -350,4 +350,15 @@ public class ServerController implements VirtualServer {
     public void submitListener(Runnable task) {
         listenerService.submit(task);
     }
+
+    public List<Lobby> getLobbies(){
+        List<Lobby> lobbies = this.lobbies.values().stream()
+                .filter(lobbyController -> !lobbyController.isRunning())
+                .filter(lobbyController ->  !lobbyController.isFinished())
+                .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
+                .toList();
+
+        return lobbies;
+    }
+
 }

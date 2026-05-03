@@ -23,4 +23,5 @@ public interface VirtualClient extends Remote {
     void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
     void removeLobby(int lobbyID) throws RemoteException;
     void ping() throws IOException, RemoteException;
+    public abstract void showError(int clientID, String errorMessage) throws RemoteException;
 }

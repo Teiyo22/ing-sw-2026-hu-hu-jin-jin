@@ -141,6 +141,15 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void showError(int clientID, String errorMessage){
+        if(!isConnected)
+            return;
+
+        ErrorMessage message = new ErrorMessage(clientID, errorMessage);
+        clientHandler.sendMessage(message);
+    }
+
+    @Override
     public void cleanup() {
         clientHandler.cleanup();
     }

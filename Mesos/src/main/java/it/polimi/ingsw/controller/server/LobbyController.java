@@ -34,25 +34,30 @@ public class LobbyController {
         if (!listeners.contains(newClient))
             return;
 
-        if (finished)
-            // TODO : send error message to newClient
+        if (finished) {
+            newClient.showError(newClient.getID(), "Game already ended");
             return;
+        }
 
-        if (running)
-            // TODO : send error message to newClient
+        if (running) {
+            newClient.showError(newClient.getID(), "Game already started");
             return;
+        }
 
-        if (players.size() == size)
-            // TODO : send error message to newClient
+        if (players.size() == size) {
+            newClient.showError(newClient.getID(), "lobby already full");
             return;
+        }
 
-        if (!players.containsKey(newClient))
-            // TODO : send error message to newClient
+        if (players.containsKey(newClient)) {
+            newClient.showError(newClient.getID(), "You are already in this lobby");
             return;
+        }
 
-        if (!validatePlayerInfo(newPlayer))
-            // TODO : send error message to newClient
+        if (!validatePlayerInfo(newPlayer)) {
+            newClient.showError(newClient.getID(), "Not valid totem or username");
             return;
+        }
 
         listeners.remove(newClient);
         players.put(newClient, newPlayer);
@@ -76,13 +81,15 @@ public class LobbyController {
         if (listeners.contains(client))
             return;
 
-        if (finished)
-            // TODO: send error message to client
+        if (finished) {
+            client.showError(client.getID(), "Game already ended");
             return;
+        }
 
-        if (running)
-            // TODO: send error message to client
+        if (running) {
+            client.showError(client.getID(), "Game already started");
             return;
+        }
 
         listeners.add(client);
 
@@ -115,18 +122,21 @@ public class LobbyController {
         return true;
     }
 
-    public synchronized void startLobby(ClientInterface startClient) {
-        if (finished)
-            // TODO : send error message to startClient
-            ;
+    public synchronized boolean startLobby(ClientInterface startClient) {
+        if (finished) {
+            startClient.showError(startClient.getID(), "Game already ended");
+            return false;
+        }
+        
+        if (running) {
+            startClient.showError(startClient.getID(), "Lobby already started");
+            return false;
+        }
 
-        if (running)
-            // TODO : send error message to startClient
-            ;
-
-        if (size != players.size())
-            // TODO : send error message to startClient
-            ;
+        if (size != players.size()) {
+            startClient.showError(startClient.getID(), "Not enough players");
+            return false;
+        }
 
         for (ClientInterface listener : listeners)
             listener.removeFromLobby(startClient.getID(), lobbyID);
@@ -178,9 +188,10 @@ public class LobbyController {
     }
 
     public synchronized void showRank(ClientInterface requester) {
-        if (!finished)
-            // TODO : send error message to requester
+        if (!finished){
+            requester.showError(requester.getID(), "Game still in progress");
             return;
+        }
 
         Map<Integer, Integer> rank = new HashMap<>();
 

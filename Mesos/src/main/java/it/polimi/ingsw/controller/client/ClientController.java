@@ -158,6 +158,11 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
+    public void showError(int clientID, String error) {
+//        view.renderError(errorMessage);
+    }
+
+    @Override
     public void ping() {
     }
 
