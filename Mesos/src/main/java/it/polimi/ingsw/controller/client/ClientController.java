@@ -50,7 +50,7 @@ public class ClientController implements VirtualClient {
         this.view = view;
     }
 
-    public VirtualServer getServer() {
+    public ServerInterface getServer() {
         return server;
     }
 
