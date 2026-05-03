@@ -13,6 +13,8 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.view.ScreenType;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
@@ -24,26 +26,27 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.concurrent.*;
 
-    private VirtualView view;
-    private String playerName;
-    Map<Integer, Integer> rankings;
+
 public class ClientController implements VirtualClient {
     private int id = 0;
+    private boolean init = false;
+
+    private View view;
     private ServerInterface server = null;
+
     private ScheduledExecutorService retryService = null;
+
+    Map<Integer, Integer> rankings;
+    private String playerName;
 
     protected Lobby currLobby = null;
     private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
 
     private final Object lock = new Object();
 
-    public ClientController() {
-        // TODO: missing view
-        this.clientState = new NetworkSelectionState(this);
-        this.clientState.updateView();
-    }
+    public ClientController() { ; }
 
-    public void setView(VirtualView view) {
+    public void setView(View view) {
         this.view = view;
     }
 
@@ -74,12 +77,12 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
-                clientState = (waitingLobbies.isEmpty()) ? new LobbyModeState(this)
-                        : new LobbyListState(this);
+
+                if (waitingLobbies.isEmpty())
+                    view.transitionTo(ScreenType.LOBBY_MODE);
+                else
+                    view.transitionTo(ScreenType.LOBBY_LIST);
             }
-
-            clientState.updateView();
-
         }
     }
 
@@ -91,8 +94,7 @@ public class ClientController implements VirtualClient {
             waitingLobbies.put(lobby.getLobbyID(), lobby);
 
         synchronized (lock) {
-            clientState = new LobbyListState(this);
-            clientState.updateView();
+            view.transitionTo(ScreenType.LOBBY_LIST);
         }
     }
 
@@ -103,11 +105,9 @@ public class ClientController implements VirtualClient {
             if (lobby != null) {
                 currLobby = lobby;
                 lobby.setPlayers(players);
-                clientState = new LobbyInfoState(this);
+                view.transitionTo(ScreenType.LOBBY_INFO);
             } else
-                clientState = new LobbyListState(this);
-
-            clientState.updateView();
+                view.transitionTo(ScreenType.LOBBY_LIST);
         }
     }
 
@@ -117,7 +117,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
 
-            clientState.updateView();
+            view.transitionTo(ScreenType.LOBBY_INFO);
         }
     }
 
@@ -127,7 +127,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removePlayer(clientID);
 
-            clientState.updateView();
+            view.transitionTo(ScreenType.LOBBY_INFO);
         }
     }
 
@@ -137,11 +137,8 @@ public class ClientController implements VirtualClient {
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
 
-            clientState = new LobbyInfoState(this);
-            clientState.updateView();
+            view.transitionTo(ScreenType.LOBBY_INFO);
         }
-
-        view.transitionTo(ViewStates.LOBBY_WAITING);
     }
 
     @Override
@@ -151,8 +148,7 @@ public class ClientController implements VirtualClient {
                 waitingLobbies.clear();
 
                 currLobby.initGame(tribes, board);
-                clientState = new GamePlayState(this, null);
-                clientState.updateView();
+                view.transitionTo(ScreenType.GAME_PLAY);
             }
         }
     }
@@ -160,7 +156,7 @@ public class ClientController implements VirtualClient {
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
         this.rankings = rankings;
-        view.transitionTo(ViewStates.GAME_END);
+        view.transitionTo(ScreenType.GAME_END);
     }
 
     @Override
@@ -176,7 +172,7 @@ public class ClientController implements VirtualClient {
                 currLobby.updateTribe(clientID, updatedTribe);
             }
 
-            clientState.updateView();
+            view.transitionTo(ScreenType.GAME_PLAY); // TODO: depends on the game state
         }
     }
 
@@ -192,10 +188,8 @@ public class ClientController implements VirtualClient {
     @Override
     public void setID(int clientID) {
         id = clientID;
+        init = true;
         Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
-
-        clientState = new LobbyModeState(this);
-        clientState.updateView();
     }
 
     /**
@@ -244,6 +238,9 @@ public class ClientController implements VirtualClient {
             retryService.schedule(runnable, 3, TimeUnit.SECONDS);
     }
 
+    public boolean isInit() {
+        return init;
+    }
 
     public synchronized void disconnect() {
         server.disconnect();
@@ -255,8 +252,5 @@ public class ClientController implements VirtualClient {
         retryService = null;
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
-
-        clientState = new NetworkSelectionState(this);
-        clientState.updateView();
     }
 }
