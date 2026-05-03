@@ -34,25 +34,30 @@ public class LobbyController {
         if (!listeners.contains(newClient))
             return;
 
-        if (finished)
-            // TODO : send error message to newClient
+        if (finished) {
+            newClient.handleError(newClient.getID(), "Game already ended");
             return;
+        }
 
-        if (running)
-            // TODO : send error message to newClient
+        if (running) {
+            newClient.handleError(newClient.getID(), "Game already started");
             return;
+        }
 
-        if (players.size() == size)
-            // TODO : send error message to newClient
+        if (players.size() == size) {
+            newClient.handleError(newClient.getID(), "lobby already full");
             return;
+        }
 
-        if (!players.containsKey(newClient))
-            // TODO : send error message to newClient
+        if (players.containsKey(newClient)) {
+            newClient.handleError(newClient.getID(), "You are already in this lobby");
             return;
+        }
 
-        if (!validatePlayerInfo(newPlayer))
-            // TODO : send error message to newClient
+        if (!validatePlayerInfo(newPlayer)) {
+            newClient.handleError(newClient.getID(), "Not valid totem or username");
             return;
+        }
 
         listeners.remove(newClient);
         players.put(newClient, newPlayer);
@@ -129,7 +134,7 @@ public class LobbyController {
             startClient.handleError(startClient.getID(), "Not enough players");
             return false;
         }
-            
+
         model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
         Map<Integer, Tribe> tribes = new HashMap<>();

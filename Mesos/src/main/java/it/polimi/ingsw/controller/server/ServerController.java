@@ -146,7 +146,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -172,7 +172,7 @@ public class ServerController extends VirtualServer {
         LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController == null)
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         else if (lobbyController.startLobby(client))
             removeWaitingLobby(lobbyID);
         writeLock.unlock();
@@ -329,4 +329,15 @@ public class ServerController extends VirtualServer {
     public void submitListener(Runnable task) {
         listenerService.submit(task);
     }
+
+    public List<Lobby> getLobbies(){
+        List<Lobby> lobbies = this.lobbies.values().stream()
+                .filter(lobbyController -> !lobbyController.isRunning())
+                .filter(lobbyController ->  !lobbyController.isFinished())
+                .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
+                .toList();
+
+        return lobbies;
+    }
+
 }
