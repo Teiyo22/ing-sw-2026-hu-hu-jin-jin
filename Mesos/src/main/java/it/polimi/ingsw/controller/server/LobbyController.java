@@ -186,7 +186,7 @@ public class LobbyController {
 
     public synchronized void showRank(ClientInterface requester) {
         if (!finished){
-            requester.handleError(requester.getID(), "Game not finished yet ");
+            requester.handleError(requester.getID(), "Game still in progress");
             return;
         }
 
