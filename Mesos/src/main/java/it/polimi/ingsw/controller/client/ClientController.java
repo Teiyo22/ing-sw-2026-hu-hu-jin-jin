@@ -4,12 +4,6 @@ import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
-import it.polimi.ingsw.controller.client.state.ClientState;
-import it.polimi.ingsw.controller.client.state.NetworkSelectionState;
-import it.polimi.ingsw.controller.client.state.gameplay.GamePlayState;
-import it.polimi.ingsw.controller.client.state.lobby.LobbyInfoState;
-import it.polimi.ingsw.controller.client.state.lobby.LobbyListState;
-import it.polimi.ingsw.controller.client.state.lobby.LobbyModeState;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -33,7 +27,6 @@ import java.util.concurrent.*;
 public class ClientController implements VirtualClient {
     private int id = 0;
     private ServerInterface server = null;
-    private ClientState clientState;
     private ScheduledExecutorService retryService = null;
 
     protected Lobby currLobby = null;
