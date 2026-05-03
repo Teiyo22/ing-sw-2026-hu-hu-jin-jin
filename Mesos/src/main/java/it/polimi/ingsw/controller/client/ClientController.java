@@ -211,7 +211,7 @@ public class ClientController implements VirtualClient {
             networkClient.connect(ip, tcpPort);
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + tcpPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with TCP to server: " + ip + ":" + tcpPort);
             Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
         }
     }
