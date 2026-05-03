@@ -30,4 +30,10 @@ public class InventorPairBuilding extends AbstractBuilding implements VisitableB
         super.onPick(player, buildingHandler);
         buildingHandler.addCardPickBuilding(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP());
+    }
 }

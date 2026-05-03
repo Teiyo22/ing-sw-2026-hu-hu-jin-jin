@@ -41,4 +41,10 @@ public class NewFullSetBuilding extends AbstractBuilding implements VisitableBui
     public void setMinForSet(int minForSet) {
         this.minForSet = minForSet;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP());
+    }
 }

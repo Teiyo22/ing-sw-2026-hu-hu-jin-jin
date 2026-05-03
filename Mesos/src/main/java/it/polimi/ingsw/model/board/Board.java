@@ -68,4 +68,9 @@ public class Board {
     public void setOrderTile(OrderSlot[] orderTile) {
         this.orderTile = orderTile;
     }
+
+    public Game getGame() {
+        return game;
+    }
+
 }

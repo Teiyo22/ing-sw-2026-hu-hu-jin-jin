@@ -43,4 +43,11 @@ public class Builder extends AbstractCharacter{
     public void accept(CardVisitor v){
         v.visit(this);
     }
+
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Bonus PP: %d  |  Building Discount: %d ]",
+                                super.getType(), super.getEra(), bonusPP, buildingDiscount);
+    }
 }

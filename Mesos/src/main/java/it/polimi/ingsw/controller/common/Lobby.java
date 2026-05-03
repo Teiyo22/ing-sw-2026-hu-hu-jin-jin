@@ -86,4 +86,12 @@ public class Lobby {
     public boolean contains(int clientID) {
         return players.containsKey(clientID);
     }
+
+    public Map<Integer, Player> getPlayers() {
+        return players;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 }

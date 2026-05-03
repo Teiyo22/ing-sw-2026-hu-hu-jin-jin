@@ -37,4 +37,9 @@ public class Inventor extends AbstractCharacter{
         return this.inventorType;
     }
 
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s, %s  |  Era: %d ]", super.getType(), inventorType, super.getEra());
+    }
+
 }

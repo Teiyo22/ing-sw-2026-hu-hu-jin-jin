@@ -37,4 +37,9 @@ public class Shaman extends AbstractCharacter{
     public void accept(CardVisitor v){
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Stars: %d ]", super.getType(), super.getEra(), stars);
+    }
 }

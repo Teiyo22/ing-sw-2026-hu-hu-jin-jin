@@ -24,6 +24,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.concurrent.*;
 
+    private VirtualView view;
+    private String playerName;
+    Map<Integer, Integer> rankings;
 public class ClientController implements VirtualClient {
     private int id = 0;
     private ServerInterface server = null;
@@ -38,6 +41,30 @@ public class ClientController implements VirtualClient {
         // TODO: missing view
         this.clientState = new NetworkSelectionState(this);
         this.clientState.updateView();
+    }
+
+    public void setView(VirtualView view) {
+        this.view = view;
+    }
+
+    public VirtualServer getServer() {
+        return server;
+    }
+
+    public Lobby getCurrLobby() {
+        return currLobby;
+    }
+
+    public Map<Integer, Lobby> getWaitingLobbies() {
+        return waitingLobbies;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public Map<Integer, Integer> getRankings() {
+        return rankings;
     }
 
     @Override
@@ -113,6 +140,8 @@ public class ClientController implements VirtualClient {
             clientState = new LobbyInfoState(this);
             clientState.updateView();
         }
+
+        view.transitionTo(ViewStates.LOBBY_WAITING);
     }
 
     @Override
@@ -130,7 +159,8 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-
+        this.rankings = rankings;
+        view.transitionTo(ViewStates.GAME_END);
     }
 
     @Override

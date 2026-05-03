@@ -50,4 +50,10 @@ public class HuntBuilding extends AbstractBuilding implements VisitableBuilding 
     public int getBonusFood() {
         return bonusFood;
     }
+
+    @Override
+    public String toString() {
+        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus PP: %d  |  Bonus Food: %d ]",
+                super.getType(), super.getEra(), super.getCost(), super.getPP(), bonusPP, bonusFood);
+    }
 }
