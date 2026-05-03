@@ -122,20 +122,20 @@ public class LobbyController {
         return true;
     }
 
-    public synchronized boolean startLobby(ClientInterface startClient) {
+    public synchronized void startLobby(ClientInterface startClient) {
         if (finished) {
             startClient.showError(startClient.getID(), "Game already ended");
-            return false;
+            return;
         }
         
         if (running) {
             startClient.showError(startClient.getID(), "Lobby already started");
-            return false;
+            return;
         }
 
         if (size != players.size()) {
             startClient.showError(startClient.getID(), "Not enough players");
-            return false;
+            return;
         }
 
         for (ClientInterface listener : listeners)
