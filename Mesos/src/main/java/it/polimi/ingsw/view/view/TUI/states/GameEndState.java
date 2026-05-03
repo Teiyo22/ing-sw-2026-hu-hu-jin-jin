@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller.client.view.TUI.states;
+package it.polimi.ingsw.view.view.TUI.states;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;

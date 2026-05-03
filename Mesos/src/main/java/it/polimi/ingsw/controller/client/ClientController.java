@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.ServerTCPInterface;
-import it.polimi.ingsw.controller.client.view.ViewStates;
-import it.polimi.ingsw.controller.client.view.VirtualView;
+import it.polimi.ingsw.view.view.ViewStates;
+import it.polimi.ingsw.view.view.VirtualView;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;

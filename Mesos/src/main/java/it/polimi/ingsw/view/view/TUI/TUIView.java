@@ -1,9 +1,10 @@
-package it.polimi.ingsw.controller.client.view.TUI;
+package it.polimi.ingsw.view.view.TUI;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.view.TUI.states.*;
-import it.polimi.ingsw.controller.client.view.ViewStates;
-import it.polimi.ingsw.controller.client.view.VirtualView;
+import it.polimi.ingsw.view.view.TUI.states.*;
+import it.polimi.ingsw.view.view.ViewStates;
+import it.polimi.ingsw.view.view.VirtualView;
 
 import java.util.Scanner;
 
