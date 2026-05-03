@@ -216,7 +216,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -233,7 +233,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.showRank(client);
         else
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -255,7 +255,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -272,7 +272,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            ; // TODO : send error message to client
+            client.handleError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 

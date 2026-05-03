@@ -81,13 +81,15 @@ public class LobbyController {
         if (listeners.contains(client))
             return;
 
-        if (finished)
-            // TODO: send error message to client
+        if (finished) {
+            client.handleError(client.getID(), "Game already ended");
             return;
+        }
 
-        if (running)
-            // TODO: send error message to client
+        if (running) {
+            client.handleError(client.getID(), "Game already started");
             return;
+        }
 
         listeners.add(client);
 
@@ -183,9 +185,10 @@ public class LobbyController {
     }
 
     public synchronized void showRank(ClientInterface requester) {
-        if (!finished)
-            // TODO : send error message to requester
+        if (!finished){
+            requester.handleError(requester.getID(), "Game not finished yet ");
             return;
+        }
 
         Map<Integer, Integer> rank = new HashMap<>();
 
