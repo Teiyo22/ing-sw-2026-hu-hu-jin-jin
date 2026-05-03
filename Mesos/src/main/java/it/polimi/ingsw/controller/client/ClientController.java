@@ -146,6 +146,11 @@ public class ClientController extends VirtualClient {
     }
 
     @Override
+    public void handleError(int clientID, String errorMessage) {
+        System.out.println("ERROR: " + errorMessage);
+    }
+
+    @Override
     public void ping() {
     }
 

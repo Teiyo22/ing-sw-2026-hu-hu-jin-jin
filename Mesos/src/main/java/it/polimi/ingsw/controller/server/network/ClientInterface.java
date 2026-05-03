@@ -29,6 +29,8 @@ public abstract class ClientInterface extends VirtualClient {
     public abstract void stopLobby(int lobbyID);
     public abstract void removeLobby(int lobbyID);
     public abstract void ping() throws IOException, RemoteException;
+    public abstract void handleError(int clientID, String errorMessage);
+
 
     public int getID() {
         return id;

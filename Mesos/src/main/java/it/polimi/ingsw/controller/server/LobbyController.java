@@ -116,18 +116,20 @@ public class LobbyController {
     }
 
     public synchronized boolean startLobby(ClientInterface startClient) {
-        if (finished)
-            // TODO : send error message to startClient
+        if (finished) {
+            startClient.handleError(startClient.getID(), "Game already ended");
             return false;
-
-        if (running)
-            // TODO : send error message to startClient
+        }
+        if (running) {
+            startClient.handleError(startClient.getID(), "Lobby already started");
             return false;
+        }
 
-        if (size != players.size())
-            // TODO : send error message to startClient
+        if (size != players.size()) {
+            startClient.handleError(startClient.getID(), "Not enough players");
             return false;
-
+        }
+            
         model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
         Map<Integer, Tribe> tribes = new HashMap<>();

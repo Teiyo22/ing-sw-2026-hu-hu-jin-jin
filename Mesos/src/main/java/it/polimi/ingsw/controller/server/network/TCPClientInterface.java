@@ -150,4 +150,13 @@ public class TCPClientInterface extends ClientInterface {
         PingMessage message = new PingMessage(this.id);
         clientHandler.sendMessage(message);
     }
+
+    @Override
+    public void handleError(int clientID, String errorMessage{
+        if(!isConnected)
+            return;
+
+        ErrorMessage message = new ErrorMessage(clientID, errorMessage);
+        clientHandler.sendMessage(message);
+    }
 }
