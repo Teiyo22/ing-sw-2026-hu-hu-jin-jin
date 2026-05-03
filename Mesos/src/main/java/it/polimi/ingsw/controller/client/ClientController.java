@@ -146,8 +146,8 @@ public class ClientController extends VirtualClient {
     }
 
     @Override
-    public void handleError(int clientID, String errorMessage) {
-        view.renderError(errorMessage);
+    public void showError(int clientID, String error) {
+//        view.renderError(errorMessage);
     }
 
     @Override

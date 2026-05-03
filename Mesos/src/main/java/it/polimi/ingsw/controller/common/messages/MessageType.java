@@ -16,4 +16,5 @@ public enum MessageType {
     GET_RANK,
     GET_LEADERBOARD,
     PING,
+    ERROR,
 }

@@ -146,7 +146,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -172,7 +172,7 @@ public class ServerController extends VirtualServer {
         LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController == null)
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         else if (lobbyController.startLobby(client))
             removeWaitingLobby(lobbyID);
         writeLock.unlock();
@@ -216,7 +216,7 @@ public class ServerController extends VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -233,7 +233,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.showRank(client);
         else
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -255,7 +255,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 
@@ -272,7 +272,7 @@ public class ServerController extends VirtualServer {
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            client.handleError(clientID, "This lobby is not available");
+            client.showError(clientID, "This lobby is not available");
         readLock.unlock();
     }
 

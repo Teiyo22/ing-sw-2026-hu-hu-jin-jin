@@ -152,7 +152,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void handleError(int clientID, String errorMessage){
+    public void showError(int clientID, String errorMessage){
         if(!isConnected)
             return;
 

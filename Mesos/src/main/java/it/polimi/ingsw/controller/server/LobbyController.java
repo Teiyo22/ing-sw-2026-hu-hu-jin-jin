@@ -35,27 +35,27 @@ public class LobbyController {
             return;
 
         if (finished) {
-            newClient.handleError(newClient.getID(), "Game already ended");
+            newClient.showError(newClient.getID(), "Game already ended");
             return;
         }
 
         if (running) {
-            newClient.handleError(newClient.getID(), "Game already started");
+            newClient.showError(newClient.getID(), "Game already started");
             return;
         }
 
         if (players.size() == size) {
-            newClient.handleError(newClient.getID(), "lobby already full");
+            newClient.showError(newClient.getID(), "lobby already full");
             return;
         }
 
         if (players.containsKey(newClient)) {
-            newClient.handleError(newClient.getID(), "You are already in this lobby");
+            newClient.showError(newClient.getID(), "You are already in this lobby");
             return;
         }
 
         if (!validatePlayerInfo(newPlayer)) {
-            newClient.handleError(newClient.getID(), "Not valid totem or username");
+            newClient.showError(newClient.getID(), "Not valid totem or username");
             return;
         }
 
@@ -82,12 +82,12 @@ public class LobbyController {
             return;
 
         if (finished) {
-            client.handleError(client.getID(), "Game already ended");
+            client.showError(client.getID(), "Game already ended");
             return;
         }
 
         if (running) {
-            client.handleError(client.getID(), "Game already started");
+            client.showError(client.getID(), "Game already started");
             return;
         }
 
@@ -124,16 +124,16 @@ public class LobbyController {
 
     public synchronized boolean startLobby(ClientInterface startClient) {
         if (finished) {
-            startClient.handleError(startClient.getID(), "Game already ended");
+            startClient.showError(startClient.getID(), "Game already ended");
             return false;
         }
         if (running) {
-            startClient.handleError(startClient.getID(), "Lobby already started");
+            startClient.showError(startClient.getID(), "Lobby already started");
             return false;
         }
 
         if (size != players.size()) {
-            startClient.handleError(startClient.getID(), "Not enough players");
+            startClient.showError(startClient.getID(), "Not enough players");
             return false;
         }
 
@@ -186,7 +186,7 @@ public class LobbyController {
 
     public synchronized void showRank(ClientInterface requester) {
         if (!finished){
-            requester.handleError(requester.getID(), "Game still in progress");
+            requester.showError(requester.getID(), "Game still in progress");
             return;
         }
 

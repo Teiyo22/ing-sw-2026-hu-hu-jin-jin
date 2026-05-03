@@ -182,6 +182,18 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
+    public void showError(int clientID, String errorMessage) {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.showError(clientID, errorMessage);
+        } catch (IOException e) {
+            ServerController.getInstance().scheduleRetry(() -> {showError(clientID, errorMessage);});
+        }
+    }
+
+    @Override
     public void ping() throws IOException, RemoteException {
         wrappedClient.ping();
     }
