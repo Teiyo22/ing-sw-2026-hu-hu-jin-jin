@@ -293,12 +293,29 @@ public class ServerController extends VirtualServer {
 
         for (ClientInterface client : clients.values())
             client.cleanup();
-        networkServer.cleanup();
 
+        networkServer.cleanup();
         RMICleanup();
 
-        listenerService.shutdownNow();
+        listenerService.shutdown();
+
+        try {
+            if (!listenerService.awaitTermination(5, TimeUnit.SECONDS)) {
+                listenerService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            listenerService.shutdownNow();
+        }
+
         retryService.shutdownNow();
+
+        try {
+            if (!retryService.awaitTermination(10, TimeUnit.SECONDS)) {
+                retryService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            retryService.shutdownNow();
+        }
     }
 
     private void RMICleanup() {

@@ -205,12 +205,22 @@ public class ClientController extends VirtualClient {
         }
     }
 
-    public void scheduleRetry(Runnable runnable){
+    public synchronized void scheduleRetry(Runnable runnable){
         if(retryService != null && !retryService.isShutdown())
             retryService.schedule(runnable, 3, TimeUnit.SECONDS);
     }
 
-    public void close() {
+
+    public synchronized void disconnect() {
         server.disconnect();
+        currLobby = null;
+        waitingLobbies.clear();
+
+        if(retryService != null && !retryService.isShutdown())
+            retryService.shutdown();
+        retryService = null;
+
+        clientState = new NetworkSelectionState(this);
+        clientState.updateView();
     }
 }

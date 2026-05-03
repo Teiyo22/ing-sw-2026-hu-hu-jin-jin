@@ -50,6 +50,14 @@ public class ConnectionMonitor {
     }
 
     public void stop() {
-        scheduler.shutdownNow();
+        scheduler.shutdown();
+
+        try {
+            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
+                scheduler.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            scheduler.shutdownNow();
+        }
     }
 }

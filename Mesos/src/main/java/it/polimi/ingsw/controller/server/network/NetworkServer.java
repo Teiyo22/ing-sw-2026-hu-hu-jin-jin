@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class NetworkServer extends Thread {
     private ServerSocket serverSocket;
@@ -30,6 +31,8 @@ public class NetworkServer extends Thread {
                 ServerController.getInstance().submitListener(clientHandler);
 
                 ServerController.getInstance().addClient(tcpClientInterface);
+            } catch (SocketException ignore) {
+
             } catch (IOException e) {
                 Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failure: " + e.getMessage());
             }

@@ -29,7 +29,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> { addClient(client); });
         }
@@ -42,7 +42,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {createLobby(clientID, playerNum, player);});
         }
@@ -55,7 +55,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {joinLobby(clientID, lobbyID, player);});
         }
@@ -68,7 +68,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {leaveLobby(clientID, lobbyID);});
         }
@@ -81,7 +81,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {startLobby(clientID, lobbyID);});
         }
@@ -94,7 +94,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getWaitingLobbies(clientID);});
         }
@@ -107,7 +107,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getLobbyInfo(clientID, lobbyID);});
         }
@@ -120,7 +120,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getRank(clientID, lobbyID);});
         }
@@ -133,7 +133,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getLeaderboard(clientID, playerNum);});
         }
@@ -146,7 +146,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {requestCards(clientID, lobbyID, topPicks, bottomPicks);});
         }
@@ -159,7 +159,7 @@ public class RMIServerInterface extends ServerInterface {
             failsCounter.set(0);
         } catch (RemoteException e) {
             if (failsCounter.incrementAndGet() >= maxFails)
-                clientController.close();
+                clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {requestOffer(clientID, lobbyID, offerIndex);});
         }
