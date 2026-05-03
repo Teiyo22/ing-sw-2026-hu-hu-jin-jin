@@ -10,6 +10,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class ServerController extends VirtualServer {
+public class ServerController implements VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
@@ -60,6 +61,8 @@ public class ServerController extends VirtualServer {
 
         wrapper.setConnected(true);
         wrapper.setID(id);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
     }
 
     public void addClient(TCPClientInterface client) {
@@ -70,6 +73,8 @@ public class ServerController extends VirtualServer {
 
         client.setConnected(true);
         client.setID(id);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
     }
 
     public void disconnectClient(ClientInterface client) {
@@ -81,6 +86,8 @@ public class ServerController extends VirtualServer {
 
         if (!removeFromLobby(client, client.getCurrLobbyID()))
             removeFromAllLobbies(client);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
     }
 
     private boolean removeFromLobby(ClientInterface removedClient, int lobbyID) {
@@ -268,19 +275,22 @@ public class ServerController extends VirtualServer {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             listenerService.submit(networkServer);
-            Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + ":" + tcpPort);
         } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + ":" + tcpPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
             System.exit(-1);
         }
 
         try {
             Registry registry = LocateRegistry.createRegistry(rmiPort);
-            registry.rebind("mesos_server", this);
-            UnicastRemoteObject.exportObject(this, rmiPort);
-            Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully started on " + ip + tcpPort);
+            Remote stub = UnicastRemoteObject.exportObject(this, 0);
+            registry.rebind("mesos_server", stub);
+
+            Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully started on " + ip + ":" + rmiPort);
         } catch (RemoteException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "RMI Server failed to start on " + ip + tcpPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "RMI Server failed to start on " + ip + ":" + rmiPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
             System.exit(-1);
         }
 
@@ -316,6 +326,8 @@ public class ServerController extends VirtualServer {
         } catch (InterruptedException e) {
             retryService.shutdownNow();
         }
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
 
     private void RMICleanup() {
@@ -323,8 +335,10 @@ public class ServerController extends VirtualServer {
             Registry registry = LocateRegistry.getRegistry();
             registry.unbind("mesos_server");
             UnicastRemoteObject.unexportObject(this, true);
+            Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully closed");
         } catch (RemoteException | NotBoundException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to cleanly stop RMI server");
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
         }
     }
 

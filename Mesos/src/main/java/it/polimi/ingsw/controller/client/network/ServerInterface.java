@@ -8,13 +8,12 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
 
-public abstract class ServerInterface extends VirtualServer {
+public abstract class ServerInterface implements VirtualServer {
     protected ClientController clientController;
 
     public ServerInterface(ClientController clientController) {
         this.clientController = clientController;
     }
-
     public abstract void addClient(VirtualClient client);
     public abstract void createLobby(int clientID, int playerNum, Player player);
     public abstract void joinLobby(int clientID, int lobbyID, Player player);

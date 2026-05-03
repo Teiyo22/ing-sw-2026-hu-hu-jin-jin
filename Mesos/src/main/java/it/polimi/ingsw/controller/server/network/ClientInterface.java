@@ -12,11 +12,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ClientInterface extends VirtualClient {
+public abstract class ClientInterface implements VirtualClient {
+    protected int id = 0;
     protected int currLobbyID = 0;
     protected boolean isConnected = false;
 
-    public abstract void setID(int clientID);
+
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
     public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
     public abstract void addToLobby(int clientID, int lobbyID, Player player);
@@ -33,6 +34,10 @@ public abstract class ClientInterface extends VirtualClient {
     public int getID() {
         return id;
     }
+
+    public void setID(int clientID) {
+        id = clientID;
+    };
 
     public int getCurrLobbyID() {
         return currLobbyID;

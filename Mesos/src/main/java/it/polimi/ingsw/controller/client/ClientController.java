@@ -17,9 +17,10 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.concurrent.*;
 
-public class ClientController extends VirtualClient {
+public class ClientController implements VirtualClient {
+    private int id = 0;
     private ServerInterface server = null;
     private ClientState clientState;
     private ScheduledExecutorService retryService = null;
@@ -123,7 +125,7 @@ public class ClientController extends VirtualClient {
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
         synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.contains(this.id)) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.contains(id)) {
                 waitingLobbies.clear();
 
                 currLobby.initGame(tribes, board);
@@ -162,29 +164,33 @@ public class ClientController extends VirtualClient {
     @Override
     public void setID(int clientID) {
         id = clientID;
+        Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
+
         clientState = new LobbyModeState(this);
         clientState.updateView();
     }
 
     /**
      * Connecting to the server using RMI.
-     *
-     * @param registryName the name of the server in the registry.
-     *
      */
-    public void connectRMI(String registryName, String ip, int rmiPort) {
+    public void connectRMI(String ip, int rmiPort) {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
-            VirtualServer serverStub = (VirtualServer) registry.lookup(registryName);
+            VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
             this.server = new RMIServerInterface(this, serverStub);
 
-            UnicastRemoteObject.exportObject(this, rmiPort);
-            server.addClient(this);
             retryService = Executors.newScheduledThreadPool(1);
-        } catch (RemoteException e) {
-            System.out.println("Error in connecting RMI server: " + e.getMessage());
-        } catch (NotBoundException e) {
-            System.out.println("Error in connecting RMI server: " + e.getMessage());
+
+            VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
+            server.addClient(stub);
+
+            Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
+        } catch (RemoteException | NotBoundException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
         }
     }
 
@@ -198,10 +204,10 @@ public class ClientController extends VirtualClient {
         this.server = new TCPServerInterface(this, networkClient);
         try {
             networkClient.connect(ip, tcpPort);
-        } catch (UnknownHostException e) {
-            System.out.println("Error in connecting TCP server: " + e.getMessage());
+            Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException e) {
-            System.out.println("Error in connecting TCP server: " + e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + tcpPort);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
         }
     }
 
@@ -219,6 +225,8 @@ public class ClientController extends VirtualClient {
         if(retryService != null && !retryService.isShutdown())
             retryService.shutdown();
         retryService = null;
+
+        Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
 
         clientState = new NetworkSelectionState(this);
         clientState.updateView();

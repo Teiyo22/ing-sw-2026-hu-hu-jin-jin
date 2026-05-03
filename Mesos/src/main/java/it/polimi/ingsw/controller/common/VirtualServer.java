@@ -9,7 +9,7 @@ import java.util.List;
 
 import java.rmi.Remote;
 
-public abstract class VirtualServer implements Remote {
+public interface VirtualServer extends Remote {
     public abstract void addClient(VirtualClient client) throws RemoteException;
     public abstract void createLobby(int clientID, int playerNum, Player player) throws RemoteException;
     public abstract void joinLobby(int clientID, int lobbyID, Player player) throws RemoteException;

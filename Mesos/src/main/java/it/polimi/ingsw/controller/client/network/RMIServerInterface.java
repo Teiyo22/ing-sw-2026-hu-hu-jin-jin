@@ -5,6 +5,8 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -28,7 +30,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.addClient(client);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> { addClient(client); });
@@ -41,7 +46,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.createLobby(clientID, playerNum, player);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {createLobby(clientID, playerNum, player);});
@@ -54,7 +62,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.joinLobby(clientID, lobbyID, player);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {joinLobby(clientID, lobbyID, player);});
@@ -67,7 +78,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.leaveLobby(clientID, lobbyID);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {leaveLobby(clientID, lobbyID);});
@@ -80,7 +94,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.startLobby(clientID, lobbyID);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {startLobby(clientID, lobbyID);});
@@ -93,7 +110,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.getWaitingLobbies(clientID);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getWaitingLobbies(clientID);});
@@ -106,7 +126,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.getLobbyInfo(clientID, lobbyID);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getLobbyInfo(clientID, lobbyID);});
@@ -119,7 +142,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.getRank(clientID, lobbyID);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getRank(clientID, lobbyID);});
@@ -132,7 +158,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.getLeaderboard(clientID, playerNum);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {getLeaderboard(clientID, playerNum);});
@@ -145,7 +174,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {requestCards(clientID, lobbyID, topPicks, bottomPicks);});
@@ -158,7 +190,10 @@ public class RMIServerInterface extends ServerInterface {
             wrappedServer.requestOffer(clientID, lobbyID, offerIndex);
             failsCounter.set(0);
         } catch (RemoteException e) {
-            if (failsCounter.incrementAndGet() >= maxFails)
+            int fails = failsCounter.incrementAndGet();
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            if (fails >= maxFails)
                 clientController.disconnect();
             else
                 clientController.scheduleRetry(() -> {requestOffer(clientID, lobbyID, offerIndex);});

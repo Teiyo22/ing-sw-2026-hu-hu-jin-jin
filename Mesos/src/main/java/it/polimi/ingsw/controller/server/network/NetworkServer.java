@@ -45,6 +45,9 @@ public class NetworkServer extends Thread {
                 serverSocket.close();
                 Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server Socket successfully closed");
             }
-        } catch (IOException ignore) {}
+        } catch (IOException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to cleanly close socket");
+            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+        }
     }
 }
