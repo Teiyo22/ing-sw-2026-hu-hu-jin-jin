@@ -192,6 +192,10 @@ public class ClientController implements VirtualClient {
         Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
     }
 
+    public int getID() {
+        return id;
+    }
+
     /**
      * Connecting to the server using RMI.
      */
