@@ -44,7 +44,7 @@ public class LobbySelectionScreen implements Screen {
             case "3", "info" -> handleInfo();
             case "4", "join" -> handleJoin();
             case "5", "leave" -> handleLeave();
-            case "6", "start" -> new StartLobbyCommand(clientController, currLobby.getLobbyID()).execute();
+            case "6", "start" -> handleStart();
             default -> handleInvalidInput();
         }
     }
@@ -59,8 +59,6 @@ public class LobbySelectionScreen implements Screen {
     public void onExit() {
 
     }
-
-
 
     private void printAvailableActions() {
         System.out.println(Formatter.formatSeparatorLine("Lobby Selection"));
@@ -112,8 +110,7 @@ public class LobbySelectionScreen implements Screen {
         Totem totem = null;
 
         if (currLobby != null && currLobby.contains(clientController.getID())) {
-            errorMsg = "Invalid command.";
-            render();
+            handleInvalidInput();
             return;
         }
 
@@ -183,8 +180,7 @@ public class LobbySelectionScreen implements Screen {
         int lobbyID;
 
         if (waitingLobbies == null || waitingLobbies.isEmpty()) {
-            errorMsg = "Invalid command.";
-            render();
+            handleInvalidInput();
             return;
         }
 
@@ -226,8 +222,7 @@ public class LobbySelectionScreen implements Screen {
         Totem totem;
 
         if (currLobby == null || currLobby.contains(clientController.getID())) {
-            errorMsg = "Invalid command.";
-            render();
+            handleInvalidInput();
             return;
         }
 
@@ -283,6 +278,31 @@ public class LobbySelectionScreen implements Screen {
         render();
     }
 
+    private void handleLeave() {
+        if (currLobby == null) {
+            handleInvalidInput();
+            return;
+        }
+        new LeaveLobbyCommand(clientController, currLobby.getLobbyID()).execute();
+
+        resetMsg();
+        render();
+    }
+
+    private void handleStart() {
+        if (currLobby == null ||
+            !currLobby.contains(clientController.getID()) ||
+            currLobby.getPlayerCount() != currLobby.getSize()) {
+            handleInvalidInput();
+            return;
+        }
+
+        new StartLobbyCommand(clientController, currLobby.getLobbyID()).execute();
+
+        resetMsg();
+        render();
+    }
+
     private boolean validateName(String name) {
         for (Player player : currLobby.getPlayers().values())
             if (player.getName().equals(name))
@@ -299,21 +319,8 @@ public class LobbySelectionScreen implements Screen {
         return true;
     }
 
-    private void handleLeave() {
-        if (currLobby == null) {
-            errorMsg = "Invalid command.";
-            render();
-            return;
-        }
-        new LeaveLobbyCommand(clientController, currLobby.getLobbyID()).execute();
-
-        resetMsg();
-        render();
-    }
-
-
     private void handleInvalidInput() {
-        errorMsg = "Invalid input.";
+        errorMsg = "Invalid command.";
         render();
     }
 
