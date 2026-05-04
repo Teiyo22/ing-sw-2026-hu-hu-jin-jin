@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.common.GameStateInfo;
 
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.tui.TUIView;
+import it.polimi.ingsw.view.View;
 
 
 public abstract class GameStateInfo {
@@ -11,5 +11,5 @@ public abstract class GameStateInfo {
         this.currPlayer = player;
     }
 
-    public abstract void setView (TUIView view);
+    public abstract void setView (View view);
 }

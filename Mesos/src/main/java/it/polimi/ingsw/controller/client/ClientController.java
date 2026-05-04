@@ -33,7 +33,7 @@ public class ClientController implements VirtualClient {
     private int id = 0;
     private boolean init = false;
 
-    private TUIView view;
+    private View view;
     private ServerInterface server = null;
 
     private ScheduledExecutorService retryService = null;

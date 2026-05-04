@@ -47,6 +47,7 @@ public class TUIView implements View {
         currScreen.render();
     }
 
+    @Override
     public ClientController getClientController() {
         return clientController;
     }

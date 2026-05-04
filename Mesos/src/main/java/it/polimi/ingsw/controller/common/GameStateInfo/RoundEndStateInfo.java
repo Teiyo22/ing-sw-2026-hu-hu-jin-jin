@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller.common.GameStateInfo;
 
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.ScreenType;
-import it.polimi.ingsw.view.tui.TUIView;
+import it.polimi.ingsw.view.View;
 
 public class RoundEndStateInfo extends GameStateInfo{
 
@@ -11,7 +11,7 @@ public class RoundEndStateInfo extends GameStateInfo{
     }
 
     @Override
-    public void setView(TUIView view){
+    public void setView(View view){
         view.transitionTo(ScreenType.ROUND_END);
     }
 }
