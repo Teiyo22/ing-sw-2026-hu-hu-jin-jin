@@ -6,11 +6,12 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.command.*;
+import it.polimi.ingsw.view.tui.Formatter;
 
 import java.util.Map;
 
+
 public class LobbySelectionScreen implements Screen {
-    private final int width = 120;
     private final ClientController clientController;
     private Map<Integer, Lobby> waitingLobbies;
     private Lobby currLobby;
@@ -24,12 +25,12 @@ public class LobbySelectionScreen implements Screen {
 
     @Override
     public void render() {
-        clearScreen();
+        Formatter.clearScreen();
         printAvailableActions();
         printLobbyInfo();
         printLobbyList();
 
-        System.out.println(formatSeparatorLine(""));
+        System.out.println(Formatter.formatSeparatorLine(""));
         System.out.println("\u001B[1m\u001B[31m" + errorMsg + "\u001B[0m");
         System.out.print(nextInputMsg);
     }
@@ -59,53 +60,50 @@ public class LobbySelectionScreen implements Screen {
 
     }
 
-    private void clearScreen() {
-        System.out.print("\033[H\033[2J"); // Terminal must support ANSI escape sequences for this to work.
-        System.out.flush();
-    }
+
 
     private void printAvailableActions() {
-        System.out.println(formatSeparatorLine("Lobby Selection"));
-        System.out.println(formatLine("Available actions:"));
-        System.out.println(formatLine("0. Quit"));
-        System.out.println(formatLine("1. List"));
+        System.out.println(Formatter.formatSeparatorLine("Lobby Selection"));
+        System.out.println(Formatter.formatLine("Available actions:"));
+        System.out.println(Formatter.formatLine("0. Quit"));
+        System.out.println(Formatter.formatLine("1. List"));
 
         if (currLobby == null || !currLobby.contains(clientController.getID()))
-            System.out.println(formatLine("2. Create"));
+            System.out.println(Formatter.formatLine("2. Create"));
 
         if (waitingLobbies != null && !waitingLobbies.isEmpty())
-            System.out.println(formatLine("3. Info"));
+            System.out.println(Formatter.formatLine("3. Info"));
 
         if (currLobby != null) {
             if (!currLobby.contains(clientController.getID()))
-                System.out.println(formatLine("4. Join"));
+                System.out.println(Formatter.formatLine("4. Join"));
             else
-                System.out.println(formatLine("5. Leave"));
+                System.out.println(Formatter.formatLine("5. Leave"));
         }
 
         if (currLobby != null && currLobby.contains(clientController.getID()) && currLobby.getPlayerCount() == currLobby.getSize())
-            System.out.println(formatLine("6. Start"));
+            System.out.println(Formatter.formatLine("6. Start"));
     }
 
     private void printLobbyList() {
         if (waitingLobbies == null || waitingLobbies.isEmpty())
             return;
 
-        System.out.println(formatSeparatorLine("Lobby List"));
+        System.out.println(Formatter.formatSeparatorLine("Lobby List"));
         for (Lobby lobby : waitingLobbies.values())
-            System.out.println(formatLine(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize())));
+            System.out.println(Formatter.formatLine(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize())));
     }
 
     private void printLobbyInfo() {
         if (currLobby == null)
             return;
 
-        System.out.println(formatSeparatorLine("Lobby Info"));
-        System.out.println(formatLine(String.format("Lobby ID:     %3d", currLobby.getLobbyID())));
-        System.out.println(formatLine(String.format("Player Count: %3d/%3d", currLobby.getPlayerCount(), currLobby.getSize())));
-        System.out.println(formatLine("Players:"));
+        System.out.println(Formatter.formatSeparatorLine("Lobby Info"));
+        System.out.println(Formatter.formatLine(String.format("Lobby ID:     %3d", currLobby.getLobbyID())));
+        System.out.println(Formatter.formatLine(String.format("Player Count: %3d/%3d", currLobby.getPlayerCount(), currLobby.getSize())));
+        System.out.println(Formatter.formatLine("Players:"));
         for (Player player : currLobby.getPlayers().values())
-            System.out.println(formatColoredLine(String.format(" - %s", player.getName()), player.getTotem().getColor()));
+            System.out.println(Formatter.formatColoredLine(String.format(" - %s", player.getName()), player.getTotem().getColor()));
     }
 
     private void handleCreate() {
@@ -313,22 +311,6 @@ public class LobbySelectionScreen implements Screen {
         render();
     }
 
-    private String formatSeparatorLine(String title) {
-        if (title == null || title.isEmpty())
-            return "+" + "=".repeat(width - 2) + "+";
-
-        float multiplier = (width - 4 - title.length()) / 2.0f;
-        return "+" + "=".repeat((int) Math.floor(multiplier)) + " " + title + " " + "=".repeat((int) Math.ceil(multiplier)) + "+";
-    }
-
-    private String formatLine(String content) {
-        return "| " + content + " ".repeat(width - 4 - content.length()) + " |";
-    }
-
-    private String formatColoredLine(String content, String color) {
-        String reset = "\u001B[0m";
-        return "| " + color + content + reset + " ".repeat(width - 4 - content.length()) + " |";
-    }
 
     private void handleInvalidInput() {
         errorMsg = "Invalid input.";
