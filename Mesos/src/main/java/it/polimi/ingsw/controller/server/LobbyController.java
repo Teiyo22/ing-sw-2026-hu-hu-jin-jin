@@ -158,6 +158,7 @@ public class LobbyController {
             client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
 
         running = true;
+        Logger.getInstance().print(LoggerLevel.SERVER, "Successfully started lobby " + lobbyID);
     }
 
     public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {

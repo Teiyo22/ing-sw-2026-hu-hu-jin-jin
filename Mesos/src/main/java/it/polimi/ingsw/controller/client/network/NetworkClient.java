@@ -36,9 +36,9 @@ public class NetworkClient extends Thread {
         CardTypeAdapter eventAdapter = CardTypeAdapterFactory.create(AbstractEvent.class);
 
         this.gson = new GsonBuilder()
-                .registerTypeHierarchyAdapter(AbstractBuilding.class, buildingAdapter)
-                .registerTypeHierarchyAdapter(AbstractCharacter.class, characterAdapter)
-                .registerTypeHierarchyAdapter(AbstractEvent.class, eventAdapter)
+                .registerTypeAdapter(AbstractBuilding.class, buildingAdapter)
+                .registerTypeAdapter(AbstractCharacter.class, characterAdapter)
+                .registerTypeAdapter(AbstractEvent.class, eventAdapter)
                 .registerTypeAdapter(Request.class, new RequestSerializer())
                 .registerTypeAdapter(Response.class, new ResponseDeserializer())
                 .create();
