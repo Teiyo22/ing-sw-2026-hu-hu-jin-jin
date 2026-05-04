@@ -2,9 +2,10 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Player implements Comparable<Player>{
+public class Player implements Comparable<Player>, Serializable {
     private String name;
     private Totem totem;
 

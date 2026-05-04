@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
     transient Game game = null;
     transient Deck deck = null;
     Row topRow;

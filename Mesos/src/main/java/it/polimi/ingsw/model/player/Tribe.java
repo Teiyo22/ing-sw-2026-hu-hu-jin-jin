@@ -6,12 +6,13 @@ import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.card.character.Shaman;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Tribe {
+public class Tribe implements Serializable {
     private int food;
     private int pp;
 

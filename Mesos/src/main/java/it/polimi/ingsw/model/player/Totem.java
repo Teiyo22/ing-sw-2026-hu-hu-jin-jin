@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.player;
 
-public enum Totem {
+import java.io.Serializable;
+
+public enum Totem implements Serializable {
     RED("\u001B[1m\u001B[31m"),
     BLUE("\u001B[1m\u001B[34m"),
     WHITE("\u001B[1m\u001B[37m"),

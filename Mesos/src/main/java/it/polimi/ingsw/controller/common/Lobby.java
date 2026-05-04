@@ -8,10 +8,11 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Lobby {
+public class Lobby implements Serializable {
     private int lobbyID;
     private int size;
     private boolean running = false;

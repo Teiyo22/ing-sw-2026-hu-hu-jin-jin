@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.player.Player;
 
-public class OrderSlot {
+import java.io.Serializable;
+
+public class OrderSlot implements Serializable {
     private Player assignedPlayer = null;
     private int foodDelta;
 

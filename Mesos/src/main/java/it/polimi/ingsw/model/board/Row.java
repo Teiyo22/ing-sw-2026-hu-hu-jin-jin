@@ -4,11 +4,13 @@ import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import java.util.List;
 
-public class Row {
+public class Row implements Serializable {
     private List<Sustenance> sustenanceEventCards;
     private List<AbstractEvent> eventCards;
     private List<AbstractCharacter> characterCards;

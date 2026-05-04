@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.tui.Formatter;
 
-public class OfferTile {
-    private transient Player assignedPlayer = null;
+import java.io.Serializable;
+
+public class OfferTile implements Serializable {
+    private Player assignedPlayer = null;
     private String type;
     private int bonusFood;
     private int topRowPickable;

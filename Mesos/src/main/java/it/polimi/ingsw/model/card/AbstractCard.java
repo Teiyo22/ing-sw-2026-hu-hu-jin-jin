@@ -3,7 +3,9 @@ package it.polimi.ingsw.model.card;
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.board.Row;
 
-public abstract class AbstractCard {
+import java.io.Serializable;
+
+public abstract class AbstractCard implements Serializable {
     protected int ID = -1;
 
     @Expose protected String type;

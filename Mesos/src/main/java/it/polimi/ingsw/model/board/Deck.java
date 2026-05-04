@@ -7,6 +7,7 @@ import it.polimi.ingsw.utils.model.CardFactory;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 import it.polimi.ingsw.utils.model.DeckConfig;
 
+import java.io.Serializable;
 import java.util.*;
 
 public class Deck {
