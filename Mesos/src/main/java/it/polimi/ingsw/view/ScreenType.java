@@ -10,6 +10,7 @@ public enum ScreenType {
     GAME_PLAY,
     CARD_PICK,
     OFFER_PICK,
+    ROUND_END,
     GAME_END;
 
     public static Screen getTUIScreen(ScreenType type, ClientController clientController) {

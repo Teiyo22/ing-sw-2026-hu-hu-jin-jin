@@ -1,8 +1,7 @@
 package it.polimi.ingsw.controller.server;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.CardsPickState;
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
 import it.polimi.ingsw.controller.common.GameStateInfo.OfferPickState;
+import it.polimi.ingsw.controller.common.GameStateInfo.RoundEndStateInfo;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -208,10 +207,10 @@ public class LobbyController {
         requester.showRank(requester.getID(), lobbyID, rank);
     }
 
-    public synchronized void roundStartView(){
+    public synchronized void roundEndView(){
         for (ClientInterface client : players.keySet()){
             client.updateModel(-1, model.getBoard(), null);
-            client.updateViewState(-1, new OfferPickState(model.getGamestate().getCurrPlayer()));
+            client.updateViewState(-1, new RoundEndStateInfo(null));
         }
     }
 
