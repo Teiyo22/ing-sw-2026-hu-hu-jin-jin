@@ -98,21 +98,21 @@ public class GamePlayScreen implements Screen {
 
     private void printRow(Row row) {
         System.out.println(Formatter.formatSeparatorLine("Row"));
+
         for (AbstractBuilding building : row.getBuildingCards())
             System.out.println(Formatter.formatLine(building.toString()));
 
         if (!row.getCharacterCards().isEmpty())
             System.out.println(Formatter.formatSeparatorLine(""));
+
         for (AbstractCharacter character: row.getCharacterCards())
             System.out.println(Formatter.formatLine(character.toString()));
 
-        if (!row.getSustenanceEventCards().isEmpty())
+        if (!row.getSustenanceEventCards().isEmpty() || !row.getEventCards().isEmpty())
             System.out.println(Formatter.formatSeparatorLine(""));
+
         for (Sustenance sustenance: row.getSustenanceEventCards())
             System.out.println(Formatter.formatLine(sustenance.toString()));
-
-        if (!row.getEventCards().isEmpty())
-            System.out.println(Formatter.formatSeparatorLine(""));
         for (AbstractEvent event : row.getEventCards())
             System.out.println(Formatter.formatLine(event.toString()));
     }
