@@ -36,7 +36,7 @@ public class RitualStarsBuilding extends AbstractBuilding {
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus Stars: %d ]",
-                super.getClass(), super.getEra(), super.getCost(), super.getPP(), bonusStars);
+        return String.format("[ ID: %3d |  %20s  |  Era: %3d  |  Cost: %3d  |  PP: %3d  |  Bonus Stars: %3d ]",
+                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP(), bonusStars);
     }
 }

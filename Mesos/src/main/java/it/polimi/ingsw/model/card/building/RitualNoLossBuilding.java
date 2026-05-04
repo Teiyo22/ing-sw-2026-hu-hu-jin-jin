@@ -29,7 +29,7 @@ public class RitualNoLossBuilding extends AbstractBuilding{
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
-                super.getClass(), super.getEra(), super.getCost(), super.getPP());
+        return String.format("[ ID: %3d |  %20s  |  Era: %3d  |  Cost: %3d  |  PP: %3d ]",
+                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP());
     }
 }

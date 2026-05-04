@@ -31,6 +31,6 @@ public class Collector extends AbstractCharacter{
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s  |  Era: %d ]", super.getClass(), super.getEra());
+        return String.format("[ ID: %3d |  %20s  |  Era: %3d ]", getID(), super.getClass().getSimpleName(), super.getEra());
     }
 }

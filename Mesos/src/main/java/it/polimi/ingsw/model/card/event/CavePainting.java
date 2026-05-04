@@ -58,4 +58,11 @@ public class CavePainting extends AbstractEvent{
 
         game.getGameState().getBuildingHandler().applyCavePaintingEffects();
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "[ ID: %3d |  %20s  |  Era: %3d  |  Malus PP: %3d |  Malus Threshold: %3d | Bonus PP: %3d |  Bonus Threshold: %3d ]",
+                getID(), super.getClass().getSimpleName(), super.getEra(), -malusPP, numArtistsMalus, bonusPP, numArtistsBonus);
+    }
 }

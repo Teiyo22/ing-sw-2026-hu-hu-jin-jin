@@ -55,4 +55,11 @@ public class Sustenance extends AbstractEvent {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "[ ID: %3d |  %20s  |  Era: %3d  | PP Multiplier: %3d ]",
+                getID(), super.getClass().getSimpleName(), super.getEra(), ppMultiplier);
+    }
 }

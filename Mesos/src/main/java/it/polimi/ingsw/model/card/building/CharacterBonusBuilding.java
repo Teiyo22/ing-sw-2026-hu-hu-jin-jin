@@ -83,8 +83,8 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
 
     @Override
     public String toString() {
-        String res = String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus PP for character type: ",
-                super.getClass(), super.getEra(), super.getCost(), super.getPP());
+        String res = String.format("[ ID: %3d |  %20s  |  Era: %3d  |  Cost: %3d  |  PP: %3d  |  Bonus PP for character type: ",
+                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP());
 
         Map<String, Integer> bonuses = new HashMap<>();
         bonuses.put("Inventor", inventorBonusPP);

@@ -32,4 +32,9 @@ public class OrderSlot {
             getAssignedPlayer().addFood(foodDelta);
     }
 
+    @Override
+    public String toString() {
+        String playerName = assignedPlayer == null ? "None" : assignedPlayer.getName();
+        return String.format("%25s | %15s", playerName, foodDelta);
+    }
 }

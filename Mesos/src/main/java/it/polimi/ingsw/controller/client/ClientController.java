@@ -18,6 +18,7 @@ import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,14 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             return currLobby == null ? null : currLobby.copy();
         }
+    }
+
+    public synchronized List<Player> getPlayers() {
+        return new ArrayList<>(currLobby.getPlayers().values());
+    }
+
+    public synchronized Board getBoard() {
+        return currLobby.getBoard();
     }
 
     public void setCurrLobby(Lobby currLobby) {
