@@ -67,9 +67,7 @@ public class Lobby {
     }
 
     public void updateBoard(Board board) {
-        updateRows(board.getTopRow(), board.getBottomRow());
-        updateOfferTrack(board.getOfferTrack());
-        updateOrderTile(board.getOrderTile());
+        this.board = board;
     }
 
     public void removePlayer(int clientID) {

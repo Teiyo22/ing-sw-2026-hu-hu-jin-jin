@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.tui;
 
 public class Formatter {
-    private static final int width = 120;
+    private static final int width = 140;
     private static final String reset = "\u001B[0m";
 
     public static String formatSeparatorLine(String title) {
@@ -17,6 +17,11 @@ public class Formatter {
     }
 
     public static String formatColoredLine(String content, String color) {
+        return "| " + color + content + reset + " ".repeat(width - 4 - content.length()) + " |";
+    }
+
+    public static String formatColoredWord(String content, String color) {
+        content = content.replace("&c", color).replace("&r", reset);
         return "| " + color + content + reset + " ".repeat(width - 4 - content.length()) + " |";
     }
 
