@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.Map;
 import java.util.List;
@@ -126,16 +128,19 @@ public class LobbyController {
 
     public synchronized void startLobby(ClientInterface startClient) {
         if (finished) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": game already ended");
             startClient.showError(startClient.getID(), "Game already ended");
             return;
         }
         
         if (running) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": lobby already started");
             startClient.showError(startClient.getID(), "Lobby already started");
             return;
         }
 
         if (size != players.size()) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": not enough players");
             startClient.showError(startClient.getID(), "Not enough players");
             return;
         }
