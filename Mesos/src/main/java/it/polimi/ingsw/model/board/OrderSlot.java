@@ -35,6 +35,6 @@ public class OrderSlot {
     @Override
     public String toString() {
         String playerName = assignedPlayer == null ? "None" : assignedPlayer.getName();
-        return String.format("%25s | %15s", playerName, foodDelta);
+        return String.format("%-25s | %-15s", playerName, foodDelta);
     }
 }

@@ -39,7 +39,7 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public String toString() {
-        return String.format("[ ID: %3d |  %20s, %20s  |  Era: %3d ]", getID(), super.getClass().getSimpleName(), inventorType, super.getEra());
+        return String.format("[ ID: %-3d |  %-20s, %-20s  |  Era: %-3d ]", getID(), super.getClass().getSimpleName(), inventorType, super.getEra());
     }
 
 }

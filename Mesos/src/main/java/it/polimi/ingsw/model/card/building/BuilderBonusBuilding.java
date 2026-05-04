@@ -34,7 +34,7 @@ public class BuilderBonusBuilding extends AbstractBuilding implements VisitableB
 
     @Override
     public String toString() {
-        return String.format("[ ID: %3d |  %20s  |  Era: %3d  |  Cost: %3d  |  PP: %3d ]",
+        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d ]",
                 getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP());
     }
 }

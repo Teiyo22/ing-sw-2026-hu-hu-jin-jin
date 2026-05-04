@@ -43,6 +43,6 @@ public class OfferTile {
     @Override
     public String toString() {
         String playerName = assignedPlayer == null ? "None" : assignedPlayer.getName();
-        return String.format("%25s | %15s | %15s | %15s ", playerName, bonusFood, topRowPickable, bottomRowPickable);
+        return String.format("%-25s | %-15s | %-15s | %-15s ", playerName, bonusFood, topRowPickable, bottomRowPickable);
     }
 }

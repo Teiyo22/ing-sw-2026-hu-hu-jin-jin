@@ -72,7 +72,7 @@ public class ShamanicRitual extends AbstractEvent {
     @Override
     public String toString() {
         return String.format(
-                "[ ID: %3d |  %20s  |  Era: %3d  |  Malus PP: %3d | Bonus PP: %3d ]",
+                "[ ID: %-3d |  %-20s  |  Era: %-3d  |  Malus PP: %-3d | Bonus PP: %-3d ]",
                 getID(), super.getClass().getSimpleName(), super.getEra(), -malusPP, bonusPP);
     }
 }

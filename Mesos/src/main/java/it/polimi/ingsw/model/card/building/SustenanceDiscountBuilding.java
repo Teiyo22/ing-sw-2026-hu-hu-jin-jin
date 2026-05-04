@@ -93,19 +93,19 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
         String discountString = "";
 
         discountString = inventorDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Inventor): %3d", inventorDiscount);
+                discountString + String.format("| Discount (Inventor): %-3d", inventorDiscount);
         discountString = shamanDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Shaman): %3d", shamanDiscount);
+                discountString + String.format("| Discount (Shaman): %-3d", shamanDiscount);
         discountString = hunterDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Hunter): %3d ", hunterDiscount);
+                discountString + String.format("| Discount (Hunter): %-3d ", hunterDiscount);
         discountString = collectorDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Collector): %3d", collectorDiscount);
+                discountString + String.format("| Discount (Collector): %-3d", collectorDiscount);
         discountString = artistDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Artist): %3d", artistDiscount);
+                discountString + String.format("| Discount (Artist): %-3d", artistDiscount);
         discountString = builderDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Builder): %3d", builderDiscount);
+                discountString + String.format("| Discount (Builder): %-3d", builderDiscount);
 
-        return String.format("[ ID: %3d |  %20s  |  Era: %3d  |  Cost: %3d  |  PP: %3d  %s ]",
+        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d  %s ]",
                 getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP(), discountString);
     }
 }
