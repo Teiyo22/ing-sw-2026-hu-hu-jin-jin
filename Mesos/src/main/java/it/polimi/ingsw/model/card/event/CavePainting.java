@@ -13,9 +13,9 @@ public class CavePainting extends AbstractEvent{
     @Expose private int numArtistsBonus;
     @Expose private int numArtistsMalus;
 
-    public CavePainting(String type, int era, boolean isFinal, 
+    public CavePainting(int era, boolean isFinal, 
                         int bonusPP, int malusPP, int numArtistsBonus, int numArtistsMalus) {
-        super(type, era, isFinal);
+        super(era, isFinal);
         this.bonusPP = bonusPP;
         this.malusPP = malusPP;
         this.numArtistsBonus = numArtistsBonus;

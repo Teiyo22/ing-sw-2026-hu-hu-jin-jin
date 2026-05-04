@@ -19,10 +19,10 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
     @Expose private int artistBonusPP;
     @Expose private int builderBonusPP;
 
-    public CharacterBonusBuilding(String type, int era, boolean isFinal, int cost, int pp,
+    public CharacterBonusBuilding(int era, boolean isFinal, int cost, int pp,
                                   int inventorBonusPP, int shamanBonusPP, int hunterBonusPP,
                                   int collectorBonusPP, int artistBonusPP, int builderBonusPP) {
-        super(type, era, isFinal, cost, pp);
+        super(era, isFinal, cost, pp);
         this.inventorBonusPP = inventorBonusPP;
         this.shamanBonusPP = shamanBonusPP;
         this.hunterBonusPP = hunterBonusPP;
@@ -84,7 +84,7 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
     @Override
     public String toString() {
         String res = String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus PP for character type: ",
-                super.getType(), super.getEra(), super.getCost(), super.getPP());
+                super.getClass(), super.getEra(), super.getCost(), super.getPP());
 
         Map<String, Integer> bonuses = new HashMap<>();
         bonuses.put("Inventor", inventorBonusPP);

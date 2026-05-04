@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Hunter extends AbstractCharacter {
     @Expose private boolean hasIcon;
 
-    public Hunter(String type, int era, boolean isFinal, boolean hasIcon) {
-        super(type, era, isFinal);
+    public Hunter(int era, boolean isFinal, boolean hasIcon) {
+        super(era, isFinal);
         this.hasIcon = hasIcon;
     }
 
@@ -39,6 +39,6 @@ public class Hunter extends AbstractCharacter {
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s  |  Era: %d  |  Icon: %b ]", super.getType(), super.getEra(), hasIcon);
+        return String.format("[ Type: %s  |  Era: %d  |  Icon: %b ]", super.getClass(), super.getEra(), hasIcon);
     }
 }

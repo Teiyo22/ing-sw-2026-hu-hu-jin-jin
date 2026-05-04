@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Inventor extends AbstractCharacter{
     @Expose private InventorType inventorType;
 
-    public Inventor(String type, int era, boolean isFinal, InventorType inventorType) {
-        super(type, era, isFinal);
+    public Inventor(int era, boolean isFinal, InventorType inventorType) {
+        super(era, isFinal);
         this.inventorType = inventorType;
     }
 
@@ -39,7 +39,7 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s, %s  |  Era: %d ]", super.getType(), inventorType, super.getEra());
+        return String.format("[ Type: %s, %s  |  Era: %d ]", super.getClass(), inventorType, super.getEra());
     }
 
 }

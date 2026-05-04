@@ -10,8 +10,8 @@ import java.util.List;
 public class Hunt extends AbstractEvent {
     @Expose private int ppMultiplier;
 
-    public Hunt(String type, int era, boolean isFinal, int ppMultiplier) {
-        super(type, era, isFinal);
+    public Hunt(int era, boolean isFinal, int ppMultiplier) {
+        super(era, isFinal);
         this.ppMultiplier = ppMultiplier;
     }
 

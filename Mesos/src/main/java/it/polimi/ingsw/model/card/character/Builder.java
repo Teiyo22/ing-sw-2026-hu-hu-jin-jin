@@ -9,8 +9,8 @@ public class Builder extends AbstractCharacter{
     @Expose private int bonusPP;
     @Expose private int buildingDiscount;
 
-    public Builder(String type, int era, boolean isFinal, int bonusPP, int buildingDiscount) {
-        super(type, era, isFinal);
+    public Builder(int era, boolean isFinal, int bonusPP, int buildingDiscount) {
+        super(era, isFinal);
         this.bonusPP = bonusPP;
         this.buildingDiscount = buildingDiscount;
     }
@@ -48,6 +48,6 @@ public class Builder extends AbstractCharacter{
     @Override
     public String toString() {
         return String.format("[ Type: %s  |  Era: %d  |  Bonus PP: %d  |  Building Discount: %d ]",
-                                super.getType(), super.getEra(), bonusPP, buildingDiscount);
+                                super.getClass(), super.getEra(), bonusPP, buildingDiscount);
     }
 }

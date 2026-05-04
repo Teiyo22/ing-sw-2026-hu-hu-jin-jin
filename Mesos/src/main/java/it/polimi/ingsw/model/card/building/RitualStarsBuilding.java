@@ -8,9 +8,9 @@ import it.polimi.ingsw.model.player.Player;
 public class RitualStarsBuilding extends AbstractBuilding {
     @Expose private int bonusStars;
 
-    public RitualStarsBuilding(String type, int era, boolean isFinal,
+    public RitualStarsBuilding(int era, boolean isFinal,
                                int cost, int pp, int bonusStars) {
-        super(type, era, isFinal, cost, pp);
+        super(era, isFinal, cost, pp);
         this.bonusStars = bonusStars;
     }
 
@@ -37,6 +37,6 @@ public class RitualStarsBuilding extends AbstractBuilding {
     @Override
     public String toString() {
         return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus Stars: %d ]",
-                super.getType(), super.getEra(), super.getCost(), super.getPP(), bonusStars);
+                super.getClass(), super.getEra(), super.getCost(), super.getPP(), bonusStars);
     }
 }

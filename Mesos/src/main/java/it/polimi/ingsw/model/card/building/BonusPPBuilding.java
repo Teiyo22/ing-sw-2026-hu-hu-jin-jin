@@ -11,8 +11,8 @@ public class BonusPPBuilding extends AbstractBuilding implements VisitableBuildi
     @Expose
     private int bonusPP;
 
-    public BonusPPBuilding(String type, int era, boolean isFinal, int cost, int pp, int bonusPP) {
-        super(type, era, isFinal, cost, pp);
+    public BonusPPBuilding(int era, boolean isFinal, int cost, int pp, int bonusPP) {
+        super(era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
     }
 
@@ -44,6 +44,6 @@ public class BonusPPBuilding extends AbstractBuilding implements VisitableBuildi
     @Override
     public String toString() {
         return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  BonusPP: %d ]",
-                super.getType(), super.getEra(), super.getCost(), super.getPP(), bonusPP);
+                super.getClass(), super.getEra(), super.getCost(), super.getPP(), bonusPP);
     }
 }

@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Shaman extends AbstractCharacter{
     @Expose private int stars;
 
-    public Shaman(String type, int era, boolean isFinal, int stars) {
-        super(type, era, isFinal);
+    public Shaman(int era, boolean isFinal, int stars) {
+        super(era, isFinal);
         this.stars = stars;
     }
 
@@ -40,6 +40,6 @@ public class Shaman extends AbstractCharacter{
 
     @Override
     public String toString() {
-        return String.format("[ Type: %s  |  Era: %d  |  Stars: %d ]", super.getType(), super.getEra(), stars);
+        return String.format("[ Type: %s  |  Era: %d  |  Stars: %d ]", super.getClass(), super.getEra(), stars);
     }
 }

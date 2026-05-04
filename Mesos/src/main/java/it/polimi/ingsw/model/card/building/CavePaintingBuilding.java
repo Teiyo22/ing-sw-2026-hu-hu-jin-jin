@@ -10,9 +10,9 @@ import it.polimi.ingsw.model.player.Player;
 public class CavePaintingBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose private int bonusFood;
 
-    public CavePaintingBuilding(String type, int era, boolean isFinal,
+    public CavePaintingBuilding(int era, boolean isFinal,
                                 int cost, int pp, int bonusFood) {
-        super(type, era, isFinal, cost, pp);
+        super(era, isFinal, cost, pp);
         this.bonusFood = bonusFood;
     }
 
@@ -47,6 +47,6 @@ public class CavePaintingBuilding extends AbstractBuilding implements VisitableB
     @Override
     public String toString() {
         return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d  |  Bonus Food: %d ]",
-                super.getType(), super.getEra(), super.getCost(), super.getPP(), bonusFood);
+                super.getClass(), super.getEra(), super.getCost(), super.getPP(), bonusFood);
     }
 }

@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
 public class BuilderBonusBuilding extends AbstractBuilding implements VisitableBuilding {
-    public BuilderBonusBuilding(String type, int era, boolean isFinal,
+    public BuilderBonusBuilding(int era, boolean isFinal,
                                 int cost, int pp) {
-        super(type, era, isFinal, cost, pp);
+        super(era, isFinal, cost, pp);
     }
 
     public BuilderBonusBuilding(BuilderBonusBuilding source) {
@@ -35,6 +35,6 @@ public class BuilderBonusBuilding extends AbstractBuilding implements VisitableB
     @Override
     public String toString() {
         return String.format("[ Type: %s  |  Era: %d  |  Cost: %d  |  PP: %d ]",
-                super.getType(), super.getEra(), super.getCost(), super.getPP());
+                super.getClass(), super.getEra(), super.getCost(), super.getPP());
     }
 }
