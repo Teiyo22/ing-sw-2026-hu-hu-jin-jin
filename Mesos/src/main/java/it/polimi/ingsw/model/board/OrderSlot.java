@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.player.Player;
 
 public class OrderSlot {
-    private transient Player assignedPlayer = null;
+    private Player assignedPlayer = null;
     private int foodDelta;
 
     public OrderSlot(int foodDelta) {
