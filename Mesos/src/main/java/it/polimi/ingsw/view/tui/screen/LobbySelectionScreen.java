@@ -38,7 +38,7 @@ public class LobbySelectionScreen implements Screen {
     @Override
     public void handleInput(String input) {
         switch (input.toLowerCase()) {
-            case "0", "quit" -> new QuitCommand(clientController).execute();
+            case "0", "disconnect" -> new DisconnectCommand(clientController).execute();
             case "1", "list" -> new GetWaitingLobbiesCommand(clientController).execute();
             case "2", "create" -> handleCreate();
             case "3", "info" -> handleInfo();
@@ -65,7 +65,7 @@ public class LobbySelectionScreen implements Screen {
     private void printAvailableActions() {
         System.out.println(Formatter.formatSeparatorLine("Lobby Selection"));
         System.out.println(Formatter.formatLine("Available actions:"));
-        System.out.println(Formatter.formatLine("0. Quit"));
+        System.out.println(Formatter.formatLine("0. Disconnect"));
         System.out.println(Formatter.formatLine("1. List"));
 
         if (currLobby == null || !currLobby.contains(clientController.getID()))
