@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.view.TUI;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.client.view.TUI.states.*;
 import it.polimi.ingsw.view.view.TUI.states.*;
 import it.polimi.ingsw.view.view.ViewStates;
 import it.polimi.ingsw.view.view.VirtualView;
@@ -55,4 +54,6 @@ public class TUIView extends VirtualView implements Runnable {
             }
         }
     }
+
+
 }
