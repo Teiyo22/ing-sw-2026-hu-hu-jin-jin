@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
+import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -31,6 +32,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void ping() throws IOException, RemoteException;
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);
+    public abstract void updateViewState(int clientID, GameStateInfo gameStateInfo);
 
 
     public int getID() {
