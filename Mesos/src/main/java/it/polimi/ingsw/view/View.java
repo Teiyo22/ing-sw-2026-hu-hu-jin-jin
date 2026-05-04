@@ -5,4 +5,5 @@ public interface View {
     void close();
     void displayError(String message);
     void transitionTo(ScreenType type);
+    void update();
 }

@@ -22,6 +22,11 @@ public class GUIView implements View {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void displayError(String message) {
 
     }

@@ -21,7 +21,7 @@ public class GamePlayScreen implements Screen {
     }
 
     @Override
-    public void onEnter() {
+    public void update() {
 
     }
 

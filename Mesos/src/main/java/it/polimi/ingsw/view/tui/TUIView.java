@@ -37,11 +37,16 @@ public class TUIView implements View {
 
     }
 
+    @Override
+    public void update() {
+        currScreen.update();
+        currScreen.render();
+    }
 
     @Override
     public void transitionTo(ScreenType type) {
         currScreen = ScreenType.getTUIScreen(type, clientController);
-        currScreen.onEnter();
+        currScreen.update();
         currScreen.render();
     }
 }

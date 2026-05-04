@@ -10,9 +10,13 @@ import it.polimi.ingsw.view.command.*;
 import java.util.Map;
 
 public class LobbySelectionScreen implements Screen {
+    private final int width = 120;
     private final ClientController clientController;
     private Map<Integer, Lobby> waitingLobbies;
     private Lobby currLobby;
+
+    private String errorMsg = "";
+    private String nextInputMsg = "Enter action: ";
 
     public LobbySelectionScreen(ClientController clientController) {
         this.clientController = clientController;
@@ -25,9 +29,9 @@ public class LobbySelectionScreen implements Screen {
         printLobbyInfo();
         printLobbyList();
 
-        System.out.println("+===================================================================================================================+");
-        System.out.println();
-        System.out.println("Enter action: ");
+        System.out.println(formatSeparatorLine(""));
+        System.out.println("\u001B[1m\u001B[31m" + errorMsg + "\u001B[0m");
+        System.out.print(nextInputMsg);
     }
 
     @Override
@@ -39,11 +43,13 @@ public class LobbySelectionScreen implements Screen {
             case "3", "info" -> handleInfo();
             case "4", "join" -> handleJoin();
             case "5", "leave" -> handleLeave();
+            case "6", "start" -> new StartLobbyCommand(clientController, currLobby.getLobbyID()).execute();
+            default -> handleInvalidInput();
         }
     }
 
     @Override
-    public void onEnter() {
+    public void update() {
         waitingLobbies = clientController.getWaitingLobbies();
         currLobby = clientController.getCurrLobby();
     }
@@ -59,80 +65,105 @@ public class LobbySelectionScreen implements Screen {
     }
 
     private void printAvailableActions() {
-        System.out.println("+================================================= Lobby Selection =================================================+");
-        System.out.println("| Available actions:                                                                                                |");
-        System.out.println("| 0. Quit                                                                                                           |");
-        System.out.println("| 1. List                                                                                                           |");
-        System.out.println("| 2. Create                                                                                                         |");
+        System.out.println(formatSeparatorLine("Lobby Selection"));
+        System.out.println(formatLine("Available actions:"));
+        System.out.println(formatLine("0. Quit"));
+        System.out.println(formatLine("1. List"));
+
+        if (currLobby == null || !currLobby.contains(clientController.getID()))
+            System.out.println(formatLine("2. Create"));
 
         if (waitingLobbies != null && !waitingLobbies.isEmpty())
-            System.out.println("| 3. Info                                                                                                           |");
+            System.out.println(formatLine("3. Info"));
 
         if (currLobby != null) {
-            System.out.println("| 4. Join                                                                                                           |");
-            System.out.println("| 5. Leave                                                                                                          |");
+            if (!currLobby.contains(clientController.getID()))
+                System.out.println(formatLine("4. Join"));
+            else
+                System.out.println(formatLine("5. Leave"));
         }
+
+        if (currLobby != null && currLobby.contains(clientController.getID()) && currLobby.getPlayerCount() == currLobby.getSize())
+            System.out.println(formatLine("6. Start"));
     }
 
     private void printLobbyList() {
         if (waitingLobbies == null || waitingLobbies.isEmpty())
             return;
 
-        System.out.println("+===============+=================================== Lobby List ====================================================+");
+        System.out.println(formatSeparatorLine("Lobby List"));
         for (Lobby lobby : waitingLobbies.values())
-            System.out.printf("| Lobby ID: %3d | Size: %3d                                                                                         |\n", lobby.getLobbyID(), lobby.getSize());
+            System.out.println(formatLine(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize())));
     }
 
     private void printLobbyInfo() {
         if (currLobby == null)
             return;
 
-        System.out.println("+================================================== Lobby Info ====================================================+");
-        System.out.printf("| Lobby ID:     %3d                                                                                                |\n", currLobby.getLobbyID());
-        System.out.printf("| Player Count: %3d/%3d                                                                                            |\n", currLobby.getPlayerCount(), currLobby.getSize());
-        System.out.print("| Players:                                                                                                         |\n");
+        System.out.println(formatSeparatorLine("Lobby Info"));
+        System.out.println(formatLine(String.format("Lobby ID:     %3d", currLobby.getLobbyID())));
+        System.out.println(formatLine(String.format("Player Count: %3d/%3d", currLobby.getPlayerCount(), currLobby.getSize())));
+        System.out.println(formatLine("Players:"));
         for (Player player : currLobby.getPlayers().values())
-            System.out.printf("| - %s%20s%s                                                                                         |\n", player.getTotem().getColor(), player.getName(), "\u001B[0m");
+            System.out.println(formatColoredLine(String.format(" - %s", player.getName()), player.getTotem().getColor()));
     }
 
     private void handleCreate() {
-        int lobbySize = -1;
+        int lobbySize;
         String playerName;
         Totem totem = null;
 
-        System.out.println("Enter 'q' to cancel");
+        if (currLobby != null && currLobby.contains(clientController.getID())) {
+            errorMsg = "Invalid command.";
+            render();
+            return;
+        }
 
+        resetMsg();
+        nextInputMsg = "Enter lobby size (2-5) (Enter 'q' to cancel): ";
         do {
-            System.out.println("Enter lobby size (2-5): ");
-            String input = System.console().readLine();
+            render();
+
+            String input = System.console().readLine().trim();
 
             if (input.equalsIgnoreCase("q")) {
+                resetMsg();
                 render();
                 return;
             }
 
             try {
                 lobbySize = Integer.parseInt(input);
+
+                if (lobbySize < 2 || lobbySize > 5)
+                    throw new NumberFormatException();
+
             } catch (NumberFormatException e) {
                 lobbySize = -1;
-                System.out.println("Invalid input: lobby size must be a number.");
+                errorMsg = "Invalid input: lobby size must be a number between 2 and 5.";
             }
+        } while (lobbySize == -1);
 
-        } while (lobbySize < 2 || lobbySize > 5);
-
-        System.out.println("Enter player name: ");
-        playerName = System.console().readLine();
+        resetMsg();
+        nextInputMsg = "Enter player name (Enter 'q' to cancel): ";
+        render();
+        playerName = System.console().readLine().trim();
 
         if (playerName.equalsIgnoreCase("q")) {
+            resetMsg();
             render();
             return;
         }
 
+        resetMsg();
+        nextInputMsg = "Choose a totem (RED|BLUE|WHITE|BLACK|YELLOW) (Enter 'q' to cancel): ";
         do {
-            System.out.println("Choose a totem (RED|BLUE|WHITE|BLACK|YELLOW): ");
-            String input = System.console().readLine();
+            render();
+
+            String input = System.console().readLine().trim();
 
             if (input.equalsIgnoreCase("q")) {
+                resetMsg();
                 render();
                 return;
             }
@@ -140,30 +171,34 @@ public class LobbySelectionScreen implements Screen {
             try {
                 totem = Totem.valueOf(input.toUpperCase());
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid input: totem must be one of RED, BLUE, WHITE, BLACK, YELLOW.");
+                errorMsg = "Invalid input: totem must be one of RED, BLUE, WHITE, BLACK, YELLOW.";
             }
         } while (totem == null);
 
         new CreateLobbyCommand(clientController, lobbySize, new Player(playerName, totem)).execute();
+
+        resetMsg();
+        render();
     }
 
     private void handleInfo() {
-        int lobbyID = -1;
+        int lobbyID;
 
         if (waitingLobbies == null || waitingLobbies.isEmpty()) {
-            System.out.println("Invalid command, enter anything to continue: ");
-            System.console().readLine();
+            errorMsg = "Invalid command.";
             render();
             return;
         }
-        System.out.println("Enter 'q' to cancel");
 
+        resetMsg();
+        nextInputMsg = "Enter lobby ID (Enter 'q' to cancel): ";
         do {
-            System.out.println("Enter lobby ID: ");
+            render();
 
-            String input = System.console().readLine();
+            String input = System.console().readLine().trim();
 
             if (input.equalsIgnoreCase("q")) {
+                resetMsg();
                 render();
                 return;
             }
@@ -171,53 +206,61 @@ public class LobbySelectionScreen implements Screen {
             try {
                 lobbyID = Integer.parseInt(input);
 
-                if (waitingLobbies.containsKey(lobbyID))
-                    new LobbyInfoCommand(clientController, lobbyID).execute();
-                else {
-                    System.out.println("Invalid lobby ID.");
+                if (!waitingLobbies.containsKey(lobbyID)) {
+                    errorMsg = "Invalid lobby ID.";
                     lobbyID = -1;
                 }
-
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input: lobby size must be a number.");
+                errorMsg = "Invalid input: lobby size must be a number.";
+                lobbyID = -1;
             }
 
         } while (lobbyID == -1);
+
+        new LobbyInfoCommand(clientController, lobbyID).execute();
+
+        resetMsg();
+        render();
     }
 
     private void handleJoin() {
         String playerName;
         Totem totem;
 
-        if (currLobby == null) {
-            System.out.println("Invalid command, enter anything to continue: ");
-            System.console().readLine();
+        if (currLobby == null || currLobby.contains(clientController.getID())) {
+            errorMsg = "Invalid command.";
             render();
             return;
         }
 
-        System.out.println("Enter 'q' to cancel");
-
+        resetMsg();
+        nextInputMsg = "Enter player name (Enter 'q' to cancel): ";
         do {
-            System.out.println("Enter player name: ");
-            playerName = System.console().readLine();
+            render();
+
+            playerName = System.console().readLine().trim();
 
             if (playerName.equalsIgnoreCase("q")) {
+                resetMsg();
                 render();
                 return;
             }
 
             if (!validateName(playerName)) {
-                System.out.println("Invalid name, choose another one.");
+                errorMsg = "Invalid player name, choose another one.";
                 playerName = null;
             }
         } while (playerName == null);
 
+        resetMsg();
+        nextInputMsg = "Choose a totem (RED|BLUE|WHITE|BLACK|YELLOW) (Enter 'q' to cancel): ";
         do {
-            System.out.println("Choose a totem (RED|BLUE|WHITE|BLACK|YELLOW): ");
-            String input = System.console().readLine();
+            render();
+
+            String input = System.console().readLine().trim();
 
             if (input.equalsIgnoreCase("q")) {
+                resetMsg();
                 render();
                 return;
             }
@@ -226,17 +269,20 @@ public class LobbySelectionScreen implements Screen {
                 totem = Totem.valueOf(input.toUpperCase());
 
                 if (!validateTotem(totem)) {
-                    System.out.println("Invalid totem, choose another one.");
+                    errorMsg = "Invalid totem, choose another one.";
                     totem = null;
                 }
 
             } catch (IllegalArgumentException e) {
+                errorMsg = "Invalid input: totem must be one of RED, BLUE, WHITE, BLACK, YELLOW.";
                 totem = null;
-                System.out.println("Invalid input: totem must be one of RED, BLUE, WHITE, BLACK, YELLOW.");
             }
         } while (totem == null);
 
         new JoinLobbyCommand(clientController, currLobby.getLobbyID(), new Player(playerName, totem)).execute();
+
+        resetMsg();
+        render();
     }
 
     private boolean validateName(String name) {
@@ -257,11 +303,40 @@ public class LobbySelectionScreen implements Screen {
 
     private void handleLeave() {
         if (currLobby == null) {
-            System.out.println("Invalid command, enter anything to continue: ");
-            System.console().readLine();
+            errorMsg = "Invalid command.";
             render();
             return;
         }
         new LeaveLobbyCommand(clientController, currLobby.getLobbyID()).execute();
+
+        resetMsg();
+        render();
+    }
+
+    private String formatSeparatorLine(String title) {
+        if (title == null || title.isEmpty())
+            return "+" + "=".repeat(width - 2) + "+";
+
+        float multiplier = (width - 4 - title.length()) / 2.0f;
+        return "+" + "=".repeat((int) Math.floor(multiplier)) + " " + title + " " + "=".repeat((int) Math.ceil(multiplier)) + "+";
+    }
+
+    private String formatLine(String content) {
+        return "| " + content + " ".repeat(width - 4 - content.length()) + " |";
+    }
+
+    private String formatColoredLine(String content, String color) {
+        String reset = "\u001B[0m";
+        return "| " + color + content + reset + " ".repeat(width - 4 - content.length()) + " |";
+    }
+
+    private void handleInvalidInput() {
+        errorMsg = "Invalid input.";
+        render();
+    }
+
+    private void resetMsg() {
+        errorMsg = "";
+        nextInputMsg = "Enter action: ";
     }
 }

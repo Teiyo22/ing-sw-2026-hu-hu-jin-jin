@@ -14,8 +14,8 @@ public class CardPickScreen extends GamePlayScreen {
     }
 
     @Override
-    public void onEnter() {
-        super.onEnter();
+    public void update() {
+        super.update();
     }
 
     @Override

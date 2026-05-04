@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.tui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.Screen;
 
 public class OfferPickScreen extends GamePlayScreen {
     public OfferPickScreen(ClientController clientController) {
@@ -19,8 +18,8 @@ public class OfferPickScreen extends GamePlayScreen {
     }
 
     @Override
-    public void onEnter() {
-        super.onEnter();
+    public void update() {
+        super.update();
     }
 
     @Override

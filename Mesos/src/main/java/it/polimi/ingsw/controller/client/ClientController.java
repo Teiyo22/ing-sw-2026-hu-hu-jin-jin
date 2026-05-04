@@ -18,7 +18,6 @@ import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +61,10 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    public void setCurrLobby(Lobby currLobby) {
+        this.currLobby = currLobby;
+    }
+
     public HashMap<Integer, Lobby> getWaitingLobbies() {
         synchronized (lock) {
             return new HashMap<>(waitingLobbies);
@@ -84,7 +87,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
 
-                view.transitionTo(ScreenType.LOBBY_SELECTION);
+                view.update();
             }
         }
     }
@@ -97,7 +100,7 @@ public class ClientController implements VirtualClient {
             waitingLobbies.put(lobby.getLobbyID(), lobby);
 
         synchronized (lock) {
-            view.transitionTo(ScreenType.LOBBY_SELECTION);
+            view.update();
         }
     }
 
@@ -108,9 +111,9 @@ public class ClientController implements VirtualClient {
             if (lobby != null) {
                 currLobby = lobby;
                 lobby.setPlayers(players);
-                view.transitionTo(ScreenType.LOBBY_SELECTION);
+                view.update();
             } else
-                ; // show error
+                ; // TODO: show error
         }
     }
 
@@ -120,17 +123,24 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
 
-            view.transitionTo(ScreenType.LOBBY_SELECTION);
+            view.update();
         }
     }
 
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
         synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby.removePlayer(clientID);
 
-            view.transitionTo(ScreenType.LOBBY_SELECTION);
+                if(currLobby.getPlayerCount() == 0) {
+
+                    currLobby = null;
+                    waitingLobbies.remove(lobbyID);
+                }
+            }
+
+            view.update();
         }
     }
 
@@ -139,8 +149,9 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
 
-            view.transitionTo(ScreenType.LOBBY_SELECTION);
+            view.update();
         }
     }
 
@@ -257,6 +268,8 @@ public class ClientController implements VirtualClient {
         if(retryService != null && !retryService.isShutdown())
             retryService.shutdown();
         retryService = null;
+
+        view.close();
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }

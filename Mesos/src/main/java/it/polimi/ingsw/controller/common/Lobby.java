@@ -32,6 +32,9 @@ public class Lobby {
     }
 
     public void addPlayer(Integer clientID, Player player) {
+        if (players == null)
+            players = new HashMap<>();
+
         if (!players.containsKey(clientID))
             players.put(clientID, player);
     }

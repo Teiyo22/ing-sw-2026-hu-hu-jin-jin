@@ -124,6 +124,9 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
+        if (client.getCurrLobbyID() != -1)
+            removeFromLobby(client, client.getCurrLobbyID());
+
         int id = nextLobbyID.getAndIncrement();
 
         LobbyController lobbyController = new LobbyController(id, playerNum);

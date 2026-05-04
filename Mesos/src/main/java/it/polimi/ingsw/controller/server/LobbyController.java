@@ -108,6 +108,8 @@ public class LobbyController {
         if (removedPlayer == null)
             return false;
 
+        listeners.add(removedClient);
+
         if (!running) {
             for (ClientInterface lobbyClient : players.keySet())
                 lobbyClient.removeFromLobby(removedClient.getID(), lobbyID);
