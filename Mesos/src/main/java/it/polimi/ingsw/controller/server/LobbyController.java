@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller.server;
 
+import it.polimi.ingsw.controller.common.GameStateInfo.CardsPickState;
+import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.common.GameStateInfo.OfferPickState;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -161,8 +164,10 @@ public class LobbyController {
 
         model.pick(players.get(pickerClient), topPicks, bottomPicks);
 
-        for (ClientInterface client : players.keySet())
-            client.updateModel(pickerClient.getID(), model.getBoard(), players.get(pickerClient).getTribe());
+        for (ClientInterface client : players.keySet()) {
+            client.updateModel(pickerClient.getID(), model.getBoard(), player.getTribe());
+            client.updateViewState(pickerClient.getID(), model.getGameState().getGameStateInfo());
+        }
     }
 
     private boolean validateCardPick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -177,8 +182,10 @@ public class LobbyController {
 
         model.assignTo(player, model.getBoard().getOfferTrack()[offerIndex]);
 
-        for (ClientInterface client : players.keySet())
+        for (ClientInterface client : players.keySet()) {
             client.updateModel(pickerClient.getID(), model.getBoard(), player.getTribe());
+            client.updateViewState(pickerClient.getID(), model.getGameState().getGameStateInfo());
+        }
     }
 
     private boolean validateOfferPick(Player player, int offerIndex) {
@@ -201,6 +208,12 @@ public class LobbyController {
         requester.showRank(requester.getID(), lobbyID, rank);
     }
 
+    public synchronized void roundStartView(){
+        for (ClientInterface client : players.keySet()){
+            client.updateModel(-1, model.getBoard(), null);
+            client.updateViewState(-1, new OfferPickState(model.getGamestate().getCurrPlayer()));
+        }
+    }
 
     public Lobby getLobby() {
         return new Lobby(lobbyID, size);

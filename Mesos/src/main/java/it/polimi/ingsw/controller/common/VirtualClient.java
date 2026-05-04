@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
+import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -23,5 +24,6 @@ public interface VirtualClient extends Remote {
     void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
     void removeLobby(int lobbyID) throws RemoteException;
     void ping() throws IOException, RemoteException;
-    public abstract void showError(int clientID, String errorMessage) throws RemoteException;
+    void showError(int clientID, String errorMessage) throws RemoteException;
+    void updateViewState(int clientID, GameStateInfo gameStateInfo);
 }

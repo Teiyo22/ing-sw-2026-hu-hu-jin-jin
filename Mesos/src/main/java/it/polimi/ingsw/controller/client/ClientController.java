@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
+import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.tui.TUIView;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
@@ -31,7 +33,7 @@ public class ClientController implements VirtualClient {
     private int id = 0;
     private boolean init = false;
 
-    private View view;
+    private TUIView view;
     private ServerInterface server = null;
 
     private ScheduledExecutorService retryService = null;
@@ -182,6 +184,11 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
+    public void updateViewState(int clientID, GameStateInfo gameStateInfo){
+       gameStateInfo.setView(view);
+    }
+
+    @Override
     public void ping() {
     }
 
@@ -252,5 +259,9 @@ public class ClientController implements VirtualClient {
         retryService = null;
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
+    }
+
+    public int getId() {
+        return id;
     }
 }
