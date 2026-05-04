@@ -18,6 +18,8 @@ import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.rmi.NotBoundException;
@@ -55,11 +57,15 @@ public class ClientController implements VirtualClient {
     }
 
     public Lobby getCurrLobby() {
-        return currLobby;
+        synchronized (lock) {
+            return currLobby == null ? null : currLobby.copy();
+        }
     }
 
-    public Map<Integer, Lobby> getWaitingLobbies() {
-        return waitingLobbies;
+    public HashMap<Integer, Lobby> getWaitingLobbies() {
+        synchronized (lock) {
+            return new HashMap<>(waitingLobbies);
+        }
     }
 
     public String getPlayerName() {
@@ -78,10 +84,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
 
-                if (waitingLobbies.isEmpty())
-                    view.transitionTo(ScreenType.LOBBY_MODE);
-                else
-                    view.transitionTo(ScreenType.LOBBY_LIST);
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
             }
         }
     }
@@ -94,7 +97,7 @@ public class ClientController implements VirtualClient {
             waitingLobbies.put(lobby.getLobbyID(), lobby);
 
         synchronized (lock) {
-            view.transitionTo(ScreenType.LOBBY_LIST);
+            view.transitionTo(ScreenType.LOBBY_SELECTION);
         }
     }
 
@@ -105,9 +108,9 @@ public class ClientController implements VirtualClient {
             if (lobby != null) {
                 currLobby = lobby;
                 lobby.setPlayers(players);
-                view.transitionTo(ScreenType.LOBBY_INFO);
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
             } else
-                view.transitionTo(ScreenType.LOBBY_LIST);
+                ; // show error
         }
     }
 
@@ -117,7 +120,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
 
-            view.transitionTo(ScreenType.LOBBY_INFO);
+            view.transitionTo(ScreenType.LOBBY_SELECTION);
         }
     }
 
@@ -127,7 +130,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removePlayer(clientID);
 
-            view.transitionTo(ScreenType.LOBBY_INFO);
+            view.transitionTo(ScreenType.LOBBY_SELECTION);
         }
     }
 
@@ -137,7 +140,7 @@ public class ClientController implements VirtualClient {
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
 
-            view.transitionTo(ScreenType.LOBBY_INFO);
+            view.transitionTo(ScreenType.LOBBY_SELECTION);
         }
     }
 

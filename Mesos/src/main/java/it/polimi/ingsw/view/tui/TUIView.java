@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.view.TUI.states.*;
 
 import java.util.Scanner;
 
@@ -19,10 +18,9 @@ public class TUIView implements View {
 
     @Override
     public void show() {
-        transitionTo(ScreenType.LOBBY_MODE);
+        transitionTo(ScreenType.LOBBY_SELECTION);
         try (Scanner scanner = new Scanner(System.in)) {
             while (running) {
-                currScreen.render();
                 String input = scanner.nextLine().trim();
                 currScreen.handleInput(input);
             }
@@ -31,7 +29,7 @@ public class TUIView implements View {
 
     @Override
     public void close() {
-
+        running = false;
     }
 
     @Override

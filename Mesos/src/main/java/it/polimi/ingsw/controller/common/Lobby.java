@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Lobby {
@@ -22,6 +23,12 @@ public class Lobby {
     public Lobby(int lobbyID, int size) {
         this.lobbyID = lobbyID;
         this.size = size;
+    }
+
+    private Lobby(int lobbyID, int size, Map<Integer, Player> players) {
+        this.lobbyID = lobbyID;
+        this.size = size;
+        this.players = new HashMap<>(players);
     }
 
     public void addPlayer(Integer clientID, Player player) {
@@ -70,16 +77,19 @@ public class Lobby {
         return lobbyID;
     }
 
-
     public int getSize() {
         return size;
+    }
+
+    public int getPlayerCount() {
+        return players.size();
     }
 
     public void setPlayers(Map<Integer, Player> players) {
         this.players = players;
     }
 
-    public boolean isStarted() {
+    public boolean isRunning() {
         return running;
     }
 
@@ -93,5 +103,9 @@ public class Lobby {
 
     public Board getBoard() {
         return board;
+    }
+
+    public Lobby copy() {
+        return new Lobby(lobbyID, size, players);
     }
 }
