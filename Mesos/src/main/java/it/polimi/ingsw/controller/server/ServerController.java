@@ -168,6 +168,7 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void startLobby(int clientID, int lobbyID) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to start lobby " + lobbyID + "from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)

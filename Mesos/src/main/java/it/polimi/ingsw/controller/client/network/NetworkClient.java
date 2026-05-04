@@ -7,8 +7,13 @@ import java.net.UnknownHostException;
 
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
+import it.polimi.ingsw.utils.model.CardTypeAdapter;
+import it.polimi.ingsw.utils.model.CardTypeAdapterFactory;
 
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +30,15 @@ public class NetworkClient extends Thread {
         this.socket = null;
         this.input = null;
         this.output = null;
+
+        CardTypeAdapter buildingAdapter = CardTypeAdapterFactory.create(AbstractBuilding.class);
+        CardTypeAdapter characterAdapter = CardTypeAdapterFactory.create(AbstractCharacter.class);
+        CardTypeAdapter eventAdapter = CardTypeAdapterFactory.create(AbstractEvent.class);
+
         this.gson = new GsonBuilder()
+                .registerTypeHierarchyAdapter(AbstractBuilding.class, buildingAdapter)
+                .registerTypeHierarchyAdapter(AbstractCharacter.class, characterAdapter)
+                .registerTypeHierarchyAdapter(AbstractEvent.class, eventAdapter)
                 .registerTypeAdapter(Request.class, new RequestSerializer())
                 .registerTypeAdapter(Response.class, new ResponseDeserializer())
                 .create();

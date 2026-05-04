@@ -5,10 +5,15 @@ import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
+import it.polimi.ingsw.utils.model.CardTypeAdapter;
+import it.polimi.ingsw.utils.model.CardTypeAdapterFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -27,7 +32,14 @@ public class ClientHandler extends Thread {
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
+        CardTypeAdapter buildingAdapter = CardTypeAdapterFactory.create(AbstractBuilding.class);
+        CardTypeAdapter characterAdapter = CardTypeAdapterFactory.create(AbstractCharacter.class);
+        CardTypeAdapter eventAdapter = CardTypeAdapterFactory.create(AbstractEvent.class);
+
         this.gson = new GsonBuilder()
+                .registerTypeHierarchyAdapter(AbstractBuilding.class, buildingAdapter)
+                .registerTypeHierarchyAdapter(AbstractCharacter.class, characterAdapter)
+                .registerTypeHierarchyAdapter(AbstractEvent.class, eventAdapter)
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
                 .create();
