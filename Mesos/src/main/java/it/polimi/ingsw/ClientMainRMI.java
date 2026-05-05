@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewFactory;
 
 public class ClientMainRMI {
     public static void main(String[] args) {
@@ -12,7 +14,7 @@ public class ClientMainRMI {
 //        }
 
         Logger l = Logger.getInstance();
-        l.setLevel(LoggerLevel.MODEL);
+        l.setLevel(LoggerLevel.OFF);
 
         String address = "127.0.0.1"; // args[0];
         int tcpPort = 28910; // args.length == 3 ? Integer.parseInt(args[1]) : 0;
@@ -26,12 +28,10 @@ public class ClientMainRMI {
         ClientController controller = new ClientController();
         controller.connectRMI(address, rmiPort);
 
-        String line = null;
-        do {
-            line = System.console().readLine();
-        } while (!line.trim().equalsIgnoreCase("stop"));
+        View view = ViewFactory.create("tui", controller);
+        controller.setView(view);
 
-        controller.disconnect();
+        view.show();
 
         System.exit(0);
     }
