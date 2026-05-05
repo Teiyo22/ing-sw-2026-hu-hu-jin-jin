@@ -141,6 +141,7 @@ public class ServerController implements VirtualServer {
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.addPlayer(client, player);
+        lobbyController.addListener(client);
 
         writeLock.lock();
         lobbies.put(lobbyController.getID(), lobbyController);

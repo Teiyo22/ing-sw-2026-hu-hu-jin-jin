@@ -61,12 +61,12 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
-        waitingLobbies.clear();
-
-        for (Lobby lobby : lobbies)
-            waitingLobbies.put(lobby.getLobbyID(), lobby);
-
         synchronized (lock) {
+            waitingLobbies.clear();
+
+            for (Lobby lobby : lobbies)
+                waitingLobbies.put(lobby.getLobbyID(), lobby);
+
             view.update();
         }
     }

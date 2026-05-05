@@ -69,7 +69,7 @@ public class LobbySelectionScreen implements Screen {
         if (currLobby == null || !currLobby.contains(clientController.getID()))
             System.out.println(Formatter.formatLine("2. Create"));
 
-        if (waitingLobbies != null && !waitingLobbies.isEmpty() && !currLobby.contains(clientController.getID()))
+        if (waitingLobbies != null && !waitingLobbies.isEmpty() && !(currLobby != null && currLobby.contains(clientController.getID())))
             System.out.println(Formatter.formatLine("3. Info"));
 
         if (currLobby != null) {
@@ -179,7 +179,7 @@ public class LobbySelectionScreen implements Screen {
     private void handleInfo() {
         int lobbyID;
 
-        if (waitingLobbies == null || waitingLobbies.isEmpty() || currLobby.contains(clientController.getID())) {
+        if (waitingLobbies == null || waitingLobbies.isEmpty() || (currLobby != null && currLobby.contains(clientController.getID()))) {
             handleInvalidInput();
             return;
         }

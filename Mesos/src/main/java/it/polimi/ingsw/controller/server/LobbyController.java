@@ -117,6 +117,10 @@ public class LobbyController {
         listeners.remove(removedClient);
     }
 
+    public synchronized void addListener(ClientInterface addedClient) {
+        listeners.add(addedClient);
+    }
+
     public synchronized void startLobby(ClientInterface startClient) {
         if (state != LobbyState.STARTABLE) {
             startClient.showError(startClient.getID(), state.errorMsg);
