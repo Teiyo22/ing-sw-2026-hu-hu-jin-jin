@@ -39,60 +39,18 @@ public class ClientController implements VirtualClient {
     private ScheduledExecutorService retryService = null;
 
     Map<Integer, Integer> rankings;
-    private String playerName;
 
     protected Lobby currLobby = null;
     private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
 
     private final Object lock = new Object();
 
-    public ClientController() { ; }
-
-    public void setView(View view) {
-        this.view = view;
-    }
-
-    public ServerInterface getServer() {
-        return server;
-    }
-
-    public Lobby getCurrLobby() {
-        synchronized (lock) {
-            return currLobby == null ? null : currLobby.copy();
-        }
-    }
-
-    public synchronized List<Player> getPlayers() {
-        return new ArrayList<>(currLobby.getPlayers().values());
-    }
-
-    public synchronized Board getBoard() {
-        return currLobby.getBoard();
-    }
-
-    public void setCurrLobby(Lobby currLobby) {
-        this.currLobby = currLobby;
-    }
-
-    public HashMap<Integer, Lobby> getWaitingLobbies() {
-        synchronized (lock) {
-            return new HashMap<>(waitingLobbies);
-        }
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public Map<Integer, Integer> getRankings() {
-        return rankings;
-    }
 
     @Override
     public void removeLobby(int lobbyID) {
-        waitingLobbies.remove(lobbyID);
-
         synchronized (lock) {
+            waitingLobbies.remove(lobbyID);
+
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
 
@@ -117,12 +75,14 @@ public class ClientController implements VirtualClient {
     public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         synchronized (lock) {
             Lobby lobby = waitingLobbies.get(lobbyID);
+
             if (lobby != null) {
                 currLobby = lobby;
                 lobby.setPlayers(players);
-                view.update();
             } else
                 ; // TODO: show error
+
+            view.update();
         }
     }
 
@@ -139,15 +99,8 @@ public class ClientController implements VirtualClient {
     @Override
     public void removeFromLobby(int clientID, int lobbyID) {
         synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removePlayer(clientID);
-
-                if(currLobby.getPlayerCount() == 0) {
-
-                    currLobby = null;
-                    waitingLobbies.remove(lobbyID);
-                }
-            }
 
             view.update();
         }
@@ -158,7 +111,6 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             currLobby = lobby;
             currLobby.addPlayer(clientID, player);
-            waitingLobbies.put(lobby.getLobbyID(), lobby);
 
             view.update();
         }
@@ -212,6 +164,7 @@ public class ClientController implements VirtualClient {
     public void setID(int clientID) {
         id = clientID;
         init = true;
+
         Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
     }
 
@@ -281,5 +234,41 @@ public class ClientController implements VirtualClient {
         view.close();
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public ServerInterface getServer() {
+        return server;
+    }
+
+    public Lobby getCurrLobby() {
+        synchronized (lock) {
+            return currLobby == null ? null : currLobby.copy();
+        }
+    }
+
+    public List<Player> getPlayers() {
+        synchronized (lock) {
+            return new ArrayList<>(currLobby.getPlayers().values());
+        }
+    }
+
+    public synchronized Board getBoard() {
+        synchronized (lock) {
+            return currLobby.getBoard();
+        }
+    }
+
+    public HashMap<Integer, Lobby> getWaitingLobbies() {
+        synchronized (lock) {
+            return new HashMap<>(waitingLobbies);
+        }
+    }
+
+    public Map<Integer, Integer> getRankings() {
+        return rankings;
     }
 }
