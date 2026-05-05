@@ -91,18 +91,28 @@ public class ServerController implements VirtualServer {
     }
 
     private boolean removeFromLobby(ClientInterface removedClient, int lobbyID) {
-        LobbyController lobbyController;
         boolean removed = false;
 
         writeLock.lock();
-        lobbyController = lobbies.get(lobbyID);
-        if (lobbyController != null && lobbyController.removeFromLobby(removedClient)) {
-            if (lobbyController.isEmpty()) {
+        LobbyController lobbyController = lobbies.get(lobbyID);
+
+        if (lobbyController != null && lobbyController.removePlayer(removedClient)) {
+            if (lobbyController.isEmpty() && lobbyController.getState() == LobbyController.LobbyState.WAITING) {
                 lobbies.remove(lobbyID);
-                savedLobbies.remove(lobbyID, lobbyController);
+
+                for (ClientInterface client: clients.values())
+                    client.removeLobby(lobbyID);
             }
-            else if (lobbyController.isRunning())
+
+            else if (lobbyController.isEmpty() && lobbyController.getState() == LobbyController.LobbyState.FINISHED) {
                 lobbies.remove(lobbyID);
+                savedLobbies.remove(lobbyID);
+            }
+
+            else if (lobbyController.getState() == LobbyController.LobbyState.RUNNING) {
+                lobbies.remove(lobbyID);
+                lobbyController.stopLobby();
+            }
 
             removed = true;
         }
@@ -114,7 +124,7 @@ public class ServerController implements VirtualServer {
 
     private void removeFromAllLobbies(ClientInterface removedClient) {
         for (LobbyController lobbyController : lobbies.values())
-            lobbyController.removeFromLobby(removedClient);
+            lobbyController.removePlayer(removedClient);
     }
 
     @Override
@@ -193,8 +203,8 @@ public class ServerController implements VirtualServer {
 
         readLock.lock();
         List<Lobby> lobbies = this.lobbies.values().stream()
-            .filter(lobbyController -> !lobbyController.isRunning())
-            .filter(lobbyController ->  !lobbyController.isFinished())
+            .filter(lobbyController -> lobbyController.getState() == LobbyController.LobbyState.WAITING ||
+                lobbyController.getState() == LobbyController.LobbyState.STARTABLE)
             .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
             .toList();
 
@@ -210,7 +220,16 @@ public class ServerController implements VirtualServer {
             return;
 
         readLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
+        LobbyController lobbyController;
+
+        if (client.getCurrLobbyID() != lobbyID) {
+            lobbyController = lobbies.get(client.getCurrLobbyID());
+
+            if (lobbyController != null)
+                lobbyController.removeListener(client);
+        }
+
+        lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
@@ -354,15 +373,4 @@ public class ServerController implements VirtualServer {
     public void submitListener(Runnable task) {
         listenerService.submit(task);
     }
-
-    public List<Lobby> getLobbies(){
-        List<Lobby> lobbies = this.lobbies.values().stream()
-                .filter(lobbyController -> !lobbyController.isRunning())
-                .filter(lobbyController ->  !lobbyController.isFinished())
-                .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
-                .toList();
-
-        return lobbies;
-    }
-
 }

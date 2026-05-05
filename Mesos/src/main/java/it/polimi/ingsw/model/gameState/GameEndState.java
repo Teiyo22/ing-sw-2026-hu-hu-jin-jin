@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.server.LobbyController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
@@ -35,8 +36,7 @@ public class GameEndState extends GameState {
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
 
-        game.getLobbyController().setFinished(true);
-        game.getLobbyController().setRunning(false);
+        game.getLobbyController().setState(LobbyController.LobbyState.FINISHED);
     }
 
     private void resolveEvents() {

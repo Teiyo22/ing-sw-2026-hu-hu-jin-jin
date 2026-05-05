@@ -23,8 +23,20 @@ public class LobbyController {
     private final List<ClientInterface> listeners = new ArrayList<>();
 
     private Game model = null;
-    private boolean running = false;
-    private boolean finished = false;
+    private LobbyState state = LobbyState.WAITING;
+
+    public enum LobbyState {
+        WAITING ("Waiting for players"),
+        STARTABLE ("Lobby full"),
+        RUNNING ("Game is running"),
+        FINISHED ("Game ended");
+
+        private String errorMsg;
+
+        LobbyState(String errorMsg) {
+            this.errorMsg = errorMsg;
+        }
+    }
 
     public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -36,18 +48,8 @@ public class LobbyController {
         if (!listeners.contains(newClient))
             return;
 
-        if (finished) {
-            newClient.showError(newClient.getID(), "Game already ended");
-            return;
-        }
-
-        if (running) {
-            newClient.showError(newClient.getID(), "Game already started");
-            return;
-        }
-
-        if (players.size() == size) {
-            newClient.showError(newClient.getID(), "lobby already full");
+        if (state != LobbyState.WAITING) {
+            newClient.showError(newClient.getID(), state.errorMsg);
             return;
         }
 
@@ -61,15 +63,13 @@ public class LobbyController {
             return;
         }
 
-        listeners.remove(newClient);
         players.put(newClient, newPlayer);
 
-        for (ClientInterface lobbyClient : players.keySet())
-            lobbyClient.addToLobby(newClient.getID(), lobbyID, newPlayer);
+        if (players.size() == size)
+            state = LobbyState.STARTABLE;
 
         for (ClientInterface lobbyListener : listeners)
             lobbyListener.addToLobby(newClient.getID(), lobbyID, newPlayer);
-
     }
 
     private boolean validatePlayerInfo(Player newPlayer) {
@@ -83,13 +83,8 @@ public class LobbyController {
         if (listeners.contains(client))
             return;
 
-        if (finished) {
-            client.showError(client.getID(), "Game already ended");
-            return;
-        }
-
-        if (running) {
-            client.showError(client.getID(), "Game already started");
+        if (state != LobbyState.WAITING && state != LobbyState.STARTABLE) {
+            client.showError(client.getID(), state.errorMsg);
             return;
         }
 
@@ -103,50 +98,30 @@ public class LobbyController {
         client.showLobbyInfo(client.getID(), lobbyID, lobbyPlayers);
     }
 
-    public synchronized boolean removeFromLobby(ClientInterface removedClient) {
-        listeners.remove(removedClient);
-
+    public synchronized boolean removePlayer(ClientInterface removedClient) {
         Player removedPlayer = players.remove(removedClient);
+
         if (removedPlayer == null)
             return false;
 
-        listeners.add(removedClient);
+        for (ClientInterface listener : listeners)
+            listener.removeFromLobby(removedClient.getID(), lobbyID);
 
-        if (!running) {
-            for (ClientInterface lobbyClient : players.keySet())
-                lobbyClient.removeFromLobby(removedClient.getID(), lobbyID);
-
-            for (ClientInterface listener : listeners)
-                listener.removeFromLobby(removedClient.getID(), lobbyID);
-        } else {
-            for (ClientInterface client : players.keySet())
-                client.removeLobby(lobbyID);
-        }
+        if (state == LobbyState.STARTABLE)
+            state = LobbyState.WAITING;
 
         return true;
     }
 
+    public synchronized void removeListener(ClientInterface removedClient) {
+        listeners.remove(removedClient);
+    }
+
     public synchronized void startLobby(ClientInterface startClient) {
-        if (finished) {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": game already ended");
-            startClient.showError(startClient.getID(), "Game already ended");
+        if (state != LobbyState.STARTABLE) {
+            startClient.showError(startClient.getID(), state.errorMsg);
             return;
         }
-        
-        if (running) {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": lobby already started");
-            startClient.showError(startClient.getID(), "Lobby already started");
-            return;
-        }
-
-        if (size != players.size()) {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Failed to start lobby " + lobbyID + ": not enough players");
-            startClient.showError(startClient.getID(), "Not enough players");
-            return;
-        }
-
-        for (ClientInterface listener : listeners)
-            listener.removeFromLobby(startClient.getID(), lobbyID);
 
         model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
 
@@ -154,11 +129,18 @@ public class LobbyController {
         for (ClientInterface client : players.keySet())
             tribes.put(client.getID(), players.get(client).getTribe());
 
-        for (ClientInterface client : players.keySet())
-            client.startLobby(client.getID(), lobbyID, model.getBoard(), tribes);
+        for (ClientInterface listener : listeners)
+            listener.startLobby(listener.getID(), lobbyID, model.getBoard(), tribes);
 
-        running = true;
+        listeners.clear();
+
+        state = LobbyState.RUNNING;
         Logger.getInstance().print(LoggerLevel.SERVER, "Successfully started lobby " + lobbyID);
+    }
+
+    public synchronized void stopLobby() {
+        for (ClientInterface clientInterface: players.keySet())
+            clientInterface.removeLobby(lobbyID);
     }
 
     public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -196,8 +178,8 @@ public class LobbyController {
     }
 
     public synchronized void showRank(ClientInterface requester) {
-        if (!finished){
-            requester.showError(requester.getID(), "Game still in progress");
+        if (state != LobbyState.FINISHED){
+            requester.showError(requester.getID(), state.errorMsg);
             return;
         }
 
@@ -230,19 +212,11 @@ public class LobbyController {
         return players.isEmpty();
     }
 
-    public boolean isRunning() {
-        return running;
+    public LobbyState getState() {
+        return state;
     }
 
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setState(LobbyState state) {
+        this.state = state;
     }
 }
