@@ -12,8 +12,7 @@ import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
-import it.polimi.ingsw.utils.model.CardTypeAdapter;
-import it.polimi.ingsw.utils.model.CardTypeAdapterFactory;
+import it.polimi.ingsw.utils.model.CardGsonFactory;
 
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -31,14 +30,11 @@ public class NetworkClient extends Thread {
         this.input = null;
         this.output = null;
 
-        CardTypeAdapter buildingAdapter = CardTypeAdapterFactory.create(AbstractBuilding.class);
-        CardTypeAdapter characterAdapter = CardTypeAdapterFactory.create(AbstractCharacter.class);
-        CardTypeAdapter eventAdapter = CardTypeAdapterFactory.create(AbstractEvent.class);
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(AbstractBuilding.class, buildingAdapter)
-                .registerTypeAdapter(AbstractCharacter.class, characterAdapter)
-                .registerTypeAdapter(AbstractEvent.class, eventAdapter)
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractBuilding.class))
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractCharacter.class))
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractEvent.class))
                 .registerTypeAdapter(Request.class, new RequestSerializer())
                 .registerTypeAdapter(Response.class, new ResponseDeserializer())
                 .create();

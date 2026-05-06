@@ -12,8 +12,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
-import it.polimi.ingsw.utils.model.CardTypeAdapter;
-import it.polimi.ingsw.utils.model.CardTypeAdapterFactory;
+import it.polimi.ingsw.utils.model.CardGsonFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -32,14 +31,11 @@ public class ClientHandler extends Thread {
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
-        CardTypeAdapter buildingAdapter = CardTypeAdapterFactory.create(AbstractBuilding.class);
-        CardTypeAdapter characterAdapter = CardTypeAdapterFactory.create(AbstractCharacter.class);
-        CardTypeAdapter eventAdapter = CardTypeAdapterFactory.create(AbstractEvent.class);
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(AbstractBuilding.class, buildingAdapter)
-                .registerTypeAdapter(AbstractCharacter.class, characterAdapter)
-                .registerTypeAdapter(AbstractEvent.class, eventAdapter)
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractBuilding.class))
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractCharacter.class))
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractEvent.class))
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
                 .create();
