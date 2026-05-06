@@ -18,6 +18,8 @@ public class CreateLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().createLobby(clientController.getID(), size, player);
+        clientController.executeCommand(() -> {
+            clientController.getServer().createLobby(clientController.getID(), size, player);
+        });
     }
 }

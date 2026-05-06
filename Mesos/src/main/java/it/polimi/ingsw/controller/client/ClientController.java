@@ -259,4 +259,8 @@ public class ClientController implements VirtualClient {
             return new HashMap<>(waitingLobbies);
         }
     }
+
+    public void executeCommand(Runnable command) {
+        taskExecutor.submit(command);
+    }
 }

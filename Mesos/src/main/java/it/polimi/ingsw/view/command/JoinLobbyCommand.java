@@ -16,6 +16,8 @@ public class JoinLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().joinLobby(clientController.getID(), lobbyID, player);
+        clientController.executeCommand(() -> {
+            clientController.getServer().joinLobby(clientController.getID(), lobbyID, player);
+        });
     }
 }

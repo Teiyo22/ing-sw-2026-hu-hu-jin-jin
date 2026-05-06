@@ -13,6 +13,8 @@ public class LobbyInfoCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().getLobbyInfo(clientController.getID(), lobbyID);
+        clientController.executeCommand(() -> {
+            clientController.getServer().getLobbyInfo(clientController.getID(), lobbyID);
+        });
     }
 }

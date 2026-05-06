@@ -11,6 +11,8 @@ public class GetWaitingLobbiesCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().getWaitingLobbies(clientController.getID());
+        clientController.executeCommand(() -> {
+            clientController.getServer().getWaitingLobbies(clientController.getID());
+        });
     }
 }
