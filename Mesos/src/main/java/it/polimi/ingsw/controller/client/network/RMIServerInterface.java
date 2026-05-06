@@ -16,187 +16,129 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RMIServerInterface extends ServerInterface {
     VirtualServer wrappedServer;
 
-    int maxFails = 10;
-    AtomicInteger failsCounter = new AtomicInteger(0);
-
     public RMIServerInterface(ClientController clientController, VirtualServer wrappedServer) {
         super(clientController);
         this.wrappedServer = wrappedServer;
     }
 
     @Override
-    public void addClient(VirtualClient client){
+    public void addClient(VirtualClient client) {
         try {
             wrappedServer.addClient(client);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> { addClient(client); });
+            clientController.scheduleRetry(() -> {
+                addClient(client);
+            });
         }
     }
 
     @Override
-    public void createLobby(int clientID, int playerNum, Player player){
+    public void createLobby(int clientID, int playerNum, Player player) {
         try {
             wrappedServer.createLobby(clientID, playerNum, player);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {createLobby(clientID, playerNum, player);});
+            clientController.scheduleRetry(() -> {
+                createLobby(clientID, playerNum, player);
+            });
         }
     }
 
     @Override
-    public void joinLobby(int clientID, int lobbyID, Player player){
+    public void joinLobby(int clientID, int lobbyID, Player player) {
         try {
             wrappedServer.joinLobby(clientID, lobbyID, player);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {joinLobby(clientID, lobbyID, player);});
+            clientController.scheduleRetry(() -> {
+                joinLobby(clientID, lobbyID, player);
+            });
         }
     }
 
     @Override
-    public void leaveLobby(int clientID, int lobbyID){
+    public void leaveLobby(int clientID, int lobbyID) {
         try {
             wrappedServer.leaveLobby(clientID, lobbyID);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {leaveLobby(clientID, lobbyID);});
+            clientController.scheduleRetry(() -> {
+                leaveLobby(clientID, lobbyID);
+            });
         }
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID){
+    public void startLobby(int clientID, int lobbyID) {
         try {
             wrappedServer.startLobby(clientID, lobbyID);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {startLobby(clientID, lobbyID);});
+            clientController.scheduleRetry(() -> {
+                startLobby(clientID, lobbyID);
+            });
         }
     }
 
     @Override
-    public void getWaitingLobbies(int clientID){
+    public void getWaitingLobbies(int clientID) {
         try {
             wrappedServer.getWaitingLobbies(clientID);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {getWaitingLobbies(clientID);});
+            clientController.scheduleRetry(() -> {
+                getWaitingLobbies(clientID);
+            });
         }
     }
 
     @Override
-    public void getLobbyInfo(int clientID, int lobbyID){
+    public void getLobbyInfo(int clientID, int lobbyID) {
         try {
             wrappedServer.getLobbyInfo(clientID, lobbyID);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {getLobbyInfo(clientID, lobbyID);});
+            clientController.scheduleRetry(() -> {
+                getLobbyInfo(clientID, lobbyID);
+            });
         }
     }
 
     @Override
-    public void getRank(int clientID, int lobbyID){
+    public void getRank(int clientID, int lobbyID) {
         try {
             wrappedServer.getRank(clientID, lobbyID);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {getRank(clientID, lobbyID);});
+            clientController.scheduleRetry(() -> {
+                getRank(clientID, lobbyID);
+            });
         }
     }
 
     @Override
-    public void getLeaderboard(int clientID, int playerNum){
+    public void getLeaderboard(int clientID, int playerNum) {
         try {
             wrappedServer.getLeaderboard(clientID, playerNum);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {getLeaderboard(clientID, playerNum);});
+            clientController.scheduleRetry(() -> {
+                getLeaderboard(clientID, playerNum);
+            });
         }
     }
 
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks){
+    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         try {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {requestCards(clientID, lobbyID, topPicks, bottomPicks);});
+            clientController.scheduleRetry(() -> {
+                requestCards(clientID, lobbyID, topPicks, bottomPicks);
+            });
         }
     }
 
     @Override
-    public void requestOffer(int clientID, int lobbyID, int offerIndex){
+    public void requestOffer(int clientID, int lobbyID, int offerIndex) {
         try {
             wrappedServer.requestOffer(clientID, lobbyID, offerIndex);
-            failsCounter.set(0);
         } catch (RemoteException e) {
-            int fails = failsCounter.incrementAndGet();
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed attempts to communicate with server: " + fails);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            if (fails >= maxFails)
-                clientController.disconnect();
-            else
-                clientController.scheduleRetry(() -> {requestOffer(clientID, lobbyID, offerIndex);});
+            clientController.scheduleRetry(() -> {
+                requestOffer(clientID, lobbyID, offerIndex);
+            });
         }
     }
 
