@@ -36,6 +36,7 @@ public class ClientController implements VirtualClient {
     private View view;
     private ServerInterface server = null;
 
+    private ConnectionMonitor connectionMonitor = new ConnectionMonitor();
     private ScheduledExecutorService retryService = null;
 
     Map<Integer, Integer> rankings;

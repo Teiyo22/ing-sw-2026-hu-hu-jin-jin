@@ -4,37 +4,47 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class ConnectionMonitor {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    private final long interval = 5; // [s]
-    private final long timeout = 15; // [s]
+    private final long interval = 3; // [s]
+    private final long timeout = 9; // [s]
 
     private Map<ClientInterface, Long> clientLastSeen;
+    private AtomicLong serverLastSeen;
 
-    private ClientController clientController;
-    private Long serverLastSeen;
+    // =====================================================================
+    // Client-side monitoring methods
+    // =====================================================================
+
+    public void updateServerLastSeen() {
+        serverLastSeen.set(System.currentTimeMillis());
+    }
 
     public void startServerMonitor(ClientController clientController) {
-        this.clientController = clientController;
-        serverLastSeen = System.currentTimeMillis();
+        serverLastSeen.set(System.currentTimeMillis());
 
         scheduler.scheduleAtFixedRate(() -> {
-                long silence = System.currentTimeMillis() - serverLastSeen;
+            long silence = System.currentTimeMillis() - serverLastSeen.get();
 
-                if (silence > timeout * 1000)
-                    this.clientController.disconnect();
-
+            if (silence > timeout * 1000)
+                clientController.disconnect();
+            else
+                clientController.getServer().ping(clientController.getID());
         }, 0, interval, TimeUnit.SECONDS);
     }
+
+
+    // =====================================================================
+    // Server-side monitoring methods
+    // =====================================================================
 
     public void registerClient(ClientInterface client) {
         clientLastSeen.put(client, System.currentTimeMillis());
@@ -44,30 +54,26 @@ public class ConnectionMonitor {
         clientLastSeen.remove(client);
     }
 
+    public void updateClientLastSeen(ClientInterface client) {
+        clientLastSeen.put(client, System.currentTimeMillis());
+    }
+
     public void startClientMonitor() {
         clientLastSeen = new ConcurrentHashMap<>();
 
         scheduler.scheduleAtFixedRate(() -> {
             for (ClientInterface client : clientLastSeen.keySet()) {
-                try {
-                    client.ping();
-                    clientLastSeen.put(client, System.currentTimeMillis());
-                } catch (RemoteException e) {
-                    long silence = System.currentTimeMillis() - clientLastSeen.get(client);
+                long silence = System.currentTimeMillis() - clientLastSeen.get(client);
 
-                    if (silence > timeout * 1000)
-                        disconnectClient(client);
-
-                } catch (IOException e) {
-                    disconnectClient(client);
-                }
+                if (silence > timeout * 1000)
+                    ServerController.getInstance().disconnectClient(client);
             }
         }, 0, interval, TimeUnit.SECONDS);
     }
 
-    public void disconnectClient(ClientInterface client) {
-        ServerController.getInstance().disconnectClient(client);
-    }
+    // =====================================================================
+    // Common monitoring methods
+    // =====================================================================
 
     public void stop() {
         scheduler.shutdown();
