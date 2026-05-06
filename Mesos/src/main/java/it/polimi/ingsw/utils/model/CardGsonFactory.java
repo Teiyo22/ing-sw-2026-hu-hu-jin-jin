@@ -14,7 +14,7 @@ public class CardGsonFactory {
     private static final List<Class<? extends AbstractCard>> subtypes = List.of(
             BonusPPBuilding.class,
             BuilderBonusBuilding.class,
-            CavePainting.class,
+            CavePaintingBuilding.class,
             CharacterBonusBuilding.class,
             ExtraActionBuilding.class,
             FullSetBuilding.class,
