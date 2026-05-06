@@ -120,11 +120,16 @@ public class ClientController implements VirtualClient {
     @Override
     public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
         synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID && currLobby.contains(id)) {
-                waitingLobbies.clear();
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                if (currLobby.contains(id)) {
+                    waitingLobbies.clear();
 
-                currLobby.initGame(tribes, board);
-                view.transitionTo(ScreenType.GAME_PLAY);
+                    currLobby.initGame(tribes, board);
+                    view.transitionTo(ScreenType.GAME_PLAY);
+                } else {
+                    currLobby = null;
+                    view.update();
+                }
             }
         }
     }
