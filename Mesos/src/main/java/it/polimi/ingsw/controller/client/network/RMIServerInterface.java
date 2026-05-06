@@ -11,10 +11,14 @@ import it.polimi.ingsw.utils.LoggerLevel;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RMIServerInterface extends ServerInterface {
     VirtualServer wrappedServer;
+
+    private final ScheduledExecutorService retryScheduler = Executors.newScheduledThreadPool(1);
+    private final Long delay = 3L;
 
     public RMIServerInterface(ClientController clientController, VirtualServer wrappedServer) {
         super(clientController);
@@ -26,9 +30,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.addClient(client);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                addClient(client);
-            });
+            reschedule(() -> {addClient(client);});
         }
     }
 
@@ -37,9 +39,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.createLobby(clientID, playerNum, player);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                createLobby(clientID, playerNum, player);
-            });
+            reschedule(() -> {createLobby(clientID, playerNum, player);});
         }
     }
 
@@ -48,9 +48,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.joinLobby(clientID, lobbyID, player);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                joinLobby(clientID, lobbyID, player);
-            });
+            reschedule(() -> {joinLobby(clientID, lobbyID, player);});
         }
     }
 
@@ -59,9 +57,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.leaveLobby(clientID, lobbyID);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                leaveLobby(clientID, lobbyID);
-            });
+            reschedule(() -> {leaveLobby(clientID, lobbyID);});
         }
     }
 
@@ -70,9 +66,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.startLobby(clientID, lobbyID);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                startLobby(clientID, lobbyID);
-            });
+            reschedule(() -> {startLobby(clientID, lobbyID);});
         }
     }
 
@@ -81,9 +75,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.getWaitingLobbies(clientID);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                getWaitingLobbies(clientID);
-            });
+            reschedule(() -> {getWaitingLobbies(clientID);});
         }
     }
 
@@ -92,9 +84,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.getLobbyInfo(clientID, lobbyID);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                getLobbyInfo(clientID, lobbyID);
-            });
+            reschedule(() -> {getLobbyInfo(clientID, lobbyID);});
         }
     }
 
@@ -103,9 +93,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.getRank(clientID, lobbyID);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                getRank(clientID, lobbyID);
-            });
+            reschedule(() -> {getRank(clientID, lobbyID);});
         }
     }
 
@@ -114,9 +102,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.getLeaderboard(clientID, playerNum);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                getLeaderboard(clientID, playerNum);
-            });
+            reschedule(() -> {getLeaderboard(clientID, playerNum);});
         }
     }
 
@@ -125,9 +111,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                requestCards(clientID, lobbyID, topPicks, bottomPicks);
-            });
+            reschedule(() -> {requestCards(clientID, lobbyID, topPicks, bottomPicks);});
         }
     }
 
@@ -136,9 +120,7 @@ public class RMIServerInterface extends ServerInterface {
         try {
             wrappedServer.requestOffer(clientID, lobbyID, offerIndex);
         } catch (RemoteException e) {
-            clientController.scheduleRetry(() -> {
-                requestOffer(clientID, lobbyID, offerIndex);
-            });
+            reschedule(() -> {requestOffer(clientID, lobbyID, offerIndex);});
         }
     }
 
@@ -156,6 +138,25 @@ public class RMIServerInterface extends ServerInterface {
         try {
             UnicastRemoteObject.unexportObject(clientController, true);
         } catch (RemoteException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         }
+
+        retryScheduler.shutdown();
+
+        try {
+            if (!retryScheduler.awaitTermination(10, TimeUnit.SECONDS))
+                retryScheduler.shutdownNow();
+
+        } catch (InterruptedException e) {
+            retryScheduler.shutdownNow();
+        }
+    }
+
+    private void reschedule (Runnable task) {
+        retryScheduler.schedule(
+                task,
+                delay,
+                TimeUnit.SECONDS
+        );
     }
 }

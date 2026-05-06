@@ -36,8 +36,8 @@ public class ClientController implements VirtualClient {
     private View view;
     private ServerInterface server = null;
 
-    private ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private ScheduledExecutorService retryService = null;
+    private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
+    private final ExecutorService taskExecutor = Executors.newFixedThreadPool(5);
 
     Map<Integer, Integer> rankings;
 
@@ -187,7 +187,6 @@ public class ClientController implements VirtualClient {
             server.addClient(stub);
 
             connectionMonitor.startServerMonitor(this);
-            retryService = Executors.newScheduledThreadPool(1);
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
         } catch (RemoteException | NotBoundException e) {
@@ -217,11 +216,6 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    public synchronized void scheduleRetry(Runnable runnable){
-        if(retryService != null && !retryService.isShutdown())
-            retryService.schedule(runnable, 3, TimeUnit.SECONDS);
-    }
-
     public boolean isInit() {
         return init;
     }
@@ -230,10 +224,6 @@ public class ClientController implements VirtualClient {
         server.disconnect();
         currLobby = null;
         waitingLobbies.clear();
-
-        if(retryService != null && !retryService.isShutdown())
-            retryService.shutdown();
-        retryService = null;
 
         view.close();
 
