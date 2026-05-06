@@ -159,6 +159,7 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void ping() {
+        connectionMonitor.updateServerLastSeen();
     }
 
     @Override
@@ -182,10 +183,11 @@ public class ClientController implements VirtualClient {
             VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
             this.server = new RMIServerInterface(this, serverStub);
 
-            retryService = Executors.newScheduledThreadPool(1);
-
             VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
             server.addClient(stub);
+
+            connectionMonitor.startServerMonitor(this);
+            retryService = Executors.newScheduledThreadPool(1);
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
         } catch (RemoteException | NotBoundException e) {
@@ -207,6 +209,7 @@ public class ClientController implements VirtualClient {
         this.server = new TCPServerInterface(this, networkClient);
         try {
             networkClient.connect(ip, tcpPort);
+            connectionMonitor.startServerMonitor(this);
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with TCP to server: " + ip + ":" + tcpPort);

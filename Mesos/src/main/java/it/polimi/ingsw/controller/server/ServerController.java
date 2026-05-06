@@ -296,6 +296,17 @@ public class ServerController implements VirtualServer {
         readLock.unlock();
     }
 
+    @Override
+    public void ping(int clientID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
+        connectionMonitor.updateClientLastSeen(client);
+        client.ping();
+    }
+
     public void startServer(String ip, int tcpPort, int rmiPort) {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
