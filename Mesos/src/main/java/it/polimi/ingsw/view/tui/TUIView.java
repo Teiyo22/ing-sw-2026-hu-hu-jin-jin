@@ -5,7 +5,9 @@ import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class TUIView implements View {
     private Screen currScreen;
@@ -21,10 +23,14 @@ public class TUIView implements View {
         transitionTo(ScreenType.LOBBY_SELECTION);
         try (Scanner scanner = new Scanner(System.in)) {
             while (running) {
-                String input = scanner.nextLine().trim();
-                currScreen.handleInput(input);
+                if (System.in.available() > 0) {   // controlla prima
+                    String input = scanner.nextLine().trim();
+                    currScreen.handleInput(input);
+                }
+
+                TimeUnit.MILLISECONDS.sleep(50);
             }
-        }
+        } catch (IOException | InterruptedException ignore) { }
     }
 
     @Override
