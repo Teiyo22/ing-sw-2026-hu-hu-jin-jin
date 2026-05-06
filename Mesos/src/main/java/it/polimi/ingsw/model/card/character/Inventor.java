@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Inventor extends AbstractCharacter{
     @Expose private InventorType inventorType;
 
-    public Inventor(int era, boolean isFinal, InventorType inventorType) {
-        super(era, isFinal);
+    public Inventor(String type, int era, boolean isFinal, InventorType inventorType) {
+        super(type, era, isFinal);
         this.inventorType = inventorType;
     }
 

@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 public class Shaman extends AbstractCharacter{
     @Expose private int stars;
 
-    public Shaman(int era, boolean isFinal, int stars) {
-        super(era, isFinal);
+    public Shaman(String type, int era, boolean isFinal, int stars) {
+        super(type, era, isFinal);
         this.stars = stars;
     }
 

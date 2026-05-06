@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 
 public abstract class AbstractEvent extends AbstractCard {
-    public AbstractEvent(int era, boolean isFinal) {
-        super(era, isFinal);
+    public AbstractEvent(String type, int era, boolean isFinal) {
+        super(type, era, isFinal);
     }
 
     public AbstractEvent(AbstractEvent source) {

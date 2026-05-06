@@ -55,9 +55,8 @@ public class ConfigLoader {
      * @return a deck configuration used to load the singular components of the deck.
      * */
     public DeckConfig loadDeckConfig(String filePath) {
-        CardTypeAdapter adapter = CardTypeAdapterFactory.create(AbstractCard.class);
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(AbstractCard.class, adapter)
+                .registerTypeAdapter(AbstractCard.class, new CardDeserializer())
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
 

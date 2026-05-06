@@ -11,8 +11,8 @@ public class BonusPPBuilding extends AbstractBuilding implements VisitableBuildi
     @Expose
     private int bonusPP;
 
-    public BonusPPBuilding(int era, boolean isFinal, int cost, int pp, int bonusPP) {
-        super(era, isFinal, cost, pp);
+    public BonusPPBuilding(String type, int era, boolean isFinal, int cost, int pp, int bonusPP) {
+        super(type, era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
     }
 

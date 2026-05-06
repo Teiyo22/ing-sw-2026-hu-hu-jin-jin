@@ -17,10 +17,10 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
     @Expose int artistDiscount;
     @Expose int builderDiscount;
 
-    public SustenanceDiscountBuilding(int era, boolean isFinal, int cost, int pp,
+    public SustenanceDiscountBuilding(String type, int era, boolean isFinal, int cost, int pp,
                                       int inventorDiscount, int shamanDiscount, int hunterDiscount,
                                       int artistDiscount, int collectorDiscount, int builderDiscount) {
-        super(era, isFinal, cost, pp);
+        super(type, era, isFinal, cost, pp);
         this.inventorDiscount = inventorDiscount;
         this.shamanDiscount = shamanDiscount;
         this.hunterDiscount = hunterDiscount;

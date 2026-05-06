@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 
 public class NewFullSetBuilding extends AbstractBuilding implements VisitableBuilding {
     transient int minForSet;
-    public NewFullSetBuilding(int era, boolean isFinal, int cost, int pp) {
-        super(era, isFinal, cost, pp);
+    public NewFullSetBuilding(String type, int era, boolean isFinal, int cost, int pp) {
+        super(type, era, isFinal, cost, pp);
     }
 
     public NewFullSetBuilding(NewFullSetBuilding source) {

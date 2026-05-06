@@ -12,8 +12,8 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     @Expose protected int cost;
     @Expose protected int pp;
 
-    public AbstractBuilding(int era, boolean isFinal, int cost, int pp) {
-        super(era, isFinal);
+    public AbstractBuilding(String type, int era, boolean isFinal, int cost, int pp) {
+        super(type, era, isFinal);
         this.cost = cost;
         this.pp = pp;
     }

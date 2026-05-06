@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
 public class FullSetBuilding extends AbstractBuilding implements VisitableBuilding {
-    public FullSetBuilding(int era, boolean isFinal, int cost, int pp) {
-        super(era, isFinal, cost, pp);
+    public FullSetBuilding(String type, int era, boolean isFinal, int cost, int pp) {
+        super(type, era, isFinal, cost, pp);
     }
 
     public FullSetBuilding(FullSetBuilding source) {

@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
 public class BuilderBonusBuilding extends AbstractBuilding implements VisitableBuilding {
-    public BuilderBonusBuilding(int era, boolean isFinal,
+    public BuilderBonusBuilding(String type, int era, boolean isFinal,
                                 int cost, int pp) {
-        super(era, isFinal, cost, pp);
+        super(type, era, isFinal, cost, pp);
     }
 
     public BuilderBonusBuilding(BuilderBonusBuilding source) {

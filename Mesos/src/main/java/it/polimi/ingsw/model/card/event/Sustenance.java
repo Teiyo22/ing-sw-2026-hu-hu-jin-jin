@@ -13,8 +13,8 @@ public class Sustenance extends AbstractEvent {
     @Expose
     private int ppMultiplier;
 
-    public Sustenance(int era, boolean isFinal, int ppMultiplier) {
-        super(era, isFinal);
+    public Sustenance(String type, int era, boolean isFinal, int ppMultiplier) {
+        super(type, era, isFinal);
         this.ppMultiplier = ppMultiplier;
     }
 

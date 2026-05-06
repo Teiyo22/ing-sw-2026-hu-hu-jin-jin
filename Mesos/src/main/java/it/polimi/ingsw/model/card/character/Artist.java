@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Artist extends AbstractCharacter {
-    public Artist(int era, boolean isFinal) {
-        super(era, isFinal);
+    public Artist(String type, int era, boolean isFinal) {
+        super(type, era, isFinal);
     }
 
     public Artist(Artist source) {

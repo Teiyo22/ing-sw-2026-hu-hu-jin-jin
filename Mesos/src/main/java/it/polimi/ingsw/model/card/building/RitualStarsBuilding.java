@@ -8,9 +8,9 @@ import it.polimi.ingsw.model.player.Player;
 public class RitualStarsBuilding extends AbstractBuilding {
     @Expose private int bonusStars;
 
-    public RitualStarsBuilding(int era, boolean isFinal,
+    public RitualStarsBuilding(String type, int era, boolean isFinal,
                                int cost, int pp, int bonusStars) {
-        super(era, isFinal, cost, pp);
+        super(type, era, isFinal, cost, pp);
         this.bonusStars = bonusStars;
     }
 

@@ -19,10 +19,10 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
     @Expose private int artistBonusPP;
     @Expose private int builderBonusPP;
 
-    public CharacterBonusBuilding(int era, boolean isFinal, int cost, int pp,
+    public CharacterBonusBuilding(String type, int era, boolean isFinal, int cost, int pp,
                                   int inventorBonusPP, int shamanBonusPP, int hunterBonusPP,
                                   int collectorBonusPP, int artistBonusPP, int builderBonusPP) {
-        super(era, isFinal, cost, pp);
+        super(type, era, isFinal, cost, pp);
         this.inventorBonusPP = inventorBonusPP;
         this.shamanBonusPP = shamanBonusPP;
         this.hunterBonusPP = hunterBonusPP;

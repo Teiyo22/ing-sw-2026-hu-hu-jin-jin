@@ -13,7 +13,8 @@ public abstract class AbstractCard implements Serializable {
     @Expose protected int era;
     @Expose protected boolean isFinal;
 
-    public AbstractCard(int era, boolean isFinal) {
+    public AbstractCard(String type, int era, boolean isFinal) {
+        this.type = type;
         this.era = era;
         this.isFinal = isFinal;
     }
@@ -25,6 +26,7 @@ public abstract class AbstractCard implements Serializable {
      * @param source is the card template from which the new card is created.
      * */
     public AbstractCard(AbstractCard source) {
+        this.type = source.type;
         this.resourceName = source.resourceName;
         this.era = source.era;
         this.isFinal = source.isFinal;
