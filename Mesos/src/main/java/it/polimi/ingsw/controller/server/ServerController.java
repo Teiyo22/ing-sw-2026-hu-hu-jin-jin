@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server;
 
+import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
@@ -318,7 +319,7 @@ public class ServerController implements VirtualServer {
             System.exit(-1);
         }
 
-        connectionMonitor.start();
+        connectionMonitor.startClientMonitor();
         Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
     }
 

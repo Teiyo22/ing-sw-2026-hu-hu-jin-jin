@@ -1,6 +1,8 @@
-package it.polimi.ingsw.controller.server.network;
+package it.polimi.ingsw.controller.common;
 
+import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.controller.server.network.ClientInterface;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -16,36 +18,54 @@ public class ConnectionMonitor {
     private final long interval = 5; // [s]
     private final long timeout = 15; // [s]
 
-    private final Map<ClientInterface, Long> lastSeen = new ConcurrentHashMap<>();
+    private Map<ClientInterface, Long> clientLastSeen;
+
+    private ClientController clientController;
+    private Long serverLastSeen;
+
+    public void startServerMonitor(ClientController clientController) {
+        this.clientController = clientController;
+        serverLastSeen = System.currentTimeMillis();
+
+        scheduler.scheduleAtFixedRate(() -> {
+                long silence = System.currentTimeMillis() - serverLastSeen;
+
+                if (silence > timeout * 1000)
+                    this.clientController.disconnect();
+
+        }, 0, interval, TimeUnit.SECONDS);
+    }
 
     public void registerClient(ClientInterface client) {
-        lastSeen.put(client, System.currentTimeMillis());
+        clientLastSeen.put(client, System.currentTimeMillis());
     }
 
     public void unregisterClient(ClientInterface client) {
-        lastSeen.remove(client);
+        clientLastSeen.remove(client);
     }
 
-    public void start() {
+    public void startClientMonitor() {
+        clientLastSeen = new ConcurrentHashMap<>();
+
         scheduler.scheduleAtFixedRate(() -> {
-            for (ClientInterface client : lastSeen.keySet()) {
+            for (ClientInterface client : clientLastSeen.keySet()) {
                 try {
                     client.ping();
-                    lastSeen.put(client, System.currentTimeMillis());
+                    clientLastSeen.put(client, System.currentTimeMillis());
                 } catch (RemoteException e) {
-                    long silence = System.currentTimeMillis() - lastSeen.get(client);
+                    long silence = System.currentTimeMillis() - clientLastSeen.get(client);
 
                     if (silence > timeout * 1000)
-                        handleDisconnection(client);
+                        disconnectClient(client);
 
                 } catch (IOException e) {
-                    handleDisconnection(client);
+                    disconnectClient(client);
                 }
             }
         }, 0, interval, TimeUnit.SECONDS);
     }
 
-    public void handleDisconnection(ClientInterface client) {
+    public void disconnectClient(ClientInterface client) {
         ServerController.getInstance().disconnectClient(client);
     }
 
