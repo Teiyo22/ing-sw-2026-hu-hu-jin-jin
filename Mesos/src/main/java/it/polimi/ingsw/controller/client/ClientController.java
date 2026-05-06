@@ -4,10 +4,7 @@ import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
-import it.polimi.ingsw.controller.common.LeaderboardEntry;
-import it.polimi.ingsw.controller.common.Lobby;
-import it.polimi.ingsw.controller.common.VirtualClient;
-import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.common.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -33,16 +30,15 @@ public class ClientController implements VirtualClient {
     private int id = 0;
     private boolean init = false;
 
-    private View view;
+    private View view = null;
     private ServerInterface server = null;
 
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
     private final ExecutorService taskExecutor = Executors.newFixedThreadPool(5);
 
-    Map<Integer, Integer> rankings;
 
-    protected Lobby currLobby = null;
-    private Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
+    private Lobby currLobby = null;
+    private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
 
     private final Object lock = new Object();
 
@@ -55,7 +51,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
 
-                view.update();
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
             }
         }
     }
@@ -136,7 +132,7 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-        this.rankings = rankings;
+//        this.rankings = rankings;
         view.transitionTo(ScreenType.GAME_END);
     }
 
@@ -195,9 +191,6 @@ public class ClientController implements VirtualClient {
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
         } catch (RemoteException | NotBoundException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-        } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
             Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
         }
@@ -265,9 +258,5 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             return new HashMap<>(waitingLobbies);
         }
-    }
-
-    public Map<Integer, Integer> getRankings() {
-        return rankings;
     }
 }
