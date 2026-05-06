@@ -56,7 +56,7 @@ public class ConfigLoader {
      * */
     public DeckConfig loadDeckConfig(String filePath) {
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(AbstractCard.class, new CardDeserializer())
+                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractCard.class))
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
 
