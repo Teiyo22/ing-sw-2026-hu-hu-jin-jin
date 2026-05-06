@@ -29,6 +29,7 @@ public class ConnectionMonitor {
     }
 
     public void startServerMonitor(ClientController clientController) {
+        serverLastSeen = new AtomicLong();
         serverLastSeen.set(System.currentTimeMillis());
 
         scheduler.scheduleAtFixedRate(() -> {
