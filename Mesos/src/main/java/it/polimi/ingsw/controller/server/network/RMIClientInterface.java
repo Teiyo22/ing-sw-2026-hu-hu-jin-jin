@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.setID(clientID);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {setID(clientID);});
         }
     }
@@ -41,7 +40,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.showWaitingLobbies(clientID, lobbies);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {showWaitingLobbies(clientID, lobbies);});
         }
     }
@@ -55,7 +54,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.showLobbyInfo(clientID, lobbyID, players);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {showLobbyInfo(clientID, lobbyID, players);});
         }
     }
@@ -69,7 +68,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.addToLobby(clientID, lobbyID, player);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
                 addToLobby(clientID, lobbyID, player);});
         }
@@ -84,7 +83,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.removeFromLobby(clientID, lobbyID);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {removeFromLobby(clientID, lobbyID);});
         }
     }
@@ -96,7 +95,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.showRank(clientID, lobbyID, rankings);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {showRank(clientID, lobbyID, rankings);});
         }
     }
@@ -108,7 +107,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.showLeaderboard(clientID, leaderboard);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {showLeaderboard(clientID, leaderboard);});
         }
     }
@@ -120,7 +119,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.updateModel(clientID, board, updatedTribe);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
                 updateModel(clientID, board, updatedTribe);});
         }
@@ -135,7 +134,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.createLobby(clientID, lobby, player);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {createLobby(clientID, lobby, player);});
         }
     }
@@ -147,7 +146,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.startLobby(clientID, lobbyID, board, tribes);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {startLobby(clientID, lobbyID, board, tribes);});
         }
     }
@@ -161,7 +160,7 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.removeLobby(lobbyID);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
                 removeLobby(lobbyID);});
         }
@@ -174,13 +173,17 @@ public class RMIClientInterface extends ClientInterface {
 
         try {
             wrappedClient.showError(clientID, errorMessage);
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {showError(clientID, errorMessage);});
         }
     }
 
     @Override
-    public void ping() throws IOException, RemoteException {
-        wrappedClient.ping();
+    public void ping() {
+        try {
+            wrappedClient.ping();
+        } catch (RemoteException e) {
+
+        }
     }
 }

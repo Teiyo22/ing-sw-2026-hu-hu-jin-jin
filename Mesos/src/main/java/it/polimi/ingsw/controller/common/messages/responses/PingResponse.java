@@ -4,8 +4,8 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
-public class PingMessage extends Response {
-    public PingMessage(int clientID) {
+public class PingResponse extends Response {
+    public PingResponse(int clientID) {
         super(clientID);
         this.type = MessageType.PING;
     }

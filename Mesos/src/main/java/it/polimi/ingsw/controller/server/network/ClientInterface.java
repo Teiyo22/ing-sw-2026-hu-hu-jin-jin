@@ -28,7 +28,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void removeLobby(int lobbyID);
-    public abstract void ping() throws IOException, RemoteException;
+    public abstract void ping();
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);
 

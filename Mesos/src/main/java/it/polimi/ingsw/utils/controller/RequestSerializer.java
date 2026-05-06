@@ -25,6 +25,7 @@ public class RequestSerializer implements JsonSerializer<Request> {
             case GET_RANK -> context.serialize(src, GetRankRequest.class);
             case GET_LEADERBOARD -> context.serialize(src, GetLeaderboardRequest.class);
             case PICK_OFFER -> context.serialize(src, PickOfferRequest.class);
+            case PING -> context.serialize(src, PingRequest.class);
             default -> throw new IllegalArgumentException("Unknown message type: " + type);
         };
     }

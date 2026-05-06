@@ -26,6 +26,7 @@ public abstract class ServerInterface implements VirtualServer {
     public abstract void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks);
     public abstract void requestOffer(int clientID, int lobbyID, int offerIndex);
     public abstract void disconnect();
+    public abstract void ping(int clientID);
 
     public ClientController getClientController() {
         return clientController;

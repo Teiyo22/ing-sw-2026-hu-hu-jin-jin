@@ -201,6 +201,15 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
+    public void ping(int clientID) {
+        try {
+            wrappedServer.ping(clientID);
+        } catch (RemoteException e) {
+
+        }
+    }
+
+    @Override
     public void disconnect() {
         try {
             UnicastRemoteObject.unexportObject(clientController, true);

@@ -11,7 +11,7 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.List;
 
 public class TCPServerInterface extends ServerInterface {
-    private NetworkClient serverHandler;
+    private final NetworkClient serverHandler;
 
     public TCPServerInterface(ClientController clientController, NetworkClient serverHandler) {
         super(clientController);
@@ -128,6 +128,12 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void requestOffer(int clientID, int lobbyID, int offerIndex) {
         PickOfferRequest request = new PickOfferRequest(clientID, lobbyID, offerIndex);
+        serverHandler.sendMessage(request);
+    }
+
+    @Override
+    public void ping(int clientID) {
+        PingRequest request = new PingRequest(clientID);
         serverHandler.sendMessage(request);
     }
 

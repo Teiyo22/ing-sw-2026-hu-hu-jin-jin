@@ -135,8 +135,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void ping() throws IOException {
-        PingMessage message = new PingMessage(this.id);
+    public void ping() {
+        PingResponse message = new PingResponse(this.id);
         clientHandler.sendMessage(message);
     }
 
