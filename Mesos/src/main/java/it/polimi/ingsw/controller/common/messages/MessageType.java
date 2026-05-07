@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.common.messages;
 public enum MessageType {
     SET_ID,
     CREATE_LOBBY,
-    REMOVE_LOBBY,
     JOIN_LOBBY,
     LEAVE_LOBBY,
     START_LOBBY,

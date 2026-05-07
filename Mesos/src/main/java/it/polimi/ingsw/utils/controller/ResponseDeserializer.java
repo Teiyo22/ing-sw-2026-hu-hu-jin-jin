@@ -16,7 +16,7 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
             case "UPDATE_MODEL" -> context.deserialize(jsonObject, UpdateModelResponse.class);
             case "CREATE_LOBBY" -> context.deserialize(jsonObject, CreateLobbyResponse.class);
             case "JOIN_LOBBY" -> context.deserialize(jsonObject, JoinLobbyResponse.class);
-            case "LEAVE_LOBBY" -> context.deserialize(jsonObject, LeaveLobbyResponse.class);
+            case "LEAVE_LOBBY" -> context.deserialize(jsonObject, RemoveClientResponse.class);
             case "START_LOBBY" -> context.deserialize(jsonObject, StartLobbyResponse.class);
             case "WAITING_LOBBY" -> context.deserialize(jsonObject, WaitingLobbyResponse.class);
             case "LOBBY_INFO" -> context.deserialize(jsonObject, LobbyInfoResponse.class);
@@ -24,7 +24,6 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
             case "GET_LEADERBOARD" -> context.deserialize(jsonObject, GetLeaderboardResponse.class);
             case "SET_ID" -> context.deserialize(jsonObject, SetIDResponse.class);
             case "PING" -> context.deserialize(jsonObject, PingResponse.class);
-            case "REMOVE_LOBBY" -> context.deserialize(jsonObject, RemoveLobbyMessage.class);
             case "ERROR" -> context.deserialize(jsonObject, ErrorMessage.class);
             default -> throw new JsonParseException("Response type not found: " + type);
         };

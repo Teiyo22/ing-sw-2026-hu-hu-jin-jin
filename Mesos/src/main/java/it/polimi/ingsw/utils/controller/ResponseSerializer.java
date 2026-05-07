@@ -18,7 +18,7 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case UPDATE_MODEL -> context.serialize(src, UpdateModelResponse.class);
             case CREATE_LOBBY -> context.serialize(src, CreateLobbyResponse.class);
             case JOIN_LOBBY -> context.serialize(src, JoinLobbyResponse.class);
-            case LEAVE_LOBBY -> context.serialize(src, LeaveLobbyResponse.class);
+            case LEAVE_LOBBY -> context.serialize(src, RemoveClientResponse.class);
             case START_LOBBY -> context.serialize(src, StartLobbyResponse.class);
             case WAITING_LOBBY -> context.serialize(src, WaitingLobbyResponse.class);
             case LOBBY_INFO -> context.serialize(src, LobbyInfoResponse.class);
@@ -26,7 +26,6 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case GET_LEADERBOARD -> context.serialize(src, GetLeaderboardResponse.class);
             case SET_ID -> context.serialize(src, SetIDResponse.class);
             case PING -> context.serialize(src, PingResponse.class);
-            case REMOVE_LOBBY -> context.serialize(src, RemoveLobbyMessage.class);
             case ERROR -> context.serialize(src, ErrorMessage.class);
             default -> throw new IllegalArgumentException("Unknown message type: " + type);
         };
