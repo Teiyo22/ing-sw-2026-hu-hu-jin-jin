@@ -57,7 +57,8 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
+
+        AddPlayerResponse response = new AddPlayerResponse(clientID, lobbyID, player);
         clientHandler.sendMessage(response);
     }
 
