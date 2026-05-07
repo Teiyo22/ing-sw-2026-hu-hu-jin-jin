@@ -44,11 +44,20 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void addToLobby(int clientID, int lobbyID, Player player) {
+    public synchronized void addClient(int clientID, int lobbyID, Player player) {
         if (!isConnected)
             return;
 
-        JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
+        AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
+    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
+        if (!isConnected)
+            return;
+
+        AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
         clientHandler.sendMessage(response);
     }
 

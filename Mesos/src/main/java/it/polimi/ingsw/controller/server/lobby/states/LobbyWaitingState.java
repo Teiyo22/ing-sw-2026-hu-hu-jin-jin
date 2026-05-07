@@ -20,7 +20,7 @@ public class LobbyWaitingState extends LobbyState {
             lobbyController.getPlayers().put(client, player);
 
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.addToLobby(client.getID(), lobbyController.getID(), player);
+                listener.addClient(client.getID(), lobbyController.getID(), player);
 
             if (lobbyController.getSize() == lobbyController.getPlayers().size())
                 lobbyController.setState(new LobbyFullState(lobbyController));
@@ -59,8 +59,6 @@ public class LobbyWaitingState extends LobbyState {
 
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
     }
-
-
 
     @Override
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {

@@ -63,15 +63,28 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void addToLobby(int clientID, int lobbyID, Player player)  {
+    public synchronized void addClient(int clientID, int lobbyID, Player player)  {
         if (!isConnected)
             return;
 
         try {
-            wrappedClient.addToLobby(clientID, lobbyID, player);
+            wrappedClient.addClient(clientID, lobbyID, player);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
-                addToLobby(clientID, lobbyID, player);});
+                addClient(clientID, lobbyID, player);});
+        }
+    }
+
+    @Override
+    public synchronized void addPlayer(int clientID, int lobbyID, Player player)  {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.addPlayer(clientID, lobbyID, player);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {
+                addPlayer(clientID, lobbyID, player);});
         }
     }
 

@@ -20,7 +20,8 @@ public abstract class ClientInterface implements VirtualClient {
 
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
     public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players);
-    public abstract void addToLobby(int clientID, int lobbyID, Player player);
+    public abstract void addClient(int clientID, int lobbyID, Player player);
+    public abstract void addPlayer(int clientID, int lobbyID, Player player);
     public abstract void removeClient(int clientID, int lobbyID);
     public abstract void removePlayer(int clientID, int lobbyID, Player player);
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
