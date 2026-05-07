@@ -29,6 +29,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void updateModel(int clientID, Board board, Tribe updatedTribe);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes);
+    public abstract void stopLobby(int clientID, int lobbyID);
     public abstract void ping();
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);

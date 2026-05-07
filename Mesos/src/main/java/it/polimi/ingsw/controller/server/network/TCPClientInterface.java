@@ -8,6 +8,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
+import javafx.scene.paint.Stop;
 
 import java.util.List;
 import java.util.Map;
@@ -124,6 +125,15 @@ public class TCPClientInterface extends ClientInterface {
             return;
 
         StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
+    public synchronized void stopLobby(int clientID, int lobbyID) {
+        if (!isConnected)
+            return;
+
+        StopLobbyResponse response = new StopLobbyResponse(clientID, lobbyID);
         clientHandler.sendMessage(response);
     }
 

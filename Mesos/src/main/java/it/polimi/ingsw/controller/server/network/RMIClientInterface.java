@@ -183,6 +183,19 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
+    public synchronized void stopLobby(int clientID, int lobbyID)  {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.stopLobby(clientID, lobbyID);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {
+                stopLobby(clientID, lobbyID);});
+        }
+    }
+
+    @Override
     public synchronized void showError(int clientID, String errorMessage) {
         if (!isConnected)
             return;
