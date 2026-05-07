@@ -8,9 +8,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
-import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.Map;
 import java.util.List;
@@ -50,8 +47,8 @@ public class LobbyController {
         state.startLobby(startClient);
     }
 
-    public synchronized boolean leaveLobby(ClientInterface leaveClient) {
-        return state.leaveLobby(leaveClient);
+    public synchronized boolean removeFromLobby(ClientInterface leaveClient) {
+        return state.removeFromLobby(leaveClient);
     }
 
     public synchronized Lobby getLobby() {

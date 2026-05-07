@@ -28,7 +28,7 @@ public class LobbyRunningState extends LobbyState {
     }
 
     @Override
-    public boolean leaveLobby(ClientInterface client) {
+    public boolean removeFromLobby(ClientInterface client) {
         return true;
     }
 

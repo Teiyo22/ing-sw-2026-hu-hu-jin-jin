@@ -47,7 +47,7 @@ public class LobbyFullState extends LobbyState {
     }
 
     @Override
-    public boolean leaveLobby(ClientInterface client) {
+    public boolean removeFromLobby(ClientInterface client) {
         Player removedPlayer = lobbyController.getPlayers().remove(client);
 
         if (removedPlayer != null) {
