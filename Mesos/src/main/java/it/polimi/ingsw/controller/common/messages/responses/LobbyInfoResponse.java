@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class LobbyInfoResponse extends Response {
     private int lobbyID;
-    private Map<Player, Integer> players;
+    private Map<Integer, Player> players;
 
-    public LobbyInfoResponse(int clientID, int lobbyID, Map<Player, Integer> players){
+    public LobbyInfoResponse(int clientID, int lobbyID, Map<Integer, Player> players){
         super(clientID);
         this.type = MessageType.LOBBY_INFO;
         this.lobbyID = lobbyID;
@@ -20,6 +20,6 @@ public class LobbyInfoResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showLobbyInfo(super.getClientID(), lobbyID, players);
+            clientController.showLobbyInfo(super.getClientID(), lobbyID, players);
     }
 }

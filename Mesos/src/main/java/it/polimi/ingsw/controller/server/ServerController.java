@@ -59,6 +59,7 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void createLobby(int clientID, int playerNum, Player player) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to create lobby with " + playerNum + " players from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -78,10 +79,12 @@ public class ServerController implements VirtualServer {
         lobbies.put(lobbyController.getID(), lobbyController);
         client.createLobby(clientID, lobbyController.getLobby(), player);
         writeLock.unlock();
+        Logger.getInstance().print(LoggerLevel.SERVER, "Created lobby " + lobbyController.getID() + " for client " + clientID + " with " + playerNum + " players");
     }
 
     @Override
     public void joinLobby(int clientID, int lobbyID, Player player) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to join lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -99,6 +102,7 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void leaveLobby(int clientID, int lobbyID) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to leave lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -128,6 +132,7 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void getWaitingLobbies(int clientID) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get waiting lobbies from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -145,6 +150,7 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void getLobbyInfo(int clientID, int lobbyID) {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get lobby info from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
         if (client == null)

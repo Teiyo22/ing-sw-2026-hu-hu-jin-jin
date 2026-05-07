@@ -115,4 +115,9 @@ public class LobbyController {
     public void setState(LobbyState state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "[Lobby " + lobbyID + "]";
+    }
 }

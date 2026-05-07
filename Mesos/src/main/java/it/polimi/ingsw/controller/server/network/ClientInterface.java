@@ -19,7 +19,7 @@ public abstract class ClientInterface implements VirtualClient {
 
 
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
-    public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players);
+    public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
     public abstract void addClient(int clientID, int lobbyID, Player player);
     public abstract void addPlayer(int clientID, int lobbyID, Player player);
     public abstract void removeClient(int clientID, int lobbyID, Player player);
@@ -59,5 +59,10 @@ public abstract class ClientInterface implements VirtualClient {
 
     public void setConnected(boolean connected) {
         isConnected = connected;
+    }
+
+    @Override
+    public String toString() {
+        return "[Client " + id + "]";
     }
 }

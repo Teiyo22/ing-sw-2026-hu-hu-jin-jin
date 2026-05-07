@@ -60,10 +60,10 @@ public class LobbyResumableState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Map<Player, Integer> playerInfo = new HashMap<>();
+        Map<Integer, Player> playerInfo = new HashMap<>();
 
         for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
-            playerInfo.put(player.getValue(), player.getKey().getID());
+            playerInfo.put(player.getKey().getID(), player.getValue());
 
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
     }

@@ -8,7 +8,6 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
-import javafx.scene.paint.Stop;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players) {
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         if (!isConnected)
             return;
 

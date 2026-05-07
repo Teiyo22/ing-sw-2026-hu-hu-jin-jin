@@ -58,13 +58,21 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players) {
+    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         synchronized (lock) {
             Lobby lobby = waitingLobbies.get(lobbyID);
 
             if (lobby != null) {
+                Map<Player, Integer> playerInfo = new HashMap<>();
                 currLobby = lobby;
-                lobby.setPlayers(players);
+
+                for (Map.Entry<Integer, Player> entry : players.entrySet()) {
+                    Player newKey = entry.getValue();
+                    Integer newValue = entry.getKey() < 0 ? null : entry.getKey();
+                    playerInfo.put(newKey, newValue);
+                }
+
+                currLobby.setPlayers(playerInfo);
             } else
                 showError(clientID, "This lobby is not available");
 
