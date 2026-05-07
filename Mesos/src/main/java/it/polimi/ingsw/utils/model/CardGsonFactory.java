@@ -1,7 +1,5 @@
 package it.polimi.ingsw.utils.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.*;
@@ -13,7 +11,7 @@ import java.util.List;
 public class CardGsonFactory {
     private static final List<Class<? extends AbstractCard>> subtypes = List.of(
             BonusPPBuilding.class,
-            BuilderBonusBuilding.class,
+            BuilderDoublePPBuilding.class,
             CavePaintingBuilding.class,
             CharacterBonusBuilding.class,
             ExtraActionBuilding.class,

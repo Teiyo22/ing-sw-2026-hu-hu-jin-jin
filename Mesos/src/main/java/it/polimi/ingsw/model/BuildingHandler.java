@@ -245,12 +245,12 @@ public class BuildingHandler implements BuildingVisitor {
     }
 
     /**
-     * Visits a {@link BuilderBonusBuilding} and grants its owner PP based on the builder bonus PP.
+     * Visits a {@link BuilderDoublePPBuilding} and grants its owner PP based on the builder bonus PP.
      *
-     * @param b the {@link BuilderBonusBuilding} being visited
+     * @param b the {@link BuilderDoublePPBuilding} being visited
      */
     @Override
-    public void visit(BuilderBonusBuilding b) {
+    public void visit(BuilderDoublePPBuilding b) {
         b.getOwner().addPP(b.getOwner().getTribe().getBuilderBonusPP());
     }
 

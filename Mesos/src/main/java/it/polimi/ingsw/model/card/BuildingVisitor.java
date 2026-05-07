@@ -10,7 +10,7 @@ public interface BuildingVisitor {
     void visit(ExtraActionBuilding v);
     void visit(BonusPPBuilding v);
     void visit(CharacterBonusBuilding v);
-    void visit(BuilderBonusBuilding v);
+    void visit(BuilderDoublePPBuilding v);
     void visit(FullSetBuilding v);
     void visit(NewFullSetBuilding v);
     void visit(InventorPairBuilding v);
