@@ -100,7 +100,7 @@ public class LobbySelectionScreen implements Screen {
         System.out.println(Formatter.formatLine(String.format("Lobby ID:     %3d", currLobby.getLobbyID())));
         System.out.println(Formatter.formatLine(String.format("Player Count: %3d/%3d", currLobby.getPlayerCount(), currLobby.getSize())));
         System.out.println(Formatter.formatLine("Players:"));
-        for (Player player : currLobby.getPlayers().values())
+        for (Player player : currLobby.getPlayers().keySet())
             System.out.println(Formatter.formatColoredLine(String.format(" - %s", player.getName()), player.getTotem().getColor()));
     }
 
@@ -304,7 +304,7 @@ public class LobbySelectionScreen implements Screen {
     }
 
     private boolean validateName(String name) {
-        for (Player player : currLobby.getPlayers().values())
+        for (Player player : currLobby.getPlayers().keySet())
             if (player.getName().equals(name))
                 return false;
 
@@ -312,7 +312,7 @@ public class LobbySelectionScreen implements Screen {
     }
 
     private boolean validateTotem(Totem totem) {
-        for (Player player : currLobby.getPlayers().values())
+        for (Player player : currLobby.getPlayers().keySet())
             if (player.getTotem().equals(totem))
                 return false;
 
