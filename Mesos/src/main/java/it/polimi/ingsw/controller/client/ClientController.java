@@ -135,7 +135,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes) {
+    public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 waitingLobbies.clear();

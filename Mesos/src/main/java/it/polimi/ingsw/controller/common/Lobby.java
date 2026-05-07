@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller.common;
 
-import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -55,11 +54,11 @@ public class Lobby implements Serializable {
     // Model management methods
     //=============================================================================
 
-    public void initGame(Map<Player, Tribe> tribes, Board board) {
+    public void initGame(Map<Integer, Tribe> tribes, Board board) {
         this.board = board;
 
         for (Player player : players.keySet())
-            player.setTribe(tribes.get(player));
+            player.setTribe(tribes.get(players.get(player)));
     }
 
     //=============================================================================

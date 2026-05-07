@@ -170,7 +170,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes)  {
+    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes)  {
         if (!isConnected)
             return;
 

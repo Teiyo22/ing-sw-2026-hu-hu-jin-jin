@@ -30,9 +30,9 @@ public class LobbyFullState extends LobbyState {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Model initialized for lobby " + lobbyController.getID());
         Game model = lobbyController.getModel();
 
-        Map<Player, Tribe> tribes = new HashMap<>();
-        for (Player player : model.getPlayers())
-            tribes.put(player, player.getTribe());
+        Map<Integer, Tribe> tribes = new HashMap<>();
+        for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
+            tribes.put(player.getKey().getID(), player.getValue().getTribe());
 
         Logger.getInstance().print(LoggerLevel.DEBUG, "Prepared tribe data for lobby " + lobbyController.getID());
 

@@ -12,7 +12,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
-import it.polimi.ingsw.utils.model.CardGsonFactory;
+import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -33,9 +33,9 @@ public class ClientHandler extends Thread {
 
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractBuilding.class))
-                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractCharacter.class))
-                .registerTypeAdapterFactory(CardGsonFactory.buildFactory(AbstractEvent.class))
+                .registerTypeAdapter(AbstractCharacter.class, new CardAdapterFactory<AbstractCharacter>().create(AbstractCharacter.class))
+                .registerTypeAdapter(AbstractBuilding.class, new CardAdapterFactory<AbstractBuilding>().create(AbstractBuilding.class))
+                .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
                 .create();
@@ -51,22 +51,25 @@ public class ClientHandler extends Thread {
                 tcpClientInterface.handleMessage(request);
             }
             ServerController.getInstance().disconnectClient(tcpClientInterface);
-        } catch (SocketException ignore) {
-
+        } catch (SocketException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Disconnected from TCP client: " + tcpClientInterface.getID());
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }
 
     public void sendMessage(Response response) {
         try {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message to client: " + gson.toJson(response));
             String message = gson.toJson(response);
             output.write(message);
             output.newLine();
             output.flush();
         } catch (IOException e) {
             cleanup();
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.ERROR,e.getMessage());
         }
     }
 
