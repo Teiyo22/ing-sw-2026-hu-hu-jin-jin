@@ -35,11 +35,6 @@ public class LobbyEndedState extends LobbyState {
     }
 
     @Override
-    public Lobby getLobby() {
-        return null;
-    }
-
-    @Override
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         pickerClient.showError(pickerClient.getID(), "The lobby already ended.");
     }
@@ -52,5 +47,15 @@ public class LobbyEndedState extends LobbyState {
     @Override
     public void getRank(ClientInterface client) {
 
+    }
+
+    @Override
+    public boolean isShowable() {
+        return false;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return lobbyController.getPlayers().isEmpty();
     }
 }

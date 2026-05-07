@@ -72,11 +72,6 @@ public class LobbyFullState extends LobbyState {
     }
 
     @Override
-    public Lobby getLobby() {
-        return new Lobby(lobbyController.getID(), lobbyController.getSize());
-    }
-
-    @Override
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         pickerClient.showError(pickerClient.getID(), "Game not started yet.");
     }
@@ -89,5 +84,15 @@ public class LobbyFullState extends LobbyState {
     @Override
     public void getRank(ClientInterface client) {
         client.showError(client.getID(), "Game not started yet.");
+    }
+
+    @Override
+    public boolean isShowable() {
+        return true;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return false;
     }
 }

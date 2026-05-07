@@ -61,10 +61,7 @@ public class LobbyWaitingState extends LobbyState {
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
     }
 
-    @Override
-    public Lobby getLobby() {
-        return new Lobby(lobbyController.getID(), lobbyController.getSize());
-    }
+
 
     @Override
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -85,6 +82,16 @@ public class LobbyWaitingState extends LobbyState {
         for (Player players : lobbyController.getPlayers().values())
             if (newPlayer.getTotem() == players.getTotem() || newPlayer.getName().equals(players.getName()))
                 return false;
+        return true;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return lobbyController.getPlayers().isEmpty();
+    }
+
+    @Override
+    public boolean isShowable() {
         return true;
     }
 }

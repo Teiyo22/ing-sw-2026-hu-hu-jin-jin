@@ -51,10 +51,6 @@ public class LobbyController {
         return state.removeFromLobby(leaveClient);
     }
 
-    public synchronized Lobby getLobby() {
-        return state.getLobby();
-    }
-
     //=============================================================================
     // Model Interaction methods
     //=============================================================================
@@ -98,6 +94,18 @@ public class LobbyController {
 
     public Game getModel() {
         return model;
+    }
+
+    public synchronized Lobby getLobby() {
+        return new Lobby(lobbyID, size);
+    }
+
+    public boolean isShowable() {
+        return state.isShowable();
+    }
+
+    public boolean isRemovable() {
+        return state.isRemovable();
     }
 
     //=============================================================================

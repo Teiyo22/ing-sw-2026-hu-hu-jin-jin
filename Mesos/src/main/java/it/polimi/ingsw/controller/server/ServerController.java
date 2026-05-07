@@ -135,8 +135,8 @@ public class ServerController implements VirtualServer {
 
         readLock.lock();
         List<Lobby> lobbies = this.lobbies.values().stream()
+                .filter(LobbyController::isShowable)
                 .map(LobbyController::getLobby)
-                .filter(Objects::nonNull)
                 .toList();
 
         client.showWaitingLobbies(clientID, lobbies);
@@ -260,7 +260,7 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null) {
             removed = lobbyController.removeFromLobby(client);
 
-            if (lobbyController.getPlayers().isEmpty())
+            if (lobbyController.isRemovable())
                 lobbies.remove(lobbyID);
         }
 

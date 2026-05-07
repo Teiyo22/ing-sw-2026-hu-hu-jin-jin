@@ -38,11 +38,6 @@ public class LobbyRunningState extends LobbyState {
     }
 
     @Override
-    public Lobby getLobby() {
-        return null;
-    }
-
-    @Override
     public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
@@ -81,5 +76,15 @@ public class LobbyRunningState extends LobbyState {
 
     private boolean validateOfferPick(Player player, int offerIndex) {
         return true;
+    }
+
+    @Override
+    public boolean isShowable() {
+        return false;
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return false;
     }
 }
