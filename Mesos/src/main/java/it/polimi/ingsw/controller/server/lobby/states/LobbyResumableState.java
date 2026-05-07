@@ -2,36 +2,43 @@ package it.polimi.ingsw.controller.server.lobby.states;
 
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LobbyWaitingState extends LobbyState {
-    public LobbyWaitingState(LobbyController lobbyController) {
+public class LobbyResumableState extends LobbyState {
+    public LobbyResumableState(LobbyController lobbyController) {
         super(lobbyController);
     }
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        if (validatePlayerInfo(player) && !lobbyController.getPlayers().containsKey(client)) {
-            lobbyController.getPlayers().put(client, player);
-
-            for (ClientInterface listener : lobbyController.getListeners())
-                listener.addPlayer(client.getID(), lobbyController.getID(), player);
-
-            if (lobbyController.getSize() == lobbyController.getPlayers().size())
-                lobbyController.setState(new LobbyFullState(lobbyController));
-        } else {
-            client.showError(client.getID(), "Player name or totem already used");
-        }
+        client.showError(client.getID(), "The lobby is full");
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError(client.getID(), "Not enough players to start the game");
+        Logger.getInstance().print(LoggerLevel.SERVER, "Restarting lobby " + lobbyController.getID());
+
+        Game model = lobbyController.getModel();
+
+        Map<Player, Tribe> tribes = new HashMap<>();
+        for (Player player : model.getPlayers())
+            tribes.put(player, player.getTribe());
+
+        for (ClientInterface player : lobbyController.getPlayers().keySet()) {
+            player.startLobby(player.getID(), lobbyController.getID(), model.getBoard(), tribes);
+        }
+
+        lobbyController.setState(new LobbyRunningState(lobbyController));
+        Logger.getInstance().print(LoggerLevel.SERVER, "Restarted lobby " + lobbyController.getID());
     }
 
     @Override
@@ -40,8 +47,9 @@ public class LobbyWaitingState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removePlayer(client.getID(), lobbyController.getID(), removedPlayer);
+                listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
 
+            lobbyController.setState(new LobbyPausedState(lobbyController));
             return true;
         }
 
@@ -72,19 +80,12 @@ public class LobbyWaitingState extends LobbyState {
 
     @Override
     public void getRank(ClientInterface client) {
-        client.showError(client.getID(), "Game not started yet.");
-    }
-
-    private boolean validatePlayerInfo(Player newPlayer) {
-        for (Player players : lobbyController.getPlayers().values())
-            if (newPlayer.getTotem() == players.getTotem() || newPlayer.getName().equals(players.getName()))
-                return false;
-        return true;
+        client.showError(client.getID(), "Game not ended yet.");
     }
 
     @Override
     public boolean isRemovable() {
-        return lobbyController.getPlayers().isEmpty();
+        return false;
     }
 
     @Override

@@ -36,9 +36,9 @@ public class LobbyFullState extends LobbyState {
 
         Logger.getInstance().print(LoggerLevel.DEBUG, "Prepared tribe data for lobby " + lobbyController.getID());
 
-        for (ClientInterface listener : lobbyController.getListeners()) {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying client " + listener.getID() + " of lobby start");
-            listener.startLobby(listener.getID(), lobbyController.getID(), model.getBoard(), tribes);
+        for (ClientInterface player : lobbyController.getPlayers().keySet()) {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying client " + player.getID() + " of lobby start");
+            player.startLobby(player.getID(), lobbyController.getID(), model.getBoard(), tribes);
         }
 
         lobbyController.setState(new LobbyRunningState(lobbyController));
@@ -51,7 +51,7 @@ public class LobbyFullState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeClient(client.getID(), lobbyController.getID());
+                listener.removePlayer(client.getID(), lobbyController.getID(), removedPlayer);
 
             lobbyController.setState(new LobbyWaitingState(lobbyController));
             return true;

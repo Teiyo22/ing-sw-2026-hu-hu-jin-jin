@@ -145,4 +145,12 @@ public class Player implements Comparable<Player>, Serializable {
     public Totem getTotem() {
         return totem;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Player))
+            return false;
+
+        return ((Player) obj).getName().equals(name) && ((Player) obj).getTotem().equals(totem);
+    }
 }

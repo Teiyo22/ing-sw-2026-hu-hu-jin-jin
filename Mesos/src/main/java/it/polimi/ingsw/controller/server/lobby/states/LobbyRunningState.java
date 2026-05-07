@@ -29,7 +29,20 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public boolean removeFromLobby(ClientInterface client) {
-        return true;
+        Player removedPlayer = lobbyController.getPlayers().remove(client);
+
+        if (removedPlayer != null) {
+            for (ClientInterface listener : lobbyController.getListeners())
+                listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
+
+            for (ClientInterface player: lobbyController.getPlayers().keySet())
+                ; // TODO: notify lobby stop to players
+
+            lobbyController.setState(new LobbyPausedState(lobbyController));
+            return true;
+        }
+
+        return false;
     }
 
     @Override
