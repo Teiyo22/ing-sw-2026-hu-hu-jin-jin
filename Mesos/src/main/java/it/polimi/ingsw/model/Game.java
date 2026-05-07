@@ -1,6 +1,6 @@
     package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.server.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.Pickable;
@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.List;
 
@@ -25,9 +27,14 @@ public class Game {
         this.lobbyController = lobbyController;
         this.playerConfig = playerConfig;
         this.players = players;
+
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Initializing board");
+
         this.board = new Board(this);
         this.board.initOfferTrack();
         this.board.initOrderTile();
+
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Board initialized");
 
         this.buildingHandler = new BuildingHandler();
         this.gameState = new GameStartState(this, buildingHandler);

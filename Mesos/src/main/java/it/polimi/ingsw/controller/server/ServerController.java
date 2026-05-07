@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
@@ -85,47 +86,29 @@ public class ServerController implements VirtualServer {
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
 
-        if (!removeFromLobby(client, client.getCurrLobbyID()))
+        if (!leaveLobby(client, client.getCurrLobbyID()))
             removeFromAllLobbies(client);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
     }
 
-    private boolean removeFromLobby(ClientInterface removedClient, int lobbyID) {
+    private boolean leaveLobby(ClientInterface client, int lobbyID) {
         boolean removed = false;
 
-        writeLock.lock();
+        readLock.lock();
         LobbyController lobbyController = lobbies.get(lobbyID);
 
-        if (lobbyController != null && lobbyController.removePlayer(removedClient)) {
-            if (lobbyController.isEmpty() && lobbyController.getState() == LobbyController.LobbyState.WAITING) {
-                lobbies.remove(lobbyID);
+        if (lobbyController != null)
+            removed = lobbyController.leaveLobby(client);
 
-                for (ClientInterface client: clients.values())
-                    client.removeLobby(lobbyID);
-            }
-
-            else if (lobbyController.isEmpty() && lobbyController.getState() == LobbyController.LobbyState.FINISHED) {
-                lobbies.remove(lobbyID);
-                savedLobbies.remove(lobbyID);
-            }
-
-            else if (lobbyController.getState() == LobbyController.LobbyState.RUNNING) {
-                lobbies.remove(lobbyID);
-                lobbyController.stopLobby();
-            }
-
-            removed = true;
-        }
-
-        writeLock.unlock();
+        readLock.unlock();
 
         return removed;
     }
 
-    private void removeFromAllLobbies(ClientInterface removedClient) {
+    private void removeFromAllLobbies(ClientInterface client) {
         for (LobbyController lobbyController : lobbies.values())
-            lobbyController.removePlayer(removedClient);
+            lobbyController.leaveLobby(client);
     }
 
     @Override
@@ -136,13 +119,13 @@ public class ServerController implements VirtualServer {
             return;
 
         if (client.getCurrLobbyID() != -1)
-            removeFromLobby(client, client.getCurrLobbyID());
+            leaveLobby(client, client.getCurrLobbyID());
 
         int id = nextLobbyID.getAndIncrement();
 
         LobbyController lobbyController = new LobbyController(id, playerNum);
-        lobbyController.addPlayer(client, player);
-        lobbyController.addListener(client);
+        lobbyController.getPlayers().put(client, player);
+        lobbyController.getListeners().add(client);
 
         writeLock.lock();
         lobbies.put(lobbyController.getID(), lobbyController);
@@ -174,7 +157,7 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
-        if(!removeFromLobby(client, lobbyID))
+        if(!leaveLobby(client, lobbyID))
             removeFromAllLobbies(client);
     }
 
@@ -186,14 +169,14 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
-        writeLock.lock();
+        readLock.lock();
         LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null)
             lobbyController.startLobby(client);
         else
             client.showError(clientID, "This lobby is not available");
-        writeLock.unlock();
+        readLock.unlock();
     }
 
     @Override
@@ -205,10 +188,9 @@ public class ServerController implements VirtualServer {
 
         readLock.lock();
         List<Lobby> lobbies = this.lobbies.values().stream()
-            .filter(lobbyController -> lobbyController.getState() == LobbyController.LobbyState.WAITING ||
-                lobbyController.getState() == LobbyController.LobbyState.STARTABLE)
-            .map(lobbyController -> new Lobby(lobbyController.getID(), lobbyController.getSize()))
-            .toList();
+                .map(LobbyController::getLobby)
+                .filter(Objects::nonNull)
+                .toList();
 
         client.showWaitingLobbies(clientID, lobbies);
         readLock.unlock();
@@ -228,7 +210,7 @@ public class ServerController implements VirtualServer {
             lobbyController = lobbies.get(client.getCurrLobbyID());
 
             if (lobbyController != null)
-                lobbyController.removeListener(client);
+                lobbyController.getListeners().remove(client);
         }
 
         lobbyController = lobbies.get(lobbyID);
@@ -251,7 +233,7 @@ public class ServerController implements VirtualServer {
         readLock.lock();
         LobbyController lobby = lobbies.get(lobbyID);
         if (lobby != null)
-            lobby.showRank(client);
+            lobby.getRank(client);
         else
             client.showError(clientID, "This lobby is not available");
         readLock.unlock();
