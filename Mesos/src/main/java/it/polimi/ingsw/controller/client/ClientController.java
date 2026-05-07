@@ -42,20 +42,6 @@ public class ClientController implements VirtualClient {
 
     private final Object lock = new Object();
 
-
-    @Override
-    public void removeLobby(int lobbyID) {
-        synchronized (lock) {
-            waitingLobbies.remove(lobbyID);
-
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                currLobby = null;
-
-                view.transitionTo(ScreenType.LOBBY_SELECTION);
-            }
-        }
-    }
-
     @Override
     public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
         synchronized (lock) {

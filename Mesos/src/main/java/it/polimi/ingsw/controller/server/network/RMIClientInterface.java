@@ -20,7 +20,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void setID(int clientID)  {
+    public synchronized void setID(int clientID)  {
         if (!isConnected)
             return;
 
@@ -35,7 +35,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showWaitingLobbies(int clientID, List<Lobby> lobbies)  {
+    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies)  {
         if (!isConnected)
             return;
 
@@ -63,7 +63,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void addToLobby(int clientID, int lobbyID, Player player)  {
+    public synchronized void addToLobby(int clientID, int lobbyID, Player player)  {
         if (!isConnected)
             return;
 
@@ -76,7 +76,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void removeFromLobby(int clientID, int lobbyID)  {
+    public synchronized void removeFromLobby(int clientID, int lobbyID)  {
         if (!isConnected)
             return;
 
@@ -90,7 +90,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings)  {
+    public synchronized void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings)  {
         if (!isConnected)
             return;
 
@@ -103,7 +103,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard)  {
+    public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard)  {
         if (!isConnected)
             return;
 
@@ -116,7 +116,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int clientID, Board board, Tribe updatedTribe)  {
+    public synchronized void updateModel(int clientID, Board board, Tribe updatedTribe)  {
         if (!isConnected)
             return;
 
@@ -144,7 +144,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes)  {
+    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes)  {
         if (!isConnected)
             return;
 
@@ -157,20 +157,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void removeLobby(int lobbyID)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.removeLobby(lobbyID);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                removeLobby(lobbyID);});
-        }
-    }
-
-    @Override
-    public void showError(int clientID, String errorMessage) {
+    public synchronized void showError(int clientID, String errorMessage) {
         if (!isConnected)
             return;
 
