@@ -53,64 +53,9 @@ public class ServerController implements VirtualServer {
         return instance;
     }
 
-    @Override
-    public void addClient(VirtualClient client) {
-        RMIClientInterface wrapper = new RMIClientInterface(client);
-        int id = nextClientID.getAndIncrement();
-
-        clients.put(id, wrapper);
-        connectionMonitor.registerClient(wrapper);
-
-        wrapper.setConnected(true);
-        wrapper.setID(id);
-
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
-    }
-
-    public void addClient(TCPClientInterface client) {
-        int id = nextClientID.getAndIncrement();
-
-        clients.put(id, client);
-        connectionMonitor.registerClient(client);
-
-        client.setConnected(true);
-        client.setID(id);
-
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
-    }
-
-    public void disconnectClient(ClientInterface client) {
-        client.setConnected(false);
-        client.cleanup();
-
-        clients.remove(client.getID());
-        connectionMonitor.unregisterClient(client);
-
-        LobbyController lobbyController = client.getCurrLobbyController();
-        if (lobbyController != null && !removeFromLobby(client, lobbyController.getID()))
-            removeFromAllLobbies(client);
-
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
-    }
-
-    private boolean removeFromLobby(ClientInterface client, int lobbyID) {
-        boolean removed = false;
-
-        readLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
-
-        if (lobbyController != null)
-            removed = lobbyController.removeFromLobby(client);
-
-        readLock.unlock();
-
-        return removed;
-    }
-
-    private void removeFromAllLobbies(ClientInterface client) {
-        for (LobbyController lobbyController : lobbies.values())
-            lobbyController.removeFromLobby(client);
-    }
+    //=============================================================================
+    // Lobby management methods
+    //=============================================================================
 
     @Override
     public void createLobby(int clientID, int playerNum, Player player) {
@@ -217,27 +162,9 @@ public class ServerController implements VirtualServer {
         readLock.unlock();
     }
 
-
-    @Override
-    public void getRank(int clientID, int lobbyID) {
-        ClientInterface client = clients.get(clientID);
-
-        if (client == null)
-            return;
-
-        readLock.lock();
-        LobbyController lobby = lobbies.get(lobbyID);
-        if (lobby != null)
-            lobby.getRank(client);
-        else
-            client.showError(clientID, "This lobby is not available");
-        readLock.unlock();
-    }
-
-    @Override
-    public void getLeaderboard(int clientID, int playerNum) {
-
-    }
+    //=============================================================================
+    // Game interaction methods
+    //=============================================================================
 
     @Override
     public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
@@ -274,15 +201,82 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void ping(int clientID) {
+    public void getRank(int clientID, int lobbyID) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
             return;
 
-        connectionMonitor.updateClientLastSeen(client);
-        client.ping();
+        readLock.lock();
+        LobbyController lobby = lobbies.get(lobbyID);
+        if (lobby != null)
+            lobby.getRank(client);
+        else
+            client.showError(clientID, "This lobby is not available");
+        readLock.unlock();
     }
+
+    @Override
+    public void getLeaderboard(int clientID, int playerNum) {
+
+    }
+
+    //=============================================================================
+    // Client management methods
+    //=============================================================================
+
+    @Override
+    public void addClient(VirtualClient client) {
+        RMIClientInterface wrapper = new RMIClientInterface(client);
+        int id = nextClientID.getAndIncrement();
+
+        clients.put(id, wrapper);
+        connectionMonitor.registerClient(wrapper);
+
+        wrapper.setConnected(true);
+        wrapper.setID(id);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
+    }
+
+    public void addClient(TCPClientInterface client) {
+        int id = nextClientID.getAndIncrement();
+
+        clients.put(id, client);
+        connectionMonitor.registerClient(client);
+
+        client.setConnected(true);
+        client.setID(id);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
+    }
+
+    private boolean removeFromLobby(ClientInterface client, int lobbyID) {
+        boolean removed = false;
+
+        writeLock.lock();
+        LobbyController lobbyController = lobbies.get(lobbyID);
+
+        if (lobbyController != null) {
+            removed = lobbyController.removeFromLobby(client);
+
+            if (lobbyController.getPlayers().isEmpty())
+                lobbies.remove(lobbyID);
+        }
+
+        writeLock.unlock();
+
+        return removed;
+    }
+
+    private void removeFromAllLobbies(ClientInterface client) {
+        for (LobbyController lobbyController : lobbies.values())
+            lobbyController.removeFromLobby(client);
+    }
+
+    //=============================================================================
+    // Network related methods
+    //=============================================================================
 
     public void startServer(String ip, int tcpPort, int rmiPort) {
         try {
@@ -343,6 +337,20 @@ public class ServerController implements VirtualServer {
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
 
+    public void disconnectClient(ClientInterface client) {
+        client.setConnected(false);
+        client.cleanup();
+
+        clients.remove(client.getID());
+        connectionMonitor.unregisterClient(client);
+
+        LobbyController lobbyController = client.getCurrLobbyController();
+        if (lobbyController != null && !removeFromLobby(client, lobbyController.getID()))
+            removeFromAllLobbies(client);
+
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
+    }
+
     private void RMICleanup() {
         try {
             Registry registry = LocateRegistry.getRegistry();
@@ -364,7 +372,23 @@ public class ServerController implements VirtualServer {
         listenerService.submit(task);
     }
 
+    @Override
+    public void ping(int clientID) {
+        ClientInterface client = clients.get(clientID);
+
+        if (client == null)
+            return;
+
+        connectionMonitor.updateClientLastSeen(client);
+        client.ping();
+    }
+
+    //=============================================================================
+    // Getters
+    //=============================================================================
+
     public Map<Integer, LobbyController> getLobbies() {
         return lobbies;
     }
+
 }
