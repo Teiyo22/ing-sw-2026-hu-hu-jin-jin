@@ -11,7 +11,7 @@ public class AddPlayerResponse extends Response {
 
     public AddPlayerResponse(int clientID, int lobbyID , Player player) {
         super(clientID);
-        this.type = MessageType.JOIN_LOBBY;
+        this.type = MessageType.ADD_PLAYER;
         this.lobbyID = lobbyID;
         this.player = player;
     }
