@@ -66,20 +66,20 @@ public class LobbySelectionScreen implements Screen {
         System.out.println(Formatter.formatLine("0. Disconnect"));
         System.out.println(Formatter.formatLine("1. List"));
 
-        if (currLobby == null || !currLobby.contains(clientController.getID()))
+        if (currLobby == null || !currLobby.containsClient(clientController.getID()))
             System.out.println(Formatter.formatLine("2. Create"));
 
-        if (waitingLobbies != null && !waitingLobbies.isEmpty() && !(currLobby != null && currLobby.contains(clientController.getID())))
+        if (waitingLobbies != null && !waitingLobbies.isEmpty() && !(currLobby != null && currLobby.containsClient(clientController.getID())))
             System.out.println(Formatter.formatLine("3. Info"));
 
         if (currLobby != null) {
-            if (!currLobby.contains(clientController.getID()))
+            if (!currLobby.containsClient(clientController.getID()))
                 System.out.println(Formatter.formatLine("4. Join"));
             else
                 System.out.println(Formatter.formatLine("5. Leave"));
         }
 
-        if (currLobby != null && currLobby.contains(clientController.getID()) && currLobby.getPlayerCount() == currLobby.getSize())
+        if (currLobby != null && currLobby.containsClient(clientController.getID()) && currLobby.getPlayerCount() == currLobby.getSize())
             System.out.println(Formatter.formatLine("6. Start"));
     }
 
@@ -109,7 +109,7 @@ public class LobbySelectionScreen implements Screen {
         String playerName;
         Totem totem = null;
 
-        if (currLobby != null && currLobby.contains(clientController.getID())) {
+        if (currLobby != null && currLobby.containsClient(clientController.getID())) {
             handleInvalidInput();
             return;
         }
@@ -179,7 +179,7 @@ public class LobbySelectionScreen implements Screen {
     private void handleInfo() {
         int lobbyID;
 
-        if (waitingLobbies == null || waitingLobbies.isEmpty() || (currLobby != null && currLobby.contains(clientController.getID()))) {
+        if (waitingLobbies == null || waitingLobbies.isEmpty() || (currLobby != null && currLobby.containsClient(clientController.getID()))) {
             handleInvalidInput();
             return;
         }
@@ -221,7 +221,7 @@ public class LobbySelectionScreen implements Screen {
         String playerName;
         Totem totem;
 
-        if (currLobby == null || currLobby.contains(clientController.getID())) {
+        if (currLobby == null || currLobby.containsClient(clientController.getID())) {
             handleInvalidInput();
             return;
         }
@@ -291,7 +291,7 @@ public class LobbySelectionScreen implements Screen {
 
     private void handleStart() {
         if (currLobby == null ||
-            !currLobby.contains(clientController.getID()) ||
+            !currLobby.containsClient(clientController.getID()) ||
             currLobby.getPlayerCount() != currLobby.getSize()) {
             handleInvalidInput();
             return;

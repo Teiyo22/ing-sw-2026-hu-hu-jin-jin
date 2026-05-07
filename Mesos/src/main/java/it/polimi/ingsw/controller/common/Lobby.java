@@ -2,9 +2,6 @@ package it.polimi.ingsw.controller.common;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -15,9 +12,7 @@ import java.util.Map;
 public class Lobby implements Serializable {
     private int lobbyID;
     private int size;
-    private boolean running = false;
 
-    transient private ClientController clientController = null;
     transient private Map<Player, Integer> players = null;
     transient private Board board = null;
 
@@ -32,48 +27,44 @@ public class Lobby implements Serializable {
         this.players = new HashMap<>(players);
     }
 
+    //=============================================================================
+    // Player Management methods
+    //=============================================================================
+
+    public void addClient(Integer clientID, Player player) {
+        if (players.containsKey(player))
+            players.put(player, clientID);
+    }
+
     public void addPlayer(Integer clientID, Player player) {
-        if (players == null)
-            players = new HashMap<>();
-
-        if (!players.containsKey(clientID))
-            players.put(clientID, player);
+        if (!players.containsKey(player))
+            players.put(player, clientID);
     }
 
-    public void initGame(Map<Integer, Tribe> tribes, Board board) {
+    public void removeClient(Integer clientID, Player player) {
+        if (players.containsKey(player) && players.get(player).equals(clientID))
+            players.put(player, null);
+    }
+
+    public void removePlayer(Integer clientID, Player player) {
+        if (players.containsKey(player) && players.get(player).equals(clientID))
+            players.remove(player);
+    }
+
+    //=============================================================================
+    // Model management methods
+    //=============================================================================
+
+    public void initGame(Map<Player, Tribe> tribes, Board board) {
         this.board = board;
 
-        for(Integer clientID: tribes.keySet()) {
-            players.get(clientID).setTribe(tribes.get(clientID));
-        }
-
-        running = true;
+        for (Player player : players.keySet())
+            player.setTribe(tribes.get(player));
     }
 
-    public void updateTribe(int clientID, Tribe tribe) {
-        players.get(clientID).setTribe(tribe);
-    }
-
-    public void updateRows(Row topRow, Row bottomRow) {
-        board.setTopRow(topRow);
-        board.setBottomRow(bottomRow);
-    }
-
-    public void updateOfferTrack(OfferTile[] offerTrack) {
-        board.setOfferTrack(offerTrack);
-    }
-
-    public void updateOrderTile(OrderSlot[] orderTile) {
-        board.setOrderTile(orderTile);
-    }
-
-    public void updateBoard(Board board) {
-        this.board = board;
-    }
-
-    public void removePlayer(int clientID) {
-        players.remove(clientID);
-    }
+    //=============================================================================
+    // Getters
+    //=============================================================================
 
     public int getLobbyID() {
         return lobbyID;
@@ -87,19 +78,7 @@ public class Lobby implements Serializable {
         return players.size();
     }
 
-    public void setPlayers(Map<Integer, Player> players) {
-        this.players = players;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public boolean contains(int clientID) {
-        return players.containsKey(clientID);
-    }
-
-    public Map<Integer, Player> getPlayers() {
+    public Map<Player, Integer> getPlayers() {
         return players;
     }
 
@@ -107,7 +86,20 @@ public class Lobby implements Serializable {
         return board;
     }
 
+    public boolean containsClient(int clientID) {
+        return players.containsValue(clientID);
+    }
+
     public Lobby copy() {
         return new Lobby(lobbyID, size, players);
     }
+
+    //=============================================================================
+    // Getters
+    //=============================================================================
+
+    public void setPlayers(Map<Player, Integer> players) {
+        this.players = players;
+    }
+
 }
