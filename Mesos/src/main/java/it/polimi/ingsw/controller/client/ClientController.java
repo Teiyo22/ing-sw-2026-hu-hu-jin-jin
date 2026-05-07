@@ -66,7 +66,7 @@ public class ClientController implements VirtualClient {
                 currLobby = lobby;
                 lobby.setPlayers(players);
             } else
-                ; // TODO: show error
+                showError(clientID, "This lobby is not available");
 
             view.update();
         }
@@ -76,7 +76,7 @@ public class ClientController implements VirtualClient {
     public void addClient(int clientID, int lobbyID, Player player) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.addPlayer(clientID, player);
+                currLobby.addClient(clientID, player);
 
             view.update();
         }
@@ -84,14 +84,19 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void addPlayer(int clientID, int lobbyID, Player player) {
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.addPlayer(clientID, player);
 
+            view.update();
+        }
     }
 
     @Override
     public void removeClient(int clientID, int lobbyID, Player player) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.removePlayer(clientID);
+                currLobby.removeClient(clientID, player);
 
             view.update();
         }
@@ -99,14 +104,23 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void removePlayer(int clientID, int lobbyID, Player player) {
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.removePlayer(clientID, player);
 
+            view.update();
+        }
     }
 
     @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
         synchronized (lock) {
             currLobby = lobby;
-            currLobby.addPlayer(clientID, player);
+
+            Map<Player, Integer> players = new HashMap<>();
+            players.put(player, clientID);
+
+            currLobby.setPlayers(players);
 
             view.update();
         }
@@ -116,27 +130,26 @@ public class ClientController implements VirtualClient {
     public void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                if (currLobby.contains(id)) {
-                    waitingLobbies.clear();
+                waitingLobbies.clear();
 
-                    currLobby.initGame(tribes, board);
-                    view.transitionTo(ScreenType.GAME_PLAY);
-                } else {
-                    currLobby = null;
-                    view.update();
-                }
+                currLobby.initGame(tribes, board);
+                view.transitionTo(ScreenType.GAME_PLAY);
             }
         }
     }
 
     @Override
     public void stopLobby(int clientID, int lobbyID) {
-
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
+            }
+        }
     }
 
     @Override
     public void showError(int clientID, String error) {
-//        view.renderError(errorMessage);
+        view.displayError(error);
     }
 
     //=============================================================================
@@ -145,8 +158,7 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-//        this.rankings = rankings;
-        view.transitionTo(ScreenType.GAME_END);
+        ;
     }
 
     @Override
@@ -156,14 +168,7 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void updateModel(int clientID, Board board, Tribe updatedTribe) {
-        synchronized (lock) {
-            if (currLobby != null) {
-                currLobby.updateBoard(board);
-                currLobby.updateTribe(clientID, updatedTribe);
-            }
-
-            view.transitionTo(ScreenType.GAME_PLAY); // TODO: depends on the game state
-        }
+        ;
     }
 
     //=============================================================================
@@ -264,7 +269,7 @@ public class ClientController implements VirtualClient {
 
     public List<Player> getPlayers() {
         synchronized (lock) {
-            return new ArrayList<>(currLobby.getPlayers().values());
+            return new ArrayList<>(currLobby.getPlayers().keySet());
         }
     }
 
