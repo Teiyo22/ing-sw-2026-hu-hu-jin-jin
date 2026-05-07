@@ -3,18 +3,21 @@ package it.polimi.ingsw.controller.common.messages.responses;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.model.player.Player;
 
-public class LeaveLobbyResponse extends Response {
+public class RemovePlayerResponse extends Response {
     private int lobbyID;
+    private Player player;
 
-    public LeaveLobbyResponse(int clientID, int lobbyID){
+    public RemovePlayerResponse(int clientID, int lobbyID, Player player){
         super(clientID);
-        this.type = MessageType.LEAVE_LOBBY;
+        this.type = MessageType.REMOVE_PLAYER;
         this.lobbyID = lobbyID;
+        this.player = player;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.removeFromLobby(super.getClientID(), lobbyID);
+        clientController.removeClient(super.getClientID(), lobbyID);
     }
 }

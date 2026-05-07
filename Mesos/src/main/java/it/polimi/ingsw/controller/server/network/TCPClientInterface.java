@@ -53,11 +53,20 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void removeFromLobby(int clientID, int lobbyID) {
+    public synchronized void removeClient(int clientID, int lobbyID) {
         if (!isConnected)
             return;
 
-        LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
+        RemoveClientResponse response = new RemoveClientResponse(clientID, lobbyID);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
+    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
+        if (!isConnected)
+            return;
+
+        RemovePlayerResponse response = new RemovePlayerResponse(clientID, lobbyID, player);
         clientHandler.sendMessage(response);
     }
 

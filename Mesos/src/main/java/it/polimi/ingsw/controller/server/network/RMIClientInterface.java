@@ -76,16 +76,29 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void removeFromLobby(int clientID, int lobbyID)  {
+    public synchronized void removeClient(int clientID, int lobbyID)  {
         if (!isConnected)
             return;
 
 
         try {
-            wrappedClient.removeFromLobby(clientID, lobbyID);
+            wrappedClient.removeClient(clientID, lobbyID);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
-                removeFromLobby(clientID, lobbyID);});
+                removeClient(clientID, lobbyID);});
+        }
+    }
+
+    @Override
+    public synchronized void removePlayer(int clientID, int lobbyID, Player player)  {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.removePlayer(clientID, lobbyID, player);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {
+                removePlayer(clientID, lobbyID, player);});
         }
     }
 

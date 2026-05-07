@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
-import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -52,7 +51,7 @@ public class LobbyFullState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeFromLobby(client.getID(), lobbyController.getID());
+                listener.removeClient(client.getID(), lobbyController.getID());
 
             lobbyController.setState(new LobbyWaitingState(lobbyController));
             return true;
