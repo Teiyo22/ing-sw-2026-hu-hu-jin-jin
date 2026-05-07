@@ -18,6 +18,6 @@ public class RemovePlayerResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.removeClient(super.getClientID(), lobbyID);
+        clientController.removePlayer(super.getClientID(), lobbyID, player);
     }
 }
