@@ -34,7 +34,7 @@ public class ClientController implements VirtualClient {
     private ServerInterface server = null;
 
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private final ExecutorService taskExecutor = Executors.newFixedThreadPool(5);
+    private final ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
 
 
     private Lobby currLobby = null;

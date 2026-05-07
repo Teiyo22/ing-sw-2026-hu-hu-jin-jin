@@ -29,7 +29,8 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.setID(clientID);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {setID(clientID);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                setID(clientID);});
         }
     }
 
@@ -41,21 +42,23 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.showWaitingLobbies(clientID, lobbies);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showWaitingLobbies(clientID, lobbies);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                showWaitingLobbies(clientID, lobbies);});
         }
     }
 
     @Override
-    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players)  {
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players)  {
         if (!isConnected)
             return;
 
-        currLobbyID = lobbyID;
+        setCurrLobbyController(lobbyID);
 
         try {
             wrappedClient.showLobbyInfo(clientID, lobbyID, players);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showLobbyInfo(clientID, lobbyID, players);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                showLobbyInfo(clientID, lobbyID, players);});
         }
     }
 
@@ -63,8 +66,6 @@ public class RMIClientInterface extends ClientInterface {
     public void addToLobby(int clientID, int lobbyID, Player player)  {
         if (!isConnected)
             return;
-
-        if (clientID == this.id) currLobbyID = lobbyID;
 
         try {
             wrappedClient.addToLobby(clientID, lobbyID, player);
@@ -79,12 +80,12 @@ public class RMIClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        if (clientID == this.id) currLobbyID = -1;
 
         try {
             wrappedClient.removeFromLobby(clientID, lobbyID);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {removeFromLobby(clientID, lobbyID);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                removeFromLobby(clientID, lobbyID);});
         }
     }
 
@@ -96,7 +97,8 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.showRank(clientID, lobbyID, rankings);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showRank(clientID, lobbyID, rankings);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                showRank(clientID, lobbyID, rankings);});
         }
     }
 
@@ -108,7 +110,8 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.showLeaderboard(clientID, leaderboard);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showLeaderboard(clientID, leaderboard);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                showLeaderboard(clientID, leaderboard);});
         }
     }
 
@@ -126,16 +129,17 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void createLobby(int clientID, Lobby lobby, Player player)  {
+    public synchronized void createLobby(int clientID, Lobby lobby, Player player)  {
         if (!isConnected)
             return;
 
-        currLobbyID = lobby.getLobbyID();
+        setCurrLobbyController(lobby.getLobbyID());
 
         try {
             wrappedClient.createLobby(clientID, lobby, player);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {createLobby(clientID, lobby, player);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                createLobby(clientID, lobby, player);});
         }
     }
 
@@ -147,7 +151,8 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.startLobby(clientID, lobbyID, board, tribes);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {startLobby(clientID, lobbyID, board, tribes);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                startLobby(clientID, lobbyID, board, tribes);});
         }
     }
 
@@ -155,8 +160,6 @@ public class RMIClientInterface extends ClientInterface {
     public void removeLobby(int lobbyID)  {
         if (!isConnected)
             return;
-
-        if (currLobbyID == lobbyID) currLobbyID = -1;
 
         try {
             wrappedClient.removeLobby(lobbyID);
@@ -174,7 +177,8 @@ public class RMIClientInterface extends ClientInterface {
         try {
             wrappedClient.showError(clientID, errorMessage);
         } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {showError(clientID, errorMessage);});
+            ServerController.getInstance().scheduleRetry(() -> {
+                showError(clientID, errorMessage);});
         }
     }
 

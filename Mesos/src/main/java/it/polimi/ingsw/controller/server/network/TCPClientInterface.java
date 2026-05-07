@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,11 +33,11 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         if (!isConnected)
             return;
 
-        currLobbyID = lobbyID;
+        setCurrLobbyController(lobbyID);
 
         LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
         clientHandler.sendMessage(response);
@@ -49,8 +48,6 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
-        if (clientID == this.id) currLobbyID = lobbyID;
-
         JoinLobbyResponse response = new JoinLobbyResponse(clientID, lobbyID, player);
         clientHandler.sendMessage(response);
     }
@@ -59,8 +56,6 @@ public class TCPClientInterface extends ClientInterface {
     public void removeFromLobby(int clientID, int lobbyID) {
         if (!isConnected)
             return;
-
-        if (clientID == this.id) currLobbyID = -1;
 
         LeaveLobbyResponse response = new LeaveLobbyResponse(clientID, lobbyID);
         clientHandler.sendMessage(response);
@@ -95,11 +90,11 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void createLobby(int clientID, Lobby lobby, Player player) {
+    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
         if (!isConnected)
             return;
 
-        currLobbyID = lobby.getLobbyID();
+        setCurrLobbyController(lobby.getLobbyID());
 
         CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
         clientHandler.sendMessage(response);
@@ -128,8 +123,6 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void removeLobby(int lobbyID) {
-        if (currLobbyID == lobbyID) currLobbyID = -1;
-
         RemoveLobbyMessage message = new RemoveLobbyMessage(this.id, lobbyID);
         clientHandler.sendMessage(message);
     }

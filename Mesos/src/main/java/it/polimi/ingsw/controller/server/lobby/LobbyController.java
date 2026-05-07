@@ -22,7 +22,7 @@ public class LobbyController {
     private final int size;
 
     private final Map<ClientInterface, Player> players = new ConcurrentHashMap<>();
-    private final Set<ClientInterface> listeners = new HashSet<>();
+    private final Set<ClientInterface> listeners = ConcurrentHashMap.newKeySet();
 
     private Game model = null;
     private LobbyState state;

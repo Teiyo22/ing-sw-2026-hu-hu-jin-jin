@@ -58,16 +58,14 @@ public class LobbyFullState extends LobbyState {
             return true;
         }
 
-        return  false;
+        return false;
     }
 
     @Override
     public void getLobbyInfo(ClientInterface client) {
-        lobbyController.getListeners().add(client);
-
         Map<Integer, Player> playerInfo = new HashMap<>();
 
-        for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
+        for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
             playerInfo.put(player.getKey().getID(), player.getValue());
 
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);

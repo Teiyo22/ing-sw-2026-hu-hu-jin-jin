@@ -86,7 +86,8 @@ public class ServerController implements VirtualServer {
         clients.remove(client.getID());
         connectionMonitor.unregisterClient(client);
 
-        if (!leaveLobby(client, client.getCurrLobbyID()))
+        LobbyController lobbyController = client.getCurrLobbyController();
+        if (lobbyController != null && !leaveLobby(client, lobbyController.getID()))
             removeFromAllLobbies(client);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
@@ -118,8 +119,9 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
-        if (client.getCurrLobbyID() != -1)
-            leaveLobby(client, client.getCurrLobbyID());
+        LobbyController currLobbyController = client.getCurrLobbyController();
+        if (currLobbyController != null)
+            leaveLobby(client, currLobbyController.getID());
 
         int id = nextLobbyID.getAndIncrement();
 
@@ -205,13 +207,6 @@ public class ServerController implements VirtualServer {
 
         readLock.lock();
         LobbyController lobbyController;
-
-        if (client.getCurrLobbyID() != lobbyID) {
-            lobbyController = lobbies.get(client.getCurrLobbyID());
-
-            if (lobbyController != null)
-                lobbyController.getListeners().remove(client);
-        }
 
         lobbyController = lobbies.get(lobbyID);
 
@@ -367,5 +362,9 @@ public class ServerController implements VirtualServer {
 
     public void submitListener(Runnable task) {
         listenerService.submit(task);
+    }
+
+    public Map<Integer, LobbyController> getLobbies() {
+        return lobbies;
     }
 }
