@@ -47,8 +47,8 @@ public class LobbyController {
         state.startLobby(startClient);
     }
 
-    public synchronized boolean removeFromLobby(ClientInterface leaveClient) {
-        return state.removeFromLobby(leaveClient);
+    public synchronized boolean removeClient(ClientInterface leaveClient) {
+        return state.removeClient(leaveClient);
     }
 
     //=============================================================================

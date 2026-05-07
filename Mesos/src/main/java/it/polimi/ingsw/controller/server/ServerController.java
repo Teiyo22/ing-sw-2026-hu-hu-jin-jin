@@ -66,7 +66,7 @@ public class ServerController implements VirtualServer {
 
         LobbyController currLobbyController = client.getCurrLobbyController();
         if (currLobbyController != null)
-            removeFromLobby(client, currLobbyController.getID());
+            removeClientFrom(client, currLobbyController.getID());
 
         int id = nextLobbyID.getAndIncrement();
 
@@ -104,8 +104,8 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
-        if(!removeFromLobby(client, lobbyID))
-            removeFromAllLobbies(client);
+        if(!removeClientFrom(client, lobbyID))
+            removeClientFromAll(client);
     }
 
     @Override
@@ -251,14 +251,14 @@ public class ServerController implements VirtualServer {
         Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
     }
 
-    private boolean removeFromLobby(ClientInterface client, int lobbyID) {
+    private boolean removeClientFrom(ClientInterface client, int lobbyID) {
         boolean removed = false;
 
         writeLock.lock();
         LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null) {
-            removed = lobbyController.removeFromLobby(client);
+            removed = lobbyController.removeClient(client);
 
             if (lobbyController.isRemovable())
                 lobbies.remove(lobbyID);
@@ -269,9 +269,27 @@ public class ServerController implements VirtualServer {
         return removed;
     }
 
-    private void removeFromAllLobbies(ClientInterface client) {
+    private void removeClientFromAll(ClientInterface client) {
         for (LobbyController lobbyController : lobbies.values())
-            lobbyController.removeFromLobby(client);
+            removeClientFrom(client, lobbyController.getID());
+    }
+
+    private boolean removeListenerFrom(ClientInterface client, int lobbyID) {
+        boolean removed = false;
+
+        readLock.lock();
+        LobbyController lobbyController = lobbies.get(lobbyID);
+
+        if (lobbyController != null)
+            removed = lobbyController.getListeners().remove(client);
+        readLock.unlock();
+
+        return  removed;
+    }
+
+    private void removeListenerFromAll(ClientInterface client) {
+        for (LobbyController lobbyController : lobbies.values())
+            removeListenerFrom(client, lobbyController.getID());
     }
 
     //=============================================================================
@@ -345,8 +363,13 @@ public class ServerController implements VirtualServer {
         connectionMonitor.unregisterClient(client);
 
         LobbyController lobbyController = client.getCurrLobbyController();
-        if (lobbyController != null && !removeFromLobby(client, lobbyController.getID()))
-            removeFromAllLobbies(client);
+        if (lobbyController != null) {
+            if (!removeClientFrom(client, lobbyController.getID()))
+                removeClientFromAll(client);
+
+            if (!removeListenerFrom(client, lobbyController.getID()))
+                removeListenerFromAll(client);
+        }
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
     }

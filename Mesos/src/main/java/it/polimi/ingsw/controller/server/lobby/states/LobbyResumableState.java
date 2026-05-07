@@ -42,7 +42,7 @@ public class LobbyResumableState extends LobbyState {
     }
 
     @Override
-    public boolean removeFromLobby(ClientInterface client) {
+    public boolean removeClient(ClientInterface client) {
         Player removedPlayer = lobbyController.getPlayers().remove(client);
 
         if (removedPlayer != null) {

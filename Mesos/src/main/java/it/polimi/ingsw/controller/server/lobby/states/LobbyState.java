@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
-import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.card.Pickable;
@@ -17,7 +16,7 @@ public abstract class LobbyState {
 
     public abstract void joinLobby(ClientInterface client, Player player);
     public abstract void startLobby(ClientInterface client);
-    public abstract boolean removeFromLobby(ClientInterface client);
+    public abstract boolean removeClient(ClientInterface client);
     public abstract void getLobbyInfo(ClientInterface client);
     public abstract void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks);
 
