@@ -148,9 +148,16 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Player))
-            return false;
+        if (this == obj) return true; // Optimization
+        if (!(obj instanceof Player)) return false;
 
-        return ((Player) obj).getName().equals(name) && ((Player) obj).getTotem().equals(totem);
+        Player other = (Player) obj;
+        return java.util.Objects.equals(name, other.name) &&
+                java.util.Objects.equals(totem, other.totem);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, totem);
     }
 }
