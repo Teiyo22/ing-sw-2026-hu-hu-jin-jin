@@ -36,11 +36,14 @@ public class ClientController implements VirtualClient {
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
     private final ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
 
-
     private Lobby currLobby = null;
     private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
 
     private final Object lock = new Object();
+
+    //=============================================================================
+    // Lobby management methods
+    //=============================================================================
 
     @Override
     public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
@@ -55,7 +58,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+    public void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players) {
         synchronized (lock) {
             Lobby lobby = waitingLobbies.get(lobbyID);
 
@@ -70,7 +73,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void addToLobby(int clientID, int lobbyID, Player player) {
+    public void addClient(int clientID, int lobbyID, Player player) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.addPlayer(clientID, player);
@@ -80,13 +83,23 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void removeFromLobby(int clientID, int lobbyID) {
+    public void addPlayer(int clientID, int lobbyID, Player player) {
+
+    }
+
+    @Override
+    public void removeClient(int clientID, int lobbyID, Player player) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removePlayer(clientID);
 
             view.update();
         }
+    }
+
+    @Override
+    public void removePlayer(int clientID, int lobbyID, Player player) {
+
     }
 
     @Override
@@ -100,7 +113,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+    public void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 if (currLobby.contains(id)) {
@@ -115,6 +128,20 @@ public class ClientController implements VirtualClient {
             }
         }
     }
+
+    @Override
+    public void stopLobby(int clientID, int lobbyID) {
+
+    }
+
+    @Override
+    public void showError(int clientID, String error) {
+//        view.renderError(errorMessage);
+    }
+
+    //=============================================================================
+    // Game related methods
+    //=============================================================================
 
     @Override
     public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
@@ -139,27 +166,9 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    @Override
-    public void showError(int clientID, String error) {
-//        view.renderError(errorMessage);
-    }
-
-    @Override
-    public void ping() {
-        connectionMonitor.updateServerLastSeen();
-    }
-
-    @Override
-    public void setID(int clientID) {
-        id = clientID;
-        init = true;
-
-        Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
-    }
-
-    public int getID() {
-        return id;
-    }
+    //=============================================================================
+    // Network related methods
+    //=============================================================================
 
     /**
      * Connecting to the server using RMI.
@@ -200,10 +209,6 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    public boolean isInit() {
-        return init;
-    }
-
     public synchronized void disconnect() {
         server.disconnect();
         currLobby = null;
@@ -214,8 +219,37 @@ public class ClientController implements VirtualClient {
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }
 
+    public void executeCommand(Runnable command) {
+        taskExecutor.submit(command);
+    }
+
+    @Override
+    public void ping() {
+        connectionMonitor.updateServerLastSeen();
+    }
+
+    //=============================================================================
+    // Setters
+    //=============================================================================
+
+    @Override
+    public void setID(int clientID) {
+        id = clientID;
+        init = true;
+
+        Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
+    }
+
     public void setView(View view) {
         this.view = view;
+    }
+
+    //=============================================================================
+    // Getters
+    //=============================================================================
+
+    public int getID() {
+        return id;
     }
 
     public ServerInterface getServer() {
@@ -246,7 +280,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    public void executeCommand(Runnable command) {
-        taskExecutor.submit(command);
+    public boolean isInit() {
+        return init;
     }
 }
