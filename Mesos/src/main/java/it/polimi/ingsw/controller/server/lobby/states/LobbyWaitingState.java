@@ -17,7 +17,7 @@ public class LobbyWaitingState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        if (validatePlayerInfo(player)) {
+        if (validatePlayerInfo(player) && !lobbyController.getPlayers().containsKey(client)) {
             lobbyController.getPlayers().put(client, player);
 
             for (ClientInterface listener : lobbyController.getListeners())
