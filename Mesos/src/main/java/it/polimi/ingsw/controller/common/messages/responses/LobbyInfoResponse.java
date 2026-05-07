@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class LobbyInfoResponse extends Response {
     private int lobbyID;
-    private Map<Integer, Player> players;
+    private Map<Player, Integer> players;
 
-    public LobbyInfoResponse(int clientID, int lobbyID, Map<Integer, Player> players){
+    public LobbyInfoResponse(int clientID, int lobbyID, Map<Player, Integer> players){
         super(clientID);
         this.type = MessageType.LOBBY_INFO;
         this.lobbyID = lobbyID;

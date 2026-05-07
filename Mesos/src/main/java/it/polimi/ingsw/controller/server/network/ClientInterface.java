@@ -9,8 +9,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +19,14 @@ public abstract class ClientInterface implements VirtualClient {
 
 
     public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
-    public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
+    public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players);
     public abstract void addToLobby(int clientID, int lobbyID, Player player);
     public abstract void removeFromLobby(int clientID, int lobbyID);
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
     public abstract void updateModel(int clientID, Board board, Tribe updatedTribe);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
-    public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
+    public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes);
     public abstract void ping();
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);

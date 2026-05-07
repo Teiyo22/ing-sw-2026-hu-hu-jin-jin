@@ -53,10 +53,10 @@ public class LobbyWaitingState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Map<Integer, Player> playerInfo = new HashMap<>();
+        Map<Player, Integer> playerInfo = new HashMap<>();
 
         for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
-            playerInfo.put(player.getKey().getID(), player.getValue());
+            playerInfo.put(player.getValue(), player.getKey().getID());
 
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
     }

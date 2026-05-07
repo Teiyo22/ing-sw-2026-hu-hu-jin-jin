@@ -48,7 +48,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players)  {
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Player, Integer> players)  {
         if (!isConnected)
             return;
 
@@ -144,7 +144,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes)  {
+    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Player, Tribe> tribes)  {
         if (!isConnected)
             return;
 

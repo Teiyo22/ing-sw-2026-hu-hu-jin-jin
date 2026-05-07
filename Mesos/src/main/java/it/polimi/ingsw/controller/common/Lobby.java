@@ -18,7 +18,7 @@ public class Lobby implements Serializable {
     private boolean running = false;
 
     transient private ClientController clientController = null;
-    transient private Map<Integer, Player> players = null;
+    transient private Map<Player, Integer> players = null;
     transient private Board board = null;
 
     public Lobby(int lobbyID, int size) {
@@ -26,7 +26,7 @@ public class Lobby implements Serializable {
         this.size = size;
     }
 
-    private Lobby(int lobbyID, int size, Map<Integer, Player> players) {
+    private Lobby(int lobbyID, int size, Map<Player, Integer> players) {
         this.lobbyID = lobbyID;
         this.size = size;
         this.players = new HashMap<>(players);
