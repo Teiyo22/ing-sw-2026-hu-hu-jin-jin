@@ -6,6 +6,11 @@ public abstract class TurnState {
     protected Player currPlayer;
     protected int index;
 
+    public TurnState(Player currPlayer, int index){
+        this.currPlayer = currPlayer;
+        this.index = index;
+    }
+
     public abstract boolean canPickCard();
     public abstract boolean canPickOffer();
     public abstract boolean hasEnded();
