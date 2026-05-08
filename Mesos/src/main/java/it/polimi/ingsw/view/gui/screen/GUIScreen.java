@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public abstract class GUIScreen implements ActionListener {
-    JFrame frame;
-    ClientController controller;
+    protected JFrame frame;
+    protected ClientController controller;
 
     public GUIScreen(JFrame frame, ClientController controller) {
         this.frame = frame;
