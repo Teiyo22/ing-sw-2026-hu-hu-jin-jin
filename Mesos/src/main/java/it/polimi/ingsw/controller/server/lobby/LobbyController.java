@@ -96,7 +96,7 @@ public class LobbyController {
         return model;
     }
 
-    public synchronized Lobby getLobby() {
+    public Lobby getLobby() {
         return new Lobby(lobbyID, size);
     }
 
