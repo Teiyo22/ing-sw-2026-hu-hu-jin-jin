@@ -264,6 +264,7 @@ public class ServerController implements VirtualServer {
         LobbyController lobbyController = lobbies.get(lobbyID);
 
         if (lobbyController != null) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Removing client " + client.getID() + " from lobby " + lobbyID);
             removed = lobbyController.removeClient(client);
 
             if (lobbyController.isRemovable())
@@ -362,6 +363,9 @@ public class ServerController implements VirtualServer {
     }
 
     public void disconnectClient(ClientInterface client) {
+        if (!client.isConnected())
+            return;
+
         client.setConnected(false);
         client.cleanup();
 

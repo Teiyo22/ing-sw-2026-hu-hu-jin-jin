@@ -4,6 +4,8 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,8 +19,10 @@ public class LobbyWaitingState extends LobbyState {
     @Override
     public void joinLobby(ClientInterface client, Player player) {
         if (validatePlayerInfo(player) && !lobbyController.getPlayers().containsKey(client)) {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Sent data was validated, adding player to lobby");
             lobbyController.getPlayers().put(client, player);
 
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying listeners of new player");
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.addPlayer(client.getID(), lobbyController.getID(), player);
 
@@ -54,9 +58,11 @@ public class LobbyWaitingState extends LobbyState {
 
         Map<Integer, Player> playerInfo = new HashMap<>();
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Preparing Info of lobby " + lobbyController.getID() + " for client " + client.getID());
         for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
             playerInfo.put(player.getKey().getID(), player.getValue());
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending lobby info to client " + client.getID());
         client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
     }
 

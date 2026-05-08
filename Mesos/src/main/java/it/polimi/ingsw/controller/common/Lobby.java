@@ -12,6 +12,7 @@ public class Lobby implements Serializable {
     private int lobbyID;
     private int size;
 
+    transient private Player shownPlayer = null;
     transient private Map<Player, Integer> players = null;
     transient private Board board = null;
 
@@ -61,6 +62,14 @@ public class Lobby implements Serializable {
             player.setTribe(tribes.get(players.get(player)));
     }
 
+    public void showPlayer(Player player) {
+        shownPlayer = player;
+    }
+
+    public void hidePlayer() {
+        shownPlayer = null;
+    }
+
     //=============================================================================
     // Getters
     //=============================================================================
@@ -85,12 +94,20 @@ public class Lobby implements Serializable {
         return board;
     }
 
+    public Player getShownPlayer() {
+        return shownPlayer;
+    }
+
     public boolean containsClient(int clientID) {
         return players.containsValue(clientID);
     }
 
     public Lobby copy() {
         return new Lobby(lobbyID, size, players);
+    }
+
+    public boolean isShownPlayer() {
+        return shownPlayer != null;
     }
 
     //=============================================================================

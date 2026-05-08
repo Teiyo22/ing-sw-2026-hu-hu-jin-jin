@@ -80,7 +80,7 @@ public class ConnectionMonitor {
         scheduler.shutdown();
 
         try {
-            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
+            if (!scheduler.awaitTermination(3, TimeUnit.SECONDS)) {
                 scheduler.shutdownNow();
             }
         } catch (InterruptedException e) {

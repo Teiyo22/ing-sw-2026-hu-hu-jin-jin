@@ -61,6 +61,10 @@ public abstract class ClientInterface implements VirtualClient {
         isConnected = connected;
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
     @Override
     public String toString() {
         return "[Client " + id + "]";

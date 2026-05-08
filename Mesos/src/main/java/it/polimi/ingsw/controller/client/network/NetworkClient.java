@@ -59,8 +59,12 @@ public class NetworkClient extends Thread {
             }
         } catch (SocketException e) {
             Logger.getInstance().print(LoggerLevel.CLIENT, "TCP Socket closed");
-        } catch (IOException ignore) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.CLIENT, "Failed to read from TCP socket");
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         } finally {
             server.getClientController().disconnect();
         }

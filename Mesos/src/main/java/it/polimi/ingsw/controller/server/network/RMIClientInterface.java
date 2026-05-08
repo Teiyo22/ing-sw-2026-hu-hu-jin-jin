@@ -7,6 +7,8 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -52,9 +54,11 @@ public class RMIClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Setting current lobby controller to " + lobbyID);
         setCurrLobbyController(lobbyID);
 
         try {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: showLobbyInfo");
             wrappedClient.showLobbyInfo(clientID, lobbyID, players);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
@@ -68,6 +72,7 @@ public class RMIClientInterface extends ClientInterface {
             return;
 
         try {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: addClient");
             wrappedClient.addClient(clientID, lobbyID, player);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
@@ -81,6 +86,7 @@ public class RMIClientInterface extends ClientInterface {
             return;
 
         try {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: addPlayer");
             wrappedClient.addPlayer(clientID, lobbyID, player);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
@@ -175,6 +181,7 @@ public class RMIClientInterface extends ClientInterface {
             return;
 
         try {
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: startLobby");
             wrappedClient.startLobby(clientID, lobbyID, board, tribes);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {

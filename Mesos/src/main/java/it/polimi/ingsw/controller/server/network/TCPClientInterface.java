@@ -8,6 +8,8 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.List;
 import java.util.Map;
@@ -37,8 +39,10 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Setting current lobby controller to " + lobbyID);
         setCurrLobbyController(lobbyID);
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending LobbyInfoResponse");
         LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
         clientHandler.sendMessage(response);
     }
@@ -48,6 +52,7 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending AddClientResponse");
         AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
         clientHandler.sendMessage(response);
     }
@@ -124,8 +129,10 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending AddClientResponse");
         StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
         clientHandler.sendMessage(response);
+        Logger.getInstance().print(LoggerLevel.DEBUG, "AddClientResponse sent");
     }
 
     @Override
@@ -133,6 +140,7 @@ public class TCPClientInterface extends ClientInterface {
         if (!isConnected)
             return;
 
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending StopLobbyResponse");
         StopLobbyResponse response = new StopLobbyResponse(clientID, lobbyID);
         clientHandler.sendMessage(response);
     }

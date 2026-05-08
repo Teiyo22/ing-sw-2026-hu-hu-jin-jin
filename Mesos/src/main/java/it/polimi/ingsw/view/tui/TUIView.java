@@ -5,13 +5,13 @@ import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
+import java.io.IOError;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class TUIView implements View {
     private Screen currScreen;
     private final ClientController clientController;
+
     private boolean running = true;
 
     public TUIView(ClientController clientController) {
@@ -23,36 +23,37 @@ public class TUIView implements View {
         transitionTo(ScreenType.LOBBY_SELECTION);
         try (Scanner scanner = new Scanner(System.in)) {
             while (running) {
-                if (System.in.available() > 0) {   // controlla prima
-                    String input = scanner.nextLine().trim();
-                    currScreen.handleInput(input);
-                }
-
-                TimeUnit.MILLISECONDS.sleep(50);
+                currScreen.render();
+                String input = scanner.nextLine().trim();
+                currScreen.handleInput(input);
             }
-        } catch (IOException | InterruptedException ignore) { }
+        } catch (IOError e) {
+            clientController.disconnect();
+        }
     }
 
     @Override
     public void close() {
         running = false;
+
+        System.out.println();
+        System.out.println("Client disconnected: press 'Enter' to exit...");
     }
 
     @Override
     public void displayError(String message) {
-
+        currScreen.showError(message);
     }
 
     @Override
     public void update() {
-        currScreen.update();
-        currScreen.render();
+        if (running)
+            currScreen.render();
     }
 
     @Override
     public void transitionTo(ScreenType type) {
         currScreen = ScreenType.getTUIScreen(type, clientController);
-        currScreen.update();
         currScreen.render();
     }
 }

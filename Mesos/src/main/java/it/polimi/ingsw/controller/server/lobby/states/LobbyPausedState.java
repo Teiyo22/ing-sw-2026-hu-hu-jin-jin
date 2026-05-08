@@ -4,7 +4,10 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +17,9 @@ public class LobbyPausedState extends LobbyState {
 
     public LobbyPausedState(LobbyController lobbyController) {
         super(lobbyController);
-        missingPlayers = lobbyController.getModel().getPlayers().stream()
+        missingPlayers = new ArrayList<>(lobbyController.getModel().getPlayers().stream()
                 .filter(p -> !lobbyController.getPlayers().containsValue(p))
-                .toList();
+                .toList());
     }
 
     @Override
@@ -52,10 +55,12 @@ public class LobbyPausedState extends LobbyState {
         Player removedPlayer = lobbyController.getPlayers().remove(client);
 
         if (removedPlayer != null) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Removed player " + removedPlayer.getName() + " from lobby");
             missingPlayers.add(removedPlayer);
 
-            for (ClientInterface listener : lobbyController.getListeners())
+            for (ClientInterface listener : lobbyController.getListeners()) {
                 listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
+            }
 
             return true;
         }

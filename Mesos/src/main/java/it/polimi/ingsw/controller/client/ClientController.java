@@ -105,7 +105,7 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removeClient(clientID, player);
-
+            System.out.println("Client removed");
             view.update();
         }
     }
@@ -148,6 +148,8 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void stopLobby(int clientID, int lobbyID) {
+        System.out.println(currLobby != null);
+        System.out.println(currLobby.getLobbyID() == lobbyID);
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 view.transitionTo(ScreenType.LOBBY_SELECTION);
@@ -227,6 +229,7 @@ public class ClientController implements VirtualClient {
             return;
 
         init = false;
+        view.close();
 
         server.disconnect();
         connectionMonitor.stop();
@@ -239,8 +242,6 @@ public class ClientController implements VirtualClient {
         } catch (InterruptedException e) {
             taskExecutor.shutdownNow();
         }
-
-        view.close();
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }

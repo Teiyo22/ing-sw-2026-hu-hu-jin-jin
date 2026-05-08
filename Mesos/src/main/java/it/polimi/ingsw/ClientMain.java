@@ -6,6 +6,8 @@ import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewFactory;
 
+import java.util.concurrent.TimeUnit;
+
 public class ClientMain {
     public static void main(String[] args) {
 //        if (args.length < 2 || args.length > 3) {
@@ -20,10 +22,10 @@ public class ClientMain {
         int tcpPort = 28910; // args.length == 3 ? Integer.parseInt(args[1]) : 0;
         int rmiPort = 1099; // Integer.parseInt(args[args.length == 3 ? 2 : 1]);
 
-        if (rmiPort <= 0 || tcpPort < 0) {
-            System.out.println("If ports are specified they must be larger than zero!");
-            System.exit(-1);
-        }
+//        if (rmiPort <= 0 || tcpPort < 0) {
+//            System.out.println("If ports are specified they must be larger than zero!");
+//            System.exit(-1);
+//        }
 
         ClientController controller = new ClientController();
         controller.connectTCP(address, tcpPort);
@@ -31,7 +33,17 @@ public class ClientMain {
         View view = ViewFactory.create("tui", controller);
         controller.setView(view);
 
-        view.show();
+        while (!controller.isInit()) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+
+        if (controller.isInit()) {
+            view.show();
+        }
 
         System.exit(0);
     }

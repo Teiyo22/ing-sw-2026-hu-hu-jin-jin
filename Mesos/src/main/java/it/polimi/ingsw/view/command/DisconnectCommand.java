@@ -1,16 +1,11 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.Screen;
 
 public class DisconnectCommand implements Command {
-    private final ClientController clientController;
-
-    public DisconnectCommand(ClientController clientController) {
-        this.clientController = clientController;
-    }
-
     @Override
-    public void execute() {
+    public void execute(ClientController clientController) {
         clientController.executeCommand(clientController::disconnect);
 
     }

@@ -1,18 +1,17 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.Screen;
 
 public class LobbyInfoCommand implements Command {
-    private final ClientController clientController;
     private final int lobbyID;
 
-    public LobbyInfoCommand(ClientController clientController, int lobbyID) {
-        this.clientController = clientController;
+    public LobbyInfoCommand(int lobbyID) {
         this.lobbyID = lobbyID;
     }
 
     @Override
-    public void execute() {
+    public void execute(ClientController clientController) {
         clientController.executeCommand(() -> {
             clientController.getServer().getLobbyInfo(clientController.getID(), lobbyID);
         });

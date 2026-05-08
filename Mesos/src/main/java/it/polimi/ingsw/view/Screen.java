@@ -3,6 +3,5 @@ package it.polimi.ingsw.view;
 public interface Screen {
     void render();
     void handleInput(String input);
-    void update();
-    void onExit();
+    void showError(String error);
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.server.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
@@ -50,18 +51,19 @@ public class ClientHandler extends Thread {
                 Request request = gson.fromJson(line, Request.class);
                 tcpClientInterface.handleMessage(request);
             }
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
         } catch (SocketException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+        } catch (JsonParseException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+        } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }
 
     public void sendMessage(Response response) {
         try {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message to client: " + gson.toJson(response));
             String message = gson.toJson(response);
             output.write(message);
             output.newLine();
@@ -69,11 +71,11 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             cleanup();
         } catch (Exception e) {
-            Logger.getInstance().print(LoggerLevel.ERROR,e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         }
     }
 
-    public void setClientTCPInterface(TCPClientInterface tcpClientInterface){
+    public void setClientTCPInterface(TCPClientInterface tcpClientInterface) {
         this.tcpClientInterface = tcpClientInterface;
     }
 
@@ -83,6 +85,7 @@ public class ClientHandler extends Thread {
                 socket.close();
                 Logger.getInstance().print(LoggerLevel.SERVER, "TCP Client Socket successfully closed");
             }
-        } catch (IOException ignore) { }
+        } catch (IOException ignore) {
+        }
     }
 }

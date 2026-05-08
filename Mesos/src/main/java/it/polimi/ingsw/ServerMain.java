@@ -13,7 +13,7 @@ public class ServerMain {
 //        }
 
         Logger l = Logger.getInstance();
-        l.setLevel(LoggerLevel.MODEL);
+        l.setLevel(LoggerLevel.DEBUG);
 
         String address = "127.0.0.1"; // args[0];
         int tcpPort = 28910; // args.length == 3 ? Integer.parseInt(args[1]) : 0;
