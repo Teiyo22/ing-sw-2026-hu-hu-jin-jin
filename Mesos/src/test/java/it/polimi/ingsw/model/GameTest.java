@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
@@ -27,7 +28,7 @@ public class GameTest {
         players.add(new Player("Alice", Totem.WHITE));
         players.add(new Player("Bob", Totem.WHITE));
         players.add(new Player("Carlo", Totem.WHITE));
-        g = new Game(PlayerConfig.FIVE, players);
+        g = new Game(new LobbyController(0, 5), PlayerConfig.FIVE, players);
     }
 
     @Test
@@ -40,16 +41,16 @@ public class GameTest {
 
     @Test
     void pickTest() {
-        List<Pickable> topPicks = new ArrayList<>();
-        List<Pickable> bottomPicks = new ArrayList<>();
+        List<Integer> topPicks = new ArrayList<>();
+        List<Integer> bottomPicks = new ArrayList<>();
 
         int topRowInitialSize = g.getBoard().getTopRow().getCharacterCards().size();
         int bottomRowInitialSize = g.getBoard().getBottomRow().getCharacterCards().size();
         AbstractCharacter topCard = g.getBoard().getTopRow().getCharacterCards().get(0);
         AbstractCharacter bottomCard = g.getBoard().getBottomRow().getCharacterCards().get(0);
 
-        topPicks.add(topCard);
-        bottomPicks.add(bottomCard);
+        topPicks.add(topCard.getID());
+        bottomPicks.add(bottomCard.getID());
 
         g.pick(players.get(0), topPicks, bottomPicks);
         assertEquals(topRowInitialSize - 1, g.getBoard().getTopRow().getCharacterCards().size());

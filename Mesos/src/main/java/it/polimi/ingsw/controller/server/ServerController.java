@@ -6,7 +6,6 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
-import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -173,7 +172,7 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)

@@ -60,7 +60,7 @@ public class LobbyController {
             model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
-    public synchronized void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public synchronized void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
         state.pickCards(pickerClient, topPicks, bottomPicks);
     }
 

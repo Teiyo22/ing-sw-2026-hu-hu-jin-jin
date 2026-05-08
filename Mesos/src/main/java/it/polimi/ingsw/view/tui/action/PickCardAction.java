@@ -1,11 +1,20 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.Row;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.view.command.PickCardCommand;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class PickCardAction implements Action {
     final private ClientController clientController;
+    final private int argCount = 2;
 
     public PickCardAction(ClientController clientController) {
         this.clientController = clientController;
@@ -23,19 +32,95 @@ public class PickCardAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return clientController.getTurnState().canPickCard();
     }
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        return Optional.empty();
-    }
+        List<Integer> topRow, bottomRow;
 
-    public void handlePickCard() {
+        if (args.length != argCount + 1)
+            return Optional.of("Invalid number of arguments");
+
+        topRow = parseIDList(args[1], true);
+        if (topRow == null)
+            return Optional.of("Top row must contain only valid card IDs");
+
+        bottomRow = parseIDList(args[2], false);
+        if (bottomRow == null)
+            return Optional.of("Bottom row must contain only valid card IDs");
+
+        if (!validatePickCount(topRow, bottomRow))
+            return Optional.of("Pick count exceeded");
+
+        if (!validateFoodCost(topRow, bottomRow))
+            return Optional.of("Food cost exceeded");
+
+        new PickCardCommand(topRow, bottomRow).execute(clientController);
+        return Optional.empty();
     }
 
     @Override
     public String toString() {
-        return String.format("[%s | %s] {Top Row ID ...} {Bottom Row ID ...}", key(), label());
+        return String.format("[%s | %s] {<Top Row ID> ...} {<Bottom Row ID> ...}", key(), label());
+    }
+
+    private List<Integer> parseIDList(String input, boolean top) {
+        String stripped = input.substring(1, input.length() - 2);
+        String[] split = stripped.split(" ");
+
+        try {
+             List<Integer> list = Arrays.stream(split)
+                     .map(Integer::parseInt)
+                     .toList();
+
+             if (validateIDList(list, top))
+                 return list;
+
+             return null;
+         } catch (NumberFormatException e) {
+             return null;
+         }
+    }
+
+    private boolean validateIDList(List<Integer> list, boolean top) {
+        Row row = top ? clientController.getBoard().getTopRow() : clientController.getBoard().getBottomRow();
+
+        List<Integer> rowCardIDs = Stream.concat(
+                row.getBuildingCards().stream().map(b -> (AbstractCard) b),
+                row.getCharacterCards().stream().map(c -> (AbstractCard) c))
+                .map(AbstractCard::getID)
+                .toList();
+
+        return new HashSet<>(rowCardIDs).containsAll(list);
+    }
+
+    private boolean validatePickCount(List<Integer> top , List<Integer> bottom) {
+        int idx = clientController.getTurnState().getIndex();
+        int topPickCount, bottomPickCount;
+
+        if (idx >= 0) {
+            OfferTile offerTile = clientController.getBoard().getOfferTrack()[idx];
+            topPickCount = offerTile.getTopRowPickable();
+            bottomPickCount = offerTile.getBottomRowPickable();
+        } else {
+            topPickCount = 1;
+            bottomPickCount = 0;
+        }
+
+        return top.size() <= topPickCount && bottom.size() <= bottomPickCount;
+    }
+
+    private boolean validateFoodCost(List<Integer> top, List<Integer> bottom) {
+        Player currPlayer = clientController.getCurrentPlayer();
+        Board board = clientController.getBoard();
+
+        int foodCost = Stream.concat(
+                board.getTopRow().getBuildingCards().stream().filter(b -> top.contains(b.getID())),
+                board.getBottomRow().getBuildingCards().stream().filter(b -> bottom.contains(b.getID())))
+                .mapToInt(AbstractBuilding::getCost)
+                .sum();
+
+        return foodCost <= currPlayer.getFood();
     }
 }

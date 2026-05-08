@@ -52,7 +52,7 @@ public class LobbyRunningState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
         if (validateCardPick(pickerPlayer, topPicks, bottomPicks)) {
@@ -84,7 +84,7 @@ public class LobbyRunningState extends LobbyState {
         client.showError(client.getID(), "Game not ended yet.");
     }
 
-    private boolean validateCardPick(Player player, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    private boolean validateCardPick(Player player, List<Integer> topPicks, List<Integer> bottomPicks) {
         return true;
     }
 

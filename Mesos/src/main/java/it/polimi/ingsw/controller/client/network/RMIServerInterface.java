@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -12,7 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class RMIServerInterface extends ServerInterface {
     VirtualServer wrappedServer;
@@ -107,7 +105,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) {
         try {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
         } catch (RemoteException e) {

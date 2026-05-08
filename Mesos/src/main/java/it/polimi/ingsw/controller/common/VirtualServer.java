@@ -1,10 +1,8 @@
 package it.polimi.ingsw.controller.common;
 
 
-import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public interface VirtualServer extends Remote {
     void getLobbyInfo(int clientID, int lobbyID) throws RemoteException;
     void getRank(int clientID, int lobbyID) throws RemoteException;
     void getLeaderboard(int clientID, int playerNum) throws RemoteException;
-    void requestCards(int clientID, int lobbyID, List<Pickable> topPicks, List<Pickable> bottomPicks) throws RemoteException;
+    void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) throws RemoteException;
     void requestOffer(int clientID, int lobbyID, int offerIndex) throws RemoteException;
 
     void ping(int clientID) throws RemoteException;

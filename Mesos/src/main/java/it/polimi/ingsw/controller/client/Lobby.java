@@ -111,6 +111,13 @@ public class Lobby implements Serializable {
         return null;
     }
 
+    public Player getCurrPlayer() {
+        for (Map.Entry<Player, Integer> entry : players.entrySet())
+            if (entry.getKey().equals(turnState.getCurrPlayer()))
+                return entry.getKey();
+        return null;
+    }
+
     public boolean containsClient(int clientID) {
         return players.containsValue(clientID);
     }

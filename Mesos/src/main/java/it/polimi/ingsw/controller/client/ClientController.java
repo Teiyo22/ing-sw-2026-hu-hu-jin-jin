@@ -325,7 +325,7 @@ public class ClientController implements VirtualClient {
     }
 
     public Player getCurrentPlayer() {
-        return currLobby.getTurnState().getCurrPlayer();
+        return currLobby.getCurrPlayer();
     }
 
     public TurnState getTurnState() {
