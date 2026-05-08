@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
+import it.polimi.ingsw.utils.controller.StateInfoDeserializer;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.net.Socket;
@@ -40,6 +42,7 @@ public class NetworkClient extends Thread {
                 .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
                 .registerTypeAdapter(Request.class, new RequestSerializer())
                 .registerTypeAdapter(Response.class, new ResponseDeserializer())
+                .registerTypeAdapter(ModelStateInfo.class, new StateInfoDeserializer())
                 .create();
     }
 

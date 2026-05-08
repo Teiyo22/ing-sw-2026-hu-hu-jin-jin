@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
@@ -13,6 +14,8 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
+import it.polimi.ingsw.utils.controller.StateInfoDeserializer;
+import it.polimi.ingsw.utils.controller.StateInfoSerializer;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.io.*;
@@ -39,6 +42,7 @@ public class ClientHandler extends Thread {
                 .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
+                .registerTypeAdapter(ModelStateInfo.class, new StateInfoSerializer())
                 .create();
     }
 

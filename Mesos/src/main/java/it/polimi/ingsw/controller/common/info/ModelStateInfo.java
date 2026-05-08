@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.Player;
 
 
 public abstract class ModelStateInfo {
+    protected StateInfoType type;
     protected Player currPlayer;
     protected int idx;
 
@@ -14,4 +15,8 @@ public abstract class ModelStateInfo {
     }
 
     public abstract TurnState getTurnState (Player player);
+
+    public StateInfoType getType(){
+        return type;
+    }
 }
