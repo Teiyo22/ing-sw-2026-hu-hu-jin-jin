@@ -100,6 +100,13 @@ public class Lobby implements Serializable {
         return shownPlayer;
     }
 
+    public Player getPlayer(int clientID) {
+        for (Map.Entry<Player, Integer> entry : players.entrySet())
+            if (entry.getValue().equals(clientID))
+                return entry.getKey();
+        return null;
+    }
+
     public boolean containsClient(int clientID) {
         return players.containsValue(clientID);
     }
@@ -125,7 +132,4 @@ public class Lobby implements Serializable {
         this.turnState = turnState;
     }
 
-    public Player getPlayer(int clientID) {
-        return players.get(clientID);
-    }
 }
