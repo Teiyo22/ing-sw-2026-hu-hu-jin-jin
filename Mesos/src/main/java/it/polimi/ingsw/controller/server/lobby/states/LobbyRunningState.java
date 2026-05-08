@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
-import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;

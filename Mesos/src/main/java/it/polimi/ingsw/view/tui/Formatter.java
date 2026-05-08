@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.tui;
 
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Map;

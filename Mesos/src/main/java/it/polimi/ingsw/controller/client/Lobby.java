@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller.common;
+package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.board.Board;

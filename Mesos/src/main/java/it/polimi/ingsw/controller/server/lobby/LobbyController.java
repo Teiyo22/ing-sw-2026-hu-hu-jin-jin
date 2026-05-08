@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby;
 
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
 import it.polimi.ingsw.controller.server.network.ClientInterface;

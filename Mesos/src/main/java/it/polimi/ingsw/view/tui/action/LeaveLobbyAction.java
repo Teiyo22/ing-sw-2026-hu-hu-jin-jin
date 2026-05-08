@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.view.command.LeaveLobbyCommand;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller.server.network;
 
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 import it.polimi.ingsw.controller.server.ServerController;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.server;
 
 import it.polimi.ingsw.controller.common.ConnectionMonitor;
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
