@@ -100,6 +100,10 @@ public class Lobby implements Serializable {
         return shownPlayer;
     }
 
+    public TurnState getTurnState() {
+        return turnState;
+    }
+
     public Player getPlayer(int clientID) {
         for (Map.Entry<Player, Integer> entry : players.entrySet())
             if (entry.getValue().equals(clientID))

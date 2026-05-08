@@ -50,8 +50,10 @@ public class Formatter {
         return line(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize()));
     }
 
-    public static String playerInfo(Player player) {
-        return coloredLine(String.format("%-25s | Food: %-3d | PP: %-3d",
-                player.getName(), player.getFood(), player.getPP()), player.getTotem().getColor());
+    public static String playerInfo(Player player, boolean isTurn) {
+        String turnMarker = isTurn ? ">" : " ";
+
+        return coloredLine(String.format("%s%-25s | Food: %-3d | PP: %-3d",
+                turnMarker, player.getName(), player.getFood(), player.getPP()), player.getTotem().getColor());
     }
 }
