@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.common.info.OfferPickStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 
@@ -24,9 +26,15 @@ public class RoundStartState extends GameState {
         if(assignedSlots == game.getPlayers().size()){
             game.setGameState(new RoundActionState(game, buildingHandler));
             game.getGameState().update();
+
             return;
         }
 
         currPlayer = game.getPlayers().get(assignedSlots);
+    }
+
+    @Override
+    public ModelStateInfo getModelStateInfo(){
+        return new OfferPickStateInfo(currPlayer, assignedSlots);
     }
 }

@@ -1,0 +1,17 @@
+package it.polimi.ingsw.controller.common.info;
+
+import it.polimi.ingsw.controller.client.turn.TurnState;
+import it.polimi.ingsw.model.player.Player;
+
+
+public abstract class ModelStateInfo {
+    protected Player currPlayer;
+    protected int idx;
+
+    public ModelStateInfo(Player player, int idx){
+        this.currPlayer = player;
+        this.idx = idx;
+    }
+
+    public abstract TurnState getTurnState (Player player);
+}

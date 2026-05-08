@@ -4,6 +4,12 @@ import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
+import it.polimi.ingsw.controller.client.turn.TurnState;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.common.LeaderboardEntry;
+import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
@@ -155,6 +161,13 @@ public class ClientController implements VirtualClient {
                 view.transitionTo(ScreenType.LOBBY_SELECTION);
             }
         }
+    }
+
+    @Override
+    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+        Player player = currLobby.getPlayer(clientID);
+        TurnState turnState = modelStateInfo.getTurnState(player);
+        currLobby.setTurnState(turnState);
     }
 
     @Override

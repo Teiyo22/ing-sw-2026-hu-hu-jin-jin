@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
@@ -57,5 +59,10 @@ public class RoundActionState extends GameState{
 
         solvedOffers++;
         assignedPlayers++;
+    }
+
+    @Override
+    public ModelStateInfo getModelStateInfo(){
+        return new CardPickStateInfo(currPlayer, solvedOffers);
     }
 }

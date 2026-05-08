@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -27,6 +28,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
     public abstract void updateModel(int clientID, Board board, Tribe updatedTribe);
+    public abstract void updateState(int clientID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void stopLobby(int clientID, int lobbyID);

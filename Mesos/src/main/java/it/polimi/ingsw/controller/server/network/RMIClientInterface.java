@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
@@ -148,7 +149,19 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, Board board, Tribe updatedTribe)  {
+    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.updateState(clientID, modelStateInfo);
+        } catch (IOException e) {
+            ServerController.getInstance().scheduleRetry(() -> {updateState(clientID, modelStateInfo);});
+        }
+    }
+
+    @Override
+    public void updateModel(int clientID, Board board, Tribe updatedTribe)  {
         if (!isConnected)
             return;
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Deck;
 import it.polimi.ingsw.model.board.Row;
@@ -35,6 +36,7 @@ public class RoundEndState extends GameState {
             resolveEvents();
             setUp();
             game.setGameState(new RoundStartState(game, buildingHandler));
+            game.getLobbyController().roundEndView();
         } else
             game.setGameState(new GameEndState(game, buildingHandler));
 
@@ -119,4 +121,8 @@ public class RoundEndState extends GameState {
         }
     }
 
+    @Override
+    public ModelStateInfo getModelStateInfo() {
+        return null;
+    }
 }

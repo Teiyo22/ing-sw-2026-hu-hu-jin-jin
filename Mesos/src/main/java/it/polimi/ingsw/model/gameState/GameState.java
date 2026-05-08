@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
@@ -24,4 +25,6 @@ public abstract class GameState {
     public Player getCurrPlayer() {
         return currPlayer;
     }
+
+    public abstract ModelStateInfo getModelStateInfo();
 }

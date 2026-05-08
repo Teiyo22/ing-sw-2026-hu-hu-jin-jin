@@ -20,4 +20,5 @@ public enum MessageType {
     GET_LEADERBOARD,
     PING,
     ERROR,
+    UPDATE_VIEW_STATE
 }

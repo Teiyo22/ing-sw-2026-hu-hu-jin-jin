@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
+import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -15,6 +16,7 @@ public class Lobby implements Serializable {
     transient private Player shownPlayer = null;
     transient private Map<Player, Integer> players = null;
     transient private Board board = null;
+    transient private TurnState turnState = null;
 
     public Lobby(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -118,4 +120,12 @@ public class Lobby implements Serializable {
         this.players = players;
     }
 
+
+    public void setTurnState(TurnState turnState) {
+        this.turnState = turnState;
+    }
+
+    public Player getPlayer(int clientID) {
+        return players.get(clientID);
+    }
 }

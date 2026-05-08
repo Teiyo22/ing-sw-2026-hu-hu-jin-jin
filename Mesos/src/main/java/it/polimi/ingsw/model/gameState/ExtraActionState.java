@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
@@ -28,5 +30,10 @@ public class ExtraActionState extends GameState {
             game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
         }
+    }
+
+    @Override
+    public ModelStateInfo getModelStateInfo() {
+        return new CardPickStateInfo(currPlayer, -1);
     }
 }
