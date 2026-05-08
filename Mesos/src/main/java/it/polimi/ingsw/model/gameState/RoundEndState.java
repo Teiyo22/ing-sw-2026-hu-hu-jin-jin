@@ -36,7 +36,6 @@ public class RoundEndState extends GameState {
             resolveEvents();
             setUp();
             game.setGameState(new RoundStartState(game, buildingHandler));
-            game.getLobbyController().roundEndView();
         } else
             game.setGameState(new GameEndState(game, buildingHandler));
 
