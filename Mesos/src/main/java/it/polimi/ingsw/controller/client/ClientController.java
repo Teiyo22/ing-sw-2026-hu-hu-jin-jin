@@ -4,7 +4,8 @@ import it.polimi.ingsw.controller.client.network.NetworkClient;
 import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.client.turn.TurnState;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -16,7 +17,6 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.tui.TUIView;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
@@ -179,14 +179,17 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
+    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+        Player player = currLobby.getPlayer(clientID);
+        TurnState turnState = modelStateInfo.getTurnState(player);
+        currLobby.setTurnState(turnState);
+    }
+
+    @Override
     public void showError(int clientID, String error) {
 //        view.renderError(errorMessage);
     }
 
-    @Override
-    public void updateViewState(int clientID, GameStateInfo gameStateInfo){
-       gameStateInfo.setView(view);
-    }
 
     @Override
     public void ping() {

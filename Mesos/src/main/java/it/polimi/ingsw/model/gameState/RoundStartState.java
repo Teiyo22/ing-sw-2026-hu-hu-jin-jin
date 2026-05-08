@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
-import it.polimi.ingsw.controller.common.GameStateInfo.OfferPickState;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.common.info.OfferPickStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 
@@ -34,7 +34,7 @@ public class RoundStartState extends GameState {
     }
 
     @Override
-    public GameStateInfo getGameStateInfo(){
-        return new OfferPickState(currPlayer);
+    public ModelStateInfo getModelStateInfo(){
+        return new OfferPickStateInfo(currPlayer, assignedSlots);
     }
 }

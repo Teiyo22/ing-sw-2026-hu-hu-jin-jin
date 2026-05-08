@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
@@ -13,11 +14,13 @@ import java.util.Map;
 public class Lobby {
     private int lobbyID;
     private int size;
-    private boolean running = false;
 
+    transient private boolean running = false;
     transient private ClientController clientController = null;
+
     transient private Map<Integer, Player> players = null;
     transient private Board board = null;
+    transient private TurnState turnState = null;
 
     public Lobby(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -93,5 +96,13 @@ public class Lobby {
 
     public Board getBoard() {
         return board;
+    }
+
+    public void setTurnState(TurnState turnState) {
+        this.turnState = turnState;
+    }
+
+    public Player getPlayer(int clientID) {
+        return players.get(clientID);
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -26,13 +26,13 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
     public abstract void updateModel(int clientID, Board board, Tribe updatedTribe);
+    public abstract void updateState(int clientID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void removeLobby(int lobbyID);
     public abstract void ping() throws IOException, RemoteException;
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);
-    public abstract void updateViewState(int clientID, GameStateInfo gameStateInfo);
 
 
     public int getID() {

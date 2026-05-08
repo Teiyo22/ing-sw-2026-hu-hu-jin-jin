@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.common;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -20,10 +20,10 @@ public interface VirtualClient extends Remote {
     void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) throws RemoteException;
     void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) throws RemoteException;
     void updateModel(int clientID, Board board, Tribe updatedTribe) throws RemoteException;
+    void updateState(int clientID, ModelStateInfo modelStateInfo) throws RemoteException;
     void createLobby(int clientID, Lobby lobby, Player player) throws RemoteException;
     void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
     void removeLobby(int lobbyID) throws RemoteException;
     void ping() throws IOException, RemoteException;
     void showError(int clientID, String errorMessage) throws RemoteException;
-    void updateViewState(int clientID, GameStateInfo gameStateInfo);
 }

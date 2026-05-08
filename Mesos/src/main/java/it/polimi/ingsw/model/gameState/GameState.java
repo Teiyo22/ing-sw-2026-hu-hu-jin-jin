@@ -1,16 +1,13 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.tui.TUIView;
 
 public abstract class GameState {
     final protected Game game;
     final protected BuildingHandler buildingHandler;
-
-    GameStateInfo gameStateInfo;
 
     Player currPlayer = null;
 
@@ -29,7 +26,5 @@ public abstract class GameState {
         return currPlayer;
     }
 
-    public GameStateInfo getGameStateInfo(){
-        return gameStateInfo;
-    }
+    public abstract ModelStateInfo getModelStateInfo();
 }

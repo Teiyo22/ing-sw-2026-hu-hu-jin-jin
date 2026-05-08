@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.server;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.OfferPickState;
-import it.polimi.ingsw.controller.common.GameStateInfo.RoundEndStateInfo;
+import it.polimi.ingsw.controller.common.info.GameEndStateInfo;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -165,7 +164,7 @@ public class LobbyController {
 
         for (ClientInterface client : players.keySet()) {
             client.updateModel(pickerClient.getID(), model.getBoard(), player.getTribe());
-            client.updateViewState(pickerClient.getID(), model.getGameState().getGameStateInfo());
+            client.updateState(pickerClient.getID(), model.getGameState().getModelStateInfo());
         }
     }
 
@@ -183,7 +182,7 @@ public class LobbyController {
 
         for (ClientInterface client : players.keySet()) {
             client.updateModel(pickerClient.getID(), model.getBoard(), player.getTribe());
-            client.updateViewState(pickerClient.getID(), model.getGameState().getGameStateInfo());
+            client.updateState(pickerClient.getID(), model.getGameState().getModelStateInfo());
         }
     }
 
@@ -205,13 +204,6 @@ public class LobbyController {
             rank.put(client.getID(), players.get(client).getRank());
 
         requester.showRank(requester.getID(), lobbyID, rank);
-    }
-
-    public synchronized void roundEndView(){
-        for (ClientInterface client : players.keySet()){
-            client.updateModel(-1, model.getBoard(), null);
-            client.updateViewState(-1, new RoundEndStateInfo(null));
-        }
     }
 
     public Lobby getLobby() {

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
-import it.polimi.ingsw.controller.common.GameStateInfo.GameStateInfo;
+import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.controller.common.messages.Request;
@@ -96,6 +96,15 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+        if (!isConnected)
+            return;
+
+        UpdateStateResponse response = new UpdateStateResponse(clientID, modelStateInfo);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
     public void createLobby(int clientID, Lobby lobby, Player player) {
         if (!isConnected)
             return;
@@ -147,15 +156,6 @@ public class TCPClientInterface extends ClientInterface {
             return;
 
         ErrorMessage message = new ErrorMessage(clientID, errorMessage);
-        clientHandler.sendMessage(message);
-    }
-
-    @Override
-    public void updateViewState(int clientID, GameStateInfo gameStateInfo){
-        if(!isConnected)
-            return;
-
-        UpdateViewMessage message = new UpdateViewMessage(clientID, gameStateInfo);
         clientHandler.sendMessage(message);
     }
 
