@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.client.network;
 
 import com.google.gson.*;
+
 import java.io.*;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -10,6 +11,8 @@ import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestSerializer;
 import it.polimi.ingsw.utils.controller.ResponseDeserializer;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
@@ -24,7 +27,7 @@ public class NetworkClient extends Thread {
     private BufferedWriter output;
     private final Gson gson;
 
-    public NetworkClient(){
+    public NetworkClient() {
         this.server = null;
         this.socket = null;
         this.input = null;
@@ -41,31 +44,36 @@ public class NetworkClient extends Thread {
     }
 
 
-    /** The NetworkClient runs and listens to messages from the server.
+    /**
+     * The NetworkClient runs and listens to messages from the server.
      * When a message is received it gets passed to the ServerTCPInterface to handle it.
-     * */
+     *
+     */
     @Override
     public void run() {
         String line;
         try {
-            while ((line = input.readLine()) != null) {
+            while (!Thread.currentThread().isInterrupted() && (line = input.readLine()) != null) {
                 Response response = gson.fromJson(line, Response.class);
                 server.handleMessage(response);
             }
-            server.getClientController().disconnect();
-        } catch (SocketException ignore) {
-
-        } catch (IOException e) {
-            System.out.println("Error while reading message in TCP: " + e.getMessage());
+        } catch (SocketException e) {
+            Logger.getInstance().print(LoggerLevel.CLIENT, "TCP Socket closed");
+        } catch (IOException ignore) {
+            Logger.getInstance().print(LoggerLevel.CLIENT, "Failed to read from TCP socket");
+        } finally {
             server.getClientController().disconnect();
         }
     }
 
 
-    /** Method to serialize and send messages to the server.
+    /**
+     * Method to serialize and send messages to the server.
+     *
      * @param request The message to serialize and send.
-     * */
-    public void sendMessage(Request request){
+     *
+     */
+    public void sendMessage(Request request) {
         String msg = gson.toJson(request);
         try {
             output.write(msg);
@@ -90,8 +98,22 @@ public class NetworkClient extends Thread {
 
     public void cleanup() {
         try {
-            if (socket != null && !socket.isClosed())
+            this.interrupt();
+
+            if (input != null) {
+                input.close();
+                input = null;
+            }
+            if (output != null) {
+                output.close();
+                output = null;
+            }
+
+            if (socket != null && !socket.isClosed()) {
                 socket.close();
-        } catch (IOException ignore) { }
+                socket = null;
+            }
+        } catch (IOException ignore) {
+        }
     }
 }

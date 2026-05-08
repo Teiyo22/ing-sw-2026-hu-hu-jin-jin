@@ -223,9 +223,22 @@ public class ClientController implements VirtualClient {
     }
 
     public synchronized void disconnect() {
+        if (!init)
+            return;
+
+        init = false;
+
         server.disconnect();
-        currLobby = null;
-        waitingLobbies.clear();
+        connectionMonitor.stop();
+        taskExecutor.shutdown();
+
+        try {
+            if (!taskExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
+                taskExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            taskExecutor.shutdownNow();
+        }
 
         view.close();
 
