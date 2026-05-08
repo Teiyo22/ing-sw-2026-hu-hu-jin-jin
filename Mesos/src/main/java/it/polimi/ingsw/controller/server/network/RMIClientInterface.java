@@ -149,14 +149,14 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         if (!isConnected)
             return;
 
         try {
-            wrappedClient.updateState(clientID, modelStateInfo);
-        } catch (IOException e) {
-            ServerController.getInstance().scheduleRetry(() -> {updateState(clientID, modelStateInfo);});
+            wrappedClient.updateState(clientID, lobbyID, modelStateInfo);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {updateState(clientID, lobbyID, modelStateInfo);});
         }
     }
 

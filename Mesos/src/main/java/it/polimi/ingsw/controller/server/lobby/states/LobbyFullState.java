@@ -41,6 +41,9 @@ public class LobbyFullState extends LobbyState {
             player.startLobby(player.getID(), lobbyController.getID(), model.getBoard(), tribes);
         }
 
+        for (ClientInterface player : lobbyController.getPlayers().keySet())
+            player.updateState(client.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
+
         lobbyController.setState(new LobbyRunningState(lobbyController));
         Logger.getInstance().print(LoggerLevel.SERVER, "Started lobby " + lobbyController.getID());
     }

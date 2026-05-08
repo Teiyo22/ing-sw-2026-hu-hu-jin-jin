@@ -111,7 +111,6 @@ public class ClientController implements VirtualClient {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 currLobby.removeClient(clientID, player);
-            System.out.println("Client removed");
             view.update();
         }
     }
@@ -154,8 +153,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void stopLobby(int clientID, int lobbyID) {
-        System.out.println(currLobby != null);
-        System.out.println(currLobby.getLobbyID() == lobbyID);
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 view.transitionTo(ScreenType.LOBBY_SELECTION);
@@ -164,10 +161,14 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
-        Player player = currLobby.getPlayer(clientID);
-        TurnState turnState = modelStateInfo.getTurnState(player);
-        currLobby.setTurnState(turnState);
+    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+        synchronized (lock) {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                Player player = currLobby.getPlayer(clientID);
+                TurnState turnState = modelStateInfo.getTurnState(player);
+                currLobby.setTurnState(turnState);
+            }
+        }
     }
 
     @Override

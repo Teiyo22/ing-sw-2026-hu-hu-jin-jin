@@ -115,11 +115,11 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateState(int clientID, ModelStateInfo modelStateInfo) {
+    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         if (!isConnected)
             return;
 
-        UpdateStateResponse response = new UpdateStateResponse(clientID, modelStateInfo);
+        UpdateStateResponse response = new UpdateStateResponse(clientID, lobbyID, modelStateInfo);
         clientHandler.sendMessage(response);
     }
 
