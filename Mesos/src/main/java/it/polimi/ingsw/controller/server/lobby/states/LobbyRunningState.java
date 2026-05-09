@@ -63,6 +63,9 @@ public class LobbyRunningState extends LobbyState {
         } else {
             pickerClient.showError(pickerClient.getID(), "Invalid action");
         }
+
+        for (ClientInterface player : lobbyController.getPlayers().keySet())
+            player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
 
     @Override
@@ -77,6 +80,9 @@ public class LobbyRunningState extends LobbyState {
         } else {
             pickerClient.showError(pickerClient.getID(), "Invalid action");
         }
+
+        for (ClientInterface player : lobbyController.getPlayers().keySet())
+            player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
 
     @Override
