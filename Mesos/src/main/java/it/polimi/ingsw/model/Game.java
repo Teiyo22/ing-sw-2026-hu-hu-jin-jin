@@ -3,6 +3,7 @@
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Player;
@@ -84,27 +85,14 @@ import java.util.stream.Stream;
      * @param bottomPicks are the cards picked from the bottom row.
      * */
     public void pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        List<Pickable> top = Stream.concat(board.getTopRow().getBuildingCards().stream()
-                .filter(b -> topPicks.contains(b.getID()))
-                .map(b -> (Pickable) b),
-                board.getTopRow().getBuildingCards().stream()
-                .filter(b -> topPicks.contains(b.getID()))
-                .map(b -> (Pickable) b))
-                .toList();
+        List<Pickable> top = getPickable(topPicks, board.getTopRow());
 
         for(Pickable p: top){
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getTopRow());
         }
 
-        List<Pickable> bottom = Stream.concat(
-                 board.getBottomRow().getBuildingCards().stream()
-                 .filter(b -> bottomPicks.contains(b.getID()))
-                 .map(b -> (Pickable) b),
-                 board.getBottomRow().getBuildingCards().stream()
-                 .filter(b -> bottomPicks.contains(b.getID()))
-                 .map(b -> (Pickable) b))
-                .toList();
+        List<Pickable> bottom = getPickable(bottomPicks, board.getBottomRow());
 
         for(Pickable p: bottom){
             p.onPick(player, buildingHandler);
@@ -122,5 +110,18 @@ import java.util.stream.Stream;
     public void assignTo(Player player, OfferTile offer){
         offer.setPlayer(player);
         gameState.update();
+    }
+
+    private List<Pickable> getPickable(Set<Integer> picks, Row row) {
+        // It's fundamental that building cards are concatenated before character cards,
+        // to avoid the possibility of changing the player's building discount during the pick,
+        // thus influencing the cost of the buildings.
+        return Stream.concat(row.getBuildingCards().stream()
+            .filter(b -> picks.contains(b.getID()))
+            .map(b -> (Pickable) b),
+            row.getCharacterCards().stream()
+            .filter(c -> picks.contains(c.getID()))
+            .map(c -> (Pickable) c))
+            .toList();
     }
 }
