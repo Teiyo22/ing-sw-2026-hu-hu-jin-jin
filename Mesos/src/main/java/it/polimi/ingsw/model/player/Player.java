@@ -148,7 +148,8 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true; // Optimization
+        if (obj == null) return false;
+        if (this == obj) return true;
         if (!(obj instanceof Player)) return false;
 
         Player other = (Player) obj;
