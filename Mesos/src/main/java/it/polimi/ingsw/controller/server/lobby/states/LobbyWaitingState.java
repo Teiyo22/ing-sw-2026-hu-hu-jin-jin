@@ -75,11 +75,6 @@ public class LobbyWaitingState extends LobbyState {
         pickerClient.showError(pickerClient.getID(), "Game not started yet.");
     }
 
-    @Override
-    public void getRank(ClientInterface client) {
-        client.showError(client.getID(), "Game not started yet.");
-    }
-
     private boolean validatePlayerInfo(Player newPlayer) {
         for (Player players : lobbyController.getPlayers().values())
             if (newPlayer.getTotem() == players.getTotem() || newPlayer.getName().equals(players.getName()))

@@ -22,7 +22,6 @@ public class RequestSerializer implements JsonSerializer<Request> {
             case START_LOBBY -> context.serialize(src, StartLobbyRequest.class);
             case WAITING_LOBBY -> context.serialize(src, WaitingLobbyRequest.class);
             case LOBBY_INFO -> context.serialize(src, LobbyInfoRequest.class);
-            case GET_RANK -> context.serialize(src, GetRankRequest.class);
             case GET_LEADERBOARD -> context.serialize(src, GetLeaderboardRequest.class);
             case PICK_OFFER -> context.serialize(src, PickOfferRequest.class);
             case PING -> context.serialize(src, PingRequest.class);

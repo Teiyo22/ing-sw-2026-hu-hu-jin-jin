@@ -29,7 +29,6 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case STOP_LOBBY -> context.serialize(src, StopLobbyResponse.class);
             case WAITING_LOBBY -> context.serialize(src, WaitingLobbyResponse.class);
             case LOBBY_INFO -> context.serialize(src, LobbyInfoResponse.class);
-            case GET_RANK -> context.serialize(src, GetRankResponse.class);
             case GET_LEADERBOARD -> context.serialize(src, GetLeaderboardResponse.class);
             case SET_ID -> context.serialize(src, SetIDResponse.class);
             case PING -> context.serialize(src, PingResponse.class);

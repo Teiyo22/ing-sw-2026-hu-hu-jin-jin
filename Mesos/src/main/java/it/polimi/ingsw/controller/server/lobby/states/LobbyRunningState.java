@@ -140,11 +140,6 @@ public class LobbyRunningState extends LobbyState {
     }
 
 
-    @Override
-    public void getRank(ClientInterface client) {
-        client.showError(client.getID(), "Game not ended yet.");
-    }
-
     private boolean validateCardPick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         return true;
     }

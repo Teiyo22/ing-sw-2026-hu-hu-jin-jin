@@ -206,22 +206,6 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void getRank(int clientID, int lobbyID) {
-        ClientInterface client = clients.get(clientID);
-
-        if (client == null)
-            return;
-
-        readLock.lock();
-        LobbyController lobby = lobbies.get(lobbyID);
-        if (lobby != null)
-            lobby.getRank(client);
-        else
-            client.showError(clientID, "This lobby is not available");
-        readLock.unlock();
-    }
-
-    @Override
     public void getLeaderboard(int clientID, int playerNum) {
 
     }

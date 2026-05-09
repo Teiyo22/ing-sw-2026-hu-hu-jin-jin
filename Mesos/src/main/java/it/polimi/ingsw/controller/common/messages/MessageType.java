@@ -15,7 +15,6 @@ public enum MessageType {
     LOBBY_INFO,
     PICK_OFFER,
     PICK_CARDS,
-    GET_RANK,
     GET_LEADERBOARD,
     OFFER_PICK,
     OFFER_RESOLUTION,

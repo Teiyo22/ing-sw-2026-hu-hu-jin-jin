@@ -43,11 +43,6 @@ public class LobbyEndedState extends LobbyState {
     }
 
     @Override
-    public void getRank(ClientInterface client) {
-
-    }
-
-    @Override
     public boolean isShowable() {
         return false;
     }

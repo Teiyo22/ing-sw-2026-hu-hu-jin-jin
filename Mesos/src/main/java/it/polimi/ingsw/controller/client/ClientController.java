@@ -161,11 +161,6 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-        ;
-    }
-
-    @Override
     public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
 
     }

@@ -66,10 +66,6 @@ public class LobbyController {
         state.pickOffer(pickerClient, offerIndex);
     }
 
-    public synchronized void getRank(ClientInterface requester) {
-        state.getRank(requester);
-    }
-
     //=============================================================================
     // Getters
     //=============================================================================

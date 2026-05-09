@@ -95,11 +95,6 @@ public class LobbyPausedState extends LobbyState {
     }
 
     @Override
-    public void getRank(ClientInterface client) {
-        client.showError(client.getID(), "Game not ended yet.");
-    }
-
-    @Override
     public boolean isShowable() {
         return true;
     }

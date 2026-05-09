@@ -90,15 +90,6 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) {
-        if (!isConnected)
-            return;
-
-        GetRankResponse response = new GetRankResponse(clientID, lobbyID, rankings);
-        clientHandler.sendMessage(response);
-    }
-
-    @Override
     public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
         if (!isConnected)
             return;

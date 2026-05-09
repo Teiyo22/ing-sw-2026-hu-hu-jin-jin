@@ -20,7 +20,6 @@ public abstract class ServerInterface implements VirtualServer {
     public abstract void startLobby(int clientID, int lobbyID);
     public abstract void getWaitingLobbies(int clientID);
     public abstract void getLobbyInfo(int clientID, int lobbyID);
-    public abstract void getRank(int clientID, int lobbyID);
     public abstract void getLeaderboard(int clientID, int playerNum);
     public abstract void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks);
     public abstract void requestOffer(int clientID, int lobbyID, int offerIndex);

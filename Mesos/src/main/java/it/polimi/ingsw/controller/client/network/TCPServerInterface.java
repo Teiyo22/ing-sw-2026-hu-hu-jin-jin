@@ -87,16 +87,6 @@ public class TCPServerInterface extends ServerInterface {
     }
 
 
-    /** Method to get the game ranking.
-     * @param lobbyID Player's game lobby's ID.
-     * */
-    @Override
-    public void getRank(int clientID, int lobbyID) {
-        GetRankRequest request = new GetRankRequest(clientID, lobbyID);
-        serverHandler.sendMessage(request);
-    }
-
-
     /** Method to get the leaderboard of top players in games of a certain size.
      * @param playerNum Game size for which the player requests the leaderboard.
      * */

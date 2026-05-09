@@ -126,19 +126,6 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.showRank(clientID, lobbyID, rankings);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                showRank(clientID, lobbyID, rankings);});
-        }
-    }
-
-    @Override
     public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard)  {
         if (!isConnected)
             return;

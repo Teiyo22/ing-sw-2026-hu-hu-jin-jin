@@ -87,15 +87,6 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void getRank(int clientID, int lobbyID) {
-        try {
-            wrappedServer.getRank(clientID, lobbyID);
-        } catch (RemoteException e) {
-            reschedule(() -> {getRank(clientID, lobbyID);});
-        }
-    }
-
-    @Override
     public void getLeaderboard(int clientID, int playerNum) {
         try {
             wrappedServer.getLeaderboard(clientID, playerNum);

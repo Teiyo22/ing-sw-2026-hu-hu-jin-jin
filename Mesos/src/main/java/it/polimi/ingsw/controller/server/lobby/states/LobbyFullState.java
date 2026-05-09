@@ -87,11 +87,6 @@ public class LobbyFullState extends LobbyState {
     }
 
     @Override
-    public void getRank(ClientInterface client) {
-        client.showError(client.getID(), "Game not started yet.");
-    }
-
-    @Override
     public boolean isShowable() {
         return true;
     }
