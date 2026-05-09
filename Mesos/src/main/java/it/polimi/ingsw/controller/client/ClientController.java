@@ -276,12 +276,11 @@ public class ClientController implements VirtualClient {
 
         init = false;
 
+        view.close();
+
         server.disconnect();
         connectionMonitor.stop();
         taskExecutor.shutdown();
-
-        Formatter.clearScreen();
-        System.out.println("Disconnecting ...");
 
         try {
             if (!taskExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
@@ -290,8 +289,6 @@ public class ClientController implements VirtualClient {
         } catch (InterruptedException e) {
             taskExecutor.shutdownNow();
         }
-
-        view.close();
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }
