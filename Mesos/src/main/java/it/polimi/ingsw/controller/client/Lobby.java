@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.client;
 
-import it.polimi.ingsw.controller.client.turn.TurnState;
+import it.polimi.ingsw.controller.client.turn.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
@@ -144,6 +144,10 @@ public class Lobby implements Serializable {
 
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;
+    }
+
+    public void setIdleTurnState() {
+        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex());
     }
 
 }

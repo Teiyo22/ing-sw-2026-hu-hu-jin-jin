@@ -58,6 +58,7 @@ public class PickCardAction implements Action {
         if (!validateFoodCost(topRow, bottomRow))
             return Optional.of("Food cost exceeded");
 
+        clientController.getCurrLobby().setIdleTurnState();
         new PickCardCommand(topRow, bottomRow).execute(clientController);
         return Optional.empty();
     }
