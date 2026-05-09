@@ -2,6 +2,8 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.turn.*;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -62,6 +64,14 @@ public class Lobby implements Serializable {
 
         for (Player player : players.keySet())
             player.setTribe(tribes.get(players.get(player)));
+    }
+
+    public void updateOrderTile(OrderSlot[] orderTile) {
+        this.board.setOrderTile(orderTile);
+    }
+
+    public void updateOfferTrack(OfferTile[] offerTrack) {
+        this.board.setOfferTrack(offerTrack);
     }
 
     public void showPlayer(Player player) {

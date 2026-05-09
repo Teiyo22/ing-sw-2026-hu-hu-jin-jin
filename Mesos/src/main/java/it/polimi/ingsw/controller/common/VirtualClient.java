@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller.common;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -21,12 +23,14 @@ public interface VirtualClient extends Remote {
     void removePlayer(int clientID, int lobbyID, Player player) throws RemoteException;
     void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings) throws RemoteException;
     void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) throws RemoteException;
-    void updateModel(int clientID, Board board, Tribe updatedTribe) throws RemoteException;
     void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
     void createLobby(int clientID, Lobby lobby, Player player) throws RemoteException;
     void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
     void stopLobby(int clientID, int lobbyID) throws RemoteException;
     void showError(int clientID, String errorMessage) throws RemoteException;
+
+    void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
+
 
     void ping() throws RemoteException;
 }

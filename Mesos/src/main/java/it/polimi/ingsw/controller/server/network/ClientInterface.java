@@ -7,6 +7,8 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -27,7 +29,6 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void removePlayer(int clientID, int lobbyID, Player player);
     public abstract void showRank(int clientID, int lobbyID, Map<Integer, Integer> rankings);
     public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
-    public abstract void updateModel(int clientID, Board board, Tribe updatedTribe);
     public abstract void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
@@ -36,6 +37,7 @@ public abstract class ClientInterface implements VirtualClient {
     public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);
 
+    public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
 
     public int getID() {
         return id;

@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller.server.lobby.states;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
@@ -85,6 +87,31 @@ public class LobbyRunningState extends LobbyState {
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
+
+    public void notifyOfferPick() {
+        OrderSlot[] orderTile = model.getBoard().getOrderTile();
+        OfferTile[] offerTrack = model.getBoard().getOfferTrack();
+
+        for (ClientInterface player : lobbyController.getPlayers().keySet())
+            player.updateModel(player.getID(), lobbyController.getID(), orderTile, offerTrack);
+    }
+
+    public void notifyOfferResolution() {
+
+    }
+
+    public void notifyExtraActionResolution() {
+
+    }
+
+    public void notifyRoundEndUpdate() {
+
+    }
+
+    public void notifyGameEndUpdate() {
+
+    }
+
 
     @Override
     public void getRank(ClientInterface client) {

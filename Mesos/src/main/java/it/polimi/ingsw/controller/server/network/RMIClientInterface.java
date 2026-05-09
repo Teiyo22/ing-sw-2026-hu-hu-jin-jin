@@ -6,6 +6,8 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
@@ -161,15 +163,15 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int clientID, Board board, Tribe updatedTribe)  {
+    public void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack)  {
         if (!isConnected)
             return;
 
         try {
-            wrappedClient.updateModel(clientID, board, updatedTribe);
+            wrappedClient.updateModel(clientID, lobbyID, orderTile, offerTrack);
         } catch (RemoteException e) {
             ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, board, updatedTribe);});
+                updateModel(clientID, lobbyID, orderTile, offerTrack);});
         }
     }
 

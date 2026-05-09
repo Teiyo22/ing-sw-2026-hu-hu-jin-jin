@@ -11,6 +11,8 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.*;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
@@ -21,7 +23,6 @@ import it.polimi.ingsw.view.tui.Formatter;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,18 +151,6 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
-
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            Player player = currLobby.getPlayer(id);
-            TurnState turnState = modelStateInfo.getTurnState(player);
-            currLobby.setTurnState(turnState);
-
-            view.update();
-        }
-    }
-
-    @Override
     public void showError(int clientID, String error) {
         view.displayError(error);
     }
@@ -181,8 +170,24 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateModel(int clientID, Board board, Tribe updatedTribe) {
-        ;
+    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            Player player = currLobby.getPlayer(id);
+            TurnState turnState = modelStateInfo.getTurnState(player);
+            currLobby.setTurnState(turnState);
+
+            view.update();
+        }
+    }
+
+    @Override
+    public synchronized void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            currLobby.updateOrderTile(orderTile);
+            currLobby.updateOfferTrack(offerTrack);
+
+            view.update();
+        }
     }
 
     //=============================================================================
