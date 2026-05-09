@@ -41,8 +41,8 @@ public class LobbyRunningState extends LobbyState {
                 listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
 
             client.stopLobby(client.getID(), lobbyController.getID());
-            
-            for (ClientInterface player: lobbyController.getPlayers().keySet())
+
+            for (ClientInterface player : lobbyController.getPlayers().keySet())
                 player.stopLobby(client.getID(), lobbyController.getID());
 
             model.setLobbyState(null);
@@ -62,14 +62,8 @@ public class LobbyRunningState extends LobbyState {
     public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
-        if (validateCardPick(pickerPlayer, topPicks, bottomPicks)) {
-            model.pick(pickerPlayer, topPicks, bottomPicks);
-
-            for (ClientInterface client : lobbyController.getPlayers().keySet())
-                ; // TODO: notify model changes
-        } else {
+        if (!model.pick(pickerPlayer, topPicks, bottomPicks))
             pickerClient.showError(pickerClient.getID(), "Invalid action");
-        }
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
@@ -79,14 +73,8 @@ public class LobbyRunningState extends LobbyState {
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
-        if (validateOfferPick(pickerPlayer, offerIndex)) {
-            model.assignTo(pickerPlayer, model.getBoard().getOfferTrack()[offerIndex]);
-
-            for (ClientInterface client : lobbyController.getPlayers().keySet())
-                ; // TODO: notify model changes
-        } else {
+        if (!model.assignTo(pickerPlayer, model.getBoard().getOfferTrack()[offerIndex]))
             pickerClient.showError(pickerClient.getID(), "Invalid action");
-        }
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
@@ -137,15 +125,6 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(client.getID(), lobbyController.getID(), tribes, ranking);
 
         lobbyController.setState(new LobbyEndedState(lobbyController));
-    }
-
-
-    private boolean validateCardPick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        return true;
-    }
-
-    private boolean validateOfferPick(Player player, int offerIndex) {
-        return true;
     }
 
     @Override
