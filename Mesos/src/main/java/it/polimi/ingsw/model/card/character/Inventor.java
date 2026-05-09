@@ -39,11 +39,9 @@ public class Inventor extends AbstractCharacter{
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-15s ";
 
-        return String.format(format, ID, type, ERA, inventorType);
+        return super.toString() + String.format(format, inventorType);
     }
 
 }

@@ -47,12 +47,10 @@ public class Builder extends AbstractCharacter{
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-25s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-15s | %-25s ";
         String BONUSPP = String.format("Bonus PP: %d", bonusPP);
         String BUILDINGDISCOUNT = String.format("Building Discount: %d", buildingDiscount);
 
-        return String.format(format, ID, type, ERA, BONUSPP, BUILDINGDISCOUNT);
+        return super.toString() + String.format(format, BONUSPP, BUILDINGDISCOUNT);
     }
 }

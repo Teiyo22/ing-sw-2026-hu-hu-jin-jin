@@ -84,12 +84,6 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-        String COST = String.format("Cost: %d", super.getCost());
-        String PP = String.format("PP: %d", super.getPP());
-
         List<String> bonuses = Map.of(
             "Inventor", inventorBonusPP,
             "Shaman", shamanBonusPP,
@@ -101,8 +95,8 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
                 .map(e -> "Bonus PP (" + e.getKey() + "): " + e.getValue())
                 .toList();
 
-        format = format + "| %-25s ".repeat(bonuses.size());
+        String format = "| %-25s ".repeat(bonuses.size());
 
-        return String.format(format, ID, type, ERA, COST, PP, bonuses);
+        return String.format(format, ID, type, bonuses);
     }
 }

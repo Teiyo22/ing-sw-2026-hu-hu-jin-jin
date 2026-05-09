@@ -79,4 +79,13 @@ public abstract class AbstractCard implements Serializable {
 
         return ((AbstractCard) obj).getID() == this.ID;
     }
+
+    @Override
+    public String toString() {
+        String format = " %-10s | %-26s | %-15s ";
+        String id = String.format("ID: %d", ID);
+        String ERA = String.format("Era: %d", era);
+
+        return String.format(format, id, type, ERA);
+    }
 }

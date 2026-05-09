@@ -39,11 +39,9 @@ public class Hunter extends AbstractCharacter {
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-15s ";
         String ICON = String.format("Icon: %b", hasIcon);
 
-        return String.format(format, ID, type, ERA, ICON);
+        return super.toString() + String.format(format, ICON);
     }
 }

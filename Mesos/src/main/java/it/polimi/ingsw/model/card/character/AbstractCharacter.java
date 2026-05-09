@@ -41,5 +41,8 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
         row.getCharacterCards().remove(this);
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

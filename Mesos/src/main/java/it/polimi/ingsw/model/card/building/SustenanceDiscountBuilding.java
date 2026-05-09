@@ -93,12 +93,6 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-        String COST = String.format("Cost: %d", super.getCost());
-        String PP = String.format("PP: %d", super.getPP());
-
         List<String> discounts = Map.of(
                         "Inventor", inventorDiscount,
                         "Shaman", shamanDiscount,
@@ -110,8 +104,8 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
                 .map(e -> "Discount (" + e.getKey() + "): " + e.getValue())
                 .toList();
 
-        format = format + "| %-25s ".repeat(discounts.size());
+        String format = "| %-25s ".repeat(discounts.size());
 
-        return String.format(format, ID, type, ERA, COST, PP, discounts);
+        return String.format(format, discounts);
     }
 }

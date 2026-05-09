@@ -29,12 +29,4 @@ public class Collector extends AbstractCharacter{
         v.visit(this);
     }
 
-    @Override
-    public String toString() {
-        String format = " %-10s | %-26s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-
-        return String.format(format, ID, type, ERA);
-    }
 }

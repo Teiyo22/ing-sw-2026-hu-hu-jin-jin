@@ -22,11 +22,6 @@ public class RowSection implements Section {
 
         System.out.println();
 
-        if (isTop)
-            System.out.println(Formatter.separatorLine("Top Row"));
-        else
-            System.out.println(Formatter.separatorLine("Bottom Row"));
-
         if (!row.getBuildingCards().isEmpty())
             System.out.println(Formatter.separatorLine("Buildings"));
 

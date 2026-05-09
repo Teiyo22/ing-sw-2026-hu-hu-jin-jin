@@ -36,7 +36,7 @@ public class OrderSlot implements Serializable {
 
     @Override
     public String toString() {
-        String playerName = assignedPlayer == null ? "None" : assignedPlayer.getName();
+        String playerName = assignedPlayer == null ? "" : assignedPlayer.getName();
         return String.format("%-25s | %-15s", playerName, foodDelta);
     }
 }

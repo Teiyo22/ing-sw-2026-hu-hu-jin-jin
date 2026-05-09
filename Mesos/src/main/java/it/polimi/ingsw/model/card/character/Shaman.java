@@ -40,11 +40,9 @@ public class Shaman extends AbstractCharacter{
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-15s";
         String STARS = String.format("Stars: %d", stars);
 
-        return String.format(format, ID, type, ERA, STARS);
+        return super.toString() + String.format(format, STARS);
     }
 }

@@ -36,13 +36,9 @@ public class RitualStarsBuilding extends AbstractBuilding {
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-15s | %-25s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-        String COST = String.format("Cost: %d", super.getCost());
-        String PP = String.format("PP: %d", super.getPP());
+        String format = " | %-25s ";
         String BONUSSTARS = String.format("BonusStars: %d", bonusStars);
 
-        return String.format(format, ID, type, ERA, COST, PP, BONUSSTARS);
+        return super.toString() + String.format(format, BONUSSTARS);
     }
 }

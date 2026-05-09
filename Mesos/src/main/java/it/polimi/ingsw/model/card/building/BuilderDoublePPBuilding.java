@@ -32,14 +32,4 @@ public class BuilderDoublePPBuilding extends AbstractBuilding implements Visitab
         v.visit(this);
     }
 
-    @Override
-    public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-        String COST = String.format("Cost: %d", super.getCost());
-        String PP = String.format("PP: %d", super.getPP());
-
-        return String.format(format, ID, type, ERA, COST, PP);
-    }
 }

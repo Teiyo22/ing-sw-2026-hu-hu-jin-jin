@@ -71,7 +71,7 @@ public class ShamanicRitual extends AbstractEvent {
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-25s | %-25s ";
+        String format = " %-10s | %-26s | %-15s | %-25s ";
         String ID = String.format("ID: %d", getID());
         String ERA = String.format("Era: %d", super.getEra());
         String MALUSPP = String.format("MalusPP: %d", malusPP);

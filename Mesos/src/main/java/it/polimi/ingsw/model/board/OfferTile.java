@@ -43,7 +43,7 @@ public class OfferTile implements Serializable {
 
     @Override
     public String toString() {
-        String playerName = assignedPlayer == null ? "None" : assignedPlayer.getName();
+        String playerName = assignedPlayer == null ? "" : assignedPlayer.getName();
         return String.format("%-25s | %-15s | %-15s | %-15s ", playerName, bonusFood, topRowPickable, bottomRowPickable);
     }
 }

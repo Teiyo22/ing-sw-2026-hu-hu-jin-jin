@@ -59,5 +59,12 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         return owner;
     }
 
+    @Override
+    public String toString() {
+        String format = "| %-15s | %-15s ";
+        String COST = String.format("Cost: %d", cost);
+        String PP = String.format("PP: %d", pp);
 
+        return super.toString() + String.format(format, COST, PP);
+    }
 }

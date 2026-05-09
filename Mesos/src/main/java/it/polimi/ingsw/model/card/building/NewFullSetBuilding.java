@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 
 public class NewFullSetBuilding extends AbstractBuilding implements VisitableBuilding {
     transient int minForSet;
+
     public NewFullSetBuilding(String type, int era, boolean isFinal, int cost, int pp) {
         super(type, era, isFinal, cost, pp);
     }
@@ -40,16 +41,5 @@ public class NewFullSetBuilding extends AbstractBuilding implements VisitableBui
 
     public void setMinForSet(int minForSet) {
         this.minForSet = minForSet;
-    }
-
-    @Override
-    public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
-        String COST = String.format("Cost: %d", super.getCost());
-        String PP = String.format("PP: %d", super.getPP());
-
-        return String.format(format, ID, type, ERA, COST, PP);
     }
 }
