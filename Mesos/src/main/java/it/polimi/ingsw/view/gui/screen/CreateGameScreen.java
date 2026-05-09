@@ -3,6 +3,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,41 +17,47 @@ public class CreateGameScreen extends  GUIScreen implements ActionListener {
     private JTextField nameText;
     private JComboBox<Integer> pSizeBox;
     private JComboBox<Totem> totemBox;
+    private JPanel panel;
+    private JButton previous;
 
-    public CreateGameScreen(JFrame frame, ClientController clientController) {
+    public CreateGameScreen(JFrame frame,JButton previous, ClientController clientController, JPanel panel) {
         super(frame, clientController);
+        this.panel = panel;
+        this.previous = previous;
     }
 
     public void render() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(0xFFF3D3));
+        panel = new JPanel(new BorderLayout());
+        panel.setBackground(Fonts.black);
 
         JPanel topBar = new JPanel(new BorderLayout());
-        topBar.setBackground(new Color(0xFFF3D3));
+        topBar.setBackground(Fonts.black);
 
         back = new JButton("←");
-        back.setFont(new Font("Arial", Font.PLAIN, 30));
+        back.setFont(Fonts.medium);
         back.setBorderPainted(false);
         back.setContentAreaFilled(false);
-        back.setForeground(Color.BLACK);
+        back.setForeground(Color.WHITE);
         back.addActionListener(this);
         topBar.add(back, BorderLayout.WEST);
 
         JLabel title = new JLabel("Create game");
-        title.setFont(new Font("Arial", Font.PLAIN, 40));
+        title.setFont(Fonts.large);
+        title.setForeground(Color.WHITE);
         title.setHorizontalAlignment(SwingConstants.CENTER);
         topBar.add(title, BorderLayout.CENTER);
 
         panel.add(topBar, BorderLayout.NORTH);
 
         JPanel createPanel = new JPanel(new GridBagLayout());
-        createPanel.setBackground(new Color(0xFFF3D3));
+        createPanel.setBackground(Fonts.black);
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(15, 10, 15, 10);
         c.anchor = GridBagConstraints.WEST;
 
         JLabel name = new JLabel("Name :");
-        name.setFont(new Font("Arial", Font.PLAIN, 20));
+        name.setFont(Fonts.small);
+        name.setForeground(Color.WHITE);
         c.gridx = 0; c.gridy = 1; c.anchor = GridBagConstraints.EAST;
         createPanel.add(name,c);
 
@@ -62,42 +69,41 @@ public class CreateGameScreen extends  GUIScreen implements ActionListener {
         createPanel.add(nameText,c);
 
         JLabel size = new JLabel("Players number:");
-        size.setFont(new Font("Arial", Font.PLAIN, 20));
+        size.setFont(Fonts.small);
+        size.setForeground(Color.WHITE);
         c.gridx = 0; c.gridy = 2;
         createPanel.add(size, c);
 
         Integer[] pSize = {2,3,4,5};
         pSizeBox = new JComboBox<>(pSize);
         pSizeBox.setPreferredSize(new Dimension(200,30));
-        pSizeBox.setFont(new Font("Arial", Font.PLAIN, 18));
+        pSizeBox.setFont(Fonts.small);
         c.gridx = 1; c.gridy = 2;
         createPanel.add(pSizeBox, c);
 
-        JLabel totemLabel = new JLabel("Scegli totem:");
-        totemLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        JLabel totemLabel = new JLabel("Totem:");
+        totemLabel.setFont(Fonts.small);
+        totemLabel.setForeground(Color.WHITE);
         c.gridx = 0; c.gridy = 3; c.anchor = GridBagConstraints.EAST;
         createPanel.add(totemLabel, c);
 
         totemBox = new JComboBox<>(Totem.values());
-        totemBox.setFont(new Font("Arial", Font.PLAIN, 18));
+        totemBox.setFont(Fonts.small);
         totemBox.setPreferredSize(new Dimension(200,30));
         c.gridx = 1; c.gridy = 3; c.anchor = GridBagConstraints.EAST;
         createPanel.add(totemBox, c);
 
-        create = new JButton("Crea");
-        create.setFont(new Font("Arial", Font.PLAIN, 30));
+        create = new JButton("Create");
+        create.setFont(Fonts.medium);
         create.setBorderPainted(false);
         create.setContentAreaFilled(false);
         create.setFocusable(false);
-        create.setForeground(Color.BLACK);
+        create.setForeground(Color.WHITE);
         create.addActionListener(this);
         c.gridx = 0; c.gridy = 4; c.gridwidth = 2; c.anchor = GridBagConstraints.CENTER;
         createPanel.add(create, c);
 
         panel.add(createPanel, BorderLayout.CENTER);
-
-        frame.setContentPane(panel);
-        frame.setVisible(true);
     }
 
     @Override
@@ -112,7 +118,11 @@ public class CreateGameScreen extends  GUIScreen implements ActionListener {
                 throw new RuntimeException(ex);
             }
         }else if(e.getSource() == back){
-            new MenuScreen(frame, clientController);
+            panel.removeAll();
+            panel.setLayout(new GridBagLayout());
+            panel.add(previous);
+            panel.revalidate();
+            panel.repaint();
         }
     }
 }
