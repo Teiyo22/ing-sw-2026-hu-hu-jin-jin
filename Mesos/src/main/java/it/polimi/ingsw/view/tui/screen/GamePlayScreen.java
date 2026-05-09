@@ -30,9 +30,9 @@ public class GamePlayScreen implements Screen {
                 new ActionSection(registry),
                 new PlayerInfoSection(),
                 new OrderTileSection(),
-                new RowSection(clientController.getCurrLobby().getBoard().getTopRow()),
+                new RowSection(true),
                 new OfferTrackSection(),
-                new RowSection(clientController.getCurrLobby().getBoard().getBottomRow()),
+                new RowSection(false),
                 new PlayerFocusSection()
         );
     }
@@ -40,7 +40,10 @@ public class GamePlayScreen implements Screen {
     @Override
     public void render() {
         Formatter.clearScreen();
-        sections.forEach(s -> s.render(clientController));
+
+        synchronized (clientController) {
+            sections.forEach(s -> s.render(clientController));
+        }
 
         System.out.println(Formatter.separatorLine(""));
         System.out.println(errorMsg);

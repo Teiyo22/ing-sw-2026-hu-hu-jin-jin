@@ -42,7 +42,9 @@ public class LobbySelectionScreen implements Screen {
     @Override
     public void render() {
         Formatter.clearScreen();
-        sections.forEach(s -> s.render(clientController));
+        synchronized (clientController) {
+            sections.forEach(s -> s.render(clientController));
+        }
 
         System.out.println(Formatter.separatorLine(""));
         System.out.println(errorMsg);
