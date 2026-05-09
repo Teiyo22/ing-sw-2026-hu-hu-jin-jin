@@ -216,6 +216,19 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
+    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
+        if (!isConnected())
+            return;
+
+        try {
+            wrappedClient.updateModel(clientID, lobbyID, tribes, ranking);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {
+                updateModel(clientID, lobbyID, tribes, ranking);});
+        }
+    }
+
+    @Override
     public synchronized void createLobby(int clientID, Lobby lobby, Player player)  {
         if (!isConnected)
             return;

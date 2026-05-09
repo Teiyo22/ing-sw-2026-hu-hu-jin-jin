@@ -38,6 +38,7 @@ public class GameEndState extends GameState {
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
 
+        game.getLobbyState().notifyGameEndUpdate();
     }
 
     private void resolveEvents() {

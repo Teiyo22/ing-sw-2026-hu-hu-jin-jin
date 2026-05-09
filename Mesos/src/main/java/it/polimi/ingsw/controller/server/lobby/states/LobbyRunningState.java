@@ -125,7 +125,18 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyGameEndUpdate() {
+        Map<Integer, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
+                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+        Map<Integer, Integer> ranking = lobbyController.getPlayers().entrySet().stream()
+                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getRank()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.updateModel(client.getID(), lobbyController.getID(), tribes, ranking);
+
+        lobbyController.setState(new LobbyEndedState(lobbyController));
     }
 
 

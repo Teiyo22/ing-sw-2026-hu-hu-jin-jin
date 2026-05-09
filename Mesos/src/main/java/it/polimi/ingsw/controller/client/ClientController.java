@@ -222,6 +222,16 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    @Override
+    public synchronized void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            currLobby.updateTribes(tribes);
+            currLobby.setRanking(ranking);
+
+            view.update();
+        }
+    }
+
     //=============================================================================
     // Network related methods
     //=============================================================================

@@ -145,6 +145,15 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
+        if (!isConnected())
+            return;
+
+        GameEndResponse response = new GameEndResponse(clientID, lobbyID, tribes, ranking);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
     public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         if (!isConnected)
             return;

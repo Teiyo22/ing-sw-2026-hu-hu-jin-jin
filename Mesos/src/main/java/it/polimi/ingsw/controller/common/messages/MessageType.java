@@ -21,6 +21,7 @@ public enum MessageType {
     OFFER_RESOLUTION,
     EXTRA_ACTION,
     ROUND_END,
+    GAME_END,
     PING,
     ERROR,
     UPDATE_STATE

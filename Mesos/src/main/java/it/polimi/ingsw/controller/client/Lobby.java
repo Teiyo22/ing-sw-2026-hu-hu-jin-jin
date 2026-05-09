@@ -102,6 +102,12 @@ public class Lobby implements Serializable {
         }
     }
 
+    public void setRanking(Map<Integer, Integer> ranking) {
+        for (Map.Entry<Player, Integer> entry : players.entrySet()) {
+            entry.getKey().setRank(ranking.get(entry.getValue()));
+        }
+    }
+
     public void showPlayer(Player player) {
         shownPlayer = player;
     }
