@@ -4,6 +4,8 @@ import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.info.OfferPickStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 public class RoundStartState extends GameState {
     private int assignedSlots = -1;
@@ -32,7 +34,7 @@ public class RoundStartState extends GameState {
             return;
         }
 
-        currPlayer = game.getPlayers().get(assignedSlots);
+        currPlayer = game.getBoard().getOrderTile()[assignedSlots].getAssignedPlayer();
     }
 
     @Override
