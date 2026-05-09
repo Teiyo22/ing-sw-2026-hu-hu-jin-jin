@@ -34,7 +34,7 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
     public void onPick(Player player, BuildingHandler buildingHandler) {
         owner = player;
         cost = Math.max(0, cost - player.getTribe().getBuilderDiscount());
-        player.addFood(cost);
+        player.addFood(-cost);
         player.addBuilding(this);
     }
 
