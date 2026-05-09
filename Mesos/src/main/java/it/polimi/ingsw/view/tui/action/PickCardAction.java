@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.Row;
@@ -32,7 +33,8 @@ public class PickCardAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        return clientController.getTurnState() != null && clientController.getTurnState().canPickCard();
+        TurnState turnState = clientController.getCurrLobby().getTurnState();
+        return turnState != null && turnState.canPickCard();
     }
 
     @Override
@@ -84,7 +86,7 @@ public class PickCardAction implements Action {
     }
 
     private boolean validateIDList(List<Integer> list, boolean top) {
-        Row row = top ? clientController.getBoard().getTopRow() : clientController.getBoard().getBottomRow();
+        Row row = top ? clientController.getCurrLobby().getBoard().getTopRow() : clientController.getCurrLobby().getBoard().getBottomRow();
 
         List<Integer> rowCardIDs = Stream.concat(
                 row.getBuildingCards().stream().map(b -> (AbstractCard) b),
@@ -96,11 +98,11 @@ public class PickCardAction implements Action {
     }
 
     private boolean validatePickCount(List<Integer> top , List<Integer> bottom) {
-        int idx = clientController.getTurnState().getIndex();
+        int idx = clientController.getCurrLobby().getTurnState().getIndex();
         int topPickCount, bottomPickCount;
 
         if (idx >= 0) {
-            OfferTile offerTile = clientController.getBoard().getOfferTrack()[idx];
+            OfferTile offerTile = clientController.getCurrLobby().getBoard().getOfferTrack()[idx];
             topPickCount = offerTile.getTopRowPickable();
             bottomPickCount = offerTile.getBottomRowPickable();
         } else {
@@ -112,8 +114,8 @@ public class PickCardAction implements Action {
     }
 
     private boolean validateFoodCost(List<Integer> top, List<Integer> bottom) {
-        Player currPlayer = clientController.getCurrentPlayer();
-        Board board = clientController.getBoard();
+        Player currPlayer = clientController.getCurrLobby().getCurrPlayer();
+        Board board = clientController.getCurrLobby().getBoard();
 
         int foodCost = Stream.concat(
                 board.getTopRow().getBuildingCards().stream().filter(b -> top.contains(b.getID())),

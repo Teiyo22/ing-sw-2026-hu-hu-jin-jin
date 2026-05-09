@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.tui.Formatter;
 public class OrderTileSection implements Section {
     @Override
     public void render(ClientController clientController) {
-        Board board = clientController.getBoard();
+        Board board = clientController.getCurrLobby().getBoard();
 
         System.out.println(Formatter.separatorLine("Order Tile"));
         System.out.println(Formatter.line(String.format(" %-3s | %-25s | %-15s", "idx", "Assigned Player", "Food Delta")));

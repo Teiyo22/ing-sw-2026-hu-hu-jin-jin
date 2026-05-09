@@ -45,131 +45,119 @@ public class ClientController implements VirtualClient {
     private Lobby currLobby = null;
     private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
 
-    private final Object lock = new Object();
-
     //=============================================================================
     // Lobby management methods
     //=============================================================================
 
     @Override
-    public void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
-        synchronized (lock) {
-            waitingLobbies.clear();
+    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
 
-            for (Lobby lobby : lobbies)
-                waitingLobbies.put(lobby.getLobbyID(), lobby);
+        waitingLobbies.clear();
 
-            view.update();
-        }
+        for (Lobby lobby : lobbies)
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
+
+        view.update();
     }
 
     @Override
-    public void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
-        synchronized (lock) {
-            Lobby lobby = waitingLobbies.get(lobbyID);
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
 
-            if (lobby != null) {
-                Map<Player, Integer> playerInfo = new HashMap<>();
-                currLobby = lobby;
+        Lobby lobby = waitingLobbies.get(lobbyID);
 
-                for (Map.Entry<Integer, Player> entry : players.entrySet()) {
-                    Player newKey = entry.getValue();
-                    Integer newValue = entry.getKey() < 0 ? null : entry.getKey();
-                    playerInfo.put(newKey, newValue);
-                }
-
-                currLobby.setPlayers(playerInfo);
-            } else
-                showError(clientID, "This lobby is not available");
-
-            view.update();
-        }
-    }
-
-    @Override
-    public void addClient(int clientID, int lobbyID, Player player) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.addClient(clientID, player);
-
-            view.update();
-        }
-    }
-
-    @Override
-    public void addPlayer(int clientID, int lobbyID, Player player) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.addPlayer(clientID, player);
-
-            view.update();
-        }
-    }
-
-    @Override
-    public void removeClient(int clientID, int lobbyID, Player player) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.removeClient(clientID, player);
-            view.update();
-        }
-    }
-
-    @Override
-    public void removePlayer(int clientID, int lobbyID, Player player) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-                currLobby.removePlayer(clientID, player);
-
-            view.update();
-        }
-    }
-
-    @Override
-    public void createLobby(int clientID, Lobby lobby, Player player) {
-        synchronized (lock) {
+        if (lobby != null) {
+            Map<Player, Integer> playerInfo = new HashMap<>();
             currLobby = lobby;
 
-            Map<Player, Integer> players = new HashMap<>();
-            players.put(player, clientID);
+            for (Map.Entry<Integer, Player> entry : players.entrySet()) {
+                Player newKey = entry.getValue();
+                Integer newValue = entry.getKey() < 0 ? null : entry.getKey();
+                playerInfo.put(newKey, newValue);
+            }
 
-            currLobby.setPlayers(players);
+            currLobby.setPlayers(playerInfo);
+        } else
+            showError(clientID, "This lobby is not available");
+
+        view.update();
+    }
+
+    @Override
+    public synchronized void addClient(int clientID, int lobbyID, Player player) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.addClient(clientID, player);
+
+        view.update();
+    }
+
+    @Override
+    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.addPlayer(clientID, player);
+
+        view.update();
+    }
+
+    @Override
+    public synchronized void removeClient(int clientID, int lobbyID, Player player) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.removeClient(clientID, player);
+        view.update();
+    }
+
+    @Override
+    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby.removePlayer(clientID, player);
+
+        view.update();
+    }
+
+    @Override
+    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
+
+        currLobby = lobby;
+
+        Map<Player, Integer> players = new HashMap<>();
+        players.put(player, clientID);
+
+        currLobby.setPlayers(players);
+
+        view.update();
+    }
+
+    @Override
+    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            waitingLobbies.clear();
+
+            currLobby.initGame(tribes, board);
+            view.transitionTo(ScreenType.GAME_PLAY);
+        }
+    }
+
+    @Override
+    public synchronized void stopLobby(int clientID, int lobbyID) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            view.transitionTo(ScreenType.LOBBY_SELECTION);
+        }
+    }
+
+    @Override
+    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            Player player = currLobby.getPlayer(id);
+            TurnState turnState = modelStateInfo.getTurnState(player);
+            currLobby.setTurnState(turnState);
 
             view.update();
-        }
-    }
-
-    @Override
-    public void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                waitingLobbies.clear();
-
-                currLobby.initGame(tribes, board);
-                view.transitionTo(ScreenType.GAME_PLAY);
-            }
-        }
-    }
-
-    @Override
-    public void stopLobby(int clientID, int lobbyID) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                view.transitionTo(ScreenType.LOBBY_SELECTION);
-            }
-        }
-    }
-
-    @Override
-    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
-        synchronized (lock) {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                Player player = currLobby.getPlayer(id);
-                TurnState turnState = modelStateInfo.getTurnState(player);
-                currLobby.setTurnState(turnState);
-
-                view.update();
-            }
         }
     }
 
@@ -303,39 +291,15 @@ public class ClientController implements VirtualClient {
         return server;
     }
 
-    public Lobby getCurrLobby() {
-        synchronized (lock) {
-            return currLobby == null ? null : currLobby.copy();
-        }
-    }
-
-    public List<Player> getPlayers() {
-        synchronized (lock) {
-            return new ArrayList<>(currLobby.getPlayers().keySet());
-        }
-    }
-
-    public synchronized Board getBoard() {
-        synchronized (lock) {
-            return currLobby.getBoard();
-        }
-    }
-
     public HashMap<Integer, Lobby> getWaitingLobbies() {
-        synchronized (lock) {
-            return new HashMap<>(waitingLobbies);
-        }
+        return new HashMap<>(waitingLobbies);
+    }
+
+    public Lobby getCurrLobby() {
+        return currLobby;
     }
 
     public boolean isInit() {
         return init;
-    }
-
-    public Player getCurrentPlayer() {
-        return currLobby.getCurrPlayer();
-    }
-
-    public TurnState getTurnState() {
-        return currLobby.getTurnState();
     }
 }

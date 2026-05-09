@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.command.PickOfferCommand;
 
@@ -26,7 +27,8 @@ public class PickOfferAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        return clientController.getTurnState() != null && clientController.getTurnState().canPickOffer();
+        TurnState turnState = clientController.getCurrLobby().getTurnState();
+        return turnState != null && turnState.canPickOffer();
     }
 
     @Override
@@ -63,7 +65,7 @@ public class PickOfferAction implements Action {
     }
 
     private boolean validateOfferID(int offerID) {
-        OfferTile[] offerTile = clientController.getBoard().getOfferTrack();
+        OfferTile[] offerTile = clientController.getCurrLobby().getBoard().getOfferTrack();
 
         return offerID >= 0 && offerID < offerTile.length && offerTile[offerID].getAssignedPlayer() == null;
     }

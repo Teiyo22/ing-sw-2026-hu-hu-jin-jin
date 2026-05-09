@@ -30,9 +30,9 @@ public class GamePlayScreen implements Screen {
                 new ActionSection(registry),
                 new PlayerInfoSection(),
                 new OrderTileSection(),
-                new RowSection(clientController.getBoard().getTopRow()),
+                new RowSection(clientController.getCurrLobby().getBoard().getTopRow()),
                 new OfferTrackSection(),
-                new RowSection(clientController.getBoard().getBottomRow()),
+                new RowSection(clientController.getCurrLobby().getBoard().getBottomRow()),
                 new PlayerFocusSection()
         );
     }

@@ -7,11 +7,11 @@ import it.polimi.ingsw.view.tui.Formatter;
 public class PlayerInfoSection implements  Section {
     @Override
     public void render(ClientController clientController) {
-        Player currPlayer = clientController.getCurrentPlayer();
+        Player currPlayer = clientController.getCurrLobby().getCurrPlayer();
 
         System.out.println(Formatter.separatorLine("Players"));
 
-        for (Player player : clientController.getPlayers())
+        for (Player player : clientController.getCurrLobby().getPlayers().keySet())
             System.out.println(Formatter.playerInfo(player, player.equals(currPlayer)));
     }
 }

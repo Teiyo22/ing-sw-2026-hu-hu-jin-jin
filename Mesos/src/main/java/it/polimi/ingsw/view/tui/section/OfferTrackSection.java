@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.tui.Formatter;
 public class OfferTrackSection implements Section {
     @Override
     public void render(ClientController clientController) {
-        OfferTile[] offerTrack = clientController.getBoard().getOfferTrack();
+        OfferTile[] offerTrack = clientController.getCurrLobby().getBoard().getOfferTrack();
 
         System.out.println(Formatter.separatorLine("Offer Track"));
         System.out.println(Formatter.line(String.format(
