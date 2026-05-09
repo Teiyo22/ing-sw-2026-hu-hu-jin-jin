@@ -39,6 +39,7 @@ public class LobbyRunningState extends LobbyState {
             for (ClientInterface player: lobbyController.getPlayers().keySet())
                 player.stopLobby(client.getID(), lobbyController.getID());
 
+            model.setLobbyState(null);
             lobbyController.setState(new LobbyPausedState(lobbyController));
             return true;
         }

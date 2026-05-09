@@ -55,7 +55,7 @@ public class LobbyController {
 
     public void initModel() {
         if (model == null)
-            model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
+            model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
     public synchronized void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {

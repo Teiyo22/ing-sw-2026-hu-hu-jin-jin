@@ -39,7 +39,9 @@ public class LobbyResumableState extends LobbyState {
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(client.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
 
-        lobbyController.setState(new LobbyRunningState(lobbyController));
+        LobbyRunningState nextState = new LobbyRunningState(lobbyController);
+        model.setLobbyState(nextState);
+        lobbyController.setState(nextState);
         Logger.getInstance().print(LoggerLevel.SERVER, "Restarted lobby " + lobbyController.getID());
     }
 

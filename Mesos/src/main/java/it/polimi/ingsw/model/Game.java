@@ -1,6 +1,6 @@
-    package it.polimi.ingsw.model;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.Row;
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-    public class Game {
-    private final LobbyController lobbyController;
+public class Game {
+    private LobbyRunningState lobbyState = null;
 
     private final PlayerConfig playerConfig;
     private final List<Player> players;
@@ -26,8 +26,7 @@ import java.util.stream.Stream;
     private GameState gameState;
     private final BuildingHandler buildingHandler;
 
-    public Game(LobbyController lobbyController, PlayerConfig playerConfig, List<Player> players) {
-        this.lobbyController = lobbyController;
+    public Game(PlayerConfig playerConfig, List<Player> players) {
         this.playerConfig = playerConfig;
         this.players = players;
 
@@ -62,6 +61,10 @@ import java.util.stream.Stream;
         gameState.update();
     }
 
+    public LobbyRunningState getLobbyState() {
+        return lobbyState;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -74,27 +77,29 @@ import java.util.stream.Stream;
         return gameState;
     }
 
-    public LobbyController getLobbyController() {
-        return lobbyController;
+    public void setLobbyState(LobbyRunningState lobbyState) {
+        this.lobbyState = lobbyState;
     }
 
     /**
      * Picks the cards for a player and updates the game state.
-     * @param player is the player that picked the cards.
-     * @param topPicks are the cards picked from the top row.
+     *
+     * @param player      is the player that picked the cards.
+     * @param topPicks    are the cards picked from the top row.
      * @param bottomPicks are the cards picked from the bottom row.
-     * */
+     *
+     */
     public void pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         List<Pickable> top = getPickable(topPicks, board.getTopRow());
 
-        for(Pickable p: top){
+        for (Pickable p : top) {
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getTopRow());
         }
 
         List<Pickable> bottom = getPickable(bottomPicks, board.getBottomRow());
 
-        for(Pickable p: bottom){
+        for (Pickable p : bottom) {
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getBottomRow());
         }
@@ -104,10 +109,12 @@ import java.util.stream.Stream;
 
     /**
      * Assigns the player to the selected offer tile and updates the game state.
+     *
      * @param player is the player that picked the offer tile.
-     * @param offer is the offer tile that the player picked.
-     * */
-    public void assignTo(Player player, OfferTile offer){
+     * @param offer  is the offer tile that the player picked.
+     *
+     */
+    public void assignTo(Player player, OfferTile offer) {
         offer.setPlayer(player);
         gameState.update();
     }
