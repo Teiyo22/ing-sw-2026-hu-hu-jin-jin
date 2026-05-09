@@ -43,7 +43,13 @@ public class BonusPPBuilding extends AbstractBuilding implements VisitableBuildi
 
     @Override
     public String toString() {
-        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d  |  BonusPP: %-3d ]",
-                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP(), bonusPP);
+        String format = " %-10s | %-26s | %-15s | %-15s | %-15s | %-25s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String COST = String.format("Cost: %d", super.getCost());
+        String PP = String.format("PP: %d", super.getPP());
+        String BONUSPP = String.format("BonusPP: %d", bonusPP);
+
+        return String.format(format, ID, type, ERA, COST, PP, BONUSPP);
     }
 }

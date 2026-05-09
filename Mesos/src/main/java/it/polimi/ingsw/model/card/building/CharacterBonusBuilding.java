@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -83,23 +84,25 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
 
     @Override
     public String toString() {
-        String res = String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d  |  Bonus PP for character type: ",
-                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP());
+        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String COST = String.format("Cost: %d", super.getCost());
+        String PP = String.format("PP: %d", super.getPP());
 
-        Map<String, Integer> bonuses = new HashMap<>();
-        bonuses.put("Inventor", inventorBonusPP);
-        bonuses.put("Shaman", shamanBonusPP);
-        bonuses.put("Hunter", hunterBonusPP);
-        bonuses.put("Collector", collectorBonusPP);
-        bonuses.put("Artist", artistBonusPP);
-        bonuses.put("Builder", builderBonusPP);
+        List<String> bonuses = Map.of(
+            "Inventor", inventorBonusPP,
+            "Shaman", shamanBonusPP,
+            "Hunter", hunterBonusPP,
+            "Collector", collectorBonusPP,
+            "Artist", artistBonusPP,
+            "Builder", builderBonusPP).entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .map(e -> "Bonus PP (" + e.getKey() + "): " + e.getValue())
+                .toList();
 
-        bonuses = bonuses.entrySet().stream().filter(e -> e.getValue() > 0).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
-        for(String key : bonuses.keySet()) {
-            res += key + " +" + bonuses.get(key);
-        }
-        res += " ]";
+        format = format + "| %-25s ".repeat(bonuses.size());
 
-        return res;
+        return String.format(format, ID, type, ERA, COST, PP, bonuses);
     }
 }

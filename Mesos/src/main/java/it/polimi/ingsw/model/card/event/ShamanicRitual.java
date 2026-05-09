@@ -71,8 +71,12 @@ public class ShamanicRitual extends AbstractEvent {
 
     @Override
     public String toString() {
-        return String.format(
-                "[ ID: %-3d |  %-20s  |  Era: %-3d  |  Malus PP: %-3d | Bonus PP: %-3d ]",
-                getID(), super.getClass().getSimpleName(), super.getEra(), -malusPP, bonusPP);
+        String format = " %-10s | %-26s | %-25s | %-25s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String MALUSPP = String.format("MalusPP: %d", malusPP);
+        String BONUSPP = String.format("BonusPP: %d", bonusPP);
+
+        return String.format(format, ID, type, ERA, MALUSPP, BONUSPP);
     }
 }

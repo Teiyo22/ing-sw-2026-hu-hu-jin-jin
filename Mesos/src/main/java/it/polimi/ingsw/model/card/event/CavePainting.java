@@ -61,8 +61,14 @@ public class CavePainting extends AbstractEvent{
 
     @Override
     public String toString() {
-        return String.format(
-                "[ ID: %-3d |  %-20s  |  Era: %-3d  |  Malus PP: %-3d |  Malus Threshold: %-3d | Bonus PP: %-3d |  Bonus Threshold: %-3d ]",
-                getID(), super.getClass().getSimpleName(), super.getEra(), -malusPP, numArtistsMalus, bonusPP, numArtistsBonus);
+        String format = " %-10s | %-26s | %-25s | %-25s | %-25s | %-25s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String MALUSPP = String.format("MalusPP: %d", malusPP);
+        String MALUSTHRESHOLD = String.format("Malus Threshold: %d", numArtistsMalus);
+        String BONUSPP = String.format("BonusPP: %d", bonusPP);
+        String BONUSTHRESHOLD = String.format("Bonus Threshold: %d", numArtistsBonus);
+
+        return String.format(format, ID, type, ERA, MALUSPP, MALUSTHRESHOLD, BONUSPP, BONUSTHRESHOLD);
     }
 }

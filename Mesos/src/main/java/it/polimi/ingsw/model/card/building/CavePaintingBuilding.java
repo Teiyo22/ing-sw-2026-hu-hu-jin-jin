@@ -46,7 +46,13 @@ public class CavePaintingBuilding extends AbstractBuilding implements VisitableB
 
     @Override
     public String toString() {
-        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d  |  Bonus Food: %-3d ]",
-                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP(), bonusFood);
+        String format = " %-10s | %-26s | %-15s | %-15s | %-15s | %-25s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String COST = String.format("Cost: %d", super.getCost());
+        String PP = String.format("PP: %d", super.getPP());
+        String BONUSFOOD = String.format("BonusPP: %d", bonusFood);
+
+        return String.format(format, ID, type, ERA, COST, PP, BONUSFOOD);
     }
 }

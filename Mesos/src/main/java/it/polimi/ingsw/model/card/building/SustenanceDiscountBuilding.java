@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.List;
+import java.util.Map;
+
 public class SustenanceDiscountBuilding extends AbstractBuilding implements VisitableBuilding, CardVisitor {
     @Expose int inventorDiscount;
     @Expose int shamanDiscount;
@@ -90,22 +93,25 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
 
     @Override
     public String toString() {
-        String discountString = "";
+        String format = " %-10s | %-26s | %-15s | %-15s | %-15s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+        String COST = String.format("Cost: %d", super.getCost());
+        String PP = String.format("PP: %d", super.getPP());
 
-        discountString = inventorDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Inventor): %-3d", inventorDiscount);
-        discountString = shamanDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Shaman): %-3d", shamanDiscount);
-        discountString = hunterDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Hunter): %-3d ", hunterDiscount);
-        discountString = collectorDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Collector): %-3d", collectorDiscount);
-        discountString = artistDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Artist): %-3d", artistDiscount);
-        discountString = builderDiscount == 0 ? discountString :
-                discountString + String.format("| Discount (Builder): %-3d", builderDiscount);
+        List<String> discounts = Map.of(
+                        "Inventor", inventorDiscount,
+                        "Shaman", shamanDiscount,
+                        "Hunter", hunterDiscount,
+                        "Collector", collectorDiscount,
+                        "Artist", artistDiscount,
+                        "Builder", builderDiscount).entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .map(e -> "Discount (" + e.getKey() + "): " + e.getValue())
+                .toList();
 
-        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d  |  Cost: %-3d  |  PP: %-3d  %s ]",
-                getID(), super.getClass().getSimpleName(), super.getEra(), super.getCost(), super.getPP(), discountString);
+        format = format + "| %-25s ".repeat(discounts.size());
+
+        return String.format(format, ID, type, ERA, COST, PP, discounts);
     }
 }

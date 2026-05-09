@@ -30,6 +30,10 @@ public class Artist extends AbstractCharacter {
 
     @Override
     public String toString() {
-        return String.format("[ ID: %-3d |  %-20s  |  Era: %-3d ]", getID(), super.getClass().getSimpleName(), super.getEra());
+        String format = " %-10s | %-26s | %-15s ";
+        String ID = String.format("ID: %d", getID());
+        String ERA = String.format("Era: %d", super.getEra());
+
+        return String.format(format, ID, type, ERA);
     }
 }
