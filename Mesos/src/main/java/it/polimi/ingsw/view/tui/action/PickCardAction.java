@@ -70,7 +70,7 @@ public class PickCardAction implements Action {
     }
 
     private Set<Integer> parseIDList(String input, boolean top) {
-        String stripped = input.substring(1, input.length() - 2);
+        String stripped = input.substring(1, input.length() - 1);
         String[] split = stripped.split(" ");
 
         try {
