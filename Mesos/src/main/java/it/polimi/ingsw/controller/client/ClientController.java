@@ -163,7 +163,7 @@ public class ClientController implements VirtualClient {
     public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         synchronized (lock) {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                Player player = currLobby.getPlayer(clientID);
+                Player player = currLobby.getPlayer(id);
                 TurnState turnState = modelStateInfo.getTurnState(player);
                 currLobby.setTurnState(turnState);
 
