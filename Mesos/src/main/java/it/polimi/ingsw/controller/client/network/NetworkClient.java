@@ -61,13 +61,11 @@ public class NetworkClient extends Thread {
                 server.handleMessage(response);
             }
         } catch (SocketException e) {
-            Logger.getInstance().print(LoggerLevel.CLIENT, "TCP Socket closed");
-            System.out.println(e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Socket closed");
         } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.CLIENT, "Failed to read from TCP socket");
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to read from TCP socket");
+        } catch (JsonParseException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to parse JSON message");
         } finally {
             server.getClientController().disconnect();
         }
