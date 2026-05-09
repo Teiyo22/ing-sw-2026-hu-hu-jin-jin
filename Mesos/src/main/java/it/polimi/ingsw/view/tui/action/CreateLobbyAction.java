@@ -61,7 +61,7 @@ public class CreateLobbyAction implements Action {
             int n = Integer.parseInt(input);
 
             return (n >= 2 && n <= 5)
-                    ? 2
+                    ? n
                     : null;
 
         } catch (NumberFormatException e) {
