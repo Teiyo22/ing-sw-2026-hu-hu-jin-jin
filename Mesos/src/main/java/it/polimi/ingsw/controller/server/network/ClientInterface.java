@@ -42,6 +42,8 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
     public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board);
     public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow);
+    public abstract void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow);
+
 
 
     public int getID() {

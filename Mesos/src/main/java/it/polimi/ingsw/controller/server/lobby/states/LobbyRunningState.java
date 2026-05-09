@@ -8,8 +8,11 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LobbyRunningState extends LobbyState {
     final private Game model;
@@ -112,7 +115,13 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyRoundEndUpdate() {
+        Board board = model.getBoard();
+        Map<Integer, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
+                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.updateModel(client.getID(), lobbyController.getID(), tribes, board.getTopRow(), board.getBottomRow());
     }
 
     public void notifyGameEndUpdate() {

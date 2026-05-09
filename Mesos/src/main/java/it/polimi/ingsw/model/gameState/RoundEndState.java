@@ -35,6 +35,7 @@ public class RoundEndState extends GameState {
         if(!deck.getCharEventCards().isEmpty()) {
             resolveEvents();
             setUp();
+            game.getLobbyState().notifyRoundEndUpdate();
             game.setGameState(new RoundStartState(game, buildingHandler));
         } else
             game.setGameState(new GameEndState(game, buildingHandler));

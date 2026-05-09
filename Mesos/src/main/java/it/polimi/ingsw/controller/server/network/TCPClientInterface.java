@@ -117,6 +117,7 @@ public class TCPClientInterface extends ClientInterface {
         clientHandler.sendMessage(response);
     }
 
+    @Override
     public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
         if (!isConnected)
             return;
@@ -125,11 +126,21 @@ public class TCPClientInterface extends ClientInterface {
         clientHandler.sendMessage(response);
     }
 
+    @Override
     public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
         if (!isConnected)
             return;
 
         ExtraActionResponse response = new ExtraActionResponse(clientID, lobbyID, player, tribe, topRow);
+        clientHandler.sendMessage(response);
+    }
+
+    @Override
+    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
+        if (!isConnected())
+            return;
+
+        RoundEndResponse response = new RoundEndResponse(clientID, lobbyID, tribes, topRow, bottomRow);
         clientHandler.sendMessage(response);
     }
 

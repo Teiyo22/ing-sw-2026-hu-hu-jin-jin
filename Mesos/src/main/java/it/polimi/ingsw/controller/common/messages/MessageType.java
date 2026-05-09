@@ -20,6 +20,7 @@ public enum MessageType {
     OFFER_PICK,
     OFFER_RESOLUTION,
     EXTRA_ACTION,
+    ROUND_END,
     PING,
     ERROR,
     UPDATE_STATE

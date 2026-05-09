@@ -89,6 +89,19 @@ public class Lobby implements Serializable {
         this.board.setTopRow(row);
     }
 
+    public void updateBottomRow(Row row) {
+        this.board.setBottomRow(row);
+    }
+
+    public void updateTribes(Map<Integer, Tribe> tribes) {
+        for (Map.Entry<Player, Integer> entry : players.entrySet()) {
+            Tribe tribe = tribes.get(entry.getValue());
+            if (tribe != null) {
+                entry.getKey().setTribe(tribe);
+            }
+        }
+    }
+
     public void showPlayer(Player player) {
         shownPlayer = player;
     }

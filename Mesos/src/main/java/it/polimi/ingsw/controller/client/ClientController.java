@@ -209,7 +209,17 @@ public class ClientController implements VirtualClient {
 
             view.update();
         }
+    }
 
+    @Override
+    public synchronized void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            currLobby.updateTribes(tribes);
+            currLobby.updateTopRow(topRow);
+            currLobby.updateBottomRow(bottomRow);
+
+            view.update();
+        }
     }
 
     //=============================================================================
