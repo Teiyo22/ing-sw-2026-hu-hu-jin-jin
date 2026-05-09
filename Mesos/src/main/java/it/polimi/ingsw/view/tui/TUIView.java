@@ -36,7 +36,7 @@ public class TUIView implements View {
     public void close() {
         running = false;
 
-        System.out.println();
+        Formatter.clearScreen();
         System.out.println("Client disconnected: press 'Enter' to exit...");
     }
 

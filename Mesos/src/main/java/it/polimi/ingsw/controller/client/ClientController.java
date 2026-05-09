@@ -17,6 +17,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.tui.Formatter;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
@@ -245,9 +246,14 @@ public class ClientController implements VirtualClient {
 
         init = false;
 
+
+
         server.disconnect();
         connectionMonitor.stop();
         taskExecutor.shutdown();
+
+        Formatter.clearScreen();
+        System.out.println("Disconnecting ...");
 
         try {
             if (!taskExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
