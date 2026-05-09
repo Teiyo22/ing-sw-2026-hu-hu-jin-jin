@@ -23,6 +23,9 @@ public class ExtraActionState extends GameState {
      * */
     @Override
     public void update() {
+        if (currPlayer != null)
+            game.getLobbyState().notifyExtraActionResolution(currPlayer);
+
         solvedExtraActions++;
         buildingHandler.applyExtraActionEffects(this, solvedExtraActions);
 

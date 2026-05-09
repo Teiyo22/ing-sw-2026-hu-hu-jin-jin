@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -40,6 +41,8 @@ public abstract class ClientInterface implements VirtualClient {
 
     public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
     public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board);
+    public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow);
+
 
     public int getID() {
         return id;

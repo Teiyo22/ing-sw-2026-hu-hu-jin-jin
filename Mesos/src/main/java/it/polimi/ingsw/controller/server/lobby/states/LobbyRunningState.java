@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Set;
@@ -103,8 +104,11 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(client.getID(), lobbyController.getID(), player, player.getTribe(), board);
     }
 
-    public void notifyExtraActionResolution() {
+    public void notifyExtraActionResolution(Player player) {
+        Row topRow = model.getBoard().getTopRow();
 
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.updateModel(client.getID(), lobbyController.getID(), player, player.getTribe(), topRow);
     }
 
     public void notifyRoundEndUpdate() {

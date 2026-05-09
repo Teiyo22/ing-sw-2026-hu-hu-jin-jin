@@ -19,6 +19,7 @@ public enum MessageType {
     GET_LEADERBOARD,
     OFFER_PICK,
     OFFER_RESOLUTION,
+    EXTRA_ACTION,
     PING,
     ERROR,
     UPDATE_STATE

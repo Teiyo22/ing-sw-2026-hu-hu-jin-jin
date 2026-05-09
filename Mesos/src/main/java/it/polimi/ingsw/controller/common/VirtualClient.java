@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -31,6 +32,7 @@ public interface VirtualClient extends Remote {
 
     void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
     void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) throws RemoteException;
+    void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) throws RemoteException;
 
 
     void ping() throws RemoteException;

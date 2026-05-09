@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.client.turn.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
@@ -82,6 +83,10 @@ public class Lobby implements Serializable {
 
     public void updateBoard(Board board) {
         this.board = board;
+    }
+
+    public void updateTopRow(Row row) {
+        this.board.setTopRow(row);
     }
 
     public void showPlayer(Player player) {

@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
@@ -121,6 +122,14 @@ public class TCPClientInterface extends ClientInterface {
             return;
 
         OfferResolutionResponse response = new OfferResolutionResponse(clientID, lobbyID, player, tribe, board);
+        clientHandler.sendMessage(response);
+    }
+
+    public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
+        if (!isConnected)
+            return;
+
+        ExtraActionResponse response = new ExtraActionResponse(clientID, lobbyID, player, tribe, topRow);
         clientHandler.sendMessage(response);
     }
 

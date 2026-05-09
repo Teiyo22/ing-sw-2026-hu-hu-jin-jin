@@ -8,6 +8,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
@@ -186,6 +187,19 @@ public class RMIClientInterface extends ClientInterface {
                 updateModel(clientID, lobbyID, player, tribe, board);});
         }
     }
+
+    public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
+        if (!isConnected)
+            return;
+
+        try {
+            wrappedClient.updateModel(clientID, lobbyID, player, tribe, topRow);
+        } catch (RemoteException e) {
+            ServerController.getInstance().scheduleRetry(() -> {
+                updateModel(clientID, lobbyID, player, tribe, topRow);});
+        }
+    };
+
 
     @Override
     public synchronized void createLobby(int clientID, Lobby lobby, Player player)  {
