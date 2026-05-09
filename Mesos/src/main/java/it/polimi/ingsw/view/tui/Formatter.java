@@ -51,9 +51,9 @@ public class Formatter {
     }
 
     public static String playerInfo(Player player, boolean isTurn) {
-        String turnMarker = isTurn ? ">" : " ";
+        String turnMarker = isTurn ? "> " : "  ";
 
-        return coloredLine(String.format("%s%-25s | Food: %-3d | PP: %-3d",
+        return coloredLine(String.format("%s%-15s | Food: %-3d | PP: %-3d",
                 turnMarker, player.getName(), player.getFood(), player.getPP()), player.getTotem().getColor());
     }
 }
