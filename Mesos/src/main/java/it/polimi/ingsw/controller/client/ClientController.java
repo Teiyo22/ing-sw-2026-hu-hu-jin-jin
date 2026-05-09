@@ -239,12 +239,11 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    public synchronized void disconnect() {
+    public void disconnect() {
         if (!init)
             return;
 
         init = false;
-        view.close();
 
         server.disconnect();
         connectionMonitor.stop();
@@ -257,6 +256,8 @@ public class ClientController implements VirtualClient {
         } catch (InterruptedException e) {
             taskExecutor.shutdownNow();
         }
+
+        view.close();
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }
