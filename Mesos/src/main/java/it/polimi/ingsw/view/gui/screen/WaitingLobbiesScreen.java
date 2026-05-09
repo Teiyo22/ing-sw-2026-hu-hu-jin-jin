@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.view.gui.screen.LobbyInfoScreen;
+import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,10 @@ import java.util.Map;
 public class WaitingLobbiesScreen extends GUIScreen implements ActionListener {
     private JButton back;
     private JButton refresh;
-    private JList<Integer> availables;
+    private JList<Lobby> availables;
     private JPanel panel;
+    private JPanel createPanel;
+    private JButton create;
 
     public WaitingLobbiesScreen(JFrame frame, ClientController clientController) {
         super(frame,clientController);
@@ -25,30 +28,31 @@ public class WaitingLobbiesScreen extends GUIScreen implements ActionListener {
     @Override
     public void render() {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(0xFFF3D3));
+        panel.setBackground(Fonts.black);
 
         JPanel topBar = new JPanel(new BorderLayout());
-        topBar.setBackground(new Color(0xFFF3D3));
+        topBar.setBackground(Fonts.black);
 
         back = new JButton("←");
-        back.setFont(new Font("Arial", Font.PLAIN, 30));
+        back.setFont(Fonts.medium);
         back.setBorderPainted(false);
         back.setContentAreaFilled(false);
-        back.setForeground(Color.BLACK);
+        back.setForeground(Color.WHITE);
         back.addActionListener(this);
 
         topBar.add(back, BorderLayout.WEST);
 
         JLabel title = new JLabel("Lobbies", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.PLAIN, 40));
+        title.setFont(Fonts.large);
+        title.setForeground(Color.WHITE);
 
         topBar.add(title, BorderLayout.CENTER);
-
-        ImageIcon r = new ImageIcon(getClass().getResource("/r.png"));
-        refresh = new JButton(r);
-        refresh.setFont(new Font("Arial", Font.PLAIN, 40));
+;
+        refresh = new JButton("Refresh");
+        refresh.setFont(Fonts.large);
         refresh.setBorderPainted(false);
         refresh.setContentAreaFilled(false);
+        refresh.setForeground(Color.WHITE);
         refresh.addActionListener(this);
 
         topBar.add(refresh, BorderLayout.EAST);
@@ -56,34 +60,73 @@ public class WaitingLobbiesScreen extends GUIScreen implements ActionListener {
         panel.add(topBar, BorderLayout.NORTH);
 
         availables = new JList<>();
-        availables.setBackground(new Color(0xFFF3D3));
-        availables.setFont(new Font("Arial", Font.PLAIN, 20));
+        availables.setBackground(new Color(0));
+        availables.setFont(Fonts.small);
 
         Map<Integer,Lobby> lobbies = clientController.getWaitingLobbies();
-        DefaultListModel<Integer> model = new DefaultListModel<>();
+        DefaultListModel<Lobby> model = new DefaultListModel<>();
         for(Lobby lobby : lobbies.values())
-            model.addElement(lobby.getLobbyID());
+            model.addElement(lobby);
 
         availables.setModel(model);
+
+        availables.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JPanel cell = new JPanel(new BorderLayout());
+            JLabel id = new JLabel("Lobby #" + value.getLobbyID());
+            JLabel players = new JLabel(value.getPlayers().size() + "/" + value.getSize());
+            id.setFont(Fonts.medium);
+            players.setFont(Fonts.medium);
+            id.setForeground(Color.WHITE);
+            players.setForeground(Color.WHITE);
+            cell.add(id, BorderLayout.WEST);
+            cell.add(players, BorderLayout.EAST);
+            if(isSelected) {
+                cell.setBackground(list.getSelectionBackground());
+            } else {
+                cell.setBackground(list.getBackground());
+            }
+            cell.setOpaque(true);
+            return cell;
+        });
+
 
         JScrollPane scrollPane = new JScrollPane(availables);
         scrollPane.setPreferredSize(new Dimension(frame.getWidth()/2, 0));
         panel.add(scrollPane, BorderLayout.WEST);
 
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setBackground(new Color(0));
+
         JPanel infoPanel = new JPanel();
-        infoPanel.setBackground(new Color(0xFFF3D3));
-        panel.add(infoPanel, BorderLayout.CENTER);
+        infoPanel.setBackground(Fonts.black);
+        infoPanel.setPreferredSize(new Dimension(0, frame.getHeight()/2));
+        rightPanel.add(infoPanel, BorderLayout.CENTER);
+
+        createPanel = new JPanel(new GridBagLayout());
+        createPanel.setBackground(new Color(0));
+        createPanel.setPreferredSize(new Dimension(0, frame.getHeight()/2));
+
+        create = new JButton("Create Game");
+        create.setFont(Fonts.medium);
+        create.setForeground(Color.WHITE);
+        create.setContentAreaFilled(false);
+        create.addActionListener(this);
+        createPanel.add(create);
+
+        rightPanel.add(createPanel, BorderLayout.SOUTH);
+
+        panel.add(rightPanel, BorderLayout.CENTER);
 
         availables.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                int selezionato = availables.getSelectedValue();
+                int selezionato = availables.getSelectedValue().getLobbyID();
                 infoPanel.removeAll();
-                new LobbyInfoScreen(frame, clientController, infoPanel, selezionato).render();
                 try {
                     clientController.getServer().getLobbyInfo(clientController.getID(), selezionato);
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
+                new LobbyInfoScreen(frame, clientController, infoPanel, selezionato).render();
                 infoPanel.revalidate();
                 infoPanel.repaint();
             }
@@ -102,6 +145,11 @@ public class WaitingLobbiesScreen extends GUIScreen implements ActionListener {
             render();
             panel.revalidate();
             panel.repaint();
+        }else if(e.getSource()==create){
+            createPanel.removeAll();
+            new CreateGameScreen(frame,create,clientController,createPanel).render();
+            createPanel.revalidate();
+            createPanel.repaint();
         }
     }
 }
