@@ -9,9 +9,12 @@ public class PlayerInfoSection implements  Section {
     public void render(ClientController clientController) {
         Player currPlayer = clientController.getCurrLobby().getCurrPlayer();
 
+        System.out.println();
         System.out.println(Formatter.separatorLine("Players"));
 
         for (Player player : clientController.getCurrLobby().getPlayers().keySet())
             System.out.println(Formatter.playerInfo(player, player.equals(currPlayer)));
+
+        System.out.println(Formatter.separatorLine(""));
     }
 }

@@ -14,8 +14,13 @@ public class LobbyListSection implements Section {
         if (waitingLobbies == null || waitingLobbies.isEmpty())
             return;
 
+
+        System.out.println();
+
         System.out.println(Formatter.separatorLine("Lobby List"));
         for (Lobby lobby : waitingLobbies.values())
             System.out.println(Formatter.waitingLobby(lobby));
+
+        System.out.println(Formatter.separatorLine(""));
     }
 }

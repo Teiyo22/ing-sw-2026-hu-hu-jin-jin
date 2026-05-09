@@ -20,20 +20,28 @@ public class RowSection implements Section {
         Row row = isTop ? clientController.getCurrLobby().getBoard().getTopRow()
                 : clientController.getCurrLobby().getBoard().getBottomRow();
 
+        System.out.println();
+
         if (isTop)
             System.out.println(Formatter.separatorLine("Top Row"));
         else
             System.out.println(Formatter.separatorLine("Bottom Row"));
 
-        System.out.println(Formatter.separatorLine("Buildings"));
+        if (!row.getBuildingCards().isEmpty())
+            System.out.println(Formatter.separatorLine("Buildings"));
+
         for (AbstractBuilding building : row.getBuildingCards())
             System.out.println(Formatter.line(building.toString()));
 
-        System.out.println(Formatter.separatorLine("Characters"));
+        if (!row.getCharacterCards().isEmpty())
+            System.out.println(Formatter.separatorLine("Characters"));
+
         for (AbstractCharacter character : row.getCharacterCards())
             System.out.println(Formatter.line(character.toString()));
 
-        System.out.println(Formatter.separatorLine("Events"));
+        if (!row.getSustenanceEventCards().isEmpty() || !row.getEventCards().isEmpty())
+            System.out.println(Formatter.separatorLine("Events"));
+
         for (Sustenance sustenance : row.getSustenanceEventCards())
             System.out.println(Formatter.line(sustenance.toString()));
         for (AbstractEvent event : row.getEventCards())

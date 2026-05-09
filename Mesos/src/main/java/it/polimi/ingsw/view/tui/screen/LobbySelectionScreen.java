@@ -46,7 +46,6 @@ public class LobbySelectionScreen implements Screen {
             sections.forEach(s -> s.render(clientController));
         }
 
-        System.out.println(Formatter.separatorLine(""));
         System.out.println(errorMsg);
         System.out.print("Enter action: ");
     }

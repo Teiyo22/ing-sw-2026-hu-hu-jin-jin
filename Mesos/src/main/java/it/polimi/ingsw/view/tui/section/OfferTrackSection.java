@@ -9,6 +9,7 @@ public class OfferTrackSection implements Section {
     public void render(ClientController clientController) {
         OfferTile[] offerTrack = clientController.getCurrLobby().getBoard().getOfferTrack();
 
+        System.out.println();
         System.out.println(Formatter.separatorLine("Offer Track"));
         System.out.println(Formatter.line(String.format(
                 " %-3s | %-25s | %-15s | %-15s | %-15s ",
@@ -16,5 +17,7 @@ public class OfferTrackSection implements Section {
 
         for (int i = 0; i < offerTrack.length; i++)
             System.out.println(Formatter.line(String.format(" %-3d | %s", i, offerTrack[i])));
+
+        System.out.println(Formatter.separatorLine(""));
     }
 }

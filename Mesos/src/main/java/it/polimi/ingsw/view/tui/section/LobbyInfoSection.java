@@ -15,6 +15,7 @@ public class LobbyInfoSection implements Section {
         if (currLobby == null)
             return;
 
+        System.out.println();
         System.out.println(Formatter.separatorLine("Lobby Info"));
 
         System.out.println(Formatter.lobbyID(currLobby.getLobbyID()));
@@ -23,5 +24,7 @@ public class LobbyInfoSection implements Section {
         System.out.println(Formatter.line("Players:"));
         for (Map.Entry<Player, Integer> entry : currLobby.getPlayers().entrySet())
             System.out.println(Formatter.player(entry));
+
+        System.out.println(Formatter.separatorLine(""));
     }
 }

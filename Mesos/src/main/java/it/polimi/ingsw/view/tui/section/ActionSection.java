@@ -14,10 +14,12 @@ public class ActionSection implements Section {
 
     @Override
     public void render(ClientController clientController) {
-        System.out.println(Formatter.separatorLine("Lobby Selection"));
-        System.out.println(Formatter.line("Available actions:"));
+        System.out.println();
+        System.out.println(Formatter.separatorLine("Available Actions"));
 
         for(Action action: actionRegistry.enabled())
             System.out.println(Formatter.line(action.toString()));
+
+        System.out.println(Formatter.separatorLine(""));
     }
 }
