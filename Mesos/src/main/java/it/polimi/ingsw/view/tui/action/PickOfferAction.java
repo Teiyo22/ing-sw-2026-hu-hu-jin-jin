@@ -26,7 +26,7 @@ public class PickOfferAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        return clientController.getTurnState().canPickOffer();
+        return clientController.getTurnState() != null && clientController.getTurnState().canPickOffer();
     }
 
     @Override

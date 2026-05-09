@@ -32,7 +32,7 @@ public class PickCardAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        return clientController.getTurnState().canPickCard();
+        return clientController.getTurnState() != null && clientController.getTurnState().canPickCard();
     }
 
     @Override

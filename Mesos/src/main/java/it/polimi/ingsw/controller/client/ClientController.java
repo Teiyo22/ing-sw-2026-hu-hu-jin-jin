@@ -166,6 +166,8 @@ public class ClientController implements VirtualClient {
                 Player player = currLobby.getPlayer(clientID);
                 TurnState turnState = modelStateInfo.getTurnState(player);
                 currLobby.setTurnState(turnState);
+
+                view.update();
             }
         }
     }

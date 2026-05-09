@@ -112,6 +112,9 @@ public class Lobby implements Serializable {
     }
 
     public Player getCurrPlayer() {
+        if (turnState == null)
+            return null;
+
         for (Map.Entry<Player, Integer> entry : players.entrySet())
             if (entry.getKey().equals(turnState.getCurrPlayer()))
                 return entry.getKey();
