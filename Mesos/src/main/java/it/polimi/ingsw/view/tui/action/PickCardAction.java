@@ -74,6 +74,7 @@ public class PickCardAction implements Action {
         try {
              List<Integer> list = Arrays.stream(split)
                      .map(Integer::parseInt)
+                     .distinct()
                      .toList();
 
              if (validateIDList(list, top))
