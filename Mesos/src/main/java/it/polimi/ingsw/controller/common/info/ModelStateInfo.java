@@ -3,8 +3,10 @@ package it.polimi.ingsw.controller.common.info;
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.player.Player;
 
+import java.io.Serializable;
 
-public abstract class ModelStateInfo {
+
+public abstract class ModelStateInfo implements Serializable {
     protected StateInfoType type;
     protected Player currPlayer;
     protected int idx;
