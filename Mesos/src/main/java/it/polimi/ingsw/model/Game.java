@@ -55,10 +55,8 @@ public class Game {
         return board;
     }
 
-    public void addPlayer(Totem totem, String name) {
-        Player player = new Player(name, totem);
-        players.add(player);
-        gameState.update();
+    public GameState getGameState() {
+        return gameState;
     }
 
     public LobbyRunningState getLobbyState() {
@@ -71,10 +69,6 @@ public class Game {
 
     public void setGameState(GameState state) {
         this.gameState = state;
-    }
-
-    public GameState getGameState() {
-        return gameState;
     }
 
     public void setLobbyState(LobbyRunningState lobbyState) {
