@@ -66,15 +66,22 @@ public class PickCardAction implements Action {
 
     @Override
     public String toString() {
-        return String.format("[%s | %s] {<Top Row ID> ...} {<Bottom Row ID> ...}", key(), label());
+        return String.format("[%s | %s] {<Top Row ID>,...} {<Bottom Row ID>,...}", key(), label());
     }
 
     private Set<Integer> parseIDList(String input, boolean top) {
         String stripped = input.substring(1, input.length() - 1);
-        String[] split = stripped.split(" ");
+
+        if (stripped.isEmpty())
+            return new HashSet<>();
+
+        String[] split = stripped.split(",");
+
+
 
         try {
              Set<Integer> set = Arrays.stream(split)
+                     .map(String::trim)
                      .map(Integer::parseInt)
                      .collect(Collectors.toSet());
 
