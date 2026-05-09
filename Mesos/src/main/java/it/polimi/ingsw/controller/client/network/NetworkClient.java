@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class NetworkClient extends Thread {
+    private boolean init = false;
     private TCPServerInterface server;
     private Socket socket;
     private BufferedReader input;
@@ -79,6 +80,8 @@ public class NetworkClient extends Thread {
      *
      */
     public void sendMessage(Request request) {
+        if (!init) return;
+
         String msg = gson.toJson(request);
         try {
             output.write(msg);
@@ -94,6 +97,7 @@ public class NetworkClient extends Thread {
         this.socket = new Socket(ip, tcpPort);
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+        this.init = true;
         new Thread(this).start();
     }
 
@@ -102,6 +106,8 @@ public class NetworkClient extends Thread {
     }
 
     public void cleanup() {
+        init = false;
+
         try {
             this.interrupt();
 
