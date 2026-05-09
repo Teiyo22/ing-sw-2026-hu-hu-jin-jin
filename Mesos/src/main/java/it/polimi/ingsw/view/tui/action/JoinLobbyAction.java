@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.JoinLobbyCommand;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class JoinLobbyAction implements Action {
@@ -44,45 +45,39 @@ public class JoinLobbyAction implements Action {
             return Optional.of("Invalid number of arguments");
 
         playerName = parseName(args[1]);
-        if (playerName == null)
-            return Optional.of("Player name must be unique");
 
         totem = parseTotem(args[2]);
         if (totem == null)
             return Optional.of("Totem must be unique and one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
 
-        new JoinLobbyCommand(currLobby.getLobbyID(), new Player(playerName, totem)).execute(clientController);
+
+        Player player = new Player(playerName, totem);
+
+        if (!validatePlayer(player))
+            return Optional.of("Invalid name and/or totem");
+
+        new JoinLobbyCommand(currLobby.getLobbyID(), player).execute(clientController);
         return Optional.empty();
     }
 
     private String parseName(String input) {
-        return validateName(input) ? input : null;
+        return input;
     }
 
     private Totem parseTotem(String input) {
         try {
-            Totem result = Totem.valueOf(input.toUpperCase());
-
-            return validateTotem(result)
-                    ? result
-                    : null;
+            return Totem.valueOf(input.toUpperCase());
         } catch (IllegalArgumentException e) {
             return null;
         }
     }
 
-    private boolean validateName(String name) {
-        for (Player player : currLobby.getPlayers().keySet())
-            if (player.getName().equals(name))
-                return false;
-
-        return true;
-    }
-
-    private boolean validateTotem(Totem totem) {
-        for (Player player : currLobby.getPlayers().keySet())
-            if (player.getTotem().equals(totem))
-                return false;
+    private boolean validatePlayer(Player player) {
+        for (Map.Entry<Player, Integer> entry : currLobby.getPlayers().entrySet()) {
+            if (entry.getKey().getName().equals(player.getName()) || entry.getKey().getTotem().equals(player.getTotem())) {
+                return entry.getKey().equals(player) && entry.getValue() == null;
+            }
+        }
 
         return true;
     }
