@@ -115,7 +115,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         if (!isConnected)
             return;
 
@@ -124,7 +124,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void createLobby(int clientID, Lobby lobby, Player player) {
+    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
         if (!isConnected)
             return;
 

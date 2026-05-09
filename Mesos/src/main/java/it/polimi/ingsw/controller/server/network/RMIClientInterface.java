@@ -149,7 +149,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
         if (!isConnected)
             return;
 
