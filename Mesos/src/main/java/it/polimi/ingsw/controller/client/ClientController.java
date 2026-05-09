@@ -190,6 +190,16 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    @Override
+    public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+            currLobby.updateTribe(player, tribe);
+            currLobby.updateBoard(board);
+
+            view.update();
+        }
+    }
+
     //=============================================================================
     // Network related methods
     //=============================================================================

@@ -26,8 +26,10 @@ public class RoundActionState extends GameState{
      * */
     @Override
     public void update() {
-        if (currPlayer != null)
+        if (currPlayer != null) {
             assignToOrderSlot(offerTrack[solvedOffers]);
+            game.getLobbyState().notifyOfferResolution(currPlayer);
+        }
 
         for(; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++);
 

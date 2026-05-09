@@ -30,6 +30,7 @@ public interface VirtualClient extends Remote {
     void showError(int clientID, String errorMessage) throws RemoteException;
 
     void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
+    void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) throws RemoteException;
 
 
     void ping() throws RemoteException;

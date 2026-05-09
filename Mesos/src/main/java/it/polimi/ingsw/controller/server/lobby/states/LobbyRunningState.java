@@ -3,11 +3,11 @@ package it.polimi.ingsw.controller.server.lobby.states;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
 import java.util.Set;
 
 public class LobbyRunningState extends LobbyState {
@@ -96,8 +96,11 @@ public class LobbyRunningState extends LobbyState {
             player.updateModel(player.getID(), lobbyController.getID(), orderTile, offerTrack);
     }
 
-    public void notifyOfferResolution() {
+    public void notifyOfferResolution(Player player) {
+        Board board = model.getBoard();
 
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.updateModel(client.getID(), lobbyController.getID(), player, player.getTribe(), board);
     }
 
     public void notifyExtraActionResolution() {

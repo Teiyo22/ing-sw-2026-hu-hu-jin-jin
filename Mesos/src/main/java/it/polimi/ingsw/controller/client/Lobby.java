@@ -74,6 +74,16 @@ public class Lobby implements Serializable {
         this.board.setOfferTrack(offerTrack);
     }
 
+    public void updateTribe(Player player, Tribe tribe) {
+        for (Player p : players.keySet())
+            if (p.equals(player))
+                p.setTribe(tribe);
+    }
+
+    public void updateBoard(Board board) {
+        this.board = board;
+    }
+
     public void showPlayer(Player player) {
         shownPlayer = player;
     }

@@ -4,23 +4,28 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 
-public class UpdateModelResponse extends Response {
+public class OfferResolutionResponse extends Response {
+    private int lobbyID;
+    private Player player;
     private Tribe updatedTribe;
     private Board updatedBoard;
 
-    public UpdateModelResponse(int clientID, Board updatedBoard, Tribe updatedTribe){
+    public OfferResolutionResponse(int clientID, int lobbyID, Player player, Tribe updatedTribe, Board updatedBoard){
         super(clientID);
-        this.type = MessageType.UPDATE_MODEL;
+        this.type = MessageType.OFFER_RESOLUTION;
+        this.lobbyID = lobbyID;
+        this.player = player;
         this.updatedBoard = updatedBoard;
         this.updatedTribe = updatedTribe;
     }
 
     @Override
-    public void receive(ClientController clientController){
-        clientController.updateModel(super.getClientID(), updatedBoard, updatedTribe);
+    public void receive(ClientController clientController) {
+        clientController.updateModel(clientID, lobbyID, player, updatedTribe, updatedBoard);
     }
 }
 

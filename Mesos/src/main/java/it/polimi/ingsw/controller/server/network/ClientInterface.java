@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void showError(int clientID, String errorMessage);
 
     public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
+    public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board);
 
     public int getID() {
         return id;
