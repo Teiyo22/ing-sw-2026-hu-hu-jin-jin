@@ -2,13 +2,13 @@ package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
 
-import java.util.List;
+import java.util.Set;
 
 public class PickCardCommand implements Command {
-    private List<Integer> topPicks;
-    private List<Integer> bottomPicks;
+    private Set<Integer> topPicks;
+    private Set<Integer> bottomPicks;
 
-    public PickCardCommand(List<Integer> topPicks, List<Integer> bottomPicks) {
+    public PickCardCommand(Set<Integer> topPicks, Set<Integer> bottomPicks) {
         this.topPicks = topPicks;
         this.bottomPicks = bottomPicks;
     }

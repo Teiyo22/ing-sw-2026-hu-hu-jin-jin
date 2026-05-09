@@ -3,10 +3,10 @@ package it.polimi.ingsw.controller.server.lobby.states;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
+import java.util.Set;
 
 public class LobbyRunningState extends LobbyState {
     final private Game model;
@@ -52,7 +52,7 @@ public class LobbyRunningState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
         if (validateCardPick(pickerPlayer, topPicks, bottomPicks)) {
@@ -90,7 +90,7 @@ public class LobbyRunningState extends LobbyState {
         client.showError(client.getID(), "Game not ended yet.");
     }
 
-    private boolean validateCardPick(Player player, List<Integer> topPicks, List<Integer> bottomPicks) {
+    private boolean validateCardPick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         return true;
     }
 

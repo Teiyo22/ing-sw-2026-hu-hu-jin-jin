@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.command.PickCardCommand;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PickCardAction implements Action {
@@ -39,7 +40,7 @@ public class PickCardAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        List<Integer> topRow, bottomRow;
+        Set<Integer> topRow, bottomRow;
 
         if (args.length != argCount + 1)
             return Optional.of("Invalid number of arguments");
@@ -68,18 +69,17 @@ public class PickCardAction implements Action {
         return String.format("[%s | %s] {<Top Row ID> ...} {<Bottom Row ID> ...}", key(), label());
     }
 
-    private List<Integer> parseIDList(String input, boolean top) {
+    private Set<Integer> parseIDList(String input, boolean top) {
         String stripped = input.substring(1, input.length() - 2);
         String[] split = stripped.split(" ");
 
         try {
-             List<Integer> list = Arrays.stream(split)
+             Set<Integer> set = Arrays.stream(split)
                      .map(Integer::parseInt)
-                     .distinct()
-                     .toList();
+                     .collect(Collectors.toSet());
 
-             if (validateIDList(list, top))
-                 return list;
+             if (validateIDList(set, top))
+                 return set;
 
              return null;
          } catch (NumberFormatException e) {
@@ -87,19 +87,19 @@ public class PickCardAction implements Action {
          }
     }
 
-    private boolean validateIDList(List<Integer> list, boolean top) {
+    private boolean validateIDList(Set<Integer> set, boolean top) {
         Row row = top ? clientController.getCurrLobby().getBoard().getTopRow() : clientController.getCurrLobby().getBoard().getBottomRow();
 
-        List<Integer> rowCardIDs = Stream.concat(
+        Set<Integer> rowCardIDs = Stream.concat(
                 row.getBuildingCards().stream().map(b -> (AbstractCard) b),
                 row.getCharacterCards().stream().map(c -> (AbstractCard) c))
                 .map(AbstractCard::getID)
-                .toList();
+                .collect(Collectors.toSet());
 
-        return new HashSet<>(rowCardIDs).containsAll(list);
+        return rowCardIDs.containsAll(set);
     }
 
-    private boolean validatePickCount(List<Integer> top , List<Integer> bottom) {
+    private boolean validatePickCount(Set<Integer> top , Set<Integer> bottom) {
         int idx = clientController.getCurrLobby().getTurnState().getIndex();
         int topPickCount, bottomPickCount;
 
@@ -115,7 +115,7 @@ public class PickCardAction implements Action {
         return top.size() <= topPickCount && bottom.size() <= bottomPickCount;
     }
 
-    private boolean validateFoodCost(List<Integer> top, List<Integer> bottom) {
+    private boolean validateFoodCost(Set<Integer> top, Set<Integer> bottom) {
         Player currPlayer = clientController.getCurrLobby().getCurrPlayer();
         Board board = clientController.getCurrLobby().getBoard();
 

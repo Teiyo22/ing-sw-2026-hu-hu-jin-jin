@@ -5,12 +5,10 @@ import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 
 import java.util.Map;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -60,7 +58,7 @@ public class LobbyController {
             model = new Game(this, PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
-    public synchronized void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public synchronized void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         state.pickCards(pickerClient, topPicks, bottomPicks);
     }
 

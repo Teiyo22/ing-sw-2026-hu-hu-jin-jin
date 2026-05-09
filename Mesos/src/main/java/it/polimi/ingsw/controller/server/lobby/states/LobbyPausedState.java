@@ -6,10 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LobbyPausedState extends LobbyState {
     private List<Player> missingPlayers;
@@ -86,7 +83,7 @@ public class LobbyPausedState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         pickerClient.showError(pickerClient.getID(), "Game not started yet.");
 
     }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
+import java.util.Set;
 
 public class TCPServerInterface extends ServerInterface {
     private final NetworkClient serverHandler;
@@ -113,7 +113,7 @@ public class TCPServerInterface extends ServerInterface {
      * @param bottomPicks list of the cards that the player would like to pick from the bottom row.
      * */
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         PickCardsRequest request = new PickCardsRequest(clientID, lobbyID, topPicks, bottomPicks);
         serverHandler.sendMessage(request);
     }

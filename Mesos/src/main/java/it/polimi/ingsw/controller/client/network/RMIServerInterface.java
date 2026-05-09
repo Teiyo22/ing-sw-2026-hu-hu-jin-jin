@@ -9,7 +9,7 @@ import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class RMIServerInterface extends ServerInterface {
@@ -105,7 +105,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         try {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
         } catch (RemoteException e) {

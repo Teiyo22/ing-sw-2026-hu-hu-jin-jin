@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
+import java.util.Set;
 
 public abstract class ServerInterface implements VirtualServer {
     protected ClientController clientController;
@@ -22,7 +22,7 @@ public abstract class ServerInterface implements VirtualServer {
     public abstract void getLobbyInfo(int clientID, int lobbyID);
     public abstract void getRank(int clientID, int lobbyID);
     public abstract void getLeaderboard(int clientID, int playerNum);
-    public abstract void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks);
+    public abstract void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks);
     public abstract void requestOffer(int clientID, int lobbyID, int offerIndex);
     public abstract void disconnect();
     public abstract void ping(int clientID);

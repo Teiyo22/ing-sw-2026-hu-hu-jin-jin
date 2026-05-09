@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
+import java.util.Set;
 
 public class LobbyEndedState extends LobbyState {
     public LobbyEndedState(LobbyController lobbyController) {
@@ -33,7 +33,7 @@ public class LobbyEndedState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         pickerClient.showError(pickerClient.getID(), "The lobby already ended.");
     }
 

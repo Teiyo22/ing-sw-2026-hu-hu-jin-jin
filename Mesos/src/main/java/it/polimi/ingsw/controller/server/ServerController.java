@@ -172,7 +172,7 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void requestCards(int clientID, int lobbyID, List<Integer> topPicks, List<Integer> bottomPicks) {
+    public void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)

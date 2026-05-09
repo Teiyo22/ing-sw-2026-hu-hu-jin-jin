@@ -3,7 +3,6 @@
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Player;
@@ -13,6 +12,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
     public class Game {
@@ -83,9 +83,8 @@ import java.util.stream.Stream;
      * @param topPicks are the cards picked from the top row.
      * @param bottomPicks are the cards picked from the bottom row.
      * */
-    public void pick(Player player, List<Integer> topPicks, List<Integer> bottomPicks) {
-        List<Pickable> top = Stream.concat(
-                board.getTopRow().getBuildingCards().stream()
+    public void pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
+        List<Pickable> top = Stream.concat(board.getTopRow().getBuildingCards().stream()
                 .filter(b -> topPicks.contains(b.getID()))
                 .map(b -> (Pickable) b),
                 board.getTopRow().getBuildingCards().stream()

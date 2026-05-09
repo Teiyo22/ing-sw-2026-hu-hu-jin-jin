@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
+import java.util.Set;
 
 public abstract class LobbyState {
     protected final LobbyController lobbyController;
@@ -17,7 +17,7 @@ public abstract class LobbyState {
     public abstract void startLobby(ClientInterface client);
     public abstract boolean removeClient(ClientInterface client);
     public abstract void getLobbyInfo(ClientInterface client);
-    public abstract void pickCards(ClientInterface pickerClient, List<Integer> topPicks, List<Integer> bottomPicks);
+    public abstract void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks);
 
     public abstract void pickOffer(ClientInterface pickerClient, int offerIndex);
     public abstract void getRank(ClientInterface client);
