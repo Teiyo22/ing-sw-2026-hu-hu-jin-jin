@@ -13,6 +13,6 @@ public class OfferPickStateInfo extends ModelStateInfo {
 
     @Override
     public TurnState getTurnState(Player player) {
-        return currPlayer.equals(player) ? new OfferPickState(player, idx) : new IdleState(player, idx);
+        return currPlayer.equals(player) ? new OfferPickState(currPlayer, idx) : new IdleState(currPlayer, idx);
     }
 }

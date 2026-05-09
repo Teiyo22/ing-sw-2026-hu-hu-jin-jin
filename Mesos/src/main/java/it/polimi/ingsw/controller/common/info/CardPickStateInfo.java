@@ -14,6 +14,6 @@ public class CardPickStateInfo extends ModelStateInfo {
 
     @Override
     public TurnState getTurnState(Player player) {
-        return currPlayer.equals(player) ? new CardPickState(player, idx) : new IdleState(player, idx);
+        return currPlayer.equals(player) ? new CardPickState(currPlayer, idx) : new IdleState(currPlayer, idx);
     }
 }
