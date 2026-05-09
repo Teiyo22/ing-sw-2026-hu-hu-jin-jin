@@ -246,8 +246,6 @@ public class ClientController implements VirtualClient {
 
         init = false;
 
-
-
         server.disconnect();
         connectionMonitor.stop();
         taskExecutor.shutdown();
