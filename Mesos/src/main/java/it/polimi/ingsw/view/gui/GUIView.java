@@ -46,13 +46,17 @@ public class GUIView implements View {
 
     @Override
     public void transitionTo(ScreenType type) {
-        currScreen = ScreenType.getGUIScreen(type, frame, controller);
+        SwingUtilities.invokeLater(() -> {
+            currScreen = ScreenType.getGUIScreen(type, frame, controller);
+            currScreen.render();
+        });
     }
+
 
     @Override
     public void update() {
         if (frame.isDisplayable()) {
-            currScreen.render();
+            SwingUtilities.invokeLater(() -> currScreen.render());
         }
     }
 }
