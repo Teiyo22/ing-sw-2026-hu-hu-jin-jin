@@ -14,9 +14,8 @@ public class CardComponent extends SelectableComponent<AbstractCard> {
         super(card, selectionListener);
 
         String resource = card.getResource();
-        String era = String.valueOf(card.getEra());
-        Image frontImg = new ImageIcon("src.main.java.it.polimi.ingsw.utils.images.cards.front."+resource).getImage();
-        Image backImg = new ImageIcon("src.main.java.it.polimi.ingsw.utils.images.cards.back."+era).getImage();
+        Image frontImg = new ImageIcon("/images/" + resource + ".png").getImage();
+        Image backImg = new ImageIcon("/images/" + card.getEra() + ".png").getImage();
         this.front = new ImageIcon(frontImg.getScaledInstance(100, 150, Image.SCALE_DEFAULT));
         this.back = new ImageIcon(backImg.getScaledInstance(100, 150, Image.SCALE_DEFAULT));
     }
