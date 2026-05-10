@@ -6,43 +6,67 @@ import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewFactory;
 
+import java.io.Console;
 import java.util.concurrent.TimeUnit;
 
 public class ClientMain {
     public static void main(String[] args) {
-//        if (args.length < 2 || args.length > 3) {
-//            System.out.println("Usage: java -jar <jar name> <tcp address> [tcp port] <rmi port>");
-//            System.exit(-1);
-//        }
+        String protocol;
+        String address;
+        int port; // 28910 | 1099;
+        String ui;
 
         Logger l = Logger.getInstance();
         l.setLevel(LoggerLevel.OFF);
 
-        String address = "127.0.0.1"; // args[0];
-        int tcpPort = 28910; // args.length == 3 ? Integer.parseInt(args[1]) : 0;
-        int rmiPort = 1099; // Integer.parseInt(args[args.length == 3 ? 2 : 1]);
+        Console console = System.console();
 
-//        if (rmiPort <= 0 || tcpPort < 0) {
-//            System.out.println("If ports are specified they must be larger than zero!");
-//            System.exit(-1);
-//        }
+        protocol = console.readLine("Select Network Protocol (tcp | rmi): ").trim();
 
-        ClientController controller = new ClientController();
-        controller.connectTCP(address, tcpPort);
-
-        View view = ViewFactory.create("tui", controller);
-        controller.setView(view);
-
-        while (!controller.isInit()) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(500);
-            } catch (InterruptedException e) {
-                break;
-            }
+        if (!protocol.equalsIgnoreCase("rmi") && !protocol.equalsIgnoreCase("tcp")) {
+            System.out.println("The network protocol must be either 'tcp' or 'rmi'");
+            System.exit(-1);
         }
 
-        if (controller.isInit()) {
-            view.show();
+        String[] input = console.readLine("Enter <ip> <port>: ").trim().split(" ");
+
+        if (input.length != 2) {
+            System.out.println("Invalid number of arguments");
+            System.exit(-1);
+        }
+
+        try {
+            address = input[0];
+            port = Integer.parseInt(input[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Port must be an integer");
+            System.exit(-1);
+            return;
+        }
+
+        ui = console.readLine("Select UI (tui | gui): ").trim();
+
+        if (!ui.equalsIgnoreCase("tui") && !ui.equalsIgnoreCase("gui")) {
+            System.out.println("The UI must be either 'tui' or 'gui'");
+            System.exit(-1);
+            return;
+        }
+
+        ClientController controller = new ClientController();
+        View view = ViewFactory.create(ui, controller);
+        controller.setView(view);
+
+        boolean success = protocol.equalsIgnoreCase("tcp")
+                ? controller.connectTCP(address, port)
+                : controller.connectRMI(address, port);
+
+        if (success) {
+            try {
+                while (!controller.isInit())
+                    TimeUnit.MILLISECONDS.sleep(100);
+
+                view.show();
+            } catch (InterruptedException ignore) { }
         }
 
         System.exit(0);

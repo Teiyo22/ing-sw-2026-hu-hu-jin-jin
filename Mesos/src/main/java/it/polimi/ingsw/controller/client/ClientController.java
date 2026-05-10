@@ -23,6 +23,7 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.tui.Formatter;
 
 import java.io.IOException;
+import java.rmi.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
@@ -234,7 +235,7 @@ public class ClientController implements VirtualClient {
     /**
      * Connecting to the server using RMI.
      */
-    public void connectRMI(String ip, int rmiPort) {
+    public boolean connectRMI(String ip, int rmiPort) {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
             VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
@@ -249,7 +250,10 @@ public class ClientController implements VirtualClient {
         } catch (RemoteException | NotBoundException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
             Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -257,17 +261,21 @@ public class ClientController implements VirtualClient {
      * Creates the NetworkClient and the ServerTCPInterface, which initializes the server reference in the first.
      *
      */
-    public void connectTCP(String ip, int tcpPort) {
+    public boolean connectTCP(String ip, int tcpPort) {
         NetworkClient networkClient = new NetworkClient();
         this.server = new TCPServerInterface(this, networkClient);
+
         try {
             networkClient.connect(ip, tcpPort);
             connectionMonitor.startServerMonitor(this);
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
-        } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with TCP to server: " + ip + ":" + tcpPort);
-            Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println("Failed to connect with TCP to server: " + ip + ":" + tcpPort);
+            System.out.println("Reason: " + e.getMessage());
+            return false;
         }
+
+        return true;
     }
 
     public void disconnect() {

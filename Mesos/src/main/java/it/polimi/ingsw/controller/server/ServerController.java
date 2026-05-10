@@ -286,15 +286,17 @@ public class ServerController implements VirtualServer {
     // Network related methods
     //=============================================================================
 
-    public void startServer(String ip, int tcpPort, int rmiPort) {
+    public boolean startServer(String ip, int tcpPort, int rmiPort) {
+        System.out.print("\033[H\033[2J");
+
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             listenerService.submit(networkServer);
             Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + ":" + tcpPort);
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + ":" + tcpPort);
             Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            System.exit(-1);
+            return false;
         }
 
         try {
@@ -306,11 +308,13 @@ public class ServerController implements VirtualServer {
         } catch (RemoteException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "RMI Server failed to start on " + ip + ":" + rmiPort);
             Logger.getInstance().print(LoggerLevel.ERROR, "Reason: " + e.getMessage());
-            System.exit(-1);
+            return false;
         }
 
         connectionMonitor.startClientMonitor();
         Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
+
+        return true;
     }
 
     public void stopServer() {

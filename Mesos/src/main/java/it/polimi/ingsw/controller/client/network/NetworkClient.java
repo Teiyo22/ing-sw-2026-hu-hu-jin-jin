@@ -3,8 +3,7 @@ package it.polimi.ingsw.controller.client.network;
 import com.google.gson.*;
 
 import java.io.*;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
@@ -19,7 +18,6 @@ import it.polimi.ingsw.utils.controller.ResponseDeserializer;
 import it.polimi.ingsw.utils.controller.StateInfoDeserializer;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class NetworkClient extends Thread {
@@ -93,8 +91,11 @@ public class NetworkClient extends Thread {
 
     }
 
-    public void connect(String ip, int tcpPort) throws UnknownHostException, IOException {
-        this.socket = new Socket(ip, tcpPort);
+    public void connect(String ip, int tcpPort) throws IOException, IllegalArgumentException {
+        InetSocketAddress endpoint = new InetSocketAddress(ip, tcpPort);
+        this.socket = new Socket();
+        this.socket.connect(endpoint, 2000);
+
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         this.init = true;
