@@ -26,12 +26,6 @@ public class Lobby implements Serializable {
         this.size = size;
     }
 
-    private Lobby(int lobbyID, int size, Map<Player, Integer> players) {
-        this.lobbyID = lobbyID;
-        this.size = size;
-        this.players = new HashMap<>(players);
-    }
-
     //=============================================================================
     // Player Management methods
     //=============================================================================
@@ -167,10 +161,6 @@ public class Lobby implements Serializable {
 
     public boolean containsClient(int clientID) {
         return players.containsValue(clientID);
-    }
-
-    public Lobby copy() {
-        return new Lobby(lobbyID, size, players);
     }
 
     public boolean isShownPlayer() {

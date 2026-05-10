@@ -125,10 +125,6 @@ public class NetworkClient extends Thread {
                 output = null;
             }
 
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-                socket = null;
-            }
         } catch (IOException ignore) {
         }
     }
