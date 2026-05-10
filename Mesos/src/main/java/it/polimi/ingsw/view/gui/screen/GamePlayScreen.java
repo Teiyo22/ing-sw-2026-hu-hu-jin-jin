@@ -12,15 +12,13 @@ import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GamePlayScreen extends GUIScreen implements MouseListener{
+public class GamePlayScreen extends GUIScreen{
     enum GamePhase {
         CARD_PICK,
         OFFER_PICK
@@ -107,46 +105,18 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
         }
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        if(e.getSource() == leaveButton){
-            leaveButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        } else if (e.getSource() == confirmButton){
-            if(confirmButton.isEnabled()) {
-                confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
-            }
-        }
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        if(e.getSource() == leaveButton){
-            leaveButton.setBorder(null);
-        } else  if (e.getSource() == confirmButton){
-            confirmButton.setBorder(null);
-        }
-    }
-
 
 
     public void renderLeaveButton(JPanel panel) {
         leaveButton.setBackground(new Color(0xEE3F2A));
+        leaveButton.setFocusable(false);
         leaveButton.setHorizontalAlignment(SwingConstants.WEST);
         panel.add(leaveButton, BorderLayout.NORTH);
     }
 
     public void renderConfirmButton(JPanel panel) {
         confirmButton.setBackground(new Color(0xFFF3D3));
+        confirmButton.setFocusable(false);
         confirmButton.setHorizontalAlignment(SwingConstants.EAST);
         panel.add(confirmButton, BorderLayout.SOUTH);
     }
