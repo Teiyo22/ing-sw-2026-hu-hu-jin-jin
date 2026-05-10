@@ -290,6 +290,9 @@ public class ClientController implements VirtualClient {
             taskExecutor.shutdownNow();
         }
 
+        Formatter.clearScreen();
+        System.out.println("Client disconnected: press 'Enter' to exit...");
+
         Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
     }
 

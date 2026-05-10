@@ -106,6 +106,6 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
 
         String format = "| %-25s ".repeat(discounts.size());
 
-        return String.format(format, discounts);
+        return super.toString() + String.format(format, discounts);
     }
 }

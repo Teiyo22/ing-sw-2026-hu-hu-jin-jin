@@ -29,9 +29,6 @@ public class TUIView implements View {
             }
         } catch (IOError e) {
             clientController.disconnect();
-        } finally {
-            Formatter.clearScreen();
-            System.out.println("Client disconnected: press 'Enter' to exit...");
         }
     }
 
