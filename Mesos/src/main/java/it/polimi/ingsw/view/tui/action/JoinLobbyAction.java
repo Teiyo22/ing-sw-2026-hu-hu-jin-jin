@@ -33,7 +33,9 @@ public class JoinLobbyAction implements Action {
     public boolean isEnabled() {
         currLobby = clientController.getCurrLobby();
 
-        return currLobby != null && !currLobby.containsClient(clientController.getID());
+        return currLobby != null &&
+               !currLobby.containsClient(clientController.getID()) &&
+               !currLobby.getPlayers().isEmpty();
     }
 
     @Override

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.Map;
 
 public class Formatter {
-    private static final int width = 140;
+    private static final int width = 160;
     private static final String reset = "\u001B[0m";
     private static final String clear = "\033[H\033[2J";
 
@@ -50,10 +50,11 @@ public class Formatter {
         return line(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize()));
     }
 
-    public static String playerInfo(Player player, boolean isTurn) {
-        String turnMarker = isTurn ? "> " : "  ";
+    public static String playerInfo(Player player, boolean isTurn, boolean isMe) {
+        String turnMarker = isTurn ? ">" : " ";
+        String playerMarker = isMe ? " (You)" : "";
 
-        return coloredLine(String.format("%s%-15s | Food: %-3d | PP: %-3d",
-                turnMarker, player.getName(), player.getFood(), player.getPP()), player.getTotem().getColor());
+        return coloredLine(String.format("%s %-20s | Food: %-3d | PP: %-3d",
+                turnMarker, player.getName() + playerMarker, player.getFood(), player.getPP()), player.getTotem().getColor());
     }
 }
