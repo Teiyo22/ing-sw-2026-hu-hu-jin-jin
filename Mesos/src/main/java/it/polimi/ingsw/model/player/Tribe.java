@@ -131,6 +131,10 @@ public class Tribe implements Serializable {
         return getInventorCount() * types;
     }
 
+    public Map<InventorType, Integer> getInventors() {
+        return inventors;
+    }
+
     /**
      * Get the builder bonus PP
      * Every builder has a bonus PP that is added to the total PP at the end of the game.
