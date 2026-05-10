@@ -111,6 +111,11 @@ public class NetworkClient extends Thread {
         try {
             this.interrupt();
 
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                socket = null;
+            }
+
             if (input != null) {
                 input.close();
                 input = null;
