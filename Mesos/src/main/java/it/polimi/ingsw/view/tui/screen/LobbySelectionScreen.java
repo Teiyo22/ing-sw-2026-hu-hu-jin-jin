@@ -48,7 +48,7 @@ public class LobbySelectionScreen implements Screen {
                     .forEach(s -> s.render(clientController));
         }
 
-        System.out.println(errorMsg);
+        System.out.println("\u001B[1m\u001B[31m" + errorMsg + "\u001B[0m");
         System.out.print("Enter action: ");
     }
 
