@@ -80,14 +80,14 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
                 clientController.getServer().requestCards(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
                         topListener.getPicks(), bottomListener.getPicks());
             } catch (RemoteException ex) {
-                showError(ex.getMessage());
+                clientController.showError(clientController.getID(), ex.getMessage());
             }
         } else if(gamePhase == GamePhase.OFFER_PICK) {
             try {
                 clientController.getServer().requestOffer(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
                         offerListener.getSelectedOfferIndex());
             } catch (RemoteException ex) {
-                showError(ex.getMessage());
+                clientController.showError(clientController.getID(), ex.getMessage());
             }
         }
     }
@@ -192,11 +192,5 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
 
     private boolean matchTurn(){
         return clientController.getCurrLobby().getCurrPlayer().equals(clientController.getCurrLobby().getPlayer(clientController.getID()));
-    }
-
-
-
-    private void showError(String message) {
-        JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
