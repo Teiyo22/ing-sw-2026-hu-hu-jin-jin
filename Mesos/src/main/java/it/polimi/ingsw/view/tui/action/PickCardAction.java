@@ -132,6 +132,6 @@ public class PickCardAction implements Action {
                 .mapToInt(AbstractBuilding::getCost)
                 .sum();
 
-        return foodCost <= currPlayer.getFood();
+        return foodCost - currPlayer.getTribe().getBuilderDiscount() <= currPlayer.getFood();
     }
 }

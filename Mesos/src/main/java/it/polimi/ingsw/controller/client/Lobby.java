@@ -148,9 +148,9 @@ public class Lobby implements Serializable {
         return turnState;
     }
 
-    public Player getPlayer(int clientID) {
+    public Player getPlayer(Integer clientID) {
         for (Map.Entry<Player, Integer> entry : players.entrySet())
-            if (entry.getValue().equals(clientID))
+            if (clientID.equals(entry.getValue()))
                 return entry.getKey();
         return null;
     }
