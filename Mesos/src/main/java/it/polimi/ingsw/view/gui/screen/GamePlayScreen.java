@@ -21,8 +21,7 @@ import java.util.stream.IntStream;
 public class GamePlayScreen extends GUIScreen {
     enum GamePhase {
         CARD_PICK,
-        OFFER_PICK,
-        IDLE
+        OFFER_PICK
     }
     private GamePhase gamePhase;
     private final JButton confirmButton;
@@ -63,13 +62,7 @@ public class GamePlayScreen extends GUIScreen {
 
         renderConfirmButton(center);
 
-        if(clientController.getCurrLobby().getBoard().getGame().getGameState()
-                .getCurrPlayer().getName().equals(clientController.getPlayerName())) {
-            //TODO: manage transitions between different game phases
-        } else {
-            gamePhase = GamePhase.IDLE;
-            transitionTo(gamePhase);
-        }
+        enableComponents();
 
         frame.add(top, BorderLayout.NORTH);
         frame.add(bottom, BorderLayout.SOUTH);
@@ -143,28 +136,38 @@ public class GamePlayScreen extends GUIScreen {
         panel.add(confirmButton, BorderLayout.SOUTH);
     }
 
-    private void transitionTo(GamePhase phase) {
-        switch (phase) {
-            case  CARD_PICK:
-                topListener.setTotalPicks(clientController.getCurrLobby().getBoard().getTopRow().getPickableCardCount());
-                topListener.enable();
-                bottomListener.setTotalPicks(clientController.getCurrLobby().getBoard().getBottomRow().getPickableCardCount());
-                bottomListener.enable();
-                confirmButton.setEnabled(true);
-            case OFFER_PICK:
-                offerListener.enable();
-                confirmButton.setEnabled(true);
-            case IDLE:
-                topListener.disable();
-                bottomListener.disable();
-                offerListener.disable();
-                confirmButton.setEnabled(false);
+    private void enableComponents() {
+        if(clientController.getCurrLobby().getTurnState().canPickCard() && matchTurn()){
+            topListener.setTotalPicks(clientController.getCurrLobby().getBoard().getTopRow().getPickableCardCount());
+            topListener.enable();
+            bottomListener.setTotalPicks(clientController.getCurrLobby().getBoard().getBottomRow().getPickableCardCount());
+            bottomListener.enable();
+
+            offerListener.disable();
+
+            gamePhase = GamePhase.CARD_PICK;
+            confirmButton.setEnabled(true);
+        } else if (clientController.getCurrLobby().getTurnState().canPickOffer() && matchTurn()){
+            topListener.disable();
+            bottomListener.disable();
+
+            offerListener.enable();
+
+            gamePhase = GamePhase.OFFER_PICK;
+            confirmButton.setEnabled(true);
+        } else {
+            topListener.disable();
+            bottomListener.disable();
+            offerListener.disable();
+            confirmButton.setEnabled(false);
         }
+    }
+
+    private boolean matchTurn(){
+        return clientController.getCurrLobby().getCurrPlayer().equals(clientController.getCurrLobby().getPlayer(clientController.getID()));
     }
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-
-
 }
