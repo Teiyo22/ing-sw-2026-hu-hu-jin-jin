@@ -4,11 +4,12 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.screen.GUIScreen;
+import it.polimi.ingsw.view.gui.screen.MenuScreen;
 
 import javax.swing.*;
 
 public class GUIView implements View {
-    private ClientController controller;
+    private final ClientController controller;
     private JFrame frame;
     private GUIScreen currScreen;
 
@@ -23,12 +24,14 @@ public class GUIView implements View {
         frame.setSize(1920, 1080);
         frame.setResizable(true);
 
-        //TODO: create first screen and call render()
+        currScreen = new MenuScreen(frame, controller);
+        currScreen.render();
     }
 
     @Override
     public void close() {
-
+        frame.dispose();
+        JOptionPane.showMessageDialog(frame, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
@@ -43,6 +46,13 @@ public class GUIView implements View {
 
     @Override
     public void transitionTo(ScreenType type) {
+        currScreen = ScreenType.getGUIScreen(type, frame, controller);
+    }
 
+    @Override
+    public void update() {
+        if (frame.isDisplayable()) {
+            currScreen.render();
+        }
     }
 }
