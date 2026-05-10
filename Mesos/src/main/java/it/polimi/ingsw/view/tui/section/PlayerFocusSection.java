@@ -25,30 +25,31 @@ public class PlayerFocusSection implements Section {
         System.out.println(Formatter.line("Prestige Points: " + player.getPP()));
         System.out.println(Formatter.line("Food: " + player.getFood()));
 
-        System.out.println(Formatter.separatorLine(""));
+        System.out.println(Formatter.separatorLine("Characters"));
         System.out.println(Formatter.line("Inventors: "));
-        for (Map.Entry<InventorType, Integer> entry : player.getTribe().getInventors().entrySet())
-            System.out.println(Formatter.line("- " + entry.getKey() + ": " + entry.getValue()));
+        for (InventorType i : InventorType.values())
+            System.out.println(Formatter.line("- " + i + ": " + player.getTribe().getNumInventorType(i)));
 
-        System.out.println();
+        System.out.println(Formatter.line(""));
         System.out.println(Formatter.line("Builders: " + player.getTribe().getBuilderCount()));
         System.out.println(Formatter.line("Buildings Discount: " + player.getTribe().getBuilderDiscount()));
 
-        System.out.println();
+        System.out.println(Formatter.line(""));
         System.out.println(Formatter.line("Hunter: " + player.getTribe().getHunterCount()));
 
-        System.out.println();
+        System.out.println(Formatter.line(""));
         System.out.println(Formatter.line("Shamans: " + player.getTribe().getShamanCount()));
         System.out.println(Formatter.line("Stars: " + player.getTribe().getStars()));
 
-        System.out.println();
+        System.out.println(Formatter.line(""));
         System.out.println(Formatter.line("Collectors: " + player.getTribe().getCollectorCount()));
         System.out.println(Formatter.line("Sustenance Discount: " + player.getTribe().getSustenanceDiscount()));
 
-        System.out.println();
+        System.out.println(Formatter.line(""));
         System.out.println(Formatter.line("Artists: " + player.getTribe().getArtistCount()));
 
-        System.out.println(Formatter.separatorLine(""));
+        if (!player.getBuildings().isEmpty())
+            System.out.println(Formatter.separatorLine("Buildings"));
         for (AbstractBuilding b : player.getBuildings())
             System.out.println(Formatter.line(b.toString()));
 

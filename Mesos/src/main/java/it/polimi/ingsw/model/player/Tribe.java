@@ -57,7 +57,7 @@ public class Tribe implements Serializable {
     }
 
     public int getNumInventorType(InventorType type) {
-        return inventors.get(type);
+        return inventors.getOrDefault(type, 0);
     }
 
     public int getShamanCount() {
@@ -129,10 +129,6 @@ public class Tribe implements Serializable {
     public int getInventorBonusPP() {
         int types = inventors.size();
         return getInventorCount() * types;
-    }
-
-    public Map<InventorType, Integer> getInventors() {
-        return inventors;
     }
 
     /**
