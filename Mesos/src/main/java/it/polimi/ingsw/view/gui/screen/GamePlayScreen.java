@@ -26,6 +26,7 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
         OFFER_PICK
     }
     private GamePhase gamePhase;
+    private final JButton leaveButton;
     private final JButton confirmButton;
     private final CardPicksListener topListener;
     private final CardPicksListener bottomListener;
@@ -33,6 +34,7 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
 
     public GamePlayScreen(JFrame frame, ClientController controller) {
         super(frame, controller);
+        leaveButton = new JButton("Leave");
         confirmButton = new JButton("Confirm");
         topListener = new CardPicksListener();
         bottomListener = new CardPicksListener();
@@ -58,11 +60,12 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
 
         center.setBackground(new Color(0xEE3F2A));
 
+        renderLeaveButton(top);
+        renderConfirmButton(bottom);
+
         renderTopRow(top);
         renderBottomRow(bottom);
         renderOfferTrack(center);
-
-        renderConfirmButton(center);
 
         enableComponents();
 
@@ -75,20 +78,32 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(gamePhase == GamePhase.CARD_PICK) {
+        if(e.getSource() == leaveButton){
+
             try {
-                clientController.getServer().requestCards(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                        topListener.getPicks(), bottomListener.getPicks());
+                clientController.getServer().leaveLobby(clientController.getID(), clientController.getCurrLobby().getLobbyID());
             } catch (RemoteException ex) {
-                clientController.showError(clientController.getID(), ex.getMessage());
+                clientController.showError(clientController.getID(),  ex.getMessage());
             }
-        } else if(gamePhase == GamePhase.OFFER_PICK) {
-            try {
-                clientController.getServer().requestOffer(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                        offerListener.getSelectedOfferIndex());
-            } catch (RemoteException ex) {
-                clientController.showError(clientController.getID(), ex.getMessage());
+
+        } else if (e.getSource() == confirmButton){
+
+            if(gamePhase == GamePhase.CARD_PICK) {
+                try {
+                    clientController.getServer().requestCards(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
+                            topListener.getPicks(), bottomListener.getPicks());
+                } catch (RemoteException ex) {
+                    clientController.showError(clientController.getID(), ex.getMessage());
+                }
+            } else if(gamePhase == GamePhase.OFFER_PICK) {
+                try {
+                    clientController.getServer().requestOffer(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
+                            offerListener.getSelectedOfferIndex());
+                } catch (RemoteException ex) {
+                    clientController.showError(clientController.getID(), ex.getMessage());
+                }
             }
+
         }
     }
 
@@ -103,17 +118,38 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(confirmButton.isEnabled()) {
-            confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        if(e.getSource() == leaveButton){
+            leaveButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        } else if (e.getSource() == confirmButton){
+            if(confirmButton.isEnabled()) {
+                confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
+            }
         }
+
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        confirmButton.setBorder(null);
+        if(e.getSource() == leaveButton){
+            leaveButton.setBorder(null);
+        } else  if (e.getSource() == confirmButton){
+            confirmButton.setBorder(null);
+        }
     }
 
 
+
+    public void renderLeaveButton(JPanel panel) {
+        leaveButton.setBackground(new Color(0xEE3F2A));
+        leaveButton.setHorizontalAlignment(SwingConstants.WEST);
+        panel.add(leaveButton, BorderLayout.NORTH);
+    }
+
+    public void renderConfirmButton(JPanel panel) {
+        confirmButton.setBackground(new Color(0xFFF3D3));
+        confirmButton.setHorizontalAlignment(SwingConstants.EAST);
+        panel.add(confirmButton, BorderLayout.SOUTH);
+    }
 
     public void renderTopRow(JPanel panel) {
         renderRow(clientController.getCurrLobby().getBoard().getTopRow(), panel, topListener);
@@ -153,12 +189,6 @@ public class GamePlayScreen extends GUIScreen implements MouseListener{
             offerTileComponent.render();
             panel.add(offerTileComponent, BorderLayout.CENTER);
         }
-    }
-
-    public void renderConfirmButton(JPanel panel) {
-        confirmButton.setBackground(new Color(0xFFF3D3));
-        confirmButton.setHorizontalAlignment(SwingConstants.EAST);
-        panel.add(confirmButton, BorderLayout.SOUTH);
     }
 
 
