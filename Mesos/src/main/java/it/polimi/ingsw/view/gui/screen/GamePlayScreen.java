@@ -12,13 +12,15 @@ import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GamePlayScreen extends GUIScreen {
+public class GamePlayScreen extends GUIScreen implements MouseListener{
     enum GamePhase {
         CARD_PICK,
         OFFER_PICK
@@ -90,6 +92,29 @@ public class GamePlayScreen extends GUIScreen {
         }
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if(confirmButton.isEnabled()) {
+            confirmButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        confirmButton.setBorder(null);
+    }
+
+
+
     public void renderTopRow(JPanel panel) {
         renderRow(clientController.getCurrLobby().getBoard().getTopRow(), panel, topListener);
     }
@@ -136,6 +161,8 @@ public class GamePlayScreen extends GUIScreen {
         panel.add(confirmButton, BorderLayout.SOUTH);
     }
 
+
+
     private void enableComponents() {
         if(clientController.getCurrLobby().getTurnState().canPickCard() && matchTurn()){
             topListener.setTotalPicks(clientController.getCurrLobby().getBoard().getTopRow().getPickableCardCount());
@@ -166,6 +193,8 @@ public class GamePlayScreen extends GUIScreen {
     private boolean matchTurn(){
         return clientController.getCurrLobby().getCurrPlayer().equals(clientController.getCurrLobby().getPlayer(clientController.getID()));
     }
+
+
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
