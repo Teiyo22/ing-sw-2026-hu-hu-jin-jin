@@ -22,4 +22,9 @@ public class ActionSection implements Section {
 
         System.out.println(Formatter.separatorLine(""));
     }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        return  true;
+    }
 }

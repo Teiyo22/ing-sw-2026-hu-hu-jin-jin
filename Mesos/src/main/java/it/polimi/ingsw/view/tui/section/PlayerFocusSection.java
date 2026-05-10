@@ -14,9 +14,6 @@ public class PlayerFocusSection implements Section {
     public void render(ClientController clientController) {
         Lobby currLobby = clientController.getCurrLobby();
 
-        if (currLobby == null || currLobby.getShownPlayer() == null)
-            return;
-
         Player player = currLobby.getShownPlayer();
 
         System.out.println();
@@ -54,5 +51,13 @@ public class PlayerFocusSection implements Section {
             System.out.println(Formatter.line(b.toString()));
 
         System.out.println(Formatter.separatorLine(""));
+    }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Lobby currLobby = clientController.getCurrLobby();
+
+        return currLobby != null &&
+               currLobby.isShownPlayer();
     }
 }

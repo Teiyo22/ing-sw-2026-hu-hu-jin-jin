@@ -12,9 +12,6 @@ public class LobbyInfoSection implements Section {
     public void render(ClientController clientController) {
         Lobby currLobby = clientController.getCurrLobby();
 
-        if (currLobby == null)
-            return;
-
         System.out.println();
         System.out.println(Formatter.separatorLine("Lobby Info"));
 
@@ -26,5 +23,11 @@ public class LobbyInfoSection implements Section {
             System.out.println(Formatter.player(entry));
 
         System.out.println(Formatter.separatorLine(""));
+    }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Lobby currLobby = clientController.getCurrLobby();
+        return currLobby != null && !currLobby.getPlayers().isEmpty();
     }
 }

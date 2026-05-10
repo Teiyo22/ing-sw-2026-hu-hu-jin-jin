@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.tui.Formatter;
 
@@ -19,5 +20,14 @@ public class OfferTrackSection implements Section {
             System.out.println(Formatter.line(String.format(" %-3d | %s", i, offerTrack[i])));
 
         System.out.println(Formatter.separatorLine(""));
+    }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Lobby currLobby = clientController.getCurrLobby();
+
+        return currLobby != null &&
+               currLobby.getBoard() != null &&
+               !currLobby.isShownPlayer();
     }
 }

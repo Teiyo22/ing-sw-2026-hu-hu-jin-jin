@@ -23,4 +23,11 @@ public class LobbyListSection implements Section {
 
         System.out.println(Formatter.separatorLine(""));
     }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
+
+        return waitingLobbies != null && !waitingLobbies.isEmpty();
+    }
 }

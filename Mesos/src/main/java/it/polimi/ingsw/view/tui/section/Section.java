@@ -4,4 +4,5 @@ import it.polimi.ingsw.controller.client.ClientController;
 
 public interface Section {
     void render(ClientController clientController);
+    boolean isVisible(ClientController clientController);
 }

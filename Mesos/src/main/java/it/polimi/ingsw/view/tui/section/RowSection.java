@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
@@ -43,5 +44,14 @@ public class RowSection implements Section {
             System.out.println(Formatter.line(event.toString()));
 
         System.out.println(Formatter.separatorLine(""));
+    }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Lobby currLobby = clientController.getCurrLobby();
+
+        return currLobby != null &&
+               currLobby.getBoard() != null &&
+               !currLobby.isShownPlayer();
     }
 }

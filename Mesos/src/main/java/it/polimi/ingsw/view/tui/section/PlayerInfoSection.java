@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.tui.Formatter;
 
@@ -16,5 +17,14 @@ public class PlayerInfoSection implements  Section {
             System.out.println(Formatter.playerInfo(player, player.equals(currPlayer)));
 
         System.out.println(Formatter.separatorLine(""));
+    }
+
+    @Override
+    public boolean isVisible(ClientController clientController) {
+        Lobby currLobby = clientController.getCurrLobby();
+
+        return currLobby != null &&
+               currLobby.getTurnState() != null &&
+               !currLobby.isShownPlayer();
     }
 }
