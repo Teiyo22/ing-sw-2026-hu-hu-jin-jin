@@ -1,65 +1,71 @@
 package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.gui.screen.WaitingLobbiesScreen;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class MenuScreen extends GUIScreen implements ActionListener {
-    private JButton create;
-    private JButton join;
+public class MenuScreen extends GUIScreen{
 
     public MenuScreen(JFrame frame, ClientController clientController) {
         super(frame,clientController);
     }
-    public void render(){
+
+    @Override
+    public void render() {
         JPanel panel1 = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon mesos = new ImageIcon(getClass().getResource("/mesos.png"));
-                g.drawImage(mesos.getImage(), 0, 0, getWidth(), getHeight(), this);
+                ImageIcon bg = new ImageIcon(getClass().getResource("/mesos.png"));
+                g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-
         GridBagConstraints c = new GridBagConstraints();
-
-        create = new JButton("Create Game");
-        create.setPreferredSize(new Dimension(300, 100));
-        create.setFont(new Font("Arial", Font.PLAIN, 30));
-        create.setBackground(new Color(0xFFF3D3));
-        create.setBorder(BorderFactory.createEtchedBorder());
-        create.setFocusable(false);
-        create.addActionListener(this);
-        c.gridy = 0;
-        c.weighty = 1;
+        JLabel text = new JLabel("Press to enter");
+        text.setFont(new Font("Arial",Font.PLAIN,30));
         c.anchor = GridBagConstraints.SOUTH;
-        panel1.add(create, c);
+        c.insets = new Insets(300, 0, 50, 0);
+        panel1.add(text, c);
 
-        join = new JButton("Join Game");
-        join.setPreferredSize(new Dimension(300, 100));
-        join.setBackground(new Color(0xFFF3D3));
-        join.setFont(new Font("Arial", Font.PLAIN, 30));
-        join.setBorder(BorderFactory.createEtchedBorder());
-        join.setFocusable(false);
-        join.addActionListener(this);
-        c.gridy = 1;
-        c.weighty = 0.3;
-        c.anchor = GridBagConstraints.CENTER;
-        panel1.add(join, c);
+        Timer timer = getTimer(text);
+
+        panel1.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                timer.stop();
+                new LobbyScreen(frame,clientController).render();
+            }
+        });
 
         frame.setContentPane(panel1);
         frame.setVisible(true);
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==create) {
-            new CreateGameScreen(frame,clientController).render();
-        }else if(e.getSource()==join){
-            new WaitingLobbiesScreen(frame,clientController).render();
-        }
+
+    private Timer getTimer(JLabel text) {
+        float[] alpha = {0f};
+        boolean[] aumenta = {true};
+
+        Timer timer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(aumenta[0]) {
+                    alpha[0] += 0.05f;
+                    if(alpha[0] >= 1f) aumenta[0] = false;
+                } else {
+                    alpha[0] -= 0.05f;
+                    if(alpha[0] <= 0f) aumenta[0] = true;
+                }
+                text.setForeground(new Color(1f, 1f, 1f, alpha[0]));
+            }
+        });
+        timer.start();
+        return timer;
     }
 }
+
+
+
