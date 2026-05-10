@@ -41,6 +41,10 @@ public class RoundActionState extends GameState{
 
         currPlayer = offerTrack[solvedOffers].getAssignedPlayer();
         offerTrack[solvedOffers].solveBonusFood();
+
+        if (offerTrack[solvedOffers].getTopRowPickable() * game.getBoard().getTopRow().getPickableCardCount() == 0 &&
+            offerTrack[solvedOffers].getBottomRowPickable() * game.getBoard().getBottomRow().getPickableCardCount() == 0)
+            update();
     }
 
     public void setPlayer(Player player) {
