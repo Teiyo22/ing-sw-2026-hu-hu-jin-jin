@@ -8,41 +8,42 @@ import it.polimi.ingsw.view.gui.screen.GUIMenuScreen;
 
 import javax.swing.*;
 
-public class GUIView implements View {
+public class GUIView extends JFrame implements View {
     private final ClientController controller;
-    private JFrame frame;
     private GUIScreen currScreen;
 
     public GUIView(ClientController controller) {
+        super();
         this.controller = controller;
     }
 
     @Override
-    public void show() {
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(1920, 1080);
-        frame.setResizable(true);
+    public void start() {
+        setTitle("Mesos");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(1920, 1080);
+        setLocationRelativeTo(null);
+        setResizable(true);
 
-        currScreen = new GUIMenuScreen(frame, controller);
+        currScreen = new GUIMenuScreen(this, controller);
         currScreen.render();
     }
 
     @Override
     public void close() {
-        frame.dispose();
-        JOptionPane.showMessageDialog(frame, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
+        dispose();
+        JOptionPane.showMessageDialog(this, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
     public void displayError(String message) {
-        JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
     public void transitionTo(ScreenType type) {
         SwingUtilities.invokeLater(() -> {
-            currScreen = ScreenType.getGUIScreen(type, frame, controller);
+            currScreen = ScreenType.getGUIScreen(type, this, controller);
             currScreen.render();
         });
     }
@@ -50,7 +51,7 @@ public class GUIView implements View {
 
     @Override
     public void update() {
-        if (frame.isDisplayable()) {
+        if (isDisplayable()) {
             SwingUtilities.invokeLater(() -> currScreen.render());
         }
     }

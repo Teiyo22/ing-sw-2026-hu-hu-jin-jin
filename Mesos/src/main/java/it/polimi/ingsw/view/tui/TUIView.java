@@ -19,7 +19,7 @@ public class TUIView implements View {
     }
 
     @Override
-    public void show() {
+    public void start() {
         transitionTo(ScreenType.LOBBY_SELECTION);
         try (Scanner scanner = new Scanner(System.in)) {
             while (running) {

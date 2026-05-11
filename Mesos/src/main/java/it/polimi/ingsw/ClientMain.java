@@ -70,7 +70,7 @@ public class ClientMain {
                 while (!controller.isInit())
                     TimeUnit.MILLISECONDS.sleep(100);
 
-                view.show();
+                view.start();
             } catch (InterruptedException ignore) { }
         }
     }
