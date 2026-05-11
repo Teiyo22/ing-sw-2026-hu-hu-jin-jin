@@ -1,17 +1,12 @@
 package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.gui.section.GUISection;
+import it.polimi.ingsw.view.command.CreateLobbyCommand;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.IndexedPropertyDescriptor;
-import java.rmi.RemoteException;
 
 public class CreateGameSection implements GUISection {
 
@@ -85,13 +80,8 @@ public class CreateGameSection implements GUISection {
         createPanel.add(create, c);
         create.addActionListener(e -> {
             if (nameText.getText().isBlank()) return;
-            try {
-                clientController.getServer().createLobby(clientController.getID(), (int) pSizeBox.getSelectedItem(),
-                        new Player(nameText.getText(), (Totem) totemBox.getSelectedItem()));
-                visible = false;
-            } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
-            }
+            new CreateLobbyCommand((int) pSizeBox.getSelectedItem(),
+                    new Player(nameText.getText(), (Totem) totemBox.getSelectedItem())).execute(clientController);
         });
         panel.add(createPanel, BorderLayout.CENTER);
 

@@ -4,6 +4,9 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.view.command.LeaveLobbyCommand;
+import it.polimi.ingsw.view.command.PickCardCommand;
+import it.polimi.ingsw.view.command.PickOfferCommand;
 import it.polimi.ingsw.view.gui.components.CardComponent;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GamePlayScreen extends GUIScreen{
+public class GUIGamePlayScreen extends GUIScreen{
     enum GamePhase {
         CARD_PICK,
         OFFER_PICK
@@ -30,7 +33,7 @@ public class GamePlayScreen extends GUIScreen{
     private final CardPicksListener bottomListener;
     private final OfferPickListener offerListener;
 
-    public GamePlayScreen(JFrame frame, ClientController controller) {
+    public GUIGamePlayScreen(JFrame frame, ClientController controller) {
         super(frame, controller);
         leaveButton = new JButton("Leave");
         confirmButton = new JButton("Confirm");
@@ -77,31 +80,14 @@ public class GamePlayScreen extends GUIScreen{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == leaveButton){
-
-            try {
-                clientController.getServer().leaveLobby(clientController.getID(), clientController.getCurrLobby().getLobbyID());
-            } catch (RemoteException ex) {
-                clientController.showError(clientController.getID(),  ex.getMessage());
-            }
-
+            new LeaveLobbyCommand(clientController.getCurrLobby().getLobbyID()).execute(clientController);
         } else if (e.getSource() == confirmButton){
 
             if(gamePhase == GamePhase.CARD_PICK) {
-                try {
-                    clientController.getServer().requestCards(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                            topListener.getPicks(), bottomListener.getPicks());
-                } catch (RemoteException ex) {
-                    clientController.showError(clientController.getID(), ex.getMessage());
-                }
+                new PickCardCommand(topListener.getPicks(), bottomListener.getPicks()).execute(clientController);
             } else if(gamePhase == GamePhase.OFFER_PICK) {
-                try {
-                    clientController.getServer().requestOffer(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                            offerListener.getSelectedOfferIndex());
-                } catch (RemoteException ex) {
-                    clientController.showError(clientController.getID(), ex.getMessage());
-                }
+                new PickOfferCommand(offerListener.getSelectedOfferIndex()).execute(clientController);
             }
-
         }
     }
 

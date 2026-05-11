@@ -3,19 +3,21 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.model.card.AbstractCard;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CardPicksListener extends SelectionListener<AbstractCard> {
-    private final List<Integer> picks;
+    private final Set<Integer> picks;
     private int totalPicks;
 
     public CardPicksListener() {
         super();
-        picks = new ArrayList<>();
+        picks = new HashSet<>();
         totalPicks = 0;
     }
 
-    public List<Integer> getPicks() {
+    public Set<Integer> getPicks() {
         return picks;
     }
 

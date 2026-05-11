@@ -1,13 +1,14 @@
 package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.Lobby;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.view.command.JoinLobbyCommand;
+import it.polimi.ingsw.view.command.StartLobbyCommand;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class LobbyInfoSection implements GUISection{
         playersPanel.setLayout(new BoxLayout(playersPanel, BoxLayout.Y_AXIS));
         playersPanel.setBackground(Fonts.grey);
 
-        for (Player p : lobby.getPlayers().values()) {
+        for (Player p : lobby.getPlayers().keySet()) {
             JLabel infoP = new JLabel("● " + p.getName() + " - " + p.getTotem());
             infoP.setFont(Fonts.small);
             infoP.setForeground(Color.WHITE);
@@ -61,7 +62,7 @@ public class LobbyInfoSection implements GUISection{
         totemBox.setFont(Fonts.small);
         totemBox.setPreferredSize(new Dimension(200, 30));
         List<Totem> totiPresi = new ArrayList<>();
-        for (Player p : lobby.getPlayers().values())
+        for (Player p : lobby.getPlayers().keySet())
             totiPresi.add(p.getTotem());
         for (Totem t : Totem.values())
             if (!totiPresi.contains(t))
@@ -91,30 +92,21 @@ public class LobbyInfoSection implements GUISection{
 
         join.addActionListener(e -> {
             if (nameText.getText().isBlank()) return;
-            try {
-                clientController.getServer().joinLobby(clientController.getID(), lobby.getLobbyID(),
-                        new Player(nameText.getText(), (Totem) totemBox.getSelectedItem()));
-                clientController.getServer().getLobbyInfo(clientController.getID(), lobby.getLobbyID());
-            } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
-            }
+            new JoinLobbyCommand(lobby.getLobbyID(),
+                    new Player(nameText.getText(), (Totem) totemBox.getSelectedItem())).execute(clientController);
         });
 
-        exit.addActionListener(e -> {
-            try {
-                clientController.getServer().leaveLobby(clientController.getID(), lobby.getLobbyID());
-                clientController.getServer().getLobbyInfo(clientController.getID(), lobby.getLobbyID());
-            } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
-            }
-        });
+//        exit.addActionListener(e -> {
+//            try {
+//                clientController.getServer().leaveLobby(clientController.getID(), lobby.getLobbyID());
+//                clientController.getServer().getLobbyInfo(clientController.getID(), lobby.getLobbyID());
+//            } catch (RemoteException ex) {
+//                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
+//            }
+//        });
 
         start.addActionListener(e -> {
-            try {
-                clientController.getServer().startLobby(clientController.getID(), lobby.getLobbyID());
-            } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
-            }
+            new StartLobbyCommand(lobby.getLobbyID()).execute(clientController);
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));

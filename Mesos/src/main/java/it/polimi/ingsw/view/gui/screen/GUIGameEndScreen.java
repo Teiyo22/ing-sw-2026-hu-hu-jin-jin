@@ -5,19 +5,18 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
-class GameEndScreen  extends GUIScreen implements ActionListener {
+class GUIGameEndScreen extends GUIScreen implements ActionListener {
     private static final int COLS = 4;
     private static final int CELL_HEIGHT = 60;
 
     private static final String[] HEADERS = { "RANK", "PLAYER NAME", "PRESTIGE POINTS", "FOOD" };
 
-    public GameEndScreen(JFrame frame, ClientController clientController) {
+    public GUIGameEndScreen(JFrame frame, ClientController clientController) {
         super(frame, clientController);
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.command.GetWaitingLobbiesCommand;
 import it.polimi.ingsw.view.gui.section.CreateGameSection;
 import it.polimi.ingsw.view.gui.section.GUISection;
 import it.polimi.ingsw.view.gui.section.LobbyInfoSection;
@@ -14,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class LobbyScreen extends GUIScreen implements ActionListener {
+public class GUILobbySelectionScreen extends GUIScreen implements ActionListener {
     private final CreateGameSection createGameSection = new CreateGameSection();
     private final List<GUISection> sections = List.of(new LobbyInfoSection(), new LobbyListSection(),createGameSection);
     private JButton back;
@@ -22,7 +23,7 @@ public class LobbyScreen extends GUIScreen implements ActionListener {
     private JButton create;
 
 
-    public LobbyScreen(JFrame frame, ClientController clientController) {
+    public GUILobbySelectionScreen(JFrame frame, ClientController clientController) {
         super(frame,clientController);
     }
 
@@ -86,13 +87,9 @@ public class LobbyScreen extends GUIScreen implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == back){
-            new MenuScreen(frame,clientController).render();
+            new GUIMenuScreen(frame,clientController).render();
         }else if(e.getSource() == refresh){
-            try {
-                clientController.getServer().getWaitingLobbies(clientController.getID());
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
+            new GetWaitingLobbiesCommand().execute(clientController);
         }else if(e.getSource()==create){
             createGameSection.setVisible(true);
             render();

@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MenuScreen extends GUIScreen{
+public class GUIMenuScreen extends GUIScreen{
 
-    public MenuScreen(JFrame frame, ClientController clientController) {
+    public GUIMenuScreen(JFrame frame, ClientController clientController) {
         super(frame,clientController);
     }
 
@@ -37,7 +37,7 @@ public class MenuScreen extends GUIScreen{
             @Override
             public void mouseClicked(MouseEvent e) {
                 timer.stop();
-                new LobbyScreen(frame,clientController).render();
+                new GUILobbySelectionScreen(frame,clientController).render();
             }
         });
 
