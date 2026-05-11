@@ -179,4 +179,9 @@ public class GUIGamePlayScreen extends GUIScreen{
     private boolean matchTurn(){
         return clientController.getCurrLobby().getCurrPlayer().equals(clientController.getCurrLobby().getPlayer(clientController.getID()));
     }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }

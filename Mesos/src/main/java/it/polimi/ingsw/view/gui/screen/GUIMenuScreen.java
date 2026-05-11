@@ -65,6 +65,11 @@ public class GUIMenuScreen extends GUIScreen{
         timer.start();
         return timer;
     }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }
 
 

@@ -1,12 +1,13 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.Screen;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public abstract class GUIScreen implements ActionListener {
+public abstract class GUIScreen implements ActionListener, Screen {
     protected JFrame frame;
     protected ClientController clientController;
 

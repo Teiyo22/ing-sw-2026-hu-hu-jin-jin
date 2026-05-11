@@ -10,7 +10,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
-class GUIGameEndScreen extends GUIScreen implements ActionListener {
+class GUIGameEndScreen extends GUIScreen {
     private static final int COLS = 4;
     private static final int CELL_HEIGHT = 60;
 
@@ -90,5 +90,10 @@ class GUIGameEndScreen extends GUIScreen implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
+
+    @Override
+    public void showError(String error) {
+
     }
 }

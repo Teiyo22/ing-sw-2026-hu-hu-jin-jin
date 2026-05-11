@@ -95,4 +95,9 @@ public class GUILobbySelectionScreen extends GUIScreen implements ActionListener
             render();
         }
     }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }
