@@ -7,10 +7,10 @@ public enum ScreenType {
     LOBBY_SELECTION,
     GAME_PLAY;
 
-    public static Screen getTUIScreen(ScreenType type, ClientController clientController) {
+    public static TUIScreen getTUIScreen(ScreenType type, ClientController clientController) {
         return switch (type) {
-            case LOBBY_SELECTION -> new LobbySelectionScreen(clientController);
-            case GAME_PLAY -> new GamePlayScreen(clientController);
+            case LOBBY_SELECTION -> new TUILobbySelectionScreen(clientController);
+            case GAME_PLAY -> new TUIGamePlayScreen(clientController);
         };
     }
 }

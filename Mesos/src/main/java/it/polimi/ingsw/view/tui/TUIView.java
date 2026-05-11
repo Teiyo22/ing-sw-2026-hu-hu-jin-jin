@@ -1,15 +1,15 @@
 package it.polimi.ingsw.view.tui;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.tui.screen.TUIScreen;
 
 import java.io.IOError;
 import java.util.Scanner;
 
 public class TUIView implements View {
-    private Screen currScreen;
+    private TUIScreen currScreen;
     private final ClientController clientController;
 
     private boolean running = true;
