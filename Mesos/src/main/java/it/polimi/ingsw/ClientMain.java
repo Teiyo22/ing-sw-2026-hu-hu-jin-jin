@@ -25,31 +25,35 @@ public class ClientMain {
 
         if (!protocol.equalsIgnoreCase("rmi") && !protocol.equalsIgnoreCase("tcp")) {
             System.out.println("The network protocol must be either 'tcp' or 'rmi'");
-            System.exit(-1);
+            System.out.println("Defaulting to TCP");
+            protocol = "tcp";
         }
 
         String[] input = console.readLine("Enter <ip> <port>: ").trim().split(" ");
 
         if (input.length != 2) {
             System.out.println("Invalid number of arguments");
-            System.exit(-1);
+            port = protocol.equalsIgnoreCase("tcp") ? 28910 : 1099;
+            address = "127.0.0.1";
+            System.out.println("Defaulting to " + address + ":" + port);
         }
 
+        address = input[0];
+
         try {
-            address = input[0];
             port = Integer.parseInt(input[1]);
         } catch (NumberFormatException e) {
             System.out.println("Port must be an integer");
-            System.exit(-1);
-            return;
+            port = protocol.equalsIgnoreCase("tcp") ? 28910 : 1099;
+            System.out.println("Defaulting to port " + port);
         }
 
         ui = console.readLine("Select UI (tui | gui): ").trim();
 
         if (!ui.equalsIgnoreCase("tui") && !ui.equalsIgnoreCase("gui")) {
             System.out.println("The UI must be either 'tui' or 'gui'");
-            System.exit(-1);
-            return;
+            ui = "tui";
+            System.out.println("Defaulting to TUI");
         }
 
         ClientController controller = new ClientController();
@@ -68,7 +72,5 @@ public class ClientMain {
                 view.show();
             } catch (InterruptedException ignore) { }
         }
-
-        System.exit(0);
     }
 }
