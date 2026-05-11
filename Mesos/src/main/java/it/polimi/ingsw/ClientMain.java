@@ -33,10 +33,9 @@ public class ClientMain {
 
         if (input.length != 2) {
             System.out.println("Invalid number of arguments");
-            input = new String[2];
-            input[0] = "127.0.0.1";
-            input[1] = protocol.equalsIgnoreCase("tcp") ? "28910" : "1099";
-            System.out.println("Defaulting to " + input[0] + ":" + input[1]);
+            port = protocol.equalsIgnoreCase("tcp") ? 28910 : 1099;
+            address = "127.0.0.1";
+            System.out.println("Defaulting to " + address + ":" + port);
         }
 
         address = input[0];
