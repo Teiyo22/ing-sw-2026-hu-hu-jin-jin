@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.view.command.LeaveLobbyCommand;
 import it.polimi.ingsw.view.command.PickCardCommand;
 import it.polimi.ingsw.view.command.PickOfferCommand;
+import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.CardComponent;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
@@ -33,7 +34,7 @@ public class GUIGamePlayScreen extends GUIScreen{
     private final CardPicksListener bottomListener;
     private final OfferPickListener offerListener;
 
-    public GUIGamePlayScreen(JFrame frame, ClientController controller) {
+    public GUIGamePlayScreen(GUIView frame, ClientController controller) {
         super(frame, controller);
         leaveButton = new JButton("Leave");
         confirmButton = new JButton("Confirm");

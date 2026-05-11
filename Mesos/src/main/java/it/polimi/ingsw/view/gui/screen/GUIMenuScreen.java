@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.ScreenType;
+import it.polimi.ingsw.view.gui.GUIView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class GUIMenuScreen extends GUIScreen{
 
-    public GUIMenuScreen(JFrame frame, ClientController clientController) {
+    public GUIMenuScreen(GUIView frame, ClientController clientController) {
         super(frame,clientController);
     }
 
@@ -37,7 +39,7 @@ public class GUIMenuScreen extends GUIScreen{
             @Override
             public void mouseClicked(MouseEvent e) {
                 timer.stop();
-                new GUILobbySelectionScreen(frame,clientController).render();
+                frame.transitionTo(ScreenType.LOBBY_SELECTION);
             }
         });
 

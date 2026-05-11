@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.command.GetWaitingLobbiesCommand;
+import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.section.CreateGameSection;
 import it.polimi.ingsw.view.gui.section.GUISection;
 import it.polimi.ingsw.view.gui.section.LobbyInfoSection;
@@ -23,7 +24,7 @@ public class GUILobbySelectionScreen extends GUIScreen implements ActionListener
     private JButton create;
 
 
-    public GUILobbySelectionScreen(JFrame frame, ClientController clientController) {
+    public GUILobbySelectionScreen(GUIView frame, ClientController clientController) {
         super(frame,clientController);
     }
 

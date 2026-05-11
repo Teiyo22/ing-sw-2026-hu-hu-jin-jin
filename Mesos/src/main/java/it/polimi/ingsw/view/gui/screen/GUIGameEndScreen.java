@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
 class GUIGameEndScreen extends GUIScreen {
@@ -16,7 +17,7 @@ class GUIGameEndScreen extends GUIScreen {
 
     private static final String[] HEADERS = { "RANK", "PLAYER NAME", "PRESTIGE POINTS", "FOOD" };
 
-    public GUIGameEndScreen(JFrame frame, ClientController clientController) {
+    public GUIGameEndScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
     }
 
