@@ -20,7 +20,7 @@ public class GUIMenuScreen extends GUIScreen{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon bg = new ImageIcon(getClass().getResource("/mesos.png"));
+                ImageIcon bg = new ImageIcon(getClass().getResource("/images/mesos.png"));
                 g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
