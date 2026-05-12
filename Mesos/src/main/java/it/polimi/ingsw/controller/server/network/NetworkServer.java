@@ -30,7 +30,7 @@ public class NetworkServer extends Thread {
                 clientHandler.setClientTCPInterface(tcpClientInterface);
                 ServerController.getInstance().submitListener(clientHandler);
 
-                ServerController.getInstance().addClient(tcpClientInterface);
+                ServerController.getInstance().registerClient(tcpClientInterface);
             } catch (SocketException ignore) {
 
             } catch (IOException e) {

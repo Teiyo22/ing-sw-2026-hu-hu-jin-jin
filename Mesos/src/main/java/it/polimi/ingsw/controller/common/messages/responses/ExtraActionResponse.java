@@ -13,8 +13,7 @@ public class ExtraActionResponse extends Response {
     private Tribe updatedTribe;
     private Row updateTopRow;
 
-    public ExtraActionResponse(int clientID, int lobbyID, Player player, Tribe updatedTribe, Row updateTopRow) {
-        super(clientID);
+    public ExtraActionResponse(int lobbyID, Player player, Tribe updatedTribe, Row updateTopRow) {
         this.type = MessageType.EXTRA_ACTION;
         this.lobbyID = lobbyID;
         this.player = player;
@@ -24,6 +23,6 @@ public class ExtraActionResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.updateModel(clientID, lobbyID, player, updatedTribe, updateTopRow);
+        clientController.updateModel(lobbyID, player, updatedTribe, updateTopRow);
     }
 }

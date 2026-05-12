@@ -10,6 +10,7 @@ import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.*;
+import it.polimi.ingsw.controller.server.network.RMIClientInterface;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
@@ -23,7 +24,6 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.tui.Formatter;
 
 import java.io.IOException;
-import java.rmi.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +32,12 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Set;
 import java.util.concurrent.*;
 
 
 public class ClientController implements VirtualClient {
-    private int id = 0;
+    private String id;
     private boolean init = false;
 
     private View view = null;
@@ -53,7 +54,12 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
+    public void confirmLogin(String username) {
+
+    }
+
+    @Override
+    public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
 
         waitingLobbies.clear();
 
@@ -64,7 +70,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+    public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
 
         Lobby lobby = waitingLobbies.get(lobbyID);
 
@@ -72,7 +78,7 @@ public class ClientController implements VirtualClient {
             Map<Player, Integer> playerInfo = new HashMap<>();
             currLobby = lobby;
 
-            for (Map.Entry<Integer, Player> entry : players.entrySet()) {
+            for (Map.Entry<String, Player> entry : players.entrySet()) {
                 Player newKey = entry.getValue();
                 Integer newValue = entry.getKey() < 0 ? null : entry.getKey();
                 playerInfo.put(newKey, newValue);
@@ -80,53 +86,44 @@ public class ClientController implements VirtualClient {
 
             currLobby.setPlayers(playerInfo);
         } else
-            showError(clientID, "This lobby is not available");
+            showError("This lobby is not available");
 
         view.update();
     }
 
     @Override
-    public synchronized void addClient(int clientID, int lobbyID, Player player) {
+    public synchronized void addPlayer(int lobbyID, Player player) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.addClient(clientID, player);
+            currLobby.addPlayer(player);
 
         view.update();
     }
 
     @Override
-    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
+    public synchronized void removeClient(int lobbyID, Player player) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.addPlayer(clientID, player);
-
+            currLobby.removeClient(player);
         view.update();
     }
 
     @Override
-    public synchronized void removeClient(int clientID, int lobbyID, Player player) {
+    public synchronized void removePlayer(int lobbyID, Player player) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.removeClient(clientID, player);
-        view.update();
-    }
-
-    @Override
-    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
-
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.removePlayer(clientID, player);
+            currLobby.removePlayer(player);
 
         view.update();
     }
 
     @Override
-    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
+    public synchronized void createLobby(Lobby lobby, Player player) {
 
         currLobby = lobby;
 
         Map<Player, Integer> players = new HashMap<>();
-        players.put(player, clientID);
+        players.put(player);
 
         currLobby.setPlayers(players);
 
@@ -134,7 +131,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             waitingLobbies.clear();
@@ -145,7 +142,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void stopLobby(int clientID, int lobbyID) {
+    public synchronized void stopLobby(int lobbyID) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             view.transitionTo(ScreenType.LOBBY_SELECTION);
@@ -153,7 +150,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void showError(int clientID, String error) {
+    public void showError(String error) {
         view.displayError(error);
     }
 
@@ -162,12 +159,12 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
 
     }
 
     @Override
-    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+    public synchronized void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             Player player = currLobby.getPlayer(id);
             TurnState turnState = modelStateInfo.getTurnState(player);
@@ -178,7 +175,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public synchronized void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateOrderTile(orderTile);
             currLobby.updateOfferTrack(offerTrack);
@@ -188,7 +185,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
+    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribe(player, tribe);
             currLobby.updateBoard(board);
@@ -198,7 +195,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
+    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribe(player, tribe);
             currLobby.updateTopRow(topRow);
@@ -208,7 +205,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
+    public synchronized void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribes(tribes);
             currLobby.updateTopRow(topRow);
@@ -219,7 +216,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
+    public synchronized void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribes(tribes);
             currLobby.setRanking(ranking);
@@ -242,7 +239,7 @@ public class ClientController implements VirtualClient {
             this.server = new RMIServerInterface(this, serverStub);
 
             VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
-            server.addClient(stub);
+            server.registerClient(new RMIClientInterface(stub));
 
             connectionMonitor.startServerMonitor(this);
 
@@ -318,11 +315,11 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public void setID(int clientID) {
-        id = clientID;
+    public void setID(String clientID) {
+        this.id = clientID;
         init = true;
 
-        Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + id);
+        Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + this.id);
     }
 
     public void setView(View view) {
@@ -333,7 +330,7 @@ public class ClientController implements VirtualClient {
     // Getters
     //=============================================================================
 
-    public int getID() {
+    public String getID() {
         return id;
     }
 

@@ -13,12 +13,12 @@ public class LobbyEndedState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError(client.getID(), "The lobby already ended.");
+        client.showError("The lobby already ended.");
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError(client.getID(), "The lobby already ended.");
+        client.showError("The lobby already ended.");
 
     }
 
@@ -29,17 +29,17 @@ public class LobbyEndedState extends LobbyState {
 
     @Override
     public void getLobbyInfo(ClientInterface client) {
-        client.showError(client.getID(), "The lobby already ended.");
+        client.showError("The lobby already ended.");
     }
 
     @Override
     public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError(pickerClient.getID(), "The lobby already ended.");
+        pickerClient.showError("The lobby already ended.");
     }
 
     @Override
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError(pickerClient.getID(), "The lobby already ended.");
+        pickerClient.showError("The lobby already ended.");
     }
 
     @Override

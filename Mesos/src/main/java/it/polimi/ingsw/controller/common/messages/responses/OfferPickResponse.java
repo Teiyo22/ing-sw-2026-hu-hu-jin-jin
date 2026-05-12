@@ -11,8 +11,7 @@ public class OfferPickResponse extends Response {
     private OrderSlot[] orderTile;
     private OfferTile[] offerTrack;
 
-    public OfferPickResponse(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
-        super(clientID);
+    public OfferPickResponse(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
         this.type = MessageType.OFFER_PICK;
         this.lobbyID = lobbyID;
         this.orderTile = orderTile;
@@ -21,6 +20,6 @@ public class OfferPickResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.updateModel(clientID, lobbyID, orderTile, offerTrack);
+        clientController.updateModel(lobbyID, orderTile, offerTrack);
     }
 }

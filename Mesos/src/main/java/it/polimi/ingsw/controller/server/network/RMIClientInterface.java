@@ -11,12 +11,11 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RMIClientInterface extends ClientInterface {
     VirtualClient wrappedClient;
@@ -26,7 +25,7 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void setID(int clientID) {
+    public synchronized void setID(String clientID) {
         this.id = clientID;
 
         submitRemoteCall(
@@ -36,140 +35,142 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
+    public void confirmLogin(String username) {
+        this.id = username;
+
         submitRemoteCall(
-                () -> wrappedClient.showWaitingLobbies(clientID, lobbies),
-                () -> this.showWaitingLobbies(clientID, lobbies)
+                () -> wrappedClient.confirmLogin(username),
+                () -> this.confirmLogin(username)
         );
     }
 
     @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
+    public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
+        submitRemoteCall(
+                () -> wrappedClient.showWaitingLobbies(lobbies),
+                () -> this.showWaitingLobbies(lobbies)
+        );
+    }
+
+    @Override
+    public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
         setCurrLobbyController(lobbyID);
 
        submitRemoteCall(
-               () -> wrappedClient.showLobbyInfo(clientID, lobbyID, players),
-               () -> this.showLobbyInfo(clientID, lobbyID, players)
+               () -> wrappedClient.showLobbyInfo(lobbyID, connectedPlayers, disconnectedPlayers),
+               () -> this.showLobbyInfo(lobbyID, connectedPlayers, disconnectedPlayers)
        );
     }
 
     @Override
-    public synchronized void addClient(int clientID, int lobbyID, Player player) {
+    public synchronized void addPlayer(int lobbyID, Player player) {
         submitRemoteCall(
-                () -> wrappedClient.addClient(clientID, lobbyID, player),
-                () -> this.addClient(clientID, lobbyID, player)
+                () -> wrappedClient.addPlayer(lobbyID, player),
+                () -> this.addPlayer(lobbyID, player)
         );
     }
 
     @Override
-    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
+    public synchronized void removeClient(int lobbyID, Player player) {
         submitRemoteCall(
-                () -> wrappedClient.addPlayer(clientID, lobbyID, player),
-                () -> this.addPlayer(clientID, lobbyID, player)
+                () -> wrappedClient.removeClient(lobbyID, player),
+                () -> this.removeClient(lobbyID, player)
         );
     }
 
     @Override
-    public synchronized void removeClient(int clientID, int lobbyID, Player player) {
+    public synchronized void removePlayer(int lobbyID, Player player) {
         submitRemoteCall(
-                () -> wrappedClient.removeClient(clientID, lobbyID, player),
-                () -> this.removeClient(clientID, lobbyID, player)
+                () -> wrappedClient.removeClient(lobbyID, player),
+                () -> this.removePlayer(lobbyID, player)
         );
     }
 
     @Override
-    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
+    public synchronized void showLeaderboard(List<LeaderboardEntry> leaderboard) {
         submitRemoteCall(
-                () -> wrappedClient.removeClient(clientID, lobbyID, player),
-                () -> this.removePlayer(clientID, lobbyID, player)
+                () -> wrappedClient.showLeaderboard(leaderboard),
+                () -> this.showLeaderboard(leaderboard)
         );
     }
 
     @Override
-    public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+    public synchronized void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         submitRemoteCall(
-                () -> wrappedClient.showLeaderboard(clientID, leaderboard),
-                () -> this.showLeaderboard(clientID, leaderboard)
+                () -> wrappedClient.updateState(lobbyID, modelStateInfo),
+                () -> this.updateState(lobbyID, modelStateInfo)
         );
     }
 
     @Override
-    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
+    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
         submitRemoteCall(
-                () -> wrappedClient.updateState(clientID, lobbyID, modelStateInfo),
-                () -> this.updateState(clientID, lobbyID, modelStateInfo)
+                () -> wrappedClient.updateModel(lobbyID, orderTile, offerTrack),
+                () -> this.updateModel(lobbyID, orderTile, offerTrack)
         );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(clientID, lobbyID, orderTile, offerTrack),
-                () -> this.updateModel(clientID, lobbyID, orderTile, offerTrack)
+                () -> wrappedClient.updateModel(lobbyID, player, tribe, board),
+                () -> this.updateModel(lobbyID, player, tribe, board)
         );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
+    public void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(clientID, lobbyID, player, tribe, board),
-                () -> this.updateModel(clientID, lobbyID, player, tribe, board)
+                () -> wrappedClient.updateModel(lobbyID, player, tribe, topRow),
+                () -> this.updateModel(lobbyID, player, tribe, topRow)
         );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
+    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(clientID, lobbyID, player, tribe, topRow),
-                () -> this.updateModel(clientID, lobbyID, player, tribe, topRow)
+                () -> wrappedClient.updateModel(lobbyID, tribes, topRow, bottomRow),
+                () -> this.updateModel(lobbyID, tribes, topRow, bottomRow)
         );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
+    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(clientID, lobbyID, tribes, topRow, bottomRow),
-                () -> this.updateModel(clientID, lobbyID, tribes, topRow, bottomRow)
+                () -> wrappedClient.updateModel(lobbyID, tribes, ranking),
+                () -> this.updateModel(lobbyID, tribes, ranking)
         );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
+    public synchronized void createLobby(Lobby lobby, Player player) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(clientID, lobbyID, tribes, ranking),
-                () -> this.updateModel(clientID, lobbyID, tribes, ranking)
+                () -> wrappedClient.createLobby(lobby, player),
+                () -> this.createLobby(lobby, player)
         );
     }
 
     @Override
-    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
+    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
         submitRemoteCall(
-                () -> wrappedClient.createLobby(clientID, lobby, player),
-                () -> this.createLobby(clientID, lobby, player)
+                () -> wrappedClient.startLobby(lobbyID, board, tribes),
+                () -> this.startLobby(lobbyID, board, tribes)
         );
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+    public synchronized void stopLobby(int lobbyID) {
         submitRemoteCall(
-                () -> wrappedClient.startLobby(clientID, lobbyID, board, tribes),
-                () -> this.startLobby(clientID, lobbyID, board, tribes)
+                () -> wrappedClient.stopLobby(lobbyID),
+                () -> this.stopLobby(lobbyID)
         );
     }
 
     @Override
-    public synchronized void stopLobby(int clientID, int lobbyID) {
+    public synchronized void showError(String errorMessage) {
         submitRemoteCall(
-                () -> wrappedClient.stopLobby(clientID, lobbyID),
-                () -> this.stopLobby(clientID, lobbyID)
-        );
-    }
-
-    @Override
-    public synchronized void showError(int clientID, String errorMessage) {
-        submitRemoteCall(
-                () -> wrappedClient.showError(clientID, errorMessage),
-                () -> this.showError(clientID, errorMessage)
+                () -> wrappedClient.showError(errorMessage),
+                () -> this.showError(errorMessage)
         );
     }
 

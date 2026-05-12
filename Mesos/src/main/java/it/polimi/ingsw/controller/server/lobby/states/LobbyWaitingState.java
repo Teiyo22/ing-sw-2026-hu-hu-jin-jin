@@ -23,18 +23,18 @@ public class LobbyWaitingState extends LobbyState {
 
             Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying listeners of new player");
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.addPlayer(client.getID(), lobbyController.getID(), player);
+                listener.addPlayer(lobbyController.getID(), player);
 
             if (lobbyController.getSize() == lobbyController.getPlayers().size())
                 lobbyController.setState(new LobbyFullState(lobbyController));
         } else {
-            client.showError(client.getID(), "Player name or totem already used");
+            client.showError("Player name or totem already used");
         }
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError(client.getID(), "Not enough players to start the game");
+        client.showError("Not enough players to start the game");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class LobbyWaitingState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removePlayer(client.getID(), lobbyController.getID(), removedPlayer);
+                listener.removePlayer(lobbyController.getID(), removedPlayer);
 
             return true;
         }
@@ -62,17 +62,17 @@ public class LobbyWaitingState extends LobbyState {
             playerInfo.put(player.getKey().getID(), player.getValue());
 
         Logger.getInstance().print(LoggerLevel.DEBUG, "Sending lobby info to client " + client.getID());
-        client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), playerInfo);
     }
 
     @Override
     public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
     }
 
     @Override
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
     }
 
     private boolean validatePlayerInfo(Player newPlayer) {

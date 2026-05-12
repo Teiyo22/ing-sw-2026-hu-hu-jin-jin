@@ -10,12 +10,11 @@ import java.util.Map;
 
 public class RoundEndResponse extends Response {
     private int lobbyID;
-    private Map<Integer, Tribe> updatedTribes;
+    private Map<String, Tribe> updatedTribes;
     private Row updatedTopRow;
     private Row updatedBottomRow;
 
-    public RoundEndResponse(int clientID, int lobbyID, Map<Integer, Tribe> updatedTribes, Row updatedTopRow, Row updatedBottomRow) {
-        super(clientID);
+    public RoundEndResponse(int lobbyID, Map<String, Tribe> updatedTribes, Row updatedTopRow, Row updatedBottomRow) {
         this.type = MessageType.ROUND_END;
         this.lobbyID = lobbyID;
         this.updatedTribes = updatedTribes;
@@ -25,6 +24,6 @@ public class RoundEndResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.updateModel(clientID, lobbyID, updatedTribes, updatedTopRow, updatedBottomRow);
+        clientController.updateModel(lobbyID, updatedTribes, updatedTopRow, updatedBottomRow);
     }
 }

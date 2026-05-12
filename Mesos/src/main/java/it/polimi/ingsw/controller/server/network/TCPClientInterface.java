@@ -13,11 +13,11 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TCPClientInterface extends ClientInterface {
     private ClientHandler clientHandler;
@@ -31,125 +31,124 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
-        WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
-        setCurrLobbyController(lobbyID);
-        LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void addClient(int clientID, int lobbyID, Player player) {
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending AddClientResponse");
-        AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
-
-        AddPlayerResponse response = new AddPlayerResponse(clientID, lobbyID, player);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void removeClient(int clientID, int lobbyID, Player player) {
-        RemoveClientResponse response = new RemoveClientResponse(clientID, lobbyID, player);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
-        RemovePlayerResponse response = new RemovePlayerResponse(clientID, lobbyID, player);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
-        GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
-        sendMessage(response);
-
-    }
-
-    @Override
-    public synchronized void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
-        OfferPickResponse response = new OfferPickResponse(clientID, lobbyID, orderTile, offerTrack);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
-        OfferResolutionResponse response = new OfferResolutionResponse(clientID, lobbyID, player, tribe, board);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
-        ExtraActionResponse response = new ExtraActionResponse(clientID, lobbyID, player, tribe, topRow);
-        sendMessage(response);
-    }
-
-    @Override
-    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
-        RoundEndResponse response = new RoundEndResponse(clientID, lobbyID, tribes, topRow, bottomRow);
-        sendMessage(response);
-    }
-
-    @Override
-    public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
-        GameEndResponse response = new GameEndResponse(clientID, lobbyID, tribes, ranking);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
-        UpdateStateResponse response = new UpdateStateResponse(clientID, lobbyID, modelStateInfo);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
-        setCurrLobbyController(lobby.getLobbyID());
-
-        CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
-        StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void stopLobby(int clientID, int lobbyID) {
-        StopLobbyResponse response = new StopLobbyResponse(clientID, lobbyID);
-        sendMessage(response);
-    }
-
-    @Override
-    public synchronized void setID(int clientID) {
+    public synchronized void setID(String clientID) {
         this.id = clientID;
 
         SetIDResponse response = new SetIDResponse(clientID);
         sendMessage(response);
+    }
+
+    @Override
+    public void confirmLogin(String username) {
+        this.id = username;
+
+        LoginResponse response = new LoginResponse(username);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
+        WaitingLobbyResponse response = new WaitingLobbyResponse(lobbies);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
+        setCurrLobbyController(lobbyID);
+        LobbyInfoResponse response = new LobbyInfoResponse(lobbyID, connectedPlayers, disconnectedPlayers);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void addPlayer(int lobbyID, Player player) {
+        AddPlayerResponse response = new AddPlayerResponse(lobbyID, player);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void removeClient(int lobbyID, Player player) {
+        RemoveClientResponse response = new RemoveClientResponse(lobbyID, player);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void removePlayer(int lobbyID, Player player) {
+        RemovePlayerResponse response = new RemovePlayerResponse(lobbyID, player);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void showLeaderboard(List<LeaderboardEntry> leaderboard) {
+        GetLeaderboardResponse response = new GetLeaderboardResponse(leaderboard);
+        sendMessage(response);
 
     }
 
     @Override
-    public synchronized void showError(int clientID, String errorMessage) {
-        ErrorMessage message = new ErrorMessage(clientID, errorMessage);
+    public synchronized void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+        OfferPickResponse response = new OfferPickResponse(lobbyID, orderTile, offerTrack);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
+        OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, tribe, board);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
+        ExtraActionResponse response = new ExtraActionResponse(lobbyID, player, tribe, topRow);
+        sendMessage(response);
+    }
+
+    @Override
+    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
+        RoundEndResponse response = new RoundEndResponse(lobbyID, tribes, topRow, bottomRow);
+        sendMessage(response);
+    }
+
+    @Override
+    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
+        GameEndResponse response = new GameEndResponse(lobbyID, tribes, ranking);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
+        UpdateStateResponse response = new UpdateStateResponse(lobbyID, modelStateInfo);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void createLobby(Lobby lobby, Player player) {
+        setCurrLobbyController(lobby.getLobbyID());
+
+        CreateLobbyResponse response = new CreateLobbyResponse(lobby, player);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
+        StartLobbyResponse response = new StartLobbyResponse(lobbyID, board, tribes);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void stopLobby(int lobbyID) {
+        StopLobbyResponse response = new StopLobbyResponse(lobbyID);
+        sendMessage(response);
+    }
+
+    @Override
+    public synchronized void showError(String errorMessage) {
+        ErrorMessage message = new ErrorMessage(errorMessage);
         sendMessage(message);
     }
 
     @Override
     public void ping() {
-        PingResponse message = new PingResponse(this.id);
+        PingResponse message = new PingResponse();
         sendMessage(message);
     }
 

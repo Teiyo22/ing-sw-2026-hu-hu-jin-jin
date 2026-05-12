@@ -5,16 +5,15 @@ import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 public class ErrorMessage extends Response {
-    String errorMessage;
+    private String errorMessage;
 
-    public ErrorMessage(int clientID, String errorMessage){
-        super(clientID);
+    public ErrorMessage(String errorMessage){
         this.type = MessageType.ERROR;
         this.errorMessage = errorMessage;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showError(super.getClientID(), errorMessage);
+        clientController.showError(errorMessage);
     }
 }

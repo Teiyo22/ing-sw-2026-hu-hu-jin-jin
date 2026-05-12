@@ -7,11 +7,10 @@ import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.player.Player;
 
 public class CreateLobbyResponse extends Response {
-    Lobby lobby;
-    Player player;
+    private Lobby lobby;
+    private Player player;
 
-    public CreateLobbyResponse(int clientID, Lobby lobby, Player player) {
-        super(clientID);
+    public CreateLobbyResponse(Lobby lobby, Player player) {
         this.type = MessageType.CREATE_LOBBY;
         this.lobby = lobby;
         this.player = player;
@@ -19,6 +18,6 @@ public class CreateLobbyResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.createLobby(clientID, lobby, player);
+        clientController.createLobby(lobby, player);
     }
 }

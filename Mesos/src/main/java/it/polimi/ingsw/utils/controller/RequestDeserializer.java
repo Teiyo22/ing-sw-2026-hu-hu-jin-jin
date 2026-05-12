@@ -13,6 +13,7 @@ public class RequestDeserializer implements JsonDeserializer<Request> {
         String type = jsonObject.get("type").getAsString();
 
         return switch (type) {
+            case "LOGIN" -> context.deserialize(jsonObject, LoginRequest.class);
             case "PICK_CARDS" -> context.deserialize(jsonObject, PickCardsRequest.class);
             case "CREATE_LOBBY" -> context.deserialize(jsonObject, CreateLobbyRequest.class);
             case "JOIN_LOBBY" -> context.deserialize(jsonObject, JoinLobbyRequest.class);

@@ -19,7 +19,7 @@ public class LobbyFullState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError(client.getID(), "The lobby is full");
+        client.showError("The lobby is full");
     }
 
     @Override
@@ -37,11 +37,11 @@ public class LobbyFullState extends LobbyState {
 
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
             Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying client " + player.getID() + " of lobby start");
-            player.startLobby(player.getID(), lobbyController.getID(), model.getBoard(), tribes);
+            player.startLobby(lobbyController.getID(), model.getBoard(), tribes);
         }
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(client.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
+            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
 
         LobbyRunningState nextState = new LobbyRunningState(lobbyController);
         model.setLobbyState(nextState);
@@ -55,7 +55,7 @@ public class LobbyFullState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removePlayer(client.getID(), lobbyController.getID(), removedPlayer);
+                listener.removePlayer(lobbyController.getID(), removedPlayer);
 
             lobbyController.setState(new LobbyWaitingState(lobbyController));
             return true;
@@ -73,17 +73,17 @@ public class LobbyFullState extends LobbyState {
         for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
             playerInfo.put(player.getKey().getID(), player.getValue());
 
-        client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), playerInfo);
     }
 
     @Override
     public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
     }
 
     @Override
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
     }
 
     @Override

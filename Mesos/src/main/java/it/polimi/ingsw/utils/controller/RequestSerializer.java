@@ -15,6 +15,7 @@ public class RequestSerializer implements JsonSerializer<Request> {
         MessageType type = src.getType();
 
         return switch (type) {
+            case LOGIN -> context.serialize(src, LoginRequest.class);
             case PICK_CARDS -> context.serialize(src, PickCardsRequest.class);
             case CREATE_LOBBY -> context.serialize(src, CreateLobbyRequest.class);
             case JOIN_LOBBY -> context.serialize(src, JoinLobbyRequest.class);

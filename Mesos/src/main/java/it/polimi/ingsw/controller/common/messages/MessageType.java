@@ -1,10 +1,10 @@
 package it.polimi.ingsw.controller.common.messages;
 
 public enum MessageType {
+    LOGIN,
     SET_ID,
     CREATE_LOBBY,
     JOIN_LOBBY,
-    ADD_CLIENT,
     ADD_PLAYER,
     LEAVE_LOBBY,
     REMOVE_CLIENT,
