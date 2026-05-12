@@ -18,6 +18,6 @@ public class GUIJoinLobbyAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new JoinLobbyCommand(clientController, new Player("Player", Totem.BLUE));
+        new JoinLobbyCommand(clientController, new Player("Player", Totem.BLUE)).execute();
     }
 }
