@@ -26,256 +26,175 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void setID(int clientID)  {
-        if (!isConnected)
-            return;
-
+    public synchronized void setID(int clientID) {
         this.id = clientID;
 
-        try {
-            wrappedClient.setID(clientID);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                setID(clientID);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.setID(clientID),
+                () -> this.setID(clientID)
+        );
     }
 
     @Override
-    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.showWaitingLobbies(clientID, lobbies);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                showWaitingLobbies(clientID, lobbies);});
-        }
+    public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
+        submitRemoteCall(
+                () -> wrappedClient.showWaitingLobbies(clientID, lobbies),
+                () -> this.showWaitingLobbies(clientID, lobbies)
+        );
     }
 
     @Override
-    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players)  {
-        if (!isConnected)
-            return;
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Setting current lobby controller to " + lobbyID);
+    public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
         setCurrLobbyController(lobbyID);
 
-        try {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: showLobbyInfo");
-            wrappedClient.showLobbyInfo(clientID, lobbyID, players);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                showLobbyInfo(clientID, lobbyID, players);});
-        }
+       submitRemoteCall(
+               () -> wrappedClient.showLobbyInfo(clientID, lobbyID, players),
+               () -> this.showLobbyInfo(clientID, lobbyID, players)
+       );
     }
 
     @Override
-    public synchronized void addClient(int clientID, int lobbyID, Player player)  {
-        if (!isConnected)
-            return;
-
-        try {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: addClient");
-            wrappedClient.addClient(clientID, lobbyID, player);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                addClient(clientID, lobbyID, player);});
-        }
+    public synchronized void addClient(int clientID, int lobbyID, Player player) {
+        submitRemoteCall(
+                () -> wrappedClient.addClient(clientID, lobbyID, player),
+                () -> this.addClient(clientID, lobbyID, player)
+        );
     }
 
     @Override
-    public synchronized void addPlayer(int clientID, int lobbyID, Player player)  {
-        if (!isConnected)
-            return;
-
-        try {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: addPlayer");
-            wrappedClient.addPlayer(clientID, lobbyID, player);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                addPlayer(clientID, lobbyID, player);});
-        }
+    public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
+        submitRemoteCall(
+                () -> wrappedClient.addPlayer(clientID, lobbyID, player),
+                () -> this.addPlayer(clientID, lobbyID, player)
+        );
     }
 
     @Override
-    public synchronized void removeClient(int clientID, int lobbyID, Player player)  {
-        if (!isConnected)
-            return;
-
-
-        try {
-            wrappedClient.removeClient(clientID, lobbyID, player);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                removeClient(clientID, lobbyID, player);});
-        }
+    public synchronized void removeClient(int clientID, int lobbyID, Player player) {
+        submitRemoteCall(
+                () -> wrappedClient.removeClient(clientID, lobbyID, player),
+                () -> this.removeClient(clientID, lobbyID, player)
+        );
     }
 
     @Override
-    public synchronized void removePlayer(int clientID, int lobbyID, Player player)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.removePlayer(clientID, lobbyID, player);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                removePlayer(clientID, lobbyID, player);});
-        }
+    public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
+        submitRemoteCall(
+                () -> wrappedClient.removeClient(clientID, lobbyID, player),
+                () -> this.removePlayer(clientID, lobbyID, player)
+        );
     }
 
     @Override
-    public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.showLeaderboard(clientID, leaderboard);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                showLeaderboard(clientID, leaderboard);});
-        }
+    public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
+        submitRemoteCall(
+                () -> wrappedClient.showLeaderboard(clientID, leaderboard),
+                () -> this.showLeaderboard(clientID, leaderboard)
+        );
     }
 
     @Override
     public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.updateState(clientID, lobbyID, modelStateInfo);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {updateState(clientID, lobbyID, modelStateInfo);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.updateState(clientID, lobbyID, modelStateInfo),
+                () -> this.updateState(clientID, lobbyID, modelStateInfo)
+        );
     }
 
     @Override
-    public void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.updateModel(clientID, lobbyID, orderTile, offerTrack);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, lobbyID, orderTile, offerTrack);});
-        }
+    public void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+        submitRemoteCall(
+                () -> wrappedClient.updateModel(clientID, lobbyID, orderTile, offerTrack),
+                () -> this.updateModel(clientID, lobbyID, orderTile, offerTrack)
+        );
     }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.updateModel(clientID, lobbyID, player, tribe, board);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, lobbyID, player, tribe, board);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.updateModel(clientID, lobbyID, player, tribe, board),
+                () -> this.updateModel(clientID, lobbyID, player, tribe, board)
+        );
     }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.updateModel(clientID, lobbyID, player, tribe, topRow);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, lobbyID, player, tribe, topRow);});
-        }
-    };
+        submitRemoteCall(
+                () -> wrappedClient.updateModel(clientID, lobbyID, player, tribe, topRow),
+                () -> this.updateModel(clientID, lobbyID, player, tribe, topRow)
+        );
+    }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
-        if (!isConnected())
-            return;
-
-        try {
-            wrappedClient.updateModel(clientID, lobbyID, tribes, topRow, bottomRow);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, lobbyID, tribes, topRow, bottomRow);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.updateModel(clientID, lobbyID, tribes, topRow, bottomRow),
+                () -> this.updateModel(clientID, lobbyID, tribes, topRow, bottomRow)
+        );
     }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
-        if (!isConnected())
-            return;
-
-        try {
-            wrappedClient.updateModel(clientID, lobbyID, tribes, ranking);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                updateModel(clientID, lobbyID, tribes, ranking);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.updateModel(clientID, lobbyID, tribes, ranking),
+                () -> this.updateModel(clientID, lobbyID, tribes, ranking)
+        );
     }
 
     @Override
-    public synchronized void createLobby(int clientID, Lobby lobby, Player player)  {
-        if (!isConnected)
-            return;
-
-        setCurrLobbyController(lobby.getLobbyID());
-
-        try {
-            wrappedClient.createLobby(clientID, lobby, player);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                createLobby(clientID, lobby, player);});
-        }
+    public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
+        submitRemoteCall(
+                () -> wrappedClient.createLobby(clientID, lobby, player),
+                () -> this.createLobby(clientID, lobby, player)
+        );
     }
 
     @Override
-    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes)  {
-        if (!isConnected)
-            return;
-
-        try {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Calling remote method: startLobby");
-            wrappedClient.startLobby(clientID, lobbyID, board, tribes);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                startLobby(clientID, lobbyID, board, tribes);});
-        }
+    public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
+        submitRemoteCall(
+                () -> wrappedClient.startLobby(clientID, lobbyID, board, tribes),
+                () -> this.startLobby(clientID, lobbyID, board, tribes)
+        );
     }
 
     @Override
-    public synchronized void stopLobby(int clientID, int lobbyID)  {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.stopLobby(clientID, lobbyID);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                stopLobby(clientID, lobbyID);});
-        }
+    public synchronized void stopLobby(int clientID, int lobbyID) {
+        submitRemoteCall(
+                () -> wrappedClient.stopLobby(clientID, lobbyID),
+                () -> this.stopLobby(clientID, lobbyID)
+        );
     }
 
     @Override
     public synchronized void showError(int clientID, String errorMessage) {
-        if (!isConnected)
-            return;
-
-        try {
-            wrappedClient.showError(clientID, errorMessage);
-        } catch (RemoteException e) {
-            ServerController.getInstance().scheduleRetry(() -> {
-                showError(clientID, errorMessage);});
-        }
+        submitRemoteCall(
+                () -> wrappedClient.showError(clientID, errorMessage),
+                () -> this.showError(clientID, errorMessage)
+        );
     }
 
     @Override
     public void ping() {
-        try {
-            wrappedClient.ping();
-        } catch (RemoteException e) {
+        ServerController.getInstance().submitResponse(() -> {
+            try {
+                wrappedClient.ping();
+            } catch (RemoteException ignore) { }
+        });
+    }
 
-        }
+    @FunctionalInterface
+    interface RunnableChecked {
+        void run() throws RemoteException;
+    }
+
+    private void submitRemoteCall(RunnableChecked remoteCall, Runnable retryAction) {
+        if (!isConnected) return;
+        ServerController.getInstance().submitResponse(() -> {
+            try {
+                remoteCall.run();
+            } catch (Exception e)  {
+                ServerController.getInstance().scheduleRetry(retryAction);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.messages.Request;
+import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
@@ -31,189 +32,136 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public synchronized void showWaitingLobbies(int clientID, List<Lobby> lobbies) {
-        if (!isConnected)
-            return;
-
         WaitingLobbyResponse response = new WaitingLobbyResponse(clientID, lobbies);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) {
-        if (!isConnected)
-            return;
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Setting current lobby controller to " + lobbyID);
         setCurrLobbyController(lobbyID);
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending LobbyInfoResponse");
         LobbyInfoResponse response = new LobbyInfoResponse(clientID, lobbyID, players);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void addClient(int clientID, int lobbyID, Player player) {
-        if (!isConnected)
-            return;
-
         Logger.getInstance().print(LoggerLevel.DEBUG, "Sending AddClientResponse");
         AddClientResponse response = new AddClientResponse(clientID, lobbyID, player);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void addPlayer(int clientID, int lobbyID, Player player) {
-        if (!isConnected)
-            return;
-
 
         AddPlayerResponse response = new AddPlayerResponse(clientID, lobbyID, player);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void removeClient(int clientID, int lobbyID, Player player) {
-        if (!isConnected)
-            return;
-
         RemoveClientResponse response = new RemoveClientResponse(clientID, lobbyID, player);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void removePlayer(int clientID, int lobbyID, Player player) {
-        if (!isConnected)
-            return;
-
         RemovePlayerResponse response = new RemovePlayerResponse(clientID, lobbyID, player);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) {
-        if (!isConnected)
-            return;
-
         GetLeaderboardResponse response = new GetLeaderboardResponse(clientID, leaderboard);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
 
     }
 
     @Override
     public synchronized void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
-        if (!isConnected)
-            return;
-
         OfferPickResponse response = new OfferPickResponse(clientID, lobbyID, orderTile, offerTrack);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) {
-        if (!isConnected)
-            return;
-
         OfferResolutionResponse response = new OfferResolutionResponse(clientID, lobbyID, player, tribe, board);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) {
-        if (!isConnected)
-            return;
-
         ExtraActionResponse response = new ExtraActionResponse(clientID, lobbyID, player, tribe, topRow);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) {
-        if (!isConnected())
-            return;
-
         RoundEndResponse response = new RoundEndResponse(clientID, lobbyID, tribes, topRow, bottomRow);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) {
-        if (!isConnected())
-            return;
-
         GameEndResponse response = new GameEndResponse(clientID, lobbyID, tribes, ranking);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) {
-        if (!isConnected)
-            return;
-
         UpdateStateResponse response = new UpdateStateResponse(clientID, lobbyID, modelStateInfo);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void createLobby(int clientID, Lobby lobby, Player player) {
-        if (!isConnected)
-            return;
-
         setCurrLobbyController(lobby.getLobbyID());
 
         CreateLobbyResponse response = new CreateLobbyResponse(clientID, lobby, player);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) {
-        if (!isConnected)
-            return;
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending AddClientResponse");
         StartLobbyResponse response = new StartLobbyResponse(clientID, lobbyID, board, tribes);
-        clientHandler.sendMessage(response);
-        Logger.getInstance().print(LoggerLevel.DEBUG, "AddClientResponse sent");
+        sendMessage(response);
     }
 
     @Override
     public synchronized void stopLobby(int clientID, int lobbyID) {
-        if (!isConnected)
-            return;
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending StopLobbyResponse");
         StopLobbyResponse response = new StopLobbyResponse(clientID, lobbyID);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
     }
 
     @Override
     public synchronized void setID(int clientID) {
-        if (!isConnected)
-            return;
-
         this.id = clientID;
 
         SetIDResponse response = new SetIDResponse(clientID);
-        clientHandler.sendMessage(response);
+        sendMessage(response);
 
     }
 
     @Override
-    public synchronized void showError(int clientID, String errorMessage){
-        if(!isConnected)
-            return;
-
+    public synchronized void showError(int clientID, String errorMessage) {
         ErrorMessage message = new ErrorMessage(clientID, errorMessage);
-        clientHandler.sendMessage(message);
+        sendMessage(message);
     }
 
     @Override
     public void ping() {
         PingResponse message = new PingResponse(this.id);
-        clientHandler.sendMessage(message);
+        sendMessage(message);
     }
 
     @Override
     public void cleanup() {
         clientHandler.cleanup();
+    }
+
+    private void sendMessage(Response message) {
+        if (!isConnected)
+            ServerController.getInstance().submitResponse(
+                    () -> clientHandler.sendMessage(message)
+            );
     }
 }

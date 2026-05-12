@@ -33,9 +33,8 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void createLobby(int clientID, Lobby lobby, Player player);
     public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
     public abstract void stopLobby(int clientID, int lobbyID);
-    public abstract void ping();
-    public void cleanup() {};
     public abstract void showError(int clientID, String errorMessage);
+    public abstract void ping();
 
     public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
     public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board);
@@ -43,6 +42,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow);
     public abstract void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking);
 
+    public void cleanup() {};
 
 
     public int getID() {
@@ -51,7 +51,7 @@ public abstract class ClientInterface implements VirtualClient {
 
     public void setID(int clientID) {
         id = clientID;
-    };
+    }
 
     public synchronized LobbyController getCurrLobbyController() {
         return currLobbyController;
