@@ -30,6 +30,7 @@ public class ServerController implements VirtualServer {
     private NetworkServer networkServer;
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
     private final ExecutorService listenerService = Executors.newFixedThreadPool(28);
+    private final ExecutorService responseService = Executors.newFixedThreadPool(28);
     private final ScheduledExecutorService retryService = Executors.newScheduledThreadPool(4);
 
     private final long retryDelay = 3L;
@@ -390,6 +391,10 @@ public class ServerController implements VirtualServer {
 
     public void submitListener(Runnable task) {
         listenerService.submit(task);
+    }
+
+    public void submitResponse(Runnable task) {
+        responseService.submit(task);
     }
 
     @Override
