@@ -49,7 +49,7 @@ public class LobbyInfoAction implements Action {
         if (lobbyID == null)
             return Optional.of("Lobby ID must be an integer from the list of available lobbies");
 
-        new LobbyInfoCommand(lobbyID).execute(clientController);
+        new LobbyInfoCommand(clientController, lobbyID).execute();
         return Optional.empty();
 
     }

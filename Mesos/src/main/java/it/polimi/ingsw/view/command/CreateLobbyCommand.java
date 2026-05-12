@@ -5,16 +5,18 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.Screen;
 
 public class CreateLobbyCommand implements Command {
-    private final int size;
+    private ClientController clientController;
+    private final Integer size;
     private final Player player;
 
-    public CreateLobbyCommand(int size, Player player) {
+    public CreateLobbyCommand(ClientController clientController, Integer size, Player player) {
+        this.clientController = clientController;
         this.size = size;
         this.player = player;
     }
 
     @Override
-    public void execute(ClientController clientController) {
+    public void execute() {
         clientController.executeCommand(() -> {
             clientController.getServer().createLobby(clientController.getID(), size, player);
         });

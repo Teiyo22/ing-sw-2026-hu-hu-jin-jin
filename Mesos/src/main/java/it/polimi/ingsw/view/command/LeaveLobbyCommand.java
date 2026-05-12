@@ -1,17 +1,18 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.Screen;
 
 public class LeaveLobbyCommand implements Command {
+    private final ClientController clientController;
     private final int lobbyID;
 
-    public LeaveLobbyCommand(int lobbyID) {
+    public LeaveLobbyCommand(ClientController clientController, int lobbyID) {
+        this.clientController = clientController;
         this.lobbyID = lobbyID;
     }
 
     @Override
-    public void execute(ClientController clientController) {
+    public void execute() {
         clientController.executeCommand(() -> {
             clientController.getServer().leaveLobby(clientController.getID(), lobbyID);
         });

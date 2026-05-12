@@ -14,4 +14,17 @@ public class Fonts {
     public static final Color gold       = new Color(255, 215,   0);
     public static final Color silver      = new Color(211, 211, 211);
     public static final Color bronze = new Color(205, 127,  50);
+
+    public static final Color blue      = new Color(0x2B2E4A);
+    public static final Color other_red     = new Color(0xE84545);
+    public static final Color weird_purple   = new Color(0x53354A);
+    public static final Color red_purple   = new Color(0x903749);
+
+    public static final Color dark_brown = new Color(0x8B4513);
+    public static final Color brown = new Color(0xA0522D);
+    public static final Color light_brown = new Color(0xD2691E);
+    public static final Color cream = new Color(0xF5DEB3);
+    public static final Color green = new Color(0x6B8E23);
+    public static final Color light_blue = new Color(0x5F9EA0);
+    public static final Color weird_blue = new Color(0x2F4F4F);
 }

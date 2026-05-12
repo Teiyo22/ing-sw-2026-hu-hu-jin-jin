@@ -1,28 +1,88 @@
 package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.command.JoinLobbyCommand;
-import it.polimi.ingsw.view.command.StartLobbyCommand;
+import it.polimi.ingsw.view.gui.action.GUIJoinLobbyAction;
+import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.PanelBuilder;
+import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class LobbyInfoSection implements GUISection{
+    private final JPanel panel;
+
+    private final JLabel title;
+
+    private final JPanel info;
+    private final JLabel lobbyID;
+    private final JLabel count;
+    private final JList<Map.Entry<Player, Integer>> players;
+    private final DefaultListModel<Map.Entry<Player, Integer>> model;
+
+    private final JPanel bottomBar;
+    private final JButton join;
+    private final JButton leave;
+    private final JButton start;
+
+    public LobbyInfoSection(ClientController clientController) {
+        title = WidgetFactory.createLabel("Lobby Info");
+
+        lobbyID = WidgetFactory.createLabel("");
+        count = WidgetFactory.createLabel("");
+
+        model = new DefaultListModel<>();
+        players = new JList<>();
+        players.setBackground(Fonts.cream);
+        players.setFont(Fonts.small);
+        players.setModel(model);
+
+        players.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JPanel cell = new JPanel();
+            JLabel playerName = WidgetFactory.createLabel(String.format("%s - %s (ID: %3s)",
+                    value.getKey().getName(), value.getKey().getTotem(), value.getValue() != null  ? value.getValue() : "Disconnected"));
+            playerName.setFont(Fonts.medium);
+            playerName.setForeground(Color.WHITE);
+            cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
+            cell.add(playerName);
+            cell.setOpaque(true);
+            return cell;
+        });
+
+
+        info = new PanelBuilder().column(0, lobbyID, count, players).buildPanel();
+
+        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController));
+        leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
+        start = new JButton("Start");
+
+        bottomBar = new PanelBuilder().grid(3, 10, 0, join, leave, start).buildPanel();
+
+        panel = new PanelBuilder().border(title, info, bottomBar, null, null)
+                .withColor(Fonts.other_red)
+                .buildPanel();
+    }
 
     @Override
     public void render(ClientController clientController, JPanel container) {
-        Lobby lobby = clientController.getCurrLobby();
+        model.clear();
+
+        for (Map.Entry<Player, Integer> entry : clientController.getCurrLobby().getPlayers().entrySet())
+            model.addElement(entry);
+
+        lobbyID.setText(String.format("Lobby ID: %3d", clientController.getCurrLobby().getLobbyID()));
+        count.setText(String.format("Player Count: %3d/%3d",
+                clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
+/*        Lobby lobby = clientController.getCurrLobby();
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Fonts.black);
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 10, 10);
-        c.gridx = 0; c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.anchor = GridBagConstraints.CENTER;
 
         JLabel title = new JLabel("Lobby" + lobby.getLobbyID());
         title.setFont(Fonts.large);
@@ -92,21 +152,21 @@ public class LobbyInfoSection implements GUISection{
 
         join.addActionListener(e -> {
             if (nameText.getText().isBlank()) return;
-            new JoinLobbyCommand(lobby.getLobbyID(),
-                    new Player(nameText.getText(), (Totem) totemBox.getSelectedItem())).execute(clientController);
+            new JoinLobbyCommand(clientController, lobby.getLobbyID(),
+                    new Player(nameText.getText(), (Totem) totemBox.getSelectedItem())).execute();
         });
 
-//        exit.addActionListener(e -> {
-//            try {
-//                clientController.getServer().leaveLobby(clientController.getID(), lobby.getLobbyID());
-//                clientController.getServer().getLobbyInfo(clientController.getID(), lobby.getLobbyID());
-//            } catch (RemoteException ex) {
-//                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
-//            }
-//        });
+        exit.addActionListener(e -> {
+            try {
+                clientController.getServer().leaveLobby(clientController.getID(), lobby.getLobbyID());
+                clientController.getServer().getLobbyInfo(clientController.getID(), lobby.getLobbyID());
+            } catch (RemoteException ex) {
+                JOptionPane.showMessageDialog(container, "Errore: " + ex.getMessage());
+            }
+        });
 
         start.addActionListener(e -> {
-            new StartLobbyCommand(lobby.getLobbyID()).execute(clientController);
+            new StartLobbyCommand(clientController, lobby.getLobbyID()).execute();
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
@@ -120,12 +180,17 @@ public class LobbyInfoSection implements GUISection{
         c.insets = new Insets(40, 0, 0, 0);
         panel.add(buttonPanel, c);
 
-        container.add(panel, BorderLayout.CENTER);
+        container.add(panel, BorderLayout.CENTER);*/
     }
 
     @Override
     public boolean isVisible(ClientController clientController) {
-        return clientController.getCurrLobby() != null;
+        return clientController.getCurrLobby() != null && !clientController.getCurrLobby().getPlayers().isEmpty();
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return panel;
     }
 }
 

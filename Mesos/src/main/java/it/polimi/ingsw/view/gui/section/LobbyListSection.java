@@ -2,50 +2,97 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.view.command.LobbyInfoCommand;
+import it.polimi.ingsw.view.gui.action.GUIGetWaitingLobbiesAction;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.PanelBuilder;
+import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
 public class LobbyListSection implements GUISection {
+    private final JPanel panel;
 
-    @Override
-    public void render(ClientController clientController, JPanel panel) {
-        JList<Lobby> availables = new JList<>();
-        availables.setBackground(Fonts.black);
-        availables.setFont(Fonts.small);
+    private final JLabel title;
 
-        Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
-        DefaultListModel<Lobby> model = new DefaultListModel<>();
-        for(Lobby lobby : lobbies.values())
-            model.addElement(lobby);
+    private final JScrollPane scrollPane;
+    private final JList<Lobby> lobbies;
+    private final DefaultListModel<Lobby> model;
 
-        availables.setModel(model);
+    private final JPanel topBar;
+    private final JButton back;
+    private final JButton refresh;
 
-        availables.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+    public LobbyListSection(ClientController clientController) {
+        title = WidgetFactory.createLabel("Lobby selection");
+
+        back = new JButton("Back");
+        refresh = WidgetFactory.createButton(new GUIGetWaitingLobbiesAction(clientController));
+        topBar = new PanelBuilder().border(null, title, null, back, refresh).buildPanel();
+
+        model = new DefaultListModel<>();
+        lobbies = new JList<>();
+        lobbies.setBackground(Fonts.cream);
+        lobbies.setFont(Fonts.small);
+        lobbies.setModel(model);
+        lobbies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        lobbies.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             JPanel cell = new JPanel(new BorderLayout());
-            JLabel id = new JLabel("Lobby #" + value.getLobbyID());
-            JLabel players = new JLabel(value.getPlayers().size() + "/" + value.getSize());
+            JLabel id = new JLabel(String.format("Lobby #%3d | Size: %3d ", value.getLobbyID(), value.getSize()));
             id.setFont(Fonts.medium);
-            players.setFont(Fonts.medium);
             id.setForeground(Color.WHITE);
-            players.setForeground(Color.WHITE);
             cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
             cell.add(id, BorderLayout.WEST);
-            cell.add(players, BorderLayout.EAST);
             cell.setOpaque(true);
             return cell;
         });
 
-        JScrollPane scrollPane = new JScrollPane(availables);
-        scrollPane.setPreferredSize(new Dimension(panel.getWidth()/2, 0));
-        panel.add(scrollPane, BorderLayout.WEST);
+        lobbies.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                Lobby selected = lobbies.getSelectedValue();
 
+                if (selected != null) {
+                    int id = selected.getLobbyID();
+                    new LobbyInfoCommand(clientController, id).execute();
+                } else {
+                    System.out.println("No lobby selected.");
+                }
+            }
+        });
+
+        scrollPane = new JScrollPane(lobbies);
+
+        panel = new PanelBuilder().border(topBar, scrollPane, null, null, null)
+                .withColor(Fonts.weird_blue)
+                .buildPanel();
+    }
+
+    @Override
+    public void render(ClientController clientController, JPanel panel) {
+        Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
+        for(Lobby lobby : lobbies.values())
+            if (!model.contains(lobby))
+                model.addElement(lobby);
+
+        int i = 0;
+        while (i < model.size()) {
+            if (lobbies.get(model.get(i).getLobbyID()) == null)
+                model.remove(i);
+            else
+                i++;
+        }
     }
 
     @Override
     public boolean isVisible(ClientController controller) {
         return true;
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return panel;
     }
 }

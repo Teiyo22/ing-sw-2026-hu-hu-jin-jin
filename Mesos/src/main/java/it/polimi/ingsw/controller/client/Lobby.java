@@ -175,7 +175,6 @@ public class Lobby implements Serializable {
         this.players = players;
     }
 
-
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;
     }
@@ -184,4 +183,13 @@ public class Lobby implements Serializable {
         this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Lobby)) return false;
+
+        Lobby other = (Lobby) obj;
+        return lobbyID == other.lobbyID;
+    }
 }

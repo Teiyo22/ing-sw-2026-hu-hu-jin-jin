@@ -60,7 +60,7 @@ public class PickCardAction implements Action {
             return Optional.of("Food cost exceeded");
 
         clientController.getCurrLobby().setIdleTurnState();
-        new PickCardCommand(topRow, bottomRow).execute(clientController);
+        new PickCardCommand(clientController, topRow, bottomRow).execute();
         return Optional.empty();
     }
 

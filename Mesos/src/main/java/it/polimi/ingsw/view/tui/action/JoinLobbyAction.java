@@ -58,7 +58,7 @@ public class JoinLobbyAction implements Action {
         if (!validatePlayer(player))
             return Optional.of("Invalid name and/or totem");
 
-        new JoinLobbyCommand(currLobby.getLobbyID(), player).execute(clientController);
+        new JoinLobbyCommand(clientController, player).execute();
         return Optional.empty();
     }
 

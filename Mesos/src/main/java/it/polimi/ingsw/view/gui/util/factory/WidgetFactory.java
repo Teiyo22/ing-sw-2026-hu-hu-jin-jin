@@ -8,14 +8,14 @@ import java.awt.*;
 import java.util.function.Supplier;
 
 public class WidgetFactory {
-    public static JButton createButton(String label, Supplier<Command> supplier) {
-        JButton button = new JButton(label);
+    public static JButton createButton(AbstractAction action) {
+        JButton button = new JButton();
         button.setFont(Fonts.medium);
         button.setForeground(Color.WHITE);
         button.setFocusable(false);
         button.setBorderPainted(false);
         button.setContentAreaFilled(false);
-        button.addActionListener(e -> supplier.get().execute());
+        button.setAction(action);
 
         return button;
     }
@@ -33,7 +33,7 @@ public class WidgetFactory {
     public static JTextField createTextField() {
         JTextField textField = new JTextField();
         textField.setBackground(Color.WHITE);
-        textField.setPreferredSize(new Dimension(200,30));
+        textField.setPreferredSize(new Dimension(200, 30));
 
         return textField;
     }
@@ -41,7 +41,7 @@ public class WidgetFactory {
     public static <E> JComboBox<E> createBox(E[] items) {
         JComboBox<E> box = new JComboBox<>(items);
         box.setFont(Fonts.small);
-        box.setPreferredSize(new Dimension(200,30));
+        box.setPreferredSize(new Dimension(200, 30));
 
         return box;
     }

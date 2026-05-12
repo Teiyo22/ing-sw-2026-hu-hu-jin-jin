@@ -15,14 +15,12 @@ public class PanelBuilder {
     public PanelBuilder column(int gap, JComponent... components) {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        panel.add(Box.createVerticalGlue());
-
         for (JComponent c : components) {
             c.setAlignmentX(Component.CENTER_ALIGNMENT);
             panel.add(c);
             panel.add(Box.createVerticalStrut(gap));
         }
-        panel.add(Box.createVerticalGlue());
+
         return this;
     }
 

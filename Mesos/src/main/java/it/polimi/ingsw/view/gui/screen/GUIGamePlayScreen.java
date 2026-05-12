@@ -16,7 +16,6 @@ import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,13 +80,13 @@ public class GUIGamePlayScreen extends GUIScreen{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == leaveButton){
-            new LeaveLobbyCommand(clientController.getCurrLobby().getLobbyID()).execute(clientController);
+            new LeaveLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID()).execute();
         } else if (e.getSource() == confirmButton){
 
             if(gamePhase == GamePhase.CARD_PICK) {
-                new PickCardCommand(topListener.getPicks(), bottomListener.getPicks()).execute(clientController);
+                new PickCardCommand(clientController, topListener.getPicks(), bottomListener.getPicks()).execute();
             } else if(gamePhase == GamePhase.OFFER_PICK) {
-                new PickOfferCommand(offerListener.getSelectedOfferIndex()).execute(clientController);
+                new PickOfferCommand(clientController, offerListener.getSelectedOfferIndex()).execute();
             }
         }
     }

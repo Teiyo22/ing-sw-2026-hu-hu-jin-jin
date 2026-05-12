@@ -29,7 +29,7 @@ public class GetWaitingLobbiesAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new GetWaitingLobbiesCommand().execute(clientController);
+        new GetWaitingLobbiesCommand(clientController).execute();
         return Optional.empty();
     }
 

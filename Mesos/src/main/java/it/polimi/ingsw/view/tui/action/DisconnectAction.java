@@ -29,7 +29,7 @@ public class DisconnectAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new DisconnectCommand().execute(clientController);
+        new DisconnectCommand(clientController).execute();
         return Optional.empty();
     }
 

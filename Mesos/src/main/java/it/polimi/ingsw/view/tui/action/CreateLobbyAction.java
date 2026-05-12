@@ -52,7 +52,7 @@ public class CreateLobbyAction implements Action {
         if (totem == null)
             return Optional.of("Totem must be one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
 
-        new CreateLobbyCommand(lobbySize, new Player(playerName, totem)).execute(clientController);
+        new CreateLobbyCommand(clientController, lobbySize, new Player(playerName, totem)).execute();
         return Optional.empty();
     }
 
