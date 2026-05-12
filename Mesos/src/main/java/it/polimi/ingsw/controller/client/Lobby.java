@@ -17,7 +17,7 @@ public class Lobby implements Serializable {
     private int size;
 
     transient private Player shownPlayer = null;
-    transient private Map<Player, Integer> players = null;
+    transient private Map<Player, Boolean> players = null;
     transient private Board board = null;
     transient private TurnState turnState = null;
 
@@ -30,35 +30,28 @@ public class Lobby implements Serializable {
     // Player Management methods
     //=============================================================================
 
-    public void addClient(Integer clientID, Player player) {
+    public void addPlayer(Player player) {
+        players.put(player, true);
+    }
+
+    public void removeClient(Player player) {
         if (players.containsKey(player))
-            players.put(player, clientID);
+            players.put(player, false);
     }
 
-    public void addPlayer(Integer clientID, Player player) {
-        if (!players.containsKey(player))
-            players.put(player, clientID);
-    }
-
-    public void removeClient(Integer clientID, Player player) {
-        if (players.containsKey(player) && players.get(player).equals(clientID))
-            players.put(player, null);
-    }
-
-    public void removePlayer(Integer clientID, Player player) {
-        if (players.containsKey(player) && players.get(player).equals(clientID))
-            players.remove(player);
+    public void removePlayer(Player player) {
+        players.remove(player);
     }
 
     //=============================================================================
     // Model management methods
     //=============================================================================
 
-    public void initGame(Map<Integer, Tribe> tribes, Board board) {
+    public void initGame(Map<String, Tribe> tribes, Board board) {
         this.board = board;
 
         for (Player player : players.keySet())
-            player.setTribe(tribes.get(players.get(player)));
+            player.setTribe(tribes.get(player.getName()));
     }
 
     public void updateOrderTile(OrderSlot[] orderTile) {
@@ -87,19 +80,19 @@ public class Lobby implements Serializable {
         this.board.setBottomRow(row);
     }
 
-    public void updateTribes(Map<Integer, Tribe> tribes) {
-        for (Map.Entry<Player, Integer> entry : players.entrySet()) {
-            Tribe tribe = tribes.get(entry.getValue());
-            if (tribe != null) {
-                entry.getKey().setTribe(tribe);
-            }
+    public void updateTribes(Map<String, Tribe> tribes) {
+        for (Player player : players.keySet()) {
+            Tribe tribe = tribes.get(player.getName());
+
+            if (tribe != null)
+                player.setTribe(tribe);
+
         }
     }
 
-    public void setRanking(Map<Integer, Integer> ranking) {
-        for (Map.Entry<Player, Integer> entry : players.entrySet()) {
-            entry.getKey().setRank(ranking.get(entry.getValue()));
-        }
+    public void setRanking(Map<String, Integer> ranking) {
+        for (Player player : players.keySet())
+            player.setRank(ranking.get(player.getName()));
     }
 
     public void showPlayer(Player player) {
@@ -126,7 +119,7 @@ public class Lobby implements Serializable {
         return players.size();
     }
 
-    public Map<Player, Integer> getPlayers() {
+    public Map<Player, Boolean> getPlayers() {
         return players;
     }
 
@@ -142,10 +135,10 @@ public class Lobby implements Serializable {
         return turnState;
     }
 
-    public Player getPlayer(Integer clientID) {
-        for (Map.Entry<Player, Integer> entry : players.entrySet())
-            if (clientID.equals(entry.getValue()))
-                return entry.getKey();
+    public Player getPlayer(String clientID) {
+        for (Player player : players.keySet())
+            if (clientID.equals(player.getName()))
+                return player;
         return null;
     }
 
@@ -153,14 +146,18 @@ public class Lobby implements Serializable {
         if (turnState == null)
             return null;
 
-        for (Map.Entry<Player, Integer> entry : players.entrySet())
-            if (entry.getKey().equals(turnState.getCurrPlayer()))
-                return entry.getKey();
+        for (Player player : players.keySet())
+            if (player.equals(turnState.getCurrPlayer()))
+                return player;
+
         return null;
     }
 
-    public boolean containsClient(int clientID) {
-        return players.containsValue(clientID);
+    public boolean containsClient(String clientID) {
+        for (Player player : players.keySet())
+            if (clientID.equals(player.getName()))
+                return true;
+        return false;
     }
 
     public boolean isShownPlayer() {
@@ -171,7 +168,7 @@ public class Lobby implements Serializable {
     // Getters
     //=============================================================================
 
-    public void setPlayers(Map<Player, Integer> players) {
+    public void setPlayers(Map<Player, Boolean> players) {
         this.players = players;
     }
 
