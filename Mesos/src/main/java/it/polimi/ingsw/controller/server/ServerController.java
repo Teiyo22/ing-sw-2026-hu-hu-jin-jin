@@ -229,7 +229,7 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void login(String clientID, String username) throws RemoteException {
+    public void login(String clientID, String username) {
 
     }
 

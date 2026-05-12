@@ -55,7 +55,8 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void confirmLogin(String username) {
-
+        id = username;
+        view.transitionTo(ScreenType.LOBBY_SELECTION);
     }
 
     @Override
@@ -75,16 +76,16 @@ public class ClientController implements VirtualClient {
         Lobby lobby = waitingLobbies.get(lobbyID);
 
         if (lobby != null) {
-            Map<Player, Integer> playerInfo = new HashMap<>();
+            Map<Player, Boolean> players = new HashMap<>();
             currLobby = lobby;
 
-            for (Map.Entry<String, Player> entry : players.entrySet()) {
-                Player newKey = entry.getValue();
-                Integer newValue = entry.getKey() < 0 ? null : entry.getKey();
-                playerInfo.put(newKey, newValue);
-            }
+            for (Player player : connectedPlayers)
+                players.put(player, true);
 
-            currLobby.setPlayers(playerInfo);
+            for (Player player : disconnectedPlayers)
+                players.put(player, false);
+
+            currLobby.setPlayers(players);
         } else
             showError("This lobby is not available");
 
@@ -122,8 +123,8 @@ public class ClientController implements VirtualClient {
 
         currLobby = lobby;
 
-        Map<Player, Integer> players = new HashMap<>();
-        players.put(player);
+        Map<Player, Boolean> players = new HashMap<>();
+        players.put(player, true);
 
         currLobby.setPlayers(players);
 
@@ -143,7 +144,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void stopLobby(int lobbyID) {
-
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             view.transitionTo(ScreenType.LOBBY_SELECTION);
         }
