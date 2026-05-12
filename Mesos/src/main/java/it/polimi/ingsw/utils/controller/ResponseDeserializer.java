@@ -21,7 +21,6 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
             case "GAME_END" -> context.deserialize(jsonObject, GameEndResponse.class);
             case "UPDATE_STATE" -> context.deserialize(jsonObject, UpdateStateResponse.class);
             case "CREATE_LOBBY" -> context.deserialize(jsonObject, CreateLobbyResponse.class);
-            case "ADD_CLIENT" -> context.deserialize(jsonObject, AddClientResponse.class);
             case "ADD_PLAYER" -> context.deserialize(jsonObject, AddPlayerResponse.class);
             case "REMOVE_CLIENT" -> context.deserialize(jsonObject, RemoveClientResponse.class);
             case "REMOVE_PLAYER" -> context.deserialize(jsonObject, RemovePlayerResponse.class);
