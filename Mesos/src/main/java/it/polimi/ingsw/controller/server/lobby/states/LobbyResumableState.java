@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class LobbyResumableState extends LobbyState {
 
         Game model = lobbyController.getModel();
 
-        Map<Integer, Tribe> tribes = new HashMap<>();
+        Map<String, Tribe> tribes = new HashMap<>();
         for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
             tribes.put(player.getKey().getID(), player.getValue().getTribe());
 
@@ -64,12 +65,10 @@ public class LobbyResumableState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Map<Integer, Player> playerInfo = new HashMap<>();
+        Set<Player> connectedPlayers = new HashSet<>(lobbyController.getPlayers().values());
+        Set<Player> disconnectedPlayers = new HashSet<>();
 
-        for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
-            playerInfo.put(player.getKey().getID(), player.getValue());
-
-        client.showLobbyInfo(lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
     }
 
     @Override
