@@ -5,9 +5,11 @@ import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 public class SetIDResponse extends Response {
-    public SetIDResponse(int clientID){
-        super(clientID);
+    private String clientID;
+
+    public SetIDResponse(String clientID){
         this.type = MessageType.SET_ID;
+        this.clientID = clientID;
     }
 
     @Override

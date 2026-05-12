@@ -5,18 +5,17 @@ import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.network.TCPClientInterface;
 
-public class LobbyInfoRequest extends Request {
-    private int lobbyID;
+public class LoginRequest extends Request {
+    String username;
 
-    public LobbyInfoRequest(String clientID, int lobbyID) {
-        this.type = MessageType.LOBBY_INFO;
+    public LoginRequest(String clientID, String username) {
+        this.type = MessageType.LOGIN;
         this.clientID = clientID;
-        this.lobbyID = lobbyID;
+        this.username = username;
     }
 
     @Override
-    public void receive(ServerController serverController){
-        serverController.getLobbyInfo(clientID, lobbyID);
+    public void receive(ServerController serverController) {
+        serverController.login(clientID, username);
     }
-
 }

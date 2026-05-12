@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.client.network;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
@@ -24,16 +23,17 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void addClient(VirtualClient client) {
+    public void login(String clientID, String username) {
         try {
-            wrappedServer.addClient(client);
+            wrappedServer.login(clientID, username);
         } catch (RemoteException e) {
-            reschedule(() -> {addClient(client);});
+            reschedule(() -> {
+                login(clientID, username);});
         }
     }
 
     @Override
-    public void createLobby(int clientID, int playerNum, Player player) {
+    public void createLobby(String clientID, int playerNum, Player player) {
         try {
             wrappedServer.createLobby(clientID, playerNum, player);
         } catch (RemoteException e) {
@@ -42,7 +42,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void joinLobby(int clientID, int lobbyID, Player player) {
+    public void joinLobby(String clientID, int lobbyID, Player player) {
         try {
             wrappedServer.joinLobby(clientID, lobbyID, player);
         } catch (RemoteException e) {
@@ -51,7 +51,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void leaveLobby(int clientID, int lobbyID) {
+    public void leaveLobby(String clientID, int lobbyID) {
         try {
             wrappedServer.leaveLobby(clientID, lobbyID);
         } catch (RemoteException e) {
@@ -60,7 +60,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID) {
+    public void startLobby(String clientID, int lobbyID) {
         try {
             wrappedServer.startLobby(clientID, lobbyID);
         } catch (RemoteException e) {
@@ -69,7 +69,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void getWaitingLobbies(int clientID) {
+    public void getWaitingLobbies(String clientID) {
         try {
             wrappedServer.getWaitingLobbies(clientID);
         } catch (RemoteException e) {
@@ -78,7 +78,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void getLobbyInfo(int clientID, int lobbyID) {
+    public void getLobbyInfo(String clientID, int lobbyID) {
         try {
             wrappedServer.getLobbyInfo(clientID, lobbyID);
         } catch (RemoteException e) {
@@ -87,7 +87,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void getLeaderboard(int clientID, int playerNum) {
+    public void getLeaderboard(String clientID, int playerNum) {
         try {
             wrappedServer.getLeaderboard(clientID, playerNum);
         } catch (RemoteException e) {
@@ -96,7 +96,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
+    public void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         try {
             wrappedServer.requestCards(clientID, lobbyID, topPicks, bottomPicks);
         } catch (RemoteException e) {
@@ -105,7 +105,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void requestOffer(int clientID, int lobbyID, int offerIndex) {
+    public void requestOffer(String clientID, int lobbyID, int offerIndex) {
         try {
             wrappedServer.requestOffer(clientID, lobbyID, offerIndex);
         } catch (RemoteException e) {
@@ -114,7 +114,7 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void ping(int clientID) {
+    public void ping(String clientID) {
         try {
             wrappedServer.ping(clientID);
         } catch (RemoteException e) {

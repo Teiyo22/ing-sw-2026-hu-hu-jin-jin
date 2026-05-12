@@ -6,11 +6,10 @@ import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 public class UpdateStateResponse extends Response {
-    int lobbyID;
-    ModelStateInfo modelStateInfo;
+    private int lobbyID;
+    private ModelStateInfo modelStateInfo;
 
-    public UpdateStateResponse(int clientID, int lobbyID, ModelStateInfo modelStateInfo){
-        super(clientID);
+    public UpdateStateResponse(int lobbyID, ModelStateInfo modelStateInfo){
         this.type = MessageType.UPDATE_STATE;
         this.lobbyID = lobbyID;
         this.modelStateInfo = modelStateInfo;
@@ -18,7 +17,7 @@ public class UpdateStateResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.updateState(super.getClientID(), lobbyID, modelStateInfo);
+        clientController.updateState(lobbyID, modelStateInfo);
     }
 
 }

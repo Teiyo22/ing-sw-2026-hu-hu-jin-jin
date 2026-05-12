@@ -9,8 +9,7 @@ public class AddPlayerResponse extends Response {
     private int lobbyID;
     private Player player;
 
-    public AddPlayerResponse(int clientID, int lobbyID , Player player) {
-        super(clientID);
+    public AddPlayerResponse(int lobbyID , Player player) {
         this.type = MessageType.ADD_PLAYER;
         this.lobbyID = lobbyID;
         this.player = player;
@@ -18,6 +17,6 @@ public class AddPlayerResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.addPlayer(super.getClientID(), lobbyID, player);
+        clientController.addPlayer(lobbyID, player);
     }
 }

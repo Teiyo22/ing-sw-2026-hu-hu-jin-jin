@@ -13,44 +13,46 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class ClientInterface implements VirtualClient {
-    protected int id = 0;
+    protected String id;
     protected LobbyController currLobbyController = null;
     protected boolean isConnected = false;
 
+    public abstract void confirmLogin(String username);
+    public abstract void showWaitingLobbies(List<Lobby> lobbies);
 
-    public abstract void showWaitingLobbies(int clientID, List<Lobby> lobbies);
-    public abstract void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players);
-    public abstract void addClient(int clientID, int lobbyID, Player player);
-    public abstract void addPlayer(int clientID, int lobbyID, Player player);
-    public abstract void removeClient(int clientID, int lobbyID, Player player);
-    public abstract void removePlayer(int clientID, int lobbyID, Player player);
-    public abstract void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard);
-    public abstract void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo);
-    public abstract void createLobby(int clientID, Lobby lobby, Player player);
-    public abstract void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes);
-    public abstract void stopLobby(int clientID, int lobbyID);
-    public abstract void showError(int clientID, String errorMessage);
+    public abstract void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers);
+    public abstract void addPlayer(int lobbyID, Player player);
+    public abstract void removeClient(int lobbyID, Player player);
+    public abstract void removePlayer(int lobbyID, Player player);
+    public abstract void showLeaderboard(List<LeaderboardEntry> leaderboard);
+    public abstract void updateState(int lobbyID, ModelStateInfo modelStateInfo);
+    public abstract void createLobby(Lobby lobby, Player player);
+    public abstract void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes);
+    public abstract void stopLobby(int lobbyID);
+    public abstract void showError(String errorMessage);
     public abstract void ping();
 
-    public abstract void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
-    public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board);
-    public abstract void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow);
-    public abstract void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow);
-    public abstract void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking);
+    public abstract void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
+    public abstract void updateModel(int lobbyID, Player player, Tribe tribe, Board board);
+    public abstract void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow);
+    public abstract void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow);
+    public abstract void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking);
 
     public void cleanup() {};
 
 
-    public int getID() {
+    public String getID() {
         return id;
     }
 
-    public void setID(int clientID) {
-        id = clientID;
+    public void setID(String clientID) {
+        this.id = clientID;
     }
 
     public synchronized LobbyController getCurrLobbyController() {

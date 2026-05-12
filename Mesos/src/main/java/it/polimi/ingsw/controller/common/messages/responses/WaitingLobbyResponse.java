@@ -10,14 +10,13 @@ import java.util.List;
 public class WaitingLobbyResponse extends Response {
     private List<Lobby> lobbies;
 
-    public WaitingLobbyResponse(int clientID, List<Lobby> lobbies){
-        super(clientID);
+    public WaitingLobbyResponse(List<Lobby> lobbies){
         this.type = MessageType.WAITING_LOBBY;
         this.lobbies = lobbies;
     }
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.showWaitingLobbies(super.getClientID(), lobbies);
+        clientController.showWaitingLobbies(lobbies);
     }
 }

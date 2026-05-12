@@ -7,14 +7,13 @@ import it.polimi.ingsw.controller.common.messages.Response;
 public class StopLobbyResponse extends Response {
     private int lobbyID;
 
-    public StopLobbyResponse(int clientID, int lobbyID){
-        super(clientID);
+    public StopLobbyResponse(int lobbyID){
         this.type = MessageType.STOP_LOBBY;
         this.lobbyID = lobbyID;
     }
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.stopLobby(clientID, lobbyID);
+        clientController.stopLobby(lobbyID);
     }
 }

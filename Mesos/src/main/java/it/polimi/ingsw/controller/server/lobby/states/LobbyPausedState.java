@@ -37,13 +37,13 @@ public class LobbyPausedState extends LobbyState {
             if (missingPlayers.isEmpty())
                 lobbyController.setState(new LobbyResumableState(lobbyController));
         } else {
-            client.showError(client.getID(), "Player name or totem already used");
+            client.showError("Player name or totem already used");
         }
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError(client.getID(), "Not enough players to start the game");
+        client.showError("Not enough players to start the game");
     }
 
     @Override
@@ -55,7 +55,7 @@ public class LobbyPausedState extends LobbyState {
             missingPlayers.add(removedPlayer);
 
             for (ClientInterface listener : lobbyController.getListeners()) {
-                listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
+                listener.removeClient(lobbyController.getID(), removedPlayer);
             }
 
             return true;
@@ -79,18 +79,18 @@ public class LobbyPausedState extends LobbyState {
             key--;
         }
 
-        client.showLobbyInfo(client.getID(), lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), playerInfo);
     }
 
     @Override
     public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
 
     }
 
     @Override
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError(pickerClient.getID(), "Game not started yet.");
+        pickerClient.showError("Game not started yet.");
 
     }
 

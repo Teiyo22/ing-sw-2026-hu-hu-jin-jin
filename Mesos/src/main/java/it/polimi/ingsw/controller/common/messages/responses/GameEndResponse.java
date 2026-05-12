@@ -9,11 +9,10 @@ import java.util.Map;
 
 public class GameEndResponse extends Response {
     private int lobbyID;
-    private Map<Integer, Tribe> updatedTribes;
-    private Map<Integer, Integer> ranking;
+    private Map<String, Tribe> updatedTribes;
+    private Map<String, Integer> ranking;
 
-    public GameEndResponse(int clientID, int lobbyID, Map<Integer, Tribe> updatedTribes, Map<Integer, Integer> ranking) {
-        super(clientID);
+    public GameEndResponse(int lobbyID, Map<String, Tribe> updatedTribes, Map<String, Integer> ranking) {
         this.type = MessageType.GAME_END;
         this.lobbyID = lobbyID;
         this.updatedTribes = updatedTribes;

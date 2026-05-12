@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller.server;
 
 import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
@@ -37,9 +36,10 @@ public class ServerController implements VirtualServer {
 
     private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> savedLobbies = new ConcurrentHashMap<>();
-    private final Map<Integer, ClientInterface> clients = new ConcurrentHashMap<>();
 
-    private final AtomicInteger nextClientID = new AtomicInteger(1);
+    private final Map<String, ClientInterface> clients = new ConcurrentHashMap<>();
+    private final Map<String, ClientInterface> playingClients = new ConcurrentHashMap<>();
+
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -58,7 +58,7 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void createLobby(int clientID, int playerNum, Player player) {
+    public void createLobby(String clientID, int playerNum, Player player) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to create lobby with " + playerNum + " players from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -77,13 +77,13 @@ public class ServerController implements VirtualServer {
 
         writeLock.lock();
         lobbies.put(lobbyController.getID(), lobbyController);
-        client.createLobby(clientID, lobbyController.getLobby(), player);
+        client.createLobby(lobbyController.getLobby(), player);
         writeLock.unlock();
         Logger.getInstance().print(LoggerLevel.SERVER, "Created lobby " + lobbyController.getID() + " for client " + clientID + " with " + playerNum + " players");
     }
 
     @Override
-    public void joinLobby(int clientID, int lobbyID, Player player) {
+    public void joinLobby(String clientID, int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to join lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -96,12 +96,12 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.joinLobby(client, player);
         else
-            client.showError(clientID, "This lobby is not available");
+            client.showError("This lobby is not available");
         readLock.unlock();
     }
 
     @Override
-    public void leaveLobby(int clientID, int lobbyID) {
+    public void leaveLobby(String clientID, int lobbyID) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to leave lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -113,7 +113,7 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void startLobby(int clientID, int lobbyID) {
+    public void startLobby(String clientID, int lobbyID) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to start lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -126,12 +126,12 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.startLobby(client);
         else
-            client.showError(clientID, "This lobby is not available");
+            client.showError("This lobby is not available");
         readLock.unlock();
     }
 
     @Override
-    public void getWaitingLobbies(int clientID) {
+    public void getWaitingLobbies(String clientID) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get waiting lobbies from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -144,12 +144,12 @@ public class ServerController implements VirtualServer {
                 .map(LobbyController::getLobby)
                 .toList();
 
-        client.showWaitingLobbies(clientID, lobbies);
+        client.showWaitingLobbies(lobbies);
         readLock.unlock();
     }
 
     @Override
-    public void getLobbyInfo(int clientID, int lobbyID) {
+    public void getLobbyInfo(String clientID, int lobbyID) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get lobby info from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -164,7 +164,7 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null)
             lobbyController.getLobbyInfo(client);
         else
-            client.showError(clientID, "This lobby is not available");
+            client.showError("This lobby is not available");
         readLock.unlock();
     }
 
@@ -173,7 +173,7 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void requestCards(int clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
+    public void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -185,12 +185,12 @@ public class ServerController implements VirtualServer {
         if (lobby != null)
             lobby.pickCards(client, topPicks, bottomPicks);
         else
-            client.showError(clientID, "This lobby is not available");
+            client.showError("This lobby is not available");
         readLock.unlock();
     }
 
     @Override
-    public void requestOffer(int clientID, int lobbyID, int offerIndex) {
+    public void requestOffer(String clientID, int lobbyID, int offerIndex) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)
@@ -202,12 +202,12 @@ public class ServerController implements VirtualServer {
         if (lobby != null)
             lobby.pickOffer(client, offerIndex);
         else
-            client.showError(clientID, "This lobby is not available");
+            client.showError("This lobby is not available");
         readLock.unlock();
     }
 
     @Override
-    public void getLeaderboard(int clientID, int playerNum) {
+    public void getLeaderboard(String clientID, int playerNum) {
 
     }
 
@@ -216,21 +216,8 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void addClient(VirtualClient client) {
-        RMIClientInterface wrapper = new RMIClientInterface(client);
-        int id = nextClientID.getAndIncrement();
-
-        clients.put(id, wrapper);
-        connectionMonitor.registerClient(wrapper);
-
-        wrapper.setConnected(true);
-        wrapper.setID(id);
-
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
-    }
-
-    public void addClient(TCPClientInterface client) {
-        int id = nextClientID.getAndIncrement();
+    public void registerClient(ClientInterface client) {
+        String id = UUID.randomUUID().toString();
 
         clients.put(id, client);
         connectionMonitor.registerClient(client);
@@ -238,7 +225,12 @@ public class ServerController implements VirtualServer {
         client.setConnected(true);
         client.setID(id);
 
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with ID: " + id);
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with temporary id: " + id);
+    }
+
+    @Override
+    public void login(String clientID, String username) throws RemoteException {
+
     }
 
     private boolean removeClientFrom(ClientInterface client, int lobbyID) {
@@ -398,7 +390,7 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void ping(int clientID) {
+    public void ping(String clientID) {
         ClientInterface client = clients.get(clientID);
 
         if (client == null)

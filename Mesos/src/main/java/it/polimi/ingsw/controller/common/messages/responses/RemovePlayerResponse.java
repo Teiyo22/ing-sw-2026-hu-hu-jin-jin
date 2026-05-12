@@ -9,8 +9,7 @@ public class RemovePlayerResponse extends Response {
     private int lobbyID;
     private Player player;
 
-    public RemovePlayerResponse(int clientID, int lobbyID, Player player){
-        super(clientID);
+    public RemovePlayerResponse(int lobbyID, Player player){
         this.type = MessageType.REMOVE_PLAYER;
         this.lobbyID = lobbyID;
         this.player = player;
@@ -18,6 +17,6 @@ public class RemovePlayerResponse extends Response {
 
     @Override
     public void receive(ClientController clientController){
-        clientController.removePlayer(super.getClientID(), lobbyID, player);
+        clientController.removePlayer(lobbyID, player);
     }
 }

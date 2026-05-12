@@ -14,8 +14,7 @@ public class OfferResolutionResponse extends Response {
     private Tribe updatedTribe;
     private Board updatedBoard;
 
-    public OfferResolutionResponse(int clientID, int lobbyID, Player player, Tribe updatedTribe, Board updatedBoard){
-        super(clientID);
+    public OfferResolutionResponse(int lobbyID, Player player, Tribe updatedTribe, Board updatedBoard){
         this.type = MessageType.OFFER_RESOLUTION;
         this.lobbyID = lobbyID;
         this.player = player;
@@ -25,7 +24,7 @@ public class OfferResolutionResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.updateModel(clientID, lobbyID, player, updatedTribe, updatedBoard);
+        clientController.updateModel(lobbyID, player, updatedTribe, updatedBoard);
     }
 }
 

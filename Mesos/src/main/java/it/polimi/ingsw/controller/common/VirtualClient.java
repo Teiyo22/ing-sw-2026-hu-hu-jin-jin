@@ -13,28 +13,28 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface VirtualClient extends Remote {
-    void setID(int clientID) throws RemoteException;
-    void showWaitingLobbies(int clientID, List<Lobby> lobbies) throws RemoteException;
-    void showLobbyInfo(int clientID, int lobbyID, Map<Integer, Player> players) throws RemoteException;
-    void addClient(int clientID, int lobbyID, Player player) throws RemoteException;
-    void addPlayer(int clientID, int lobbyID, Player player) throws RemoteException;
-    void removeClient(int clientID, int lobbyID, Player player) throws RemoteException;
-    void removePlayer(int clientID, int lobbyID, Player player) throws RemoteException;
-    void showLeaderboard(int clientID, List<LeaderboardEntry> leaderboard) throws RemoteException;
-    void updateState(int clientID, int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
-    void createLobby(int clientID, Lobby lobby, Player player) throws RemoteException;
-    void startLobby(int clientID, int lobbyID, Board board, Map<Integer, Tribe> tribes) throws RemoteException;
-    void stopLobby(int clientID, int lobbyID) throws RemoteException;
-    void showError(int clientID, String errorMessage) throws RemoteException;
+    void setID(String clientID) throws RemoteException;
+    void confirmLogin(String username) throws RemoteException;
+    void showWaitingLobbies(List<Lobby> lobbies) throws RemoteException;
+    void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) throws RemoteException;
+    void addPlayer(int lobbyID, Player player) throws RemoteException;
+    void removeClient(int lobbyID, Player player) throws RemoteException;
+    void removePlayer(int lobbyID, Player player) throws RemoteException;
+    void showLeaderboard(List<LeaderboardEntry> leaderboard) throws RemoteException;
+    void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
+    void createLobby(Lobby lobby, Player player) throws RemoteException;
+    void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) throws RemoteException;
+    void stopLobby(int lobbyID) throws RemoteException;
+    void showError(String errorMessage) throws RemoteException;
 
-    void updateModel(int clientID, int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
-    void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Board board) throws RemoteException;
-    void updateModel(int clientID, int lobbyID, Player player, Tribe tribe, Row topRow) throws RemoteException;
-    void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Row topRow, Row bottomRow) throws RemoteException;
-    void updateModel(int clientID, int lobbyID, Map<Integer, Tribe> tribes, Map<Integer, Integer> ranking) throws RemoteException;
-
+    void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
+    void updateModel(int lobbyID, Player player, Tribe tribe, Board board) throws RemoteException;
+    void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) throws RemoteException;
+    void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) throws RemoteException;
+    void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) throws RemoteException;
 
     void ping() throws RemoteException;
 }

@@ -10,15 +10,14 @@ import java.util.List;
 public class GetLeaderboardResponse extends Response {
     private List<LeaderboardEntry> leaderboards;
 
-    public GetLeaderboardResponse(int clientId ,List<LeaderboardEntry> leaderboards){
-        super(clientId);
+    public GetLeaderboardResponse(List<LeaderboardEntry> leaderboards){
         this.type = MessageType.GET_LEADERBOARD;
         this.leaderboards = leaderboards;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showLeaderboard(super.getClientID(), leaderboards);
+        clientController.showLeaderboard(leaderboards);
     }
 
 }

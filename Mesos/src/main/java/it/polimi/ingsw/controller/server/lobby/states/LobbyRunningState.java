@@ -24,12 +24,12 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError(client.getID(), "The lobby is already running");
+        client.showError("The lobby is already running");
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError(client.getID(), "The lobby is already running");
+        client.showError("The lobby is already running");
     }
 
     @Override
@@ -38,12 +38,12 @@ public class LobbyRunningState extends LobbyState {
 
         if (removedPlayer != null) {
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeClient(client.getID(), lobbyController.getID(), removedPlayer);
+                listener.removeClient(lobbyController.getID(), removedPlayer);
 
-            client.stopLobby(client.getID(), lobbyController.getID());
+            client.stopLobby(lobbyController.getID());
 
             for (ClientInterface player : lobbyController.getPlayers().keySet())
-                player.stopLobby(client.getID(), lobbyController.getID());
+                player.stopLobby(lobbyController.getID());
 
             model.setLobbyState(null);
             lobbyController.setState(new LobbyPausedState(lobbyController));
@@ -55,7 +55,7 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public void getLobbyInfo(ClientInterface client) {
-        client.showError(client.getID(), "The lobby is already running");
+        client.showError("The lobby is already running");
     }
 
     @Override
@@ -63,10 +63,10 @@ public class LobbyRunningState extends LobbyState {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
         if (!model.pick(pickerPlayer, topPicks, bottomPicks))
-            pickerClient.showError(pickerClient.getID(), "Invalid action");
+            pickerClient.showError("Invalid action");
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
+            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
 
     @Override
@@ -74,10 +74,10 @@ public class LobbyRunningState extends LobbyState {
         Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
 
         if (!model.assignTo(pickerPlayer, model.getBoard().getOfferTrack()[offerIndex]))
-            pickerClient.showError(pickerClient.getID(), "Invalid action");
+            pickerClient.showError("Invalid action");
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(pickerClient.getID(), lobbyController.getID(), model.getGameState().getModelStateInfo());
+            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
 
     public void notifyOfferPick() {
@@ -92,14 +92,14 @@ public class LobbyRunningState extends LobbyState {
         Board board = model.getBoard();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(client.getID(), lobbyController.getID(), player, player.getTribe(), board);
+            client.updateModel(lobbyController.getID(), player, player.getTribe(), board);
     }
 
     public void notifyExtraActionResolution(Player player) {
         Row topRow = model.getBoard().getTopRow();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(client.getID(), lobbyController.getID(), player, player.getTribe(), topRow);
+            client.updateModel(lobbyController.getID(), player, player.getTribe(), topRow);
     }
 
     public void notifyRoundEndUpdate() {
@@ -109,7 +109,7 @@ public class LobbyRunningState extends LobbyState {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(client.getID(), lobbyController.getID(), tribes, board.getTopRow(), board.getBottomRow());
+            client.updateModel(lobbyController.getID(), tribes, board.getTopRow(), board.getBottomRow());
     }
 
     public void notifyGameEndUpdate() {

@@ -13,6 +13,7 @@ public class ResponseDeserializer implements JsonDeserializer<Response> {
         String type = jsonObject.get("type").getAsString();
 
         return switch (type) {
+            case "LOGIN" -> context.deserialize(jsonObject, LoginResponse.class);
             case "OFFER_PICK" -> context.deserialize(jsonObject, OfferPickResponse.class);
             case "OFFER_RESOLUTION" -> context.deserialize(jsonObject, OfferResolutionResponse.class);
             case "EXTRA_ACTION" -> context.deserialize(jsonObject, ExtraActionResponse.class);
