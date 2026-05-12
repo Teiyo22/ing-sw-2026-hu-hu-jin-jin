@@ -37,19 +37,12 @@
     {
         "type": "F",
         "bonusFood": 0,
-        "topRowPickable": 1,
-        "bottomRowPickable": 1
-    },
-
-    {
-        "type": "G",
-        "bonusFood": 0,
         "topRowPickable": 2,
         "bottomRowPickable": 0
     },
 
     {
-        "type": "H",
+        "type": "G",
         "bonusFood": 0,
         "topRowPickable": 2,
         "bottomRowPickable": 1
