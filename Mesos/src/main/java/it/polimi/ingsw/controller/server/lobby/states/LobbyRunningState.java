@@ -85,7 +85,7 @@ public class LobbyRunningState extends LobbyState {
         OfferTile[] offerTrack = model.getBoard().getOfferTrack();
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateModel(player.getID(), lobbyController.getID(), orderTile, offerTrack);
+            player.updateModel(lobbyController.getID(), orderTile, offerTrack);
     }
 
     public void notifyOfferResolution(Player player) {
@@ -104,7 +104,7 @@ public class LobbyRunningState extends LobbyState {
 
     public void notifyRoundEndUpdate() {
         Board board = model.getBoard();
-        Map<Integer, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
+        Map<String, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
                 .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -113,16 +113,16 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyGameEndUpdate() {
-        Map<Integer, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
+        Map<String, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
                 .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        Map<Integer, Integer> ranking = lobbyController.getPlayers().entrySet().stream()
+        Map<String, Integer> ranking = lobbyController.getPlayers().entrySet().stream()
                 .map(e -> Map.entry(e.getKey().getID(), e.getValue().getRank()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(client.getID(), lobbyController.getID(), tribes, ranking);
+            client.updateModel(lobbyController.getID(), tribes, ranking);
 
         lobbyController.setState(new LobbyEndedState(lobbyController));
     }

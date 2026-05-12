@@ -32,7 +32,7 @@ public class LobbyPausedState extends LobbyState {
             missingPlayers.remove(player);
 
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.addClient(client.getID(), lobbyController.getID(), player);
+                listener.addPlayer(lobbyController.getID(), player);
 
             if (missingPlayers.isEmpty())
                 lobbyController.setState(new LobbyResumableState(lobbyController));
@@ -68,18 +68,10 @@ public class LobbyPausedState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Map<Integer, Player> playerInfo = new HashMap<>();
+        Set<Player> connectedPlayers = new HashSet<>(lobbyController.getPlayers().values());
+        Set<Player> disconnectedPlayers = new HashSet<>(missingPlayers);
 
-        for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
-            playerInfo.put(player.getKey().getID(), player.getValue());
-
-        int key = -1;
-        for (Player missingPlayer : missingPlayers) {
-            playerInfo.put(key, missingPlayer);
-            key--;
-        }
-
-        client.showLobbyInfo(lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
     }
 
     @Override

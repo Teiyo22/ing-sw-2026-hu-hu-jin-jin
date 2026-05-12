@@ -19,7 +19,6 @@ public class LobbyEndedState extends LobbyState {
     @Override
     public void startLobby(ClientInterface client) {
         client.showError("The lobby already ended.");
-
     }
 
     @Override

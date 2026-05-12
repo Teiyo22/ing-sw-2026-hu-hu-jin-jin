@@ -7,6 +7,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,14 +56,10 @@ public class LobbyWaitingState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Map<Integer, Player> playerInfo = new HashMap<>();
+        Set<Player> connectedPlayers = new HashSet<>(lobbyController.getPlayers().values());
+        Set<Player> disconnectedPlayers = new HashSet<>();
 
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Preparing Info of lobby " + lobbyController.getID() + " for client " + client.getID());
-        for (Map.Entry<ClientInterface, Player> player: lobbyController.getPlayers().entrySet())
-            playerInfo.put(player.getKey().getID(), player.getValue());
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Sending lobby info to client " + client.getID());
-        client.showLobbyInfo(lobbyController.getID(), playerInfo);
+        client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
     }
 
     @Override
