@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
@@ -44,11 +45,11 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void createLobby(String clientID, int playerNum, Player player) {
+    public void createLobby(String clientID, int playerNum, Totem totem) {
         try {
-            wrappedServer.createLobby(clientID, playerNum, player);
+            wrappedServer.createLobby(clientID, playerNum, totem);
         } catch (RemoteException e) {
-            reschedule(() -> {createLobby(clientID, playerNum, player);});
+            reschedule(() -> {createLobby(clientID, playerNum, totem);});
         }
     }
 

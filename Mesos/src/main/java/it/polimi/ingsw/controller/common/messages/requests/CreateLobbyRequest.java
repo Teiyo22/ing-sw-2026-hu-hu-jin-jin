@@ -3,23 +3,23 @@ package it.polimi.ingsw.controller.common.messages.requests;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.controller.server.network.TCPClientInterface;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 
 public class CreateLobbyRequest extends Request {
     private int playerNum;
-    private Player player;
+    private Totem totem;
 
-    public CreateLobbyRequest(String clientID, int playerNum, Player player) {
+    public CreateLobbyRequest(String clientID, int playerNum, Totem totem) {
         this.type = MessageType.CREATE_LOBBY;
         this.clientID = clientID;
         this.playerNum = playerNum;
-        this.player = player;
+        this.totem = totem;
     }
 
     @Override
     public void receive(ServerController serverController){
-        serverController.createLobby(clientID, playerNum, player);
+        serverController.createLobby(clientID, playerNum, totem);
     }
 
 }
