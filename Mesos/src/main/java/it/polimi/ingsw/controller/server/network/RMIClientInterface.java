@@ -88,6 +88,14 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
+    public void updateLobby(Lobby lobby) {
+        submitRemoteCall(
+                () -> wrappedClient.updateLobby(lobby),
+                () -> this.updateLobby(lobby)
+        );
+    }
+
+    @Override
     public synchronized void removeClient(int lobbyID, Player player) {
         submitRemoteCall(
                 () -> wrappedClient.removeClient(lobbyID, player),

@@ -188,6 +188,12 @@ public class ServerController implements VirtualServer {
                 .forEach(c -> c.addLobby(lobby));
     }
 
+    public void broadcastLobbyUpdate(Lobby lobby) {
+        allClients.values().stream()
+                .filter(c -> !playingClients.containsKey(c.getID()))
+                .forEach(c -> c.updateLobby(lobby));
+    }
+
     public void removeLobby(int lobbyID) {
         lobbies.remove(lobbyID);
     }
@@ -280,14 +286,14 @@ public class ServerController implements VirtualServer {
 
     }
 
-    public void addToPlayingClients(Collection<ClientInterface> toMoveClients) {
-        for (ClientInterface toMoveClient : toMoveClients)
-            playingClients.put(toMoveClient.getID(), toMoveClient);
+    public void addToPlayingClients(Collection<ClientInterface> clients) {
+        for (ClientInterface client : clients)
+            playingClients.put(client.getID(), client);
     }
 
-    public void removeFromPlayingClients(Collection<ClientInterface> toMoveClients) {
-        for (ClientInterface toMoveClient : toMoveClients) {
-            playingClients.remove(toMoveClient.getID());
+    public void removeFromPlayingClients(Collection<ClientInterface> clients) {
+        for (ClientInterface client : clients) {
+            playingClients.remove(client.getID());
 
             readLock.lock();
             List<Lobby> lobbies = this.lobbies.values().stream()
@@ -295,7 +301,7 @@ public class ServerController implements VirtualServer {
                     .map(LobbyController::getLobby)
                     .toList();
 
-            toMoveClient.showWaitingLobbies(lobbies);
+            client.showWaitingLobbies(lobbies);
             readLock.unlock();
         }
     }

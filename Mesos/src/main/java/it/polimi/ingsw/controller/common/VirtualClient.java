@@ -23,6 +23,7 @@ public interface VirtualClient extends Remote {
     void addPlayer(int lobbyID, Player player) throws RemoteException;
     void addLobby(Lobby lobby) throws RemoteException;
     void removeLobby(int lobbyID) throws RemoteException;
+    void updateLobby(Lobby lobby) throws RemoteException;
     void removeClient(int lobbyID, Player player) throws RemoteException;
     void removePlayer(int lobbyID, Player player) throws RemoteException;
     void showLeaderboard(List<LeaderboardEntry> leaderboard) throws RemoteException;

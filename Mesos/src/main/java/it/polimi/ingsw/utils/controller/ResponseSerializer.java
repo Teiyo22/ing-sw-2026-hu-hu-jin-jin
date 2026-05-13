@@ -25,6 +25,7 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case ADD_PLAYER -> context.serialize(src, AddPlayerResponse.class);
             case ADD_LOBBY -> context.serialize(src, AddLobbyResponse.class);
             case REMOVE_LOBBY -> context.serialize(src, RemoveLobbyResponse.class);
+            case UPDATE_LOBBY -> context.serialize(src, UpdateLobbyResponse.class);
             case REMOVE_CLIENT -> context.serialize(src, RemoveClientResponse.class);
             case REMOVE_PLAYER -> context.serialize(src, RemovePlayerResponse.class);
             case START_LOBBY -> context.serialize(src, StartLobbyResponse.class);

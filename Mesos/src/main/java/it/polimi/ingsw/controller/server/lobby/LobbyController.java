@@ -91,7 +91,7 @@ public class LobbyController {
     }
 
     public Lobby getLobby() {
-        return new Lobby(lobbyID, size);
+        return new Lobby(lobbyID, size, players.size());
     }
 
     public boolean isShowable() {

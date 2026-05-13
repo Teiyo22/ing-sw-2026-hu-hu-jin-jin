@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.tui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.tui.action.*;
 import it.polimi.ingsw.view.tui.section.ActionSection;
+import it.polimi.ingsw.view.tui.section.ClientInfoSection;
 import it.polimi.ingsw.view.tui.section.LobbyInfoSection;
 import it.polimi.ingsw.view.tui.section.LobbyListSection;
 
@@ -23,6 +24,7 @@ import java.util.List;
                 .register(new StartLobbyAction(clientController));
 
         sections = List.of(
+                new ClientInfoSection(),
                 new ActionSection(registry),
                 new LobbyInfoSection(),
                 new LobbyListSection()

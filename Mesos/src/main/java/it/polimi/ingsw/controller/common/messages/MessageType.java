@@ -8,6 +8,7 @@ public enum MessageType {
     ADD_PLAYER,
     ADD_LOBBY,
     REMOVE_LOBBY,
+    UPDATE_LOBBY,
     LEAVE_LOBBY,
     REMOVE_CLIENT,
     REMOVE_PLAYER,

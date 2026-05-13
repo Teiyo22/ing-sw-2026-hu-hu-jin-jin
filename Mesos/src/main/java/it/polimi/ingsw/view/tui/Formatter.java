@@ -40,14 +40,14 @@ public class Formatter {
     }
 
     public static String player(Map.Entry<Player, Boolean> player) {
-        String identifier = player.getValue() ? "ID: " + player.getValue() : "Disconnected";
-        String content = String.format("- %-10s (%s)", player.getKey().getName(), identifier);
+        String status = player.getValue() ? "Connected" : "Disconnected";
+        String content = String.format("- %-10s (%s)", player.getKey().getName(), status);
 
         return coloredLine(content, player.getKey().getTotem().getColor());
     }
 
     public static String waitingLobby(Lobby lobby) {
-        return line(String.format("Lobby ID: %3d | Size: %3d", lobby.getLobbyID(), lobby.getSize()));
+        return line(String.format("Lobby ID: %3d | Player count = %3d/%3d", lobby.getLobbyID(), lobby.getPlayerCount(), lobby.getSize()));
     }
 
     public static String playerInfo(Player player, boolean isTurn, boolean isMe) {

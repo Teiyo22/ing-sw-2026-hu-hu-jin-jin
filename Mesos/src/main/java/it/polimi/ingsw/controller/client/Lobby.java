@@ -9,21 +9,22 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Lobby implements Serializable {
     private int lobbyID;
     private int size;
+    private int playerCount;
 
     transient private Player shownPlayer = null;
     transient private Map<Player, Boolean> players = null;
     transient private Board board = null;
     transient private TurnState turnState = null;
 
-    public Lobby(int lobbyID, int size) {
+    public Lobby(int lobbyID, int size, int playerCount) {
         this.lobbyID = lobbyID;
         this.size = size;
+        this.playerCount = playerCount;
     }
 
     //=============================================================================
@@ -115,10 +116,6 @@ public class Lobby implements Serializable {
         return size;
     }
 
-    public int getPlayerCount() {
-        return players.size();
-    }
-
     public Map<Player, Boolean> getPlayers() {
         return players;
     }
@@ -153,6 +150,10 @@ public class Lobby implements Serializable {
         return null;
     }
 
+    public int getPlayerCount() {
+        return playerCount;
+    }
+
     public boolean containsClient(String clientID) {
         for (Player player : players.keySet())
             if (clientID.equals(player.getName()) && players.get(player))
@@ -172,6 +173,9 @@ public class Lobby implements Serializable {
         this.players = players;
     }
 
+    public void setPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+    }
 
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;

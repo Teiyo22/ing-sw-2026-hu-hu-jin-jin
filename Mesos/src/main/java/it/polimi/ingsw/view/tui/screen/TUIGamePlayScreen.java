@@ -19,6 +19,7 @@ public class TUIGamePlayScreen extends TUIScreen {
                 .register(new LeaveLobbyAction(clientController));
 
         sections = List.of(
+                new ClientInfoSection(),
                 new ActionSection(registry),
                 new PlayerInfoSection(),
                 new OrderTileSection(),

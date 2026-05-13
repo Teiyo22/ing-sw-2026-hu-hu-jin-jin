@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
@@ -36,6 +37,8 @@ public class LobbyPausedState extends LobbyState {
 
             if (missingPlayers.isEmpty())
                 lobbyController.setState(new LobbyResumableState(lobbyController));
+
+            ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
         } else {
             client.showError("Player name or totem already used");
         }
@@ -57,6 +60,7 @@ public class LobbyPausedState extends LobbyState {
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.removeClient(lobbyController.getID(), removedPlayer);
 
+            ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
             return true;
         }
 

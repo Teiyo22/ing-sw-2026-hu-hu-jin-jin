@@ -60,6 +60,7 @@ public class LobbyFullState extends LobbyState {
                 listener.removePlayer(lobbyController.getID(), removedPlayer);
 
             lobbyController.setState(new LobbyWaitingState(lobbyController));
+            ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
             return true;
         }
 

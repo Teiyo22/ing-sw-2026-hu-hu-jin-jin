@@ -29,6 +29,8 @@ public class LobbyWaitingState extends LobbyState {
 
             if (lobbyController.getSize() == lobbyController.getPlayers().size())
                 lobbyController.setState(new LobbyFullState(lobbyController));
+
+            ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
         } else {
             client.showError("Player name or totem already used");
         }
@@ -50,6 +52,8 @@ public class LobbyWaitingState extends LobbyState {
             if (lobbyController.getPlayers().isEmpty()) {
                 ServerController.getInstance().removeLobby(lobbyController.getID());
                 ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
+            } else {
+                ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
             }
 
             return true;
