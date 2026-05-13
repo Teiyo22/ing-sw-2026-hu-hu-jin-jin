@@ -107,6 +107,8 @@ public class ClientController implements VirtualClient {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby = null;
+
+        view.update();
     }
 
     @Override

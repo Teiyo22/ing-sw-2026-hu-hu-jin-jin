@@ -5,13 +5,12 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.List;
 import java.util.Set;
 
 public class LobbyEndedState extends LobbyState {
     public LobbyEndedState(LobbyController lobbyController) {
         super(lobbyController);
-        ServerController.getInstance().moveToClients(lobbyController.getPlayers().keySet());
+        ServerController.getInstance().removeFromPlayingClients(lobbyController.getPlayers().keySet());
     }
 
     @Override
