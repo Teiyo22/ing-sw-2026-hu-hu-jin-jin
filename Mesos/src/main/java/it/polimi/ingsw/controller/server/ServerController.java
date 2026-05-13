@@ -67,7 +67,7 @@ public class ServerController implements VirtualServer {
             return;
 
         LobbyController currLobbyController = client.getCurrLobbyController();
-        if (currLobbyController != null) {
+        if (currLobbyController != null && currLobbyController.getLobby().containsClient(clientID)) {
             client.showError("You are already in a lobby");
             return;
         }

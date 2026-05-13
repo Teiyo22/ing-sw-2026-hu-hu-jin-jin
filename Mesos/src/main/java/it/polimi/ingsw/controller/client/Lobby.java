@@ -155,7 +155,7 @@ public class Lobby implements Serializable {
 
     public boolean containsClient(String clientID) {
         for (Player player : players.keySet())
-            if (clientID.equals(player.getName()))
+            if (clientID.equals(player.getName()) && players.get(player))
                 return true;
         return false;
     }
