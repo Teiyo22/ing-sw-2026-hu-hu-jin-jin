@@ -37,7 +37,7 @@ import java.util.concurrent.*;
 
 
 public class ClientController implements VirtualClient {
-    private String id;
+    private String id = "";
     private boolean init = false;
 
     private View view = null;
