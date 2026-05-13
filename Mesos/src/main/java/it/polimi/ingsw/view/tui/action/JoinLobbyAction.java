@@ -40,7 +40,6 @@ public class JoinLobbyAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        String playerName;
         Totem totem;
 
         if (args.length != argCount + 1)
@@ -67,16 +66,6 @@ public class JoinLobbyAction implements Action {
         } catch (IllegalArgumentException e) {
             return null;
         }
-    }
-
-    private boolean validatePlayer(Player player) {
-        for (Map.Entry<Player, Boolean> entry : currLobby.getPlayers().entrySet()) {
-            if (entry.getKey().getName().equals(player.getName()) || entry.getKey().getTotem().equals(player.getTotem())) {
-                return entry.getKey().equals(player) && entry.getValue() == false;
-            }
-        }
-
-        return true;
     }
 
     @Override
