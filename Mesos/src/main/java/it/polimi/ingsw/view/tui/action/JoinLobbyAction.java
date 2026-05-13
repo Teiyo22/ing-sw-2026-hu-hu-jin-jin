@@ -49,7 +49,7 @@ public class JoinLobbyAction implements Action {
         if (totem == null)
             return Optional.of("Totem must be unique and one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
 
-        new JoinLobbyCommand(currLobby.getLobbyID(), totem).execute(clientController);
+        new JoinLobbyCommand(clientController, currLobby.getLobbyID(), totem).execute();
         return Optional.empty();
     }
 

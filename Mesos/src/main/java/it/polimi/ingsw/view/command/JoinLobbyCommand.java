@@ -10,7 +10,8 @@ public class JoinLobbyCommand implements Command {
     private final int lobbyID;
     private final Totem totem;
 
-    public JoinLobbyCommand(int lobbyID, Totem totem) {
+    public JoinLobbyCommand(ClientController clientController, int lobbyID, Totem totem) {
+        this.clientController = clientController;
         this.lobbyID = lobbyID;
         this.totem = totem;
     }
