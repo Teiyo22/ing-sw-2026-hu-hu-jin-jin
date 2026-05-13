@@ -1,14 +1,17 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.List;
 import java.util.Set;
 
 public class LobbyEndedState extends LobbyState {
     public LobbyEndedState(LobbyController lobbyController) {
         super(lobbyController);
+        ServerController.getInstance().moveToClients(lobbyController.getPlayers().keySet());
     }
 
     @Override
@@ -23,7 +26,18 @@ public class LobbyEndedState extends LobbyState {
 
     @Override
     public boolean removeClient(ClientInterface client) {
-        return true;
+        Player removedPlayer = lobbyController.getPlayers().remove(client);
+
+        if (removedPlayer != null) {
+            client.removeLobby(lobbyController.getID());
+
+            if (lobbyController.getPlayers().isEmpty())
+                ServerController.getInstance().removeLobby(lobbyController.getID());
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -44,10 +58,5 @@ public class LobbyEndedState extends LobbyState {
     @Override
     public boolean isShowable() {
         return false;
-    }
-
-    @Override
-    public boolean isRemovable() {
-        return lobbyController.getPlayers().isEmpty();
     }
 }

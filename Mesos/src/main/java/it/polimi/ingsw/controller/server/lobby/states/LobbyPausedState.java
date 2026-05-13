@@ -54,9 +54,8 @@ public class LobbyPausedState extends LobbyState {
             Logger.getInstance().print(LoggerLevel.SERVER, "Removed player " + removedPlayer.getName() + " from lobby");
             missingPlayers.add(removedPlayer);
 
-            for (ClientInterface listener : lobbyController.getListeners()) {
+            for (ClientInterface listener : lobbyController.getListeners())
                 listener.removeClient(lobbyController.getID(), removedPlayer);
-            }
 
             return true;
         }
@@ -90,10 +89,4 @@ public class LobbyPausedState extends LobbyState {
     public boolean isShowable() {
         return true;
     }
-
-    @Override
-    public boolean isRemovable() {
-        return false;
-    }
-
 }

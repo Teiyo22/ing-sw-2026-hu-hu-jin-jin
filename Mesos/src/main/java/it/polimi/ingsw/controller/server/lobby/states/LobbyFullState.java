@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -26,27 +27,27 @@ public class LobbyFullState extends LobbyState {
     @Override
     public void startLobby(ClientInterface client) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Starting lobby " + lobbyController.getID());
+
+        lobbyController.getListeners().clear();
+        ServerController.getInstance().moveToPlayingClients(lobbyController.getPlayers().keySet());
+        ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
+
         lobbyController.initModel();
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Model initialized for lobby " + lobbyController.getID());
         Game model = lobbyController.getModel();
 
         Map<String, Tribe> tribes = new HashMap<>();
         for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
             tribes.put(player.getKey().getID(), player.getValue().getTribe());
 
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Prepared tribe data for lobby " + lobbyController.getID());
-
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying client " + player.getID() + " of lobby start");
             player.startLobby(lobbyController.getID(), model.getBoard(), tribes);
+            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
         }
 
-        for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
+        LobbyRunningState runningState = new LobbyRunningState(lobbyController);
+        model.setLobbyState(runningState);
+        lobbyController.setState(runningState);
 
-        LobbyRunningState nextState = new LobbyRunningState(lobbyController);
-        model.setLobbyState(nextState);
-        lobbyController.setState(nextState);
         Logger.getInstance().print(LoggerLevel.SERVER, "Started lobby " + lobbyController.getID());
     }
 
@@ -90,8 +91,4 @@ public class LobbyFullState extends LobbyState {
         return true;
     }
 
-    @Override
-    public boolean isRemovable() {
-        return false;
-    }
 }

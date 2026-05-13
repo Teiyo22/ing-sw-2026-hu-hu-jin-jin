@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
@@ -46,6 +47,11 @@ public class LobbyWaitingState extends LobbyState {
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.removePlayer(lobbyController.getID(), removedPlayer);
 
+            if (lobbyController.getPlayers().isEmpty()) {
+                ServerController.getInstance().removeLobby(lobbyController.getID());
+                ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
+            }
+
             return true;
         }
 
@@ -77,11 +83,6 @@ public class LobbyWaitingState extends LobbyState {
             if (newPlayer.getTotem() == players.getTotem() || newPlayer.getName().equals(players.getName()))
                 return false;
         return true;
-    }
-
-    @Override
-    public boolean isRemovable() {
-        return lobbyController.getPlayers().isEmpty();
     }
 
     @Override

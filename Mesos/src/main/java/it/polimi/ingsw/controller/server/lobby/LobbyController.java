@@ -98,10 +98,6 @@ public class LobbyController {
         return state.isShowable();
     }
 
-    public boolean isRemovable() {
-        return state.isRemovable();
-    }
-
     //=============================================================================
     // Setters
     //=============================================================================

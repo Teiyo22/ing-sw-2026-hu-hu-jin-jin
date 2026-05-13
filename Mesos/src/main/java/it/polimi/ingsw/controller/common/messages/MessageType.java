@@ -6,6 +6,7 @@ public enum MessageType {
     CREATE_LOBBY,
     JOIN_LOBBY,
     ADD_PLAYER,
+    REMOVE_LOBBY,
     LEAVE_LOBBY,
     REMOVE_CLIENT,
     REMOVE_PLAYER,
