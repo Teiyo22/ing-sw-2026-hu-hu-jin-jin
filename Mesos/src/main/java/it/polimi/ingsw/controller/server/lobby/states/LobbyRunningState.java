@@ -11,8 +11,10 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class LobbyRunningState extends LobbyState {
@@ -97,37 +99,26 @@ public class LobbyRunningState extends LobbyState {
         Board board = model.getBoard();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), player, player.getTribe(), board);
+            client.updateModel(lobbyController.getID(), player, board);
     }
 
     public void notifyExtraActionResolution(Player player) {
         Row topRow = model.getBoard().getTopRow();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), player, player.getTribe(), topRow);
+            client.updateModel(lobbyController.getID(), player, topRow);
     }
 
     public void notifyRoundEndUpdate() {
         Board board = model.getBoard();
-        Map<String, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
-                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), tribes, board.getTopRow(), board.getBottomRow());
+            client.updateModel(lobbyController.getID(), lobbyController.getPlayers().values(), board.getTopRow(), board.getBottomRow());
     }
 
     public void notifyGameEndUpdate() {
-        Map<String, Tribe> tribes = lobbyController.getPlayers().entrySet().stream()
-                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getTribe()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        Map<String, Integer> ranking = lobbyController.getPlayers().entrySet().stream()
-                .map(e -> Map.entry(e.getKey().getID(), e.getValue().getRank()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), tribes, ranking);
+            client.updateModel(lobbyController.getID(), lobbyController.getPlayers().values());
 
         lobbyController.setState(new LobbyEndedState(lobbyController));
     }

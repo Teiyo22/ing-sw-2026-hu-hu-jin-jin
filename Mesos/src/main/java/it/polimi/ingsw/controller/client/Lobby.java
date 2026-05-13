@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 public class Lobby implements Serializable {
@@ -63,10 +64,10 @@ public class Lobby implements Serializable {
         this.board.setOfferTrack(offerTrack);
     }
 
-    public void updateTribe(Player player, Tribe tribe) {
-        for (Player p : players.keySet())
-            if (p.equals(player))
-                p.setTribe(tribe);
+    public void updateTribe(Player updatedPlayer) {
+        for (Player player : players.keySet())
+            if (player.equals(updatedPlayer))
+                player.setTribe(updatedPlayer.getTribe());
     }
 
     public void updateBoard(Board board) {
@@ -81,19 +82,15 @@ public class Lobby implements Serializable {
         this.board.setBottomRow(row);
     }
 
-    public void updateTribes(Map<String, Tribe> tribes) {
-        for (Player player : players.keySet()) {
-            Tribe tribe = tribes.get(player.getName());
-
-            if (tribe != null)
-                player.setTribe(tribe);
-
-        }
+    public void updateTribes(Collection<Player> updatedPlayers) {
+        updatedPlayers.forEach(this::updateTribe);
     }
 
-    public void setRanking(Map<String, Integer> ranking) {
-        for (Player player : players.keySet())
-            player.setRank(ranking.get(player.getName()));
+    public void setRanking(Collection<Player> updatedPlayers) {
+        for (Player updatedPlayer : updatedPlayers)
+            for (Player player : players.keySet())
+                if (player.equals(updatedPlayers))
+                    player.setRank(updatedPlayer.getRank());
     }
 
     public void showPlayer(Player player) {

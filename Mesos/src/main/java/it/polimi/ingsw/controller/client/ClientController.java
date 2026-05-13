@@ -25,14 +25,11 @@ import it.polimi.ingsw.view.tui.Formatter;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Set;
 import java.util.concurrent.*;
 
 
@@ -103,6 +100,11 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void addLobby(Lobby lobby) {
+        if (currLobby != null && currLobby.getLobbyID() == lobby.getLobbyID()) {
+            currLobby.setPlayerCount(lobby.getPlayerCount());
+            lobby = currLobby;
+        }
+
         waitingLobbies.put(lobby.getLobbyID(), lobby);
 
         view.update();
@@ -210,9 +212,9 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
+    public synchronized void updateModel(int lobbyID, Player player, Board board) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribe(player, tribe);
+            currLobby.updateTribe(player);
             currLobby.updateBoard(board);
 
             view.update();
@@ -220,9 +222,9 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
+    public synchronized void updateModel(int lobbyID, Player player, Row topRow) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribe(player, tribe);
+            currLobby.updateTribe(player);
             currLobby.updateTopRow(topRow);
 
             view.update();
@@ -230,9 +232,9 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
+    public synchronized void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribes(tribes);
+            currLobby.updateTribes(players);
             currLobby.updateTopRow(topRow);
             currLobby.updateBottomRow(bottomRow);
 
@@ -241,10 +243,10 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
+    public synchronized void updateModel(int lobbyID, Collection<Player> players) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribes(tribes);
-            currLobby.setRanking(ranking);
+            currLobby.updateTribes(players);
+            currLobby.setRanking(players);
 
             view.update();
         }

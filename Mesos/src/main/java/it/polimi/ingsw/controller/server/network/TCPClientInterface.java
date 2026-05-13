@@ -14,7 +14,7 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,6 +73,9 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public void removeLobby(int lobbyID) {
+        if (currLobbyController.getID() == lobbyID)
+            currLobbyController = null;
+
         RemoveLobbyResponse response = new RemoveLobbyResponse(lobbyID);
         sendMessage(response);
     }
@@ -108,26 +111,26 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
-        OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, tribe, board);
+    public synchronized void updateModel(int lobbyID, Player player, Board board) {
+        OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, board);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
-        ExtraActionResponse response = new ExtraActionResponse(lobbyID, player, tribe, topRow);
+    public synchronized void updateModel(int lobbyID, Player player, Row topRow) {
+        ExtraActionResponse response = new ExtraActionResponse(lobbyID, player, topRow);
         sendMessage(response);
     }
 
     @Override
-    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
-        RoundEndResponse response = new RoundEndResponse(lobbyID, tribes, topRow, bottomRow);
+    public void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) {
+        RoundEndResponse response = new RoundEndResponse(lobbyID, players, topRow, bottomRow);
         sendMessage(response);
     }
 
     @Override
-    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
-        GameEndResponse response = new GameEndResponse(lobbyID, tribes, ranking);
+    public void updateModel(int lobbyID, Collection<Player> players) {
+        GameEndResponse response = new GameEndResponse(lobbyID, players);
         sendMessage(response);
     }
 

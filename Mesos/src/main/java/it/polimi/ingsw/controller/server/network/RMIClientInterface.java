@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,6 +82,9 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
 
     @Override
     public void removeLobby(int lobbyID) {
+        if (currLobbyController.getID() == lobbyID)
+            currLobbyController = null;
+
         submitRemoteCall(
                 () -> wrappedClient.removeLobby(lobbyID),
                 () -> this.removeLobby(lobbyID)
@@ -136,34 +140,34 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void updateModel(int lobbyID, Player player, Tribe tribe, Board board) {
+    public void updateModel(int lobbyID, Player player, Board board) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, tribe, board),
-                () -> this.updateModel(lobbyID, player, tribe, board)
+                () -> wrappedClient.updateModel(lobbyID, player, board),
+                () -> this.updateModel(lobbyID, player, board)
         );
     }
 
     @Override
-    public void updateModel(int lobbyID, Player player, Tribe tribe, Row topRow) {
+    public void updateModel(int lobbyID, Player player, Row topRow) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, tribe, topRow),
-                () -> this.updateModel(lobbyID, player, tribe, topRow)
+                () -> wrappedClient.updateModel(lobbyID, player, topRow),
+                () -> this.updateModel(lobbyID, player, topRow)
         );
     }
 
     @Override
-    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Row topRow, Row bottomRow) {
+    public void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, tribes, topRow, bottomRow),
-                () -> this.updateModel(lobbyID, tribes, topRow, bottomRow)
+                () -> wrappedClient.updateModel(lobbyID, players, topRow, bottomRow),
+                () -> this.updateModel(lobbyID, players, topRow, bottomRow)
         );
     }
 
     @Override
-    public void updateModel(int lobbyID, Map<String, Tribe> tribes, Map<String, Integer> ranking) {
+    public void updateModel(int lobbyID, Collection<Player> players) {
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, tribes, ranking),
-                () -> this.updateModel(lobbyID, tribes, ranking)
+                () -> wrappedClient.updateModel(lobbyID, players),
+                () -> this.updateModel(lobbyID, players)
         );
     }
 

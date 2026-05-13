@@ -66,6 +66,9 @@ public class NetworkClient extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to read from TCP socket");
         } catch (JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to parse JSON message");
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread");
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } finally {
             server.getClientController().disconnect();
         }
@@ -89,6 +92,9 @@ public class NetworkClient extends Thread {
             output.flush();
         } catch (IOException e) {
             System.out.println("Error while sending message in TCP: " + e.getMessage());
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread");
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         }
 
     }
