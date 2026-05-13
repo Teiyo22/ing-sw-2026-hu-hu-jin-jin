@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class CreateLobbyAction implements Action {
     final private ClientController clientController;
-    final private int argCount = 3;
+    final private int argCount = 2;
 
     public CreateLobbyAction(ClientController clientController) {
         this.clientController = clientController;
@@ -36,7 +36,6 @@ public class CreateLobbyAction implements Action {
     @Override
     public Optional<String> parseAction(String[] args) {
         Integer lobbySize;
-        String playerName;
         Totem totem;
 
         if (args.length != argCount + 1)
@@ -46,13 +45,11 @@ public class CreateLobbyAction implements Action {
         if (lobbySize == null)
             return Optional.of("Lobby size must be an integer between 2 and 5");
 
-        playerName = args[2];
-
-        totem = parseTotem(args[3]);
+        totem = parseTotem(args[2]);
         if (totem == null)
             return Optional.of("Totem must be one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
 
-        new CreateLobbyCommand(clientController, lobbySize, new Player(playerName, totem)).execute();
+        new CreateLobbyCommand(lobbySize, totem).execute(clientController);
         return Optional.empty();
     }
 
@@ -79,6 +76,6 @@ public class CreateLobbyAction implements Action {
 
     @Override
     public String toString() {
-        return String.format("[%s | %s] <Lobby Size> <Player Name> <Totem>", key(), label());
+        return String.format("[%s | %s] <Lobby Size> <Totem>", key(), label());
     }
 }

@@ -2,23 +2,22 @@ package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.Screen;
 
 public class CreateLobbyCommand implements Command {
-    private ClientController clientController;
-    private final Integer size;
-    private final Player player;
+    private final int size;
+    private final Totem totem;
 
-    public CreateLobbyCommand(ClientController clientController, Integer size, Player player) {
-        this.clientController = clientController;
+    public CreateLobbyCommand(int size, Totem totem) {
         this.size = size;
-        this.player = player;
+        this.totem = totem;
     }
 
     @Override
     public void execute() {
         clientController.executeCommand(() -> {
-            clientController.getServer().createLobby(clientController.getID(), size, player);
+            clientController.getServer().createLobby(clientController.getID(), size, totem);
         });
     }
 }

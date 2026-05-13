@@ -3,10 +3,9 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 
-import java.rmi.RemoteException;
 import java.util.Set;
 
 public class TCPServerInterface extends ServerInterface {
@@ -36,12 +35,12 @@ public class TCPServerInterface extends ServerInterface {
      *
      * @param clientID
      * @param playerNum Game size (number of players in the game).
-     * @param player    Player object containing the player's username and selected totem.
+     * @param totem     Player object containing the player's username and selected totem.
      *
      */
     @Override
-    public void createLobby(String clientID, int playerNum, Player player) {
-        CreateLobbyRequest request = new CreateLobbyRequest(clientID, playerNum, player);
+    public void createLobby(String clientID, int playerNum, Totem totem) {
+        CreateLobbyRequest request = new CreateLobbyRequest(clientID, playerNum, totem);
         serverHandler.sendMessage(request);
     }
 

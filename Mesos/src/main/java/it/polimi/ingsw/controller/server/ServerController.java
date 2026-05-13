@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
@@ -58,7 +59,7 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void createLobby(String clientID, int playerNum, Player player) {
+    public void createLobby(String clientID, int playerNum, Totem totem) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to create lobby with " + playerNum + " players from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -73,6 +74,7 @@ public class ServerController implements VirtualServer {
 
         int id = nextLobbyID.getAndIncrement();
 
+        Player player = new Player(clientID, totem);
         LobbyController lobbyController = new LobbyController(id, playerNum);
         lobbyController.getPlayers().put(client, player);
         lobbyController.getListeners().add(client);
