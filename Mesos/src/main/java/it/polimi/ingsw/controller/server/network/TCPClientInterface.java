@@ -158,7 +158,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     private void sendMessage(Response message) {
-        if (!isConnected)
+        if (isConnected)
             ServerController.getInstance().submitResponse(
                     () -> clientHandler.sendMessage(message)
             );

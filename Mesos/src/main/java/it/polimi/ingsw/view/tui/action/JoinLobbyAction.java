@@ -75,9 +75,9 @@ public class JoinLobbyAction implements Action {
     }
 
     private boolean validatePlayer(Player player) {
-        for (Map.Entry<Player, Integer> entry : currLobby.getPlayers().entrySet()) {
+        for (Map.Entry<Player, Boolean> entry : currLobby.getPlayers().entrySet()) {
             if (entry.getKey().getName().equals(player.getName()) || entry.getKey().getTotem().equals(player.getTotem())) {
-                return entry.getKey().equals(player) && entry.getValue() == null;
+                return entry.getKey().equals(player) && entry.getValue() == false;
             }
         }
 

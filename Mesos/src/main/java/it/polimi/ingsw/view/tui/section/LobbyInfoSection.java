@@ -19,7 +19,7 @@ public class LobbyInfoSection implements Section {
         System.out.println(Formatter.playerCount(currLobby.getPlayerCount(), currLobby.getSize()));
 
         System.out.println(Formatter.line("Players:"));
-        for (Map.Entry<Player, Integer> entry : currLobby.getPlayers().entrySet())
+        for (Map.Entry<Player, Boolean> entry : currLobby.getPlayers().entrySet())
             System.out.println(Formatter.player(entry));
 
         System.out.println(Formatter.separatorLine(""));

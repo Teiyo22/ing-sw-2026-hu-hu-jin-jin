@@ -230,6 +230,19 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void login(String clientID, String username) {
+        if (!clients.containsKey(clientID)) // If true, it could mean the client already logged in
+            return;
+
+        ClientInterface previousValue = clients.putIfAbsent(username, clients.get(clientID));
+
+        if (previousValue == null) {
+            ClientInterface loggedInClient = clients.remove(clientID);
+            loggedInClient.confirmLogin(username);
+            Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " successfully logged in as " + username);
+        } else {
+            clients.get(clientID).showError("Username already in use");
+            Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " failed to login as " + username);
+        }
 
     }
 

@@ -10,11 +10,13 @@ import it.polimi.ingsw.view.tui.screen.*;
 import javax.swing.*;
 
 public enum ScreenType {
+    LOGIN,
     LOBBY_SELECTION,
     GAME_PLAY;
 
     public static TUIScreen getTUIScreen(ScreenType type, ClientController clientController) {
         return switch (type) {
+            case LOGIN -> new TUILoginScreen(clientController);
             case LOBBY_SELECTION -> new TUILobbySelectionScreen(clientController);
             case GAME_PLAY -> new TUIGamePlayScreen(clientController);
         };

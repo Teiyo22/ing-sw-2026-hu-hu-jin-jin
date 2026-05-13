@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.tui;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.tui.screen.TUIScreen;
@@ -19,8 +21,8 @@ public class TUIView implements View {
     }
 
     @Override
-    public void start() {
-        transitionTo(ScreenType.LOBBY_SELECTION);
+    public void show() {
+        transitionTo(ScreenType.LOGIN);
         try (Scanner scanner = new Scanner(System.in)) {
             while (running) {
                 currScreen.render();
