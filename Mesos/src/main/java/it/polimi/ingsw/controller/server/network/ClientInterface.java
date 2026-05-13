@@ -28,6 +28,7 @@ public abstract class ClientInterface implements VirtualClient {
 
     public abstract void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers);
     public abstract void addPlayer(int lobbyID, Player player);
+    public abstract void addLobby(Lobby lobby);
     public abstract void removeLobby(int lobbyID);
     public abstract void removeClient(int lobbyID, Player player);
     public abstract void removePlayer(int lobbyID, Player player);

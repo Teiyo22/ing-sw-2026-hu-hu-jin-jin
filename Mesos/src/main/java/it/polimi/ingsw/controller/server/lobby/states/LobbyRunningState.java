@@ -50,7 +50,7 @@ public class LobbyRunningState extends LobbyState {
 
             lobbyController.setState(new LobbyPausedState(lobbyController));
             model.setLobbyState(null);
-            ServerController.getInstance().broadcastLobbyAddition(lobbyController.getID());
+            ServerController.getInstance().broadcastLobbyAddition(lobbyController.getLobby());
             return true;
         }
 

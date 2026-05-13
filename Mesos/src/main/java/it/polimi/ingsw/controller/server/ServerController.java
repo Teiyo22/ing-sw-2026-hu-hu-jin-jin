@@ -84,6 +84,7 @@ public class ServerController implements VirtualServer {
         client.createLobby(lobbyController.getLobby(), player);
         writeLock.unlock();
 
+        broadcastLobbyAddition(lobbyController.getLobby());
         Logger.getInstance().print(LoggerLevel.SERVER, "Created lobby " + lobbyController.getID() + " for client " + clientID + " with " + playerNum + " players");
     }
 
@@ -181,9 +182,10 @@ public class ServerController implements VirtualServer {
                 .forEach(c -> c.removeLobby(lobbyID));
     }
 
-    public void broadcastLobbyAddition(int lobbyID) {
-        for (ClientInterface client : allClients.values())
-            ; // TODO: implement messages/methods
+    public void broadcastLobbyAddition(Lobby lobby) {
+        allClients.values().stream()
+                .filter(c -> !playingClients.containsKey(c.getID()))
+                .forEach(c -> c.addLobby(lobby));
     }
 
     public void removeLobby(int lobbyID) {

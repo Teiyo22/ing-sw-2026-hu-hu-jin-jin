@@ -21,6 +21,7 @@ public interface VirtualClient extends Remote {
     void showWaitingLobbies(List<Lobby> lobbies) throws RemoteException;
     void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) throws RemoteException;
     void addPlayer(int lobbyID, Player player) throws RemoteException;
+    void addLobby(Lobby lobby) throws RemoteException;
     void removeLobby(int lobbyID) throws RemoteException;
     void removeClient(int lobbyID, Player player) throws RemoteException;
     void removePlayer(int lobbyID, Player player) throws RemoteException;
