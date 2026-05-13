@@ -10,14 +10,16 @@ import java.awt.event.ActionEvent;
 
 public class GUIJoinLobbyAction extends AbstractAction {
     private final ClientController clientController;
+    private final Totem totem;
 
-    public GUIJoinLobbyAction(ClientController clientController) {
+    public GUIJoinLobbyAction(ClientController clientController, Totem totem) {
         super("Join");
         this.clientController = clientController;
+        this.totem = totem;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new JoinLobbyCommand(clientController, new Player("Player", Totem.BLUE)).execute();
+        new JoinLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID(), totem).execute();
     }
 }

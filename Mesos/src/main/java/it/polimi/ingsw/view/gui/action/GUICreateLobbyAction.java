@@ -26,6 +26,6 @@ public class GUICreateLobbyAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         new CreateLobbyCommand(clientController,
-                (Integer) playerNumBox.getSelectedItem(), new Player(nameText.getText(), (Totem) totemBox.getSelectedItem())).execute();
+                (Integer) playerNumBox.getSelectedItem(), new Player(nameText.getText(), (Totem) totemBox.getSelectedItem()).getTotem()).execute();
     }
 }

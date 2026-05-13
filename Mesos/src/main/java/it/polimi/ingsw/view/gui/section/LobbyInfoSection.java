@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUIJoinLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIStartLobbyAction;
@@ -20,13 +21,15 @@ public class LobbyInfoSection implements GUISection{
     private final JPanel info;
     private final JLabel lobbyID;
     private final JLabel count;
-    private final JList<Map.Entry<Player, Integer>> players;
-    private final DefaultListModel<Map.Entry<Player, Integer>> model;
+    private final JList<Map.Entry<Player, Boolean>> players;
+    private final DefaultListModel<Map.Entry<Player, Boolean>> model;
 
     private final JPanel bottomBar;
     private final JButton join;
     private final JButton leave;
     private final JButton start;
+    private final JPanel totemSelect;
+    private final JLabel totemLabel;
 
     public LobbyInfoSection(ClientController clientController) {
         title = WidgetFactory.createLabel("Lobby Info");
@@ -35,7 +38,7 @@ public class LobbyInfoSection implements GUISection{
         count = WidgetFactory.createLabel("");
 
         model = new DefaultListModel<>();
-        players = new JList<>();
+        players = new JList<Map.Entry<Player, Boolean>>();
         players.setBackground(Fonts.cream);
         players.setFont(Fonts.small);
         players.setModel(model);
@@ -55,13 +58,20 @@ public class LobbyInfoSection implements GUISection{
 
         info = new PanelBuilder().column(0, lobbyID, count, players).buildPanel();
 
-        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController));
-        leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
-        start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
+
+        totemLabel = WidgetFactory.createLabel("Totem:");
+        JComboBox<Totem> totemBox = WidgetFactory.createBox(Totem.values());
+
+            join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController,(Totem)totemBox.getSelectedItem()));
+            leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
+            start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
+
+
+        totemSelect = new PanelBuilder().row(5, totemLabel, totemBox).buildPanel();
 
         bottomBar = new PanelBuilder().grid(3, 10, 0, join, leave, start).buildPanel();
 
-        panel = new PanelBuilder().border(title, info, bottomBar, null, null)
+        panel = new PanelBuilder().border(title, info, totemSelect, bottomBar, null)
                 .withColor(Fonts.other_red)
                 .buildPanel();
     }
@@ -70,7 +80,7 @@ public class LobbyInfoSection implements GUISection{
     public void render(ClientController clientController, JPanel container) {
         model.clear();
 
-        for (Map.Entry<Player, Integer> entry : clientController.getCurrLobby().getPlayers().entrySet())
+        for (Map.Entry<Player, Boolean> entry : clientController.getCurrLobby().getPlayers().entrySet())
             model.addElement(entry);
 
         lobbyID.setText(String.format("Lobby ID: %3d", clientController.getCurrLobby().getLobbyID()));

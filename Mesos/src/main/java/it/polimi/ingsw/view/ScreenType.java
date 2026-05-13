@@ -2,13 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.GUIView;
-import it.polimi.ingsw.view.gui.screen.GUIMenuScreen;
-import it.polimi.ingsw.view.gui.screen.GUIScreen;
-import it.polimi.ingsw.view.gui.screen.GUIGamePlayScreen;
-import it.polimi.ingsw.view.gui.screen.GUILobbySelectionScreen;
+import it.polimi.ingsw.view.gui.screen.*;
 import it.polimi.ingsw.view.tui.screen.*;
-
-import javax.swing.*;
 
 public enum ScreenType {
     LOGIN,
@@ -25,7 +20,7 @@ public enum ScreenType {
 
     public static GUIScreen getGUIScreen(ScreenType type, GUIView frame, ClientController clientController) {
         return switch(type) {
-            case LOGIN -> new GUIMenuScreen(frame, clientController);
+            case LOGIN -> new GUILoginScreen(frame, clientController);
             case LOBBY_SELECTION -> new GUILobbySelectionScreen(frame, clientController);
             case GAME_PLAY -> new GUIGamePlayScreen(frame, clientController);
         };

@@ -32,9 +32,9 @@ public class WidgetFactory {
 
     public static JTextField createTextField() {
         JTextField textField = new JTextField();
-        textField.setBackground(Color.WHITE);
+        textField.setFont(Fonts.medium);
+        textField.setBackground(Color.WHITE );
         textField.setPreferredSize(new Dimension(200, 30));
-
         return textField;
     }
 

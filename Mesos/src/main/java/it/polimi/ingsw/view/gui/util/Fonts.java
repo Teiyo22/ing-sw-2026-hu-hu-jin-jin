@@ -7,6 +7,8 @@ public class Fonts {
     public static final Font medium = new Font("Arial", Font.PLAIN, 30);
     public static final Font small  = new Font("Arial", Font.PLAIN, 20);
 
+    public static final Color menu2 = new Color(0x0F051A);
+    public static final Color menu = new Color(0x47131E);
     public static final Color black   = new Color(0x000000);
     public static final Color grey = new Color(30, 30, 30);
     public static final Color red      = new Color(0xEE3F2A);

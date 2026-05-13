@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.screen.GUIScreen;
-import it.polimi.ingsw.view.gui.screen.GUIMenuScreen;
+import it.polimi.ingsw.view.gui.screen.GUILoginScreen;
 
 import javax.swing.*;
 
@@ -25,7 +25,7 @@ public class GUIView extends JFrame implements View {
         setLocationRelativeTo(null);
         setResizable(true);
 
-        currScreen = new GUIMenuScreen(this, controller);
+        currScreen = new GUILoginScreen(this, controller);
         currScreen.render();
     }
 
