@@ -66,6 +66,12 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void addLobby(Lobby lobby) {
+        AddLobbyResponse response = new AddLobbyResponse(lobby);
+        sendMessage(response);
+    }
+
+    @Override
     public void removeLobby(int lobbyID) {
         RemoveLobbyResponse response = new RemoveLobbyResponse(lobbyID);
         sendMessage(response);

@@ -102,6 +102,13 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
+    public synchronized void addLobby(Lobby lobby) {
+        waitingLobbies.put(lobby.getLobbyID(), lobby);
+
+        view.update();
+    }
+
+    @Override
     public synchronized void removeLobby(int lobbyID) {
         waitingLobbies.remove(lobbyID);
 
