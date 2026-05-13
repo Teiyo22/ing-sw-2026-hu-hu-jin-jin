@@ -9,7 +9,7 @@ import java.io.Console;
 public class ServerMain {
 
     public static void main(String[] args) {
-        String address = "127.0.0.1";
+        String address;
         int tcpPort;
         int rmiPort;
 
@@ -22,7 +22,11 @@ public class ServerMain {
 
         if (input.length != 3) {
             System.out.println("Invalid number of arguments");
-            System.exit(-1);
+            input = new String[3];
+            input[0] = "127.0.0.1";
+            input[1] = "28910";
+            input[2] = "1099";
+            System.out.println("Using default values: " + input[0] + " " + input[1] + " " + input[2]);
         }
 
         try {
