@@ -20,6 +20,5 @@ public abstract class LobbyState {
     public abstract void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks);
     public abstract void pickOffer(ClientInterface pickerClient, int offerIndex);
 
-    public abstract boolean isRemovable();
     public abstract boolean isShowable();
 }

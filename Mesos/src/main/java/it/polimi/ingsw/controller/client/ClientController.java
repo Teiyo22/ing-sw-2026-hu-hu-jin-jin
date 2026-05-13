@@ -102,6 +102,14 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
+    public synchronized void removeLobby(int lobbyID) {
+        waitingLobbies.remove(lobbyID);
+
+        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            currLobby = null;
+    }
+
+    @Override
     public synchronized void removeClient(int lobbyID, Player player) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)

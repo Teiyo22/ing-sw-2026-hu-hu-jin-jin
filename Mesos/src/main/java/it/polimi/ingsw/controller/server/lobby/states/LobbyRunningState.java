@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -34,19 +35,21 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public boolean removeClient(ClientInterface client) {
-        Player removedPlayer = lobbyController.getPlayers().remove(client);
-
-        if (removedPlayer != null) {
-            for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeClient(lobbyController.getID(), removedPlayer);
-
-            client.stopLobby(lobbyController.getID());
-
+        if (lobbyController.getPlayers().containsKey(client)) {
             for (ClientInterface player : lobbyController.getPlayers().keySet())
                 player.stopLobby(lobbyController.getID());
 
-            model.setLobbyState(null);
+            Player removedPlayer = lobbyController.getPlayers().remove(client);
+
+            lobbyController.getListeners().addAll(lobbyController.getPlayers().keySet());
+            for (ClientInterface listener : lobbyController.getListeners())
+                listener.removeClient(lobbyController.getID(), removedPlayer);
+
+            ServerController.getInstance().moveToClients(lobbyController.getPlayers().keySet());
+
             lobbyController.setState(new LobbyPausedState(lobbyController));
+            model.setLobbyState(null);
+            ServerController.getInstance().broadcastLobbyAddition(lobbyController.getID());
             return true;
         }
 
@@ -132,8 +135,4 @@ public class LobbyRunningState extends LobbyState {
         return false;
     }
 
-    @Override
-    public boolean isRemovable() {
-        return false;
-    }
 }

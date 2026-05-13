@@ -71,6 +71,14 @@ public class RMIClientInterface extends ClientInterface {
     }
 
     @Override
+    public void removeLobby(int lobbyID) {
+        submitRemoteCall(
+                () -> wrappedClient.removeLobby(lobbyID),
+                () -> this.removeLobby(lobbyID)
+        );
+    }
+
+    @Override
     public synchronized void removeClient(int lobbyID, Player player) {
         submitRemoteCall(
                 () -> wrappedClient.removeClient(lobbyID, player),

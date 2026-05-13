@@ -66,6 +66,12 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void removeLobby(int lobbyID) {
+        RemoveLobbyResponse response = new RemoveLobbyResponse(lobbyID);
+        sendMessage(response);
+    }
+
+    @Override
     public synchronized void removeClient(int lobbyID, Player player) {
         RemoveClientResponse response = new RemoveClientResponse(lobbyID, player);
         sendMessage(response);
@@ -81,7 +87,6 @@ public class TCPClientInterface extends ClientInterface {
     public synchronized void showLeaderboard(List<LeaderboardEntry> leaderboard) {
         GetLeaderboardResponse response = new GetLeaderboardResponse(leaderboard);
         sendMessage(response);
-
     }
 
     @Override

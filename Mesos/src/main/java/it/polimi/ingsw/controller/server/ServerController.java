@@ -66,8 +66,10 @@ public class ServerController implements VirtualServer {
             return;
 
         LobbyController currLobbyController = client.getCurrLobbyController();
-        if (currLobbyController != null)
-            removeClientFrom(client, currLobbyController.getID());
+        if (currLobbyController != null) {
+            client.showError("You are already in a lobby");
+            return;
+        }
 
         int id = nextLobbyID.getAndIncrement();
 
@@ -79,6 +81,7 @@ public class ServerController implements VirtualServer {
         lobbies.put(lobbyController.getID(), lobbyController);
         client.createLobby(lobbyController.getLobby(), player);
         writeLock.unlock();
+
         Logger.getInstance().print(LoggerLevel.SERVER, "Created lobby " + lobbyController.getID() + " for client " + clientID + " with " + playerNum + " players");
     }
 
@@ -108,7 +111,7 @@ public class ServerController implements VirtualServer {
         if (client == null)
             return;
 
-        if(!removeClientFrom(client, lobbyID))
+        if (!removeClientFrom(client, lobbyID))
             removeClientFromAll(client);
     }
 
@@ -166,6 +169,20 @@ public class ServerController implements VirtualServer {
         else
             client.showError("This lobby is not available");
         readLock.unlock();
+    }
+
+    public void broadcastLobbyRemoval(int lobbyID) {
+        for (ClientInterface client : clients.values())
+            client.removeLobby(lobbyID);
+    }
+
+    public void broadcastLobbyAddition(int lobbyID) {
+        for (ClientInterface client : clients.values())
+            ; // TODO: implement messages/methods
+    }
+
+    public void removeLobby(int lobbyID) {
+        lobbies.remove(lobbyID);
     }
 
     //=============================================================================
@@ -246,6 +263,27 @@ public class ServerController implements VirtualServer {
 
     }
 
+    public void moveToPlayingClients(Collection<ClientInterface> toMoveClients) {
+        for (ClientInterface toMoveClient : toMoveClients) {
+            clients.remove(toMoveClient.getID());
+            playingClients.put(toMoveClient.getID(), toMoveClient);
+        }
+    }
+
+    public void moveToClients(Collection<ClientInterface> toMoveClients) {
+        for (ClientInterface toMoveClient : toMoveClients) {
+            clients.put(toMoveClient.getID(), toMoveClient);
+            playingClients.remove(toMoveClient.getID());
+
+            List<Lobby> lobbies = this.lobbies.values().stream()
+                    .filter(LobbyController::isShowable)
+                    .map(LobbyController::getLobby)
+                    .toList();
+
+            toMoveClient.showWaitingLobbies(lobbies);
+        }
+    }
+
     private boolean removeClientFrom(ClientInterface client, int lobbyID) {
         boolean removed = false;
 
@@ -255,9 +293,6 @@ public class ServerController implements VirtualServer {
         if (lobbyController != null) {
             Logger.getInstance().print(LoggerLevel.SERVER, "Removing client " + client.getID() + " from lobby " + lobbyID);
             removed = lobbyController.removeClient(client);
-
-            if (lobbyController.isRemovable())
-                lobbies.remove(lobbyID);
         }
 
         writeLock.unlock();
@@ -280,7 +315,7 @@ public class ServerController implements VirtualServer {
             removed = lobbyController.getListeners().remove(client);
         readLock.unlock();
 
-        return  removed;
+        return removed;
     }
 
     private void removeListenerFromAll(ClientInterface client) {

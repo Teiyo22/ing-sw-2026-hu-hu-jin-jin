@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
@@ -27,6 +28,10 @@ public class LobbyResumableState extends LobbyState {
     public void startLobby(ClientInterface client) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Restarting lobby " + lobbyController.getID());
 
+        lobbyController.getListeners().clear();
+        ServerController.getInstance().moveToPlayingClients(lobbyController.getPlayers().keySet());
+        ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
+
         Game model = lobbyController.getModel();
 
         Map<String, Tribe> tribes = new HashMap<>();
@@ -35,14 +40,13 @@ public class LobbyResumableState extends LobbyState {
 
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
             player.startLobby(lobbyController.getID(), model.getBoard(), tribes);
+            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
         }
 
-        for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
+        LobbyRunningState runningState = new LobbyRunningState(lobbyController);
+        model.setLobbyState(runningState);
+        lobbyController.setState(runningState);
 
-        LobbyRunningState nextState = new LobbyRunningState(lobbyController);
-        model.setLobbyState(nextState);
-        lobbyController.setState(nextState);
         Logger.getInstance().print(LoggerLevel.SERVER, "Restarted lobby " + lobbyController.getID());
     }
 
@@ -79,11 +83,6 @@ public class LobbyResumableState extends LobbyState {
     @Override
     public void pickOffer(ClientInterface pickerClient, int offerIndex) {
         pickerClient.showError("Game not started yet.");
-    }
-
-    @Override
-    public boolean isRemovable() {
-        return false;
     }
 
     @Override
