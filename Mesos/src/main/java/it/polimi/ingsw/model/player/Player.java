@@ -9,8 +9,8 @@ public class Player implements Comparable<Player>, Serializable {
     private String name;
     private Totem totem;
 
-    transient private int rank = 0;
-    transient private Tribe tribe = null;
+    private int rank;
+    private Tribe tribe;
 
     /**
      * Constructs a new {@code Player} with the given name and totem.
@@ -21,6 +21,8 @@ public class Player implements Comparable<Player>, Serializable {
     public Player(String name, Totem totem) {
         this.name = name;
         this.totem = totem;
+        this.rank = 0;
+        this.tribe = null;
     }
 
     /**
@@ -150,9 +152,8 @@ public class Player implements Comparable<Player>, Serializable {
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (this == obj) return true;
-        if (!(obj instanceof Player)) return false;
+        if (!(obj instanceof Player other)) return false;
 
-        Player other = (Player) obj;
         return java.util.Objects.equals(name, other.name) &&
                 java.util.Objects.equals(totem, other.totem);
     }

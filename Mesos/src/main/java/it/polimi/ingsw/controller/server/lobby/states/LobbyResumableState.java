@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LobbyResumableState extends LobbyState {
     public LobbyResumableState(LobbyController lobbyController) {
@@ -69,8 +70,10 @@ public class LobbyResumableState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Set<Player> connectedPlayers = new HashSet<>(lobbyController.getPlayers().values());
         Set<Player> disconnectedPlayers = new HashSet<>();
+        Set<Player> connectedPlayers = lobbyController.getPlayers().values().stream()
+                .map(p -> new Player(p.getName(), p.getTotem()))
+                .collect(Collectors.toSet());
 
         client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
     }

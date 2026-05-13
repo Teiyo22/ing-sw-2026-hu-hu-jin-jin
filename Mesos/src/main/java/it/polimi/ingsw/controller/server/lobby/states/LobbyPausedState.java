@@ -8,6 +8,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LobbyPausedState extends LobbyState {
     private List<Player> missingPlayers;
@@ -71,8 +72,12 @@ public class LobbyPausedState extends LobbyState {
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
 
-        Set<Player> connectedPlayers = new HashSet<>(lobbyController.getPlayers().values());
-        Set<Player> disconnectedPlayers = new HashSet<>(missingPlayers);
+        Set<Player> disconnectedPlayers = missingPlayers.stream()
+                .map(p -> new Player(p.getName(), p.getTotem()))
+                .collect(Collectors.toSet());
+        Set<Player> connectedPlayers = lobbyController.getPlayers().values().stream()
+                .map(p -> new Player(p.getName(), p.getTotem()))
+                .collect(Collectors.toSet());
 
         client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
     }
