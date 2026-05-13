@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.client.network;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -20,6 +21,16 @@ public class RMIServerInterface extends ServerInterface {
     public RMIServerInterface(ClientController clientController, VirtualServer wrappedServer) {
         super(clientController);
         this.wrappedServer = wrappedServer;
+    }
+
+    @Override
+    public void registerClient(ClientInterface client) {
+        try {
+            wrappedServer.registerClient(client);
+        } catch (RemoteException e) {
+            Logger.getInstance().print(LoggerLevel.DEBUG, e.getMessage());
+            reschedule(() -> registerClient(client));
+        }
     }
 
     @Override
