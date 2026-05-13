@@ -29,7 +29,7 @@ public class LobbyFullState extends LobbyState {
         Logger.getInstance().print(LoggerLevel.SERVER, "Starting lobby " + lobbyController.getID());
 
         lobbyController.getListeners().clear();
-        ServerController.getInstance().moveToPlayingClients(lobbyController.getPlayers().keySet());
+        ServerController.getInstance().addToPlayingClients(lobbyController.getPlayers().keySet());
         ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
 
         lobbyController.initModel();

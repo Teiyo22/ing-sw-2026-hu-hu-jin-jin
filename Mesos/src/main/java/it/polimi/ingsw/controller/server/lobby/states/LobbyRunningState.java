@@ -36,16 +36,17 @@ public class LobbyRunningState extends LobbyState {
     @Override
     public boolean removeClient(ClientInterface client) {
         if (lobbyController.getPlayers().containsKey(client)) {
+            lobbyController.getListeners().addAll(lobbyController.getPlayers().keySet());
+
             for (ClientInterface player : lobbyController.getPlayers().keySet())
                 player.stopLobby(lobbyController.getID());
 
             Player removedPlayer = lobbyController.getPlayers().remove(client);
 
-            lobbyController.getListeners().addAll(lobbyController.getPlayers().keySet());
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.removeClient(lobbyController.getID(), removedPlayer);
 
-            ServerController.getInstance().moveToClients(lobbyController.getPlayers().keySet());
+            ServerController.getInstance().removeFromPlayingClients(lobbyController.getPlayers().keySet());
 
             lobbyController.setState(new LobbyPausedState(lobbyController));
             model.setLobbyState(null);
