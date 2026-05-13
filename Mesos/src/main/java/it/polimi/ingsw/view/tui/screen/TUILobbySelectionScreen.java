@@ -9,7 +9,7 @@ import it.polimi.ingsw.view.tui.section.LobbyListSection;
 import java.util.List;
 
 
-public class TUILobbySelectionScreen extends  TUIScreen {
+    public class TUILobbySelectionScreen extends  TUIScreen {
     public TUILobbySelectionScreen(ClientController clientController) {
         super(clientController);
 

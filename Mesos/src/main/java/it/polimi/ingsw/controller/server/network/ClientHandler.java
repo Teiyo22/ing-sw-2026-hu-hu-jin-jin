@@ -14,7 +14,6 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.RequestDeserializer;
 import it.polimi.ingsw.utils.controller.ResponseSerializer;
-import it.polimi.ingsw.utils.controller.StateInfoDeserializer;
 import it.polimi.ingsw.utils.controller.StateInfoSerializer;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
@@ -52,6 +51,7 @@ public class ClientHandler extends Thread {
 
         try {
             while ((line = input.readLine()) != null) {
+                Logger.getInstance().print(LoggerLevel.DEBUG, "Received message from client " + tcpClientInterface.getID() +": " + line);
                 Request request = gson.fromJson(line, Request.class);
                 tcpClientInterface.handleMessage(request);
             }
@@ -69,6 +69,7 @@ public class ClientHandler extends Thread {
     public void sendMessage(Response response) {
         try {
             String message = gson.toJson(response);
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message to client " + tcpClientInterface.getID() +": " + message);
             output.write(message);
             output.newLine();
             output.flush();

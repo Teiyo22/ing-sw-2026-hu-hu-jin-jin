@@ -241,8 +241,6 @@ public class ClientController implements VirtualClient {
             VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
             server.registerClient(new RMIClientInterface(stub));
 
-            connectionMonitor.startServerMonitor(this);
-
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
         } catch (RemoteException | NotBoundException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to connect with RMI to server: " + ip + ":" + rmiPort);
@@ -264,7 +262,6 @@ public class ClientController implements VirtualClient {
 
         try {
             networkClient.connect(ip, tcpPort);
-            connectionMonitor.startServerMonitor(this);
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
             System.out.println("Failed to connect with TCP to server: " + ip + ":" + tcpPort);
@@ -318,6 +315,7 @@ public class ClientController implements VirtualClient {
     public void setID(String clientID) {
         this.id = clientID;
         init = true;
+        connectionMonitor.startServerMonitor(this);
 
         Logger.getInstance().print(LoggerLevel.CLIENT, "Received client ID: " + this.id);
     }

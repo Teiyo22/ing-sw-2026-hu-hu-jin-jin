@@ -39,8 +39,8 @@ public class Formatter {
         return line(String.format("Player Count: %3d/%3d", currentCount, maxCount));
     }
 
-    public static String player(Map.Entry<Player, Integer> player) {
-        String identifier = player.getValue() == null ? "Disconnected" : "ID: " + player.getValue();
+    public static String player(Map.Entry<Player, Boolean> player) {
+        String identifier = player.getValue() ? "ID: " + player.getValue() : "Disconnected";
         String content = String.format("- %-10s (%s)", player.getKey().getName(), identifier);
 
         return coloredLine(content, player.getKey().getTotem().getColor());

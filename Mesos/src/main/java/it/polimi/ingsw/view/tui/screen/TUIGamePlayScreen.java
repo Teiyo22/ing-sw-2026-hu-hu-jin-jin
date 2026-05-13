@@ -7,8 +7,6 @@ import it.polimi.ingsw.view.tui.section.*;
 import java.util.List;
 
 public class TUIGamePlayScreen extends TUIScreen {
-
-
     public TUIGamePlayScreen(ClientController clientController) {
         super(clientController);
 

@@ -56,6 +56,7 @@ public class NetworkClient extends Thread {
         String line;
         try {
             while (!Thread.currentThread().isInterrupted() && (line = input.readLine()) != null) {
+                Logger.getInstance().print(LoggerLevel.DEBUG, "Received message: " + line);
                 Response response = gson.fromJson(line, Response.class);
                 server.handleMessage(response);
             }
@@ -80,8 +81,9 @@ public class NetworkClient extends Thread {
     public void sendMessage(Request request) {
         if (!init) return;
 
-        String msg = gson.toJson(request);
         try {
+            String msg = gson.toJson(request);
+            Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message: " + msg);
             output.write(msg);
             output.newLine();
             output.flush();

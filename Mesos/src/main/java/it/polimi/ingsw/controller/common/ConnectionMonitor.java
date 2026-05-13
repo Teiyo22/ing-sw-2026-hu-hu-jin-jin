@@ -3,6 +3,8 @@ package it.polimi.ingsw.controller.common;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
+import it.polimi.ingsw.utils.Logger;
+import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +37,10 @@ public class ConnectionMonitor {
         scheduler.scheduleAtFixedRate(() -> {
             long silence = System.currentTimeMillis() - serverLastSeen.get();
 
-            if (silence > timeout * 1000)
+            if (silence > timeout * 1000) {
                 clientController.disconnect();
+                Logger.getInstance().print(LoggerLevel.DEBUG, "Connection Monitor disconnecting server after " + silence / 1000 + "s of silence");
+            }
             else
                 clientController.getServer().ping(clientController.getID());
         }, 0, interval, TimeUnit.SECONDS);
@@ -66,8 +70,10 @@ public class ConnectionMonitor {
             for (ClientInterface client : clientLastSeen.keySet()) {
                 long silence = System.currentTimeMillis() - clientLastSeen.get(client);
 
-                if (silence > timeout * 1000)
+                if (silence > timeout * 1000) {
                     ServerController.getInstance().disconnectClient(client);
+                    Logger.getInstance().print(LoggerLevel.DEBUG, "Connection Monitor disconnecting client " + client.getID() + " after " + silence / 1000 + "s of silence");
+                }
             }
         }, 0, interval, TimeUnit.SECONDS);
     }
