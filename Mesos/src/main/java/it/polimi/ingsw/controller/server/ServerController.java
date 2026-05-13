@@ -260,6 +260,16 @@ public class ServerController implements VirtualServer {
         if (previousValue == null) {
             ClientInterface loggedInClient = allClients.remove(clientID);
             loggedInClient.confirmLogin(username);
+
+            readLock.lock();
+            List<Lobby> lobbies = this.lobbies.values().stream()
+                    .filter(LobbyController::isShowable)
+                    .map(LobbyController::getLobby)
+                    .toList();
+
+            loggedInClient.showWaitingLobbies(lobbies);
+            readLock.unlock();
+
             Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " successfully logged in as " + username);
         } else {
             allClients.get(clientID).showError("Username already in use");
@@ -277,12 +287,14 @@ public class ServerController implements VirtualServer {
         for (ClientInterface toMoveClient : toMoveClients) {
             playingClients.remove(toMoveClient.getID());
 
+            readLock.lock();
             List<Lobby> lobbies = this.lobbies.values().stream()
                     .filter(LobbyController::isShowable)
                     .map(LobbyController::getLobby)
                     .toList();
 
             toMoveClient.showWaitingLobbies(lobbies);
+            readLock.unlock();
         }
     }
 
