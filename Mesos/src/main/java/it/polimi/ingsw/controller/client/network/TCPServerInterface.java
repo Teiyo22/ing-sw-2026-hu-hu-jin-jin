@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.util.Set;
@@ -50,12 +49,12 @@ public class TCPServerInterface extends ServerInterface {
      *
      * @param clientID
      * @param lobbyID  ID of the lobby of interest.
-     * @param player   Player object containing the player's username and selected totem.
+     * @param totem    Player object containing the player's username and selected totem.
      *
      */
     @Override
-    public void joinLobby(String clientID, int lobbyID, Player player) {
-        JoinLobbyRequest request = new JoinLobbyRequest(clientID, lobbyID, player);
+    public void joinLobby(String clientID, int lobbyID, Totem totem) {
+        JoinLobbyRequest request = new JoinLobbyRequest(clientID, lobbyID, totem);
         serverHandler.sendMessage(request);
     }
 

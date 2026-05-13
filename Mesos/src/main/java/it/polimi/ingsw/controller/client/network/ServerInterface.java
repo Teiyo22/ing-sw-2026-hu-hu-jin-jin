@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.util.Set;
@@ -19,7 +18,7 @@ public abstract class ServerInterface implements VirtualServer {
     public void registerClient(ClientInterface client) {}
     public abstract void login(String clientID, String username);
     public abstract void createLobby(String clientID, int playerNum, Totem totem);
-    public abstract void joinLobby(String clientID, int lobbyID, Player player);
+    public abstract void joinLobby(String clientID, int lobbyID, Totem totem);
     public abstract void leaveLobby(String clientID, int lobbyID);
     public abstract void startLobby(String clientID, int lobbyID);
     public abstract void getWaitingLobbies(String clientID);

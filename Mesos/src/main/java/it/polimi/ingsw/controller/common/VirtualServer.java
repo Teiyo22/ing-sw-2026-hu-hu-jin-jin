@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller.common;
 
 
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.rmi.RemoteException;
@@ -16,7 +15,7 @@ public interface VirtualServer extends Remote {
     void getWaitingLobbies(String clientID) throws RemoteException;
     void getLobbyInfo(String clientID, int lobbyID) throws RemoteException;
     void createLobby(String clientID, int playerNum, Totem totem) throws RemoteException;
-    void joinLobby(String clientID, int lobbyID, Player player) throws RemoteException;
+    void joinLobby(String clientID, int lobbyID, Totem totem) throws RemoteException;
     void leaveLobby(String clientID, int lobbyID) throws RemoteException;
     void startLobby(String clientID, int lobbyID) throws RemoteException;
     void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) throws RemoteException;

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class JoinLobbyAction implements Action {
     final private ClientController clientController;
-    final private int argCount = 2;
+    final private int argCount = 1;
 
     private Lobby currLobby;
 
@@ -46,29 +46,24 @@ public class JoinLobbyAction implements Action {
         if (args.length != argCount + 1)
             return Optional.of("Invalid number of arguments");
 
-        playerName = parseName(args[1]);
-
-        totem = parseTotem(args[2]);
+        totem = parseTotem(args[1]);
         if (totem == null)
             return Optional.of("Totem must be unique and one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
 
-
-        Player player = new Player(playerName, totem);
-
-        if (!validatePlayer(player))
-            return Optional.of("Invalid name and/or totem");
-
-        new JoinLobbyCommand(clientController, player).execute();
+        new JoinLobbyCommand(currLobby.getLobbyID(), totem).execute(clientController);
         return Optional.empty();
-    }
-
-    private String parseName(String input) {
-        return input;
     }
 
     private Totem parseTotem(String input) {
         try {
-            return Totem.valueOf(input.toUpperCase());
+            Totem totem = Totem.valueOf(input.toUpperCase());
+
+            for (Player player : currLobby.getPlayers().keySet())
+                if ((player.getName().equals(clientController.getID()) && totem != player.getTotem()) ||
+                    (!player.getName().equals(clientController.getID()) && totem == player.getTotem()))
+                    return null;
+
+            return totem;
         } catch (IllegalArgumentException e) {
             return null;
         }
@@ -86,6 +81,6 @@ public class JoinLobbyAction implements Action {
 
     @Override
     public String toString() {
-        return String.format("[%s | %s] <Player Name> <Totem>", key(), label());
+        return String.format("[%s | %s] <Totem>", key(), label());
     }
 }

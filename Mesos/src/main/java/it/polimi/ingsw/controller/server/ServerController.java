@@ -88,7 +88,7 @@ public class ServerController implements VirtualServer {
     }
 
     @Override
-    public void joinLobby(String clientID, int lobbyID, Player player) {
+    public void joinLobby(String clientID, int lobbyID, Totem totem) {
         Logger.getInstance().print(LoggerLevel.SERVER, "Received request to join lobby " + lobbyID + " from client " + clientID);
         ClientInterface client = clients.get(clientID);
 
@@ -98,8 +98,10 @@ public class ServerController implements VirtualServer {
         readLock.lock();
         LobbyController lobbyController = lobbies.get(lobbyID);
 
-        if (lobbyController != null)
+        if (lobbyController != null) {
+            Player player = new Player(clientID, totem);
             lobbyController.joinLobby(client, player);
+        }
         else
             client.showError("This lobby is not available");
         readLock.unlock();

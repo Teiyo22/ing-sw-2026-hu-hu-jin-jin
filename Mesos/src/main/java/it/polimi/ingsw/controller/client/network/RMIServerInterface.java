@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -54,11 +53,11 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void joinLobby(String clientID, int lobbyID, Player player) {
+    public void joinLobby(String clientID, int lobbyID, Totem totem) {
         try {
-            wrappedServer.joinLobby(clientID, lobbyID, player);
+            wrappedServer.joinLobby(clientID, lobbyID, totem);
         } catch (RemoteException e) {
-            reschedule(() -> {joinLobby(clientID, lobbyID, player);});
+            reschedule(() -> {joinLobby(clientID, lobbyID, totem);});
         }
     }
 
