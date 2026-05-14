@@ -9,13 +9,14 @@ import java.awt.event.MouseListener;
 public abstract class SelectableComponent<E> extends JLabel implements MouseListener{
     protected final E element;
     protected final SelectionListener<E> selectionListener;
-    private boolean selected;
+    protected boolean selected;
     private boolean hover;
 
     public SelectableComponent(E element, SelectionListener<E> selectionListener) {
         this.element = element;
         this.selectionListener = selectionListener;
         this.selected = false;
+        this.addMouseListener(this);
     }
 
     public void updateBorder(){

@@ -7,12 +7,12 @@ public abstract class SelectionListener<E> {
         this.isEnabled = false;
     }
 
-    public void enable() {
-        isEnabled = true;
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
     }
 
-    public void disable() {
-        isEnabled = false;
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     abstract boolean onSelect(E element);  //boolean indicates whether the selection was successful

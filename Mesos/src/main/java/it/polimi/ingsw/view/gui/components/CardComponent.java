@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 public class CardComponent extends SelectableComponent<AbstractCard> {
     private final ImageIcon front;
@@ -14,20 +15,21 @@ public class CardComponent extends SelectableComponent<AbstractCard> {
         super(card, selectionListener);
 
         String resource = card.getResource();
-        Image frontImg = new ImageIcon("/images/" + resource + ".png").getImage();
-        Image backImg = new ImageIcon("/images/" + card.getEra() + ".png").getImage();
-        this.front = new ImageIcon(frontImg.getScaledInstance(100, 150, Image.SCALE_DEFAULT));
-        this.back = new ImageIcon(backImg.getScaledInstance(100, 150, Image.SCALE_DEFAULT));
+        Image frontImg = new ImageIcon(getClass().getResource("/images/front/" + resource + ".png")).getImage();
+        Image backImg = new ImageIcon(getClass().getResource("/images/back/" + card.getEra() + ".png")).getImage();
+
+        this.front = new ImageIcon(frontImg.getScaledInstance(120, 180, Image.SCALE_DEFAULT));
+        this.back = new ImageIcon(backImg.getScaledInstance(120, 180, Image.SCALE_DEFAULT));
+
+        this.setPreferredSize(new Dimension(120, 180));
     }
 
     public void renderFront(){
         this.setIcon(this.front);
-        this.addMouseListener(this);
     }
 
     public void renderBack(){
         this.setIcon(this.back);
-        this.addMouseListener(this);
     }
 
     @Override
