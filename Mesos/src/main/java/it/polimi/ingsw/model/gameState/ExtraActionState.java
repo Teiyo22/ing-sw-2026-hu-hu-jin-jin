@@ -32,7 +32,8 @@ public class ExtraActionState extends GameState {
         if(currPlayer == null) {
             game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
-        }
+        } else if (game.getBoard().getTopRow().getPickableCardCount() == 0)
+            update();
     }
 
     @Override
