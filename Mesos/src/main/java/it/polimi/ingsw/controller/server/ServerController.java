@@ -428,13 +428,4 @@ public class ServerController implements VirtualServer {
             readLock.unlock();
         }
     }
-
-    //=============================================================================
-    // Getters
-    //=============================================================================
-
-    public Map<Integer, LobbyController> getLobbies() {
-        return lobbies;
-    }
-
 }

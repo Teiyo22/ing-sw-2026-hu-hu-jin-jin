@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.player.PlayerConfig;
 import java.util.Map;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LobbyController {
     private final int lobbyID;
@@ -22,6 +24,9 @@ public class LobbyController {
     private Game model = null;
     private LobbyState state;
 
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock readLock = lock.readLock();
+    private final Lock writeLock = lock.writeLock();
 
     public LobbyController(int lobbyID, int size) {
         this.lobbyID = lobbyID;
@@ -33,23 +38,43 @@ public class LobbyController {
     // Lobby Interaction methods
     //=============================================================================
 
-    public synchronized void joinLobby(ClientInterface newClient, Player newPlayer) {
-        state.joinLobby(newClient, newPlayer);
+    public void joinLobby(ClientInterface newClient, Player newPlayer) {
+        writeLock.lock();
+        try {
+            state.joinLobby(newClient, newPlayer);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
-    public synchronized void getLobbyInfo(ClientInterface client) {
-        state.getLobbyInfo(client);
+    public void getLobbyInfo(ClientInterface client) {
+        readLock.lock();
+        try {
+            state.getLobbyInfo(client);
+        } finally {
+            readLock.unlock();
+        }
     }
 
-    public synchronized void startLobby(ClientInterface startClient) {
-        state.startLobby(startClient);
+    public void startLobby(ClientInterface startClient) {
+        writeLock.lock();
+        try {
+            state.startLobby(startClient);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
-    public synchronized boolean remove(ClientInterface client) {
-        return state.removeClient(client);
+    public boolean remove(ClientInterface client) {
+        writeLock.lock();
+        try {
+            return state.removeClient(client);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
-    public synchronized void add(ClientInterface client, Player player) {
+    public void add(ClientInterface client, Player player) {
         listeners.add(client);
         players.put(client, player);
     }
@@ -63,12 +88,22 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
-    public synchronized void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        state.pickCards(pickerClient, topPicks, bottomPicks);
+    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
+        writeLock.lock();
+        try {
+            state.pickCards(pickerClient, topPicks, bottomPicks);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
-    public synchronized void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        state.pickOffer(pickerClient, offerIndex);
+    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
+        writeLock.unlock();
+        try {
+            state.pickOffer(pickerClient, offerIndex);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     //=============================================================================
