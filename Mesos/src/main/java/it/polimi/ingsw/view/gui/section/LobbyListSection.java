@@ -22,15 +22,11 @@ public class LobbyListSection implements GUISection {
     private final DefaultListModel<Lobby> model;
 
     private final JPanel topBar;
-    private final JButton back;
-    private final JButton refresh;
 
     public LobbyListSection(ClientController clientController) {
         title = WidgetFactory.createLabel("Lobby selection");
 
-        back = new JButton("Back");
-        refresh = WidgetFactory.createButton(new GUIGetWaitingLobbiesAction(clientController));
-        topBar = new PanelBuilder().border(null, title, null, back, refresh).buildPanel();
+        topBar = new PanelBuilder().border(null, title, null, null,null).buildPanel();
 
         model = new DefaultListModel<>();
         lobbies = new JList<>();
@@ -41,7 +37,7 @@ public class LobbyListSection implements GUISection {
 
         lobbies.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             JPanel cell = new JPanel(new BorderLayout());
-            JLabel id = new JLabel(String.format("Lobby #%3d | Size: %3d ", value.getLobbyID(), value.getSize()));
+            JLabel id = new JLabel(String.format("Lobby #%3d |  %3d/%3d ", value.getLobbyID(),value.getPlayerCount(), value.getSize()));
             id.setFont(Fonts.medium);
             id.setForeground(Color.WHITE);
             cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
@@ -73,6 +69,7 @@ public class LobbyListSection implements GUISection {
     @Override
     public void render(ClientController clientController, JPanel panel) {
         Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
+        model.clear();
         for(Lobby lobby : lobbies.values())
             if (!model.contains(lobby))
                 model.addElement(lobby);
