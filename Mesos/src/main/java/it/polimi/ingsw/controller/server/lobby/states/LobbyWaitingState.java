@@ -21,10 +21,8 @@ public class LobbyWaitingState extends LobbyState {
     @Override
     public void joinLobby(ClientInterface client, Player player) {
         if (validatePlayerInfo(player) && !lobbyController.getPlayers().containsKey(client)) {
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Sent data was validated, adding player to lobby");
             lobbyController.getPlayers().put(client, player);
 
-            Logger.getInstance().print(LoggerLevel.DEBUG, "Notifying listeners of new player");
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.addPlayer(lobbyController.getID(), player);
 

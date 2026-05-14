@@ -45,8 +45,13 @@ public class LobbyController {
         state.startLobby(startClient);
     }
 
-    public synchronized boolean removeClient(ClientInterface leaveClient) {
-        return state.removeClient(leaveClient);
+    public synchronized boolean remove(ClientInterface client) {
+        return state.removeClient(client);
+    }
+
+    public synchronized void add(ClientInterface client, Player player) {
+        listeners.add(client);
+        players.put(client, player);
     }
 
     //=============================================================================

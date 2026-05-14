@@ -35,13 +35,12 @@ public class ServerController implements VirtualServer {
 
     private final long retryDelay = 3L;
 
+    private final AtomicInteger nextLobbyID = new AtomicInteger(1);
     private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
     private final Map<Integer, LobbyController> savedLobbies = new ConcurrentHashMap<>();
 
     private final Map<String, ClientInterface> allClients = new ConcurrentHashMap<>();
     private final Map<String, ClientInterface> playingClients = new ConcurrentHashMap<>();
-
-    private final AtomicInteger nextLobbyID = new AtomicInteger(1);
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
@@ -60,82 +59,89 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void createLobby(String clientID, int playerNum, Totem totem) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to create lobby with " + playerNum + " players from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Create Lobby] with [%d Players] from [Client %s]", playerNum, clientID));
 
-        if (client == null)
-            return;
+        readLock.lock();
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        LobbyController currLobbyController = client.getCurrLobbyController();
-        if (currLobbyController != null && currLobbyController.getLobby().containsClient(clientID)) {
-            client.showError("You are already in a lobby");
-            return;
+            LobbyController currLobbyController = client.getCurrLobbyController();
+            if (currLobbyController != null && currLobbyController.getLobby().containsClient(clientID)) {
+                client.showError("You are already in a lobby");
+                return;
+            }
+
+            int id = nextLobbyID.getAndIncrement();
+            Player player = new Player(clientID, totem);
+
+            LobbyController lobbyController = new LobbyController(id, playerNum);
+            lobbyController.add(client, player);
+            lobbies.put(lobbyController.getID(), lobbyController);
+
+            client.createLobby(lobbyController.getLobby(), player);
+            broadcastLobbyAddition(lobbyController.getLobby());
+            Logger.getInstance().print(LoggerLevel.SERVER, String.format("Successfully created [Lobby %d] with [%d Players] for [Client %s]", id, playerNum, clientID));
+        } finally {
+            readLock.unlock();
         }
-
-        int id = nextLobbyID.getAndIncrement();
-
-        Player player = new Player(clientID, totem);
-        LobbyController lobbyController = new LobbyController(id, playerNum);
-        lobbyController.getPlayers().put(client, player);
-        lobbyController.getListeners().add(client);
-
-        writeLock.lock();
-        lobbies.put(lobbyController.getID(), lobbyController);
-        client.createLobby(lobbyController.getLobby(), player);
-        writeLock.unlock();
-
-        broadcastLobbyAddition(lobbyController.getLobby());
-        Logger.getInstance().print(LoggerLevel.SERVER, "Created lobby " + lobbyController.getID() + " for client " + clientID + " with " + playerNum + " players");
     }
 
     @Override
     public void joinLobby(String clientID, int lobbyID, Totem totem) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to join lobby " + lobbyID + " from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Join] [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (lobbyController != null) {
-            Player player = new Player(clientID, totem);
-            lobbyController.joinLobby(client, player);
+            LobbyController lobbyController = lobbies.get(lobbyID);
+            if (lobbyController != null) {
+                Player player = new Player(clientID, totem);
+                lobbyController.joinLobby(client, player);
+            } else {
+                client.showError("This lobby is not available");
+            }
+        } finally {
+            readLock.unlock();
         }
-        else
-            client.showError("This lobby is not available");
-        readLock.unlock();
     }
 
     @Override
     public void leaveLobby(String clientID, int lobbyID) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to leave lobby " + lobbyID + " from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Leave] [Lobby %d] from [Client %s]", lobbyID, clientID));
 
-        if (client == null)
-            return;
+        writeLock.lock();
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (!removeClientFrom(client, lobbyID))
-            removeClientFromAll(client);
+            LobbyController lobbyController = lobbies.get(lobbyID);
+            if (lobbyController != null)
+                lobbyController.remove(client);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void startLobby(String clientID, int lobbyID) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to start lobby " + lobbyID + " from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Start] [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (lobbyController != null)
-            lobbyController.startLobby(client);
-        else
-            client.showError("This lobby is not available");
-        readLock.unlock();
+            LobbyController lobbyController = lobbies.get(lobbyID);
+            if (lobbyController != null)
+                lobbyController.startLobby(client);
+            else
+                client.showError("This lobby is not available");
+        } finally {
+            readLock.unlock();
+        }
     }
 
     private List<Lobby> getWaitingLobbies() {
@@ -152,22 +158,22 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void getLobbyInfo(String clientID, int lobbyID) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get lobby info from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Info] of [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
-        LobbyController lobbyController;
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        lobbyController = lobbies.get(lobbyID);
+            LobbyController lobbyController = lobbies.get(lobbyID);
 
-        if (lobbyController != null)
-            lobbyController.getLobbyInfo(client);
-        else
-            client.showError("This lobby is not available");
-        readLock.unlock();
+            if (lobbyController != null)
+                lobbyController.getLobbyInfo(client);
+            else
+                client.showError("This lobby is not available");
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public void broadcastLobbyRemoval(int lobbyID) {
@@ -198,36 +204,41 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Card Pick] request for [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
-        LobbyController lobby = lobbies.get(lobbyID);
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (lobby != null)
-            lobby.pickCards(client, topPicks, bottomPicks);
-        else
-            client.showError("This lobby is not available");
-        readLock.unlock();
+            LobbyController lobby = lobbies.get(lobbyID);
+            if (lobby != null)
+                lobby.pickCards(client, topPicks, bottomPicks);
+            else
+                client.showError("This lobby is not available");
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public void requestOffer(String clientID, int lobbyID, int offerIndex) {
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Offer Pick] request for [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
-        LobbyController lobby = lobbies.get(lobbyID);
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (lobby != null)
-            lobby.pickOffer(client, offerIndex);
-        else
-            client.showError("This lobby is not available");
-        readLock.unlock();
+            LobbyController lobby = lobbies.get(lobbyID);
+
+            if (lobby != null)
+                lobby.pickOffer(client, offerIndex);
+            else
+                client.showError("This lobby is not available");
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
@@ -254,22 +265,27 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void login(String clientID, String username) {
-        if (!allClients.containsKey(clientID)) // If true, it could mean the client already logged in
-            return;
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request to [Login] from [Client %s] as [%s]", clientID, username));
 
-        ClientInterface previousValue = allClients.putIfAbsent(username, allClients.get(clientID));
+        writeLock.lock();
+        try {
+            if (!allClients.containsKey(clientID)) return;
 
-        if (previousValue == null) {
-            ClientInterface loggedInClient = allClients.remove(clientID);
-            loggedInClient.confirmLogin(username);
+            ClientInterface previousValue = allClients.putIfAbsent(username, allClients.get(clientID));
+            if (previousValue == null) {
+                ClientInterface loggedInClient = allClients.remove(clientID);
+                loggedInClient.confirmLogin(username);
 
-            List<Lobby> lobbies = getWaitingLobbies();
-            loggedInClient.showWaitingLobbies(lobbies);
+                List<Lobby> lobbies = getWaitingLobbies();
+                loggedInClient.showWaitingLobbies(lobbies);
 
-            Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " successfully logged in as " + username);
-        } else {
-            allClients.get(clientID).showError("Username already in use");
-            Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " failed to login as " + username);
+                Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully logged in as [%s]", clientID, username));
+            } else {
+                allClients.get(clientID).showError("Username already in use");
+                Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] failed to login as [%s]", clientID, username));
+            }
+        } finally {
+            writeLock.unlock();
         }
 
     }
@@ -286,45 +302,6 @@ public class ServerController implements VirtualServer {
             List<Lobby> lobbies = getWaitingLobbies();
             client.showWaitingLobbies(lobbies);
         }
-    }
-
-    private boolean removeClientFrom(ClientInterface client, int lobbyID) {
-        boolean removed = false;
-
-        writeLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
-
-        if (lobbyController != null) {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Removing client " + client.getID() + " from lobby " + lobbyID);
-            removed = lobbyController.removeClient(client);
-        }
-
-        writeLock.unlock();
-
-        return removed;
-    }
-
-    private void removeClientFromAll(ClientInterface client) {
-        for (LobbyController lobbyController : lobbies.values())
-            removeClientFrom(client, lobbyController.getID());
-    }
-
-    private boolean removeListenerFrom(ClientInterface client, int lobbyID) {
-        boolean removed = false;
-
-        readLock.lock();
-        LobbyController lobbyController = lobbies.get(lobbyID);
-
-        if (lobbyController != null)
-            removed = lobbyController.getListeners().remove(client);
-        readLock.unlock();
-
-        return removed;
-    }
-
-    private void removeListenerFromAll(ClientInterface client) {
-        for (LobbyController lobbyController : lobbies.values())
-            removeListenerFrom(client, lobbyController.getID());
     }
 
     //=============================================================================
@@ -365,53 +342,48 @@ public class ServerController implements VirtualServer {
     public void stopServer() {
         connectionMonitor.stop();
 
-        for (ClientInterface client : allClients.values())
-            client.cleanup();
-
+        for (ClientInterface client : allClients.values()) client.cleanup();
         networkServer.cleanup();
         RMICleanup();
 
-        listenerService.shutdown();
-
-        try {
-            if (!listenerService.awaitTermination(5, TimeUnit.SECONDS)) {
-                listenerService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            listenerService.shutdownNow();
-        }
-
-        retryService.shutdownNow();
-
-        try {
-            if (!retryService.awaitTermination(10, TimeUnit.SECONDS)) {
-                retryService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            retryService.shutdownNow();
-        }
+        shutdownExecutor(listenerService);
+        shutdownExecutor(responseService);
+        shutdownExecutor(retryService);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
 
+    private void shutdownExecutor(ExecutorService executor) {
+        executor.shutdown();
+
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
+    }
+
     public void disconnectClient(ClientInterface client) {
-        if (!client.isConnected())
-            return;
+        writeLock.lock();
+        try {
+            ClientInterface removedClient =  allClients.remove(client.getID());
+            if (removedClient == null) return;
 
-        client.setConnected(false);
-        client.cleanup();
+            playingClients.remove(client.getID());
+            connectionMonitor.unregisterClient(client);
 
-        allClients.remove(client.getID());
-        playingClients.remove(client.getID());
-        connectionMonitor.unregisterClient(client);
+            removedClient.setConnected(false);
+            removedClient.cleanup();
 
-        LobbyController lobbyController = client.getCurrLobbyController();
-        if (lobbyController != null) {
-            if (!removeClientFrom(client, lobbyController.getID()))
-                removeClientFromAll(client);
-
-            if (!removeListenerFrom(client, lobbyController.getID()))
-                removeListenerFromAll(client);
+            LobbyController lobbyController = client.getCurrLobbyController();
+            if (lobbyController != null) {
+                lobbyController.getListeners().remove(client);
+                lobbyController.remove(client);
+            }
+        } finally {
+            writeLock.unlock();
         }
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
@@ -444,13 +416,16 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void ping(String clientID) {
-        ClientInterface client = allClients.get(clientID);
+        readLock.lock();
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
 
-        if (client == null)
-            return;
-
-        connectionMonitor.updateClientLastSeen(client);
-        client.ping();
+            connectionMonitor.updateClientLastSeen(client);
+            client.ping();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     //=============================================================================
