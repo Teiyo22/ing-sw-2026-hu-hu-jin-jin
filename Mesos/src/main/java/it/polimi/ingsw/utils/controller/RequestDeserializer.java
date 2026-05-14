@@ -19,7 +19,6 @@ public class RequestDeserializer implements JsonDeserializer<Request> {
             case "JOIN_LOBBY" -> context.deserialize(jsonObject, JoinLobbyRequest.class);
             case "LEAVE_LOBBY" -> context.deserialize(jsonObject, LeaveLobbyRequest.class);
             case "START_LOBBY" -> context.deserialize(jsonObject, StartLobbyRequest.class);
-            case "WAITING_LOBBY" -> context.deserialize(jsonObject, WaitingLobbyRequest.class);
             case "LOBBY_INFO" -> context.deserialize(jsonObject, LobbyInfoRequest.class);
             case "GET_LEADERBOARD" -> context.deserialize(jsonObject, GetLeaderboardRequest.class);
             case "PICK_OFFER" -> context.deserialize(jsonObject, PickOfferRequest.class);

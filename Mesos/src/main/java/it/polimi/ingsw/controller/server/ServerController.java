@@ -138,22 +138,16 @@ public class ServerController implements VirtualServer {
         readLock.unlock();
     }
 
-    @Override
-    public void getWaitingLobbies(String clientID) {
-        Logger.getInstance().print(LoggerLevel.SERVER, "Received request to get waiting lobbies from client " + clientID);
-        ClientInterface client = allClients.get(clientID);
-
-        if (client == null)
-            return;
-
+    private List<Lobby> getWaitingLobbies() {
         readLock.lock();
-        List<Lobby> lobbies = this.lobbies.values().stream()
-                .filter(LobbyController::isShowable)
-                .map(LobbyController::getLobby)
-                .toList();
-
-        client.showWaitingLobbies(lobbies);
-        readLock.unlock();
+        try {
+            return this.lobbies.values().stream()
+                    .filter(LobbyController::isShowable)
+                    .map(LobbyController::getLobby)
+                    .toList();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
@@ -269,14 +263,8 @@ public class ServerController implements VirtualServer {
             ClientInterface loggedInClient = allClients.remove(clientID);
             loggedInClient.confirmLogin(username);
 
-            readLock.lock();
-            List<Lobby> lobbies = this.lobbies.values().stream()
-                    .filter(LobbyController::isShowable)
-                    .map(LobbyController::getLobby)
-                    .toList();
-
+            List<Lobby> lobbies = getWaitingLobbies();
             loggedInClient.showWaitingLobbies(lobbies);
-            readLock.unlock();
 
             Logger.getInstance().print(LoggerLevel.SERVER, "Client " + clientID + " successfully logged in as " + username);
         } else {
@@ -295,14 +283,8 @@ public class ServerController implements VirtualServer {
         for (ClientInterface client : clients) {
             playingClients.remove(client.getID());
 
-            readLock.lock();
-            List<Lobby> lobbies = this.lobbies.values().stream()
-                    .filter(LobbyController::isShowable)
-                    .map(LobbyController::getLobby)
-                    .toList();
-
+            List<Lobby> lobbies = getWaitingLobbies();
             client.showWaitingLobbies(lobbies);
-            readLock.unlock();
         }
     }
 

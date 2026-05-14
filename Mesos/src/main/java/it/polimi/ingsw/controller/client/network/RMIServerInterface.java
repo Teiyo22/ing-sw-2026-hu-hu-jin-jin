@@ -80,15 +80,6 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void getWaitingLobbies(String clientID) {
-        try {
-            wrappedServer.getWaitingLobbies(clientID);
-        } catch (RemoteException e) {
-            reschedule(() -> {getWaitingLobbies(clientID);});
-        }
-    }
-
-    @Override
     public void getLobbyInfo(String clientID, int lobbyID) {
         try {
             wrappedServer.getLobbyInfo(clientID, lobbyID);

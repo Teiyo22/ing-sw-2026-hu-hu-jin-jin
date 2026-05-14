@@ -21,7 +21,6 @@ public abstract class ServerInterface implements VirtualServer {
     public abstract void joinLobby(String clientID, int lobbyID, Totem totem);
     public abstract void leaveLobby(String clientID, int lobbyID);
     public abstract void startLobby(String clientID, int lobbyID);
-    public abstract void getWaitingLobbies(String clientID);
     public abstract void getLobbyInfo(String clientID, int lobbyID);
     public abstract void getLeaderboard(String clientID, int playerNum);
     public abstract void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks);

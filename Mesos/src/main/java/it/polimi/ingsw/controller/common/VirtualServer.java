@@ -12,7 +12,6 @@ import java.util.Set;
 public interface VirtualServer extends Remote {
     void registerClient(ClientInterface client) throws RemoteException;
     void login(String clientID, String username) throws RemoteException;
-    void getWaitingLobbies(String clientID) throws RemoteException;
     void getLobbyInfo(String clientID, int lobbyID) throws RemoteException;
     void createLobby(String clientID, int playerNum, Totem totem) throws RemoteException;
     void joinLobby(String clientID, int lobbyID, Totem totem) throws RemoteException;

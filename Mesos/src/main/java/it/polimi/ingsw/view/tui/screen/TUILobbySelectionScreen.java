@@ -16,7 +16,6 @@ import java.util.List;
 
         registry = new ActionRegistry()
                 .register(new DisconnectAction(clientController))
-                .register(new GetWaitingLobbiesAction(clientController))
                 .register(new CreateLobbyAction(clientController))
                 .register(new LobbyInfoAction(clientController))
                 .register(new JoinLobbyAction(clientController))

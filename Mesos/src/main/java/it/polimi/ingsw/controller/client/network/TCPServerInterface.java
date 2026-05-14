@@ -76,16 +76,6 @@ public class TCPServerInterface extends ServerInterface {
         serverHandler.sendMessage(request);
     }
 
-
-    /** Method to get the existing lobbies that are still waiting for players.
-     * */
-    @Override
-    public void getWaitingLobbies(String clientID) {
-        WaitingLobbyRequest request = new WaitingLobbyRequest(clientID);
-        serverHandler.sendMessage(request);
-    }
-
-
     /**
      * Method to get more information regarding a certain selected lobby.
      *
