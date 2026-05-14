@@ -116,7 +116,9 @@ public class Lobby implements Serializable {
     }
 
     public int getPlayerCount() {
+        if (players == null) return 0;
         return players.size();
+
     }
 
     public Map<Player, Boolean> getPlayers() {
