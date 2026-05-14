@@ -30,6 +30,11 @@ public class WidgetFactory {
         return label;
     }
 
+    public static JLabel createImageLabel(String source, int width, int height) {
+        Image image = new ImageIcon(source).getImage();
+        return new JLabel(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+    }
+
     public static JTextField createTextField() {
         JTextField textField = new JTextField();
         textField.setBackground(Color.WHITE);

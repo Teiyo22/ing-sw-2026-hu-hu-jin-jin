@@ -60,6 +60,17 @@ public class PanelBuilder {
         return this;
     }
 
+    public PanelBuilder flow(JComponent... components) {
+        panel.setLayout(new FlowLayout());
+
+        for (JComponent c : components) {
+            c.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(c);
+        }
+
+        return this;
+    }
+
     public PanelBuilder withColor(Color color) {
         panel.setOpaque(true);
         panel.setBackground(color);
