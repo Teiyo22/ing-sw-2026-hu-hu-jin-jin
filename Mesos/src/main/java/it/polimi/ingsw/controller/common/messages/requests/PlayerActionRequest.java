@@ -1,24 +1,23 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
-
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.controller.server.network.TCPClientInterface;
+import it.polimi.ingsw.model.action.PlayerAction;
 
-public class PickOfferRequest extends Request {
+public class PlayerActionRequest extends Request {
     private int lobbyID;
-    private int offerIndex;
+    private PlayerAction playerAction;
 
-    public PickOfferRequest(String clientID, int lobbyID, int offerIndex) {
-        this.type = MessageType.PICK_OFFER;
+    public PlayerActionRequest(String clientID, int lobbyID, PlayerAction playerAction) {
+        this.type = MessageType.PLAYER_ACTION;
         this.clientID = clientID;
         this.lobbyID = lobbyID;
-        this.offerIndex = offerIndex;
+        this.playerAction = playerAction;
     }
 
     @Override
     public void receive(ServerController serverController) {
-        serverController.requestOffer(clientID, lobbyID, offerIndex);
+        serverController.requestAction(clientID, lobbyID, playerAction);
     }
 }

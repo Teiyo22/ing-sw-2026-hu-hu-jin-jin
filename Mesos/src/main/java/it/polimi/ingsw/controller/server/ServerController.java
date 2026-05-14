@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
@@ -204,8 +205,8 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     @Override
-    public void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Card Pick] request for [Lobby %d] from [Client %s]", lobbyID, clientID));
+    public void requestAction(String clientID, int lobbyID, PlayerAction action) {
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Action] request for [Lobby %d] from [Client %s]", lobbyID, clientID));
 
         readLock.lock();
         try {
@@ -214,27 +215,7 @@ public class ServerController implements VirtualServer {
 
             LobbyController lobby = lobbies.get(lobbyID);
             if (lobby != null)
-                lobby.pickCards(client, topPicks, bottomPicks);
-            else
-                client.showError("This lobby is not available");
-        } finally {
-            readLock.unlock();
-        }
-    }
-
-    @Override
-    public void requestOffer(String clientID, int lobbyID, int offerIndex) {
-        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Offer Pick] request for [Lobby %d] from [Client %s]", lobbyID, clientID));
-
-        readLock.lock();
-        try {
-            ClientInterface client = allClients.get(clientID);
-            if (client == null) return;
-
-            LobbyController lobby = lobbies.get(lobbyID);
-
-            if (lobby != null)
-                lobby.pickOffer(client, offerIndex);
+                lobby.playAction(client, action);
             else
                 client.showError("This lobby is not available");
         } finally {

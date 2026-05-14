@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.lobby.states;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -84,15 +85,8 @@ public class LobbyPausedState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError("Game not started yet.");
-
-    }
-
-    @Override
-    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError("Game not started yet.");
-
+    public void playAction(ClientInterface client, PlayerAction action) {
+        client.showError("Game not started yet.");
     }
 
     @Override

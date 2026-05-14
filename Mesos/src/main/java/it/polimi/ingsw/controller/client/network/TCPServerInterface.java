@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.util.Set;
@@ -103,34 +104,17 @@ public class TCPServerInterface extends ServerInterface {
         serverHandler.sendMessage(request);
     }
 
-
     /**
-     * Method to request card picks from the server.
-     *
-     * @param clientID
-     * @param lobbyID     ID of the player's lobby
-     * @param topPicks    list of the cards that the player would like to pick from the top row.
-     * @param bottomPicks list of the cards that the player would like to pick from the bottom row.
-     *
-     */
-    @Override
-    public void requestCards(String clientID, int lobbyID, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        PickCardsRequest request = new PickCardsRequest(clientID, lobbyID, topPicks, bottomPicks);
-        serverHandler.sendMessage(request);
-    }
-
-
-    /**
-     * Method to request a specific offer from the server.
+     * Method to play a specific action.
      *
      * @param clientID
      * @param lobbyID    ID of the player's lobby
-     * @param offerIndex index of the offer of interest.
+     * @param action action that the player wants to play.
      *
      */
     @Override
-    public void requestOffer(String clientID, int lobbyID, int offerIndex) {
-        PickOfferRequest request = new PickOfferRequest(clientID, lobbyID, offerIndex);
+    public void requestAction(String clientID, int lobbyID, PlayerAction action) {
+        PlayerActionRequest request = new PlayerActionRequest(clientID, lobbyID, action);
         serverHandler.sendMessage(request);
     }
 

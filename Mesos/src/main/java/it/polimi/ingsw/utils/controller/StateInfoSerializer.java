@@ -15,7 +15,7 @@ public class StateInfoSerializer implements JsonSerializer<ModelStateInfo> {
 
         return switch (type) {
             case CARD_PICK -> context.serialize(src, it.polimi.ingsw.controller.common.info.CardPickStateInfo.class);
-            case OFFER_PICk -> context.serialize(src, it.polimi.ingsw.controller.common.info.OfferPickStateInfo.class);
+            case OFFER_PICK -> context.serialize(src, it.polimi.ingsw.controller.common.info.OfferPickStateInfo.class);
             case GAME_END -> context.serialize(src, it.polimi.ingsw.controller.common.info.GameEndStateInfo.class);
         };
     }

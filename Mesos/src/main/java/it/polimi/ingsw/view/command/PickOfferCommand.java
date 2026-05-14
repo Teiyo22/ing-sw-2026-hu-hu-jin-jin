@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.action.OfferPickPlayerAction;
 
 public class PickOfferCommand implements Command {
     int offerID;
@@ -12,8 +13,8 @@ public class PickOfferCommand implements Command {
     @Override
     public void execute(ClientController clientController) {
         clientController.executeCommand(() -> {
-            clientController.getServer().requestOffer(clientController.getID(),
-                    clientController.getCurrLobby().getLobbyID(), offerID);
+            clientController.getServer().requestAction(clientController.getID(),
+                    clientController.getCurrLobby().getLobbyID(), new OfferPickPlayerAction(offerID));
         });
     }
 }

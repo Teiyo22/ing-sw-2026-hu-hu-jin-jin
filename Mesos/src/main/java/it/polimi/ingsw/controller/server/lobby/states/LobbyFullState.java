@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
@@ -79,13 +80,8 @@ public class LobbyFullState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        pickerClient.showError("Game not started yet.");
-    }
-
-    @Override
-    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        pickerClient.showError("Game not started yet.");
+    public void playAction(ClientInterface client, PlayerAction action) {
+        client.showError("Game not started yet.");
     }
 
     @Override

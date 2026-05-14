@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
@@ -45,6 +46,14 @@ public class Row implements Serializable {
 
     public List<AbstractBuilding> getBuildingCards() {
         return buildingCards;
+    }
+
+    public List<AbstractCard> getPickableCards () {
+        List<AbstractCard> pickableCards = new ArrayList<>();
+        pickableCards.addAll(characterCards);
+        pickableCards.addAll(buildingCards);
+
+        return pickableCards;
     }
 
     /**

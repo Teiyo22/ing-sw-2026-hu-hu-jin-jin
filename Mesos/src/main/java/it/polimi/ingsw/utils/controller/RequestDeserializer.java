@@ -14,14 +14,13 @@ public class RequestDeserializer implements JsonDeserializer<Request> {
 
         return switch (type) {
             case "LOGIN" -> context.deserialize(jsonObject, LoginRequest.class);
-            case "PICK_CARDS" -> context.deserialize(jsonObject, PickCardsRequest.class);
             case "CREATE_LOBBY" -> context.deserialize(jsonObject, CreateLobbyRequest.class);
             case "JOIN_LOBBY" -> context.deserialize(jsonObject, JoinLobbyRequest.class);
             case "LEAVE_LOBBY" -> context.deserialize(jsonObject, LeaveLobbyRequest.class);
             case "START_LOBBY" -> context.deserialize(jsonObject, StartLobbyRequest.class);
             case "LOBBY_INFO" -> context.deserialize(jsonObject, LobbyInfoRequest.class);
             case "GET_LEADERBOARD" -> context.deserialize(jsonObject, GetLeaderboardRequest.class);
-            case "PICK_OFFER" -> context.deserialize(jsonObject, PickOfferRequest.class);
+            case "PLAYER_ACTION" -> context.deserialize(jsonObject, PlayerActionRequest.class);
             case "PING" -> context.deserialize(jsonObject, PingRequest.class);
             default -> throw new JsonParseException("Request type not found: " + type);
         };

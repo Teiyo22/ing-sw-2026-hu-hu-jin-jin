@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
@@ -66,22 +67,13 @@ public class LobbyRunningState extends LobbyState {
     }
 
     @Override
-    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
+    public void playAction(ClientInterface client, PlayerAction action) {
+        String error = action.canExecute(model);
 
-        if (!model.pick(pickerPlayer, topPicks, bottomPicks))
-            pickerClient.showError("Invalid action");
-
-        for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
-    }
-
-    @Override
-    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        Player pickerPlayer = lobbyController.getPlayers().get(pickerClient);
-
-        if (!model.assignTo(pickerPlayer, model.getBoard().getOfferTrack()[offerIndex]))
-            pickerClient.showError("Invalid action");
+        if (error.isEmpty())
+            action.execute(model);
+        else
+            client.showError(error);
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());

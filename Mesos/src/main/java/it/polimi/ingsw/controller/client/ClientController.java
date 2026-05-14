@@ -57,11 +57,13 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
-
         waitingLobbies.clear();
 
         for (Lobby lobby : lobbies)
             waitingLobbies.put(lobby.getLobbyID(), lobby);
+
+        if (currLobby != null)
+            waitingLobbies.put(currLobby.getLobbyID(), currLobby);
 
         view.update();
     }
@@ -90,7 +92,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void addPlayer(int lobbyID, Player player) {
-
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.addPlayer(player);
 
@@ -146,8 +147,8 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void createLobby(Lobby lobby, Player player) {
-
         currLobby = lobby;
+        waitingLobbies.put(lobby.getLobbyID(), lobby);
 
         Map<Player, Boolean> players = new HashMap<>();
         players.put(player, true);
@@ -159,7 +160,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
-
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             waitingLobbies.clear();
 

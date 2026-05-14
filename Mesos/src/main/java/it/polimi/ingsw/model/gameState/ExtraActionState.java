@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public class ExtraActionState extends GameState {
+    private Player currPlayer = null;
     private int solvedExtraActions = -1;
 
     public ExtraActionState(Game game, BuildingHandler buildingHandler) {

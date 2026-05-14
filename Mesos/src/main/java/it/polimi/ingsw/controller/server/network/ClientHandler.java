@@ -7,14 +7,13 @@ import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
-import it.polimi.ingsw.utils.controller.RequestDeserializer;
-import it.polimi.ingsw.utils.controller.ResponseSerializer;
-import it.polimi.ingsw.utils.controller.StateInfoSerializer;
+import it.polimi.ingsw.utils.controller.*;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.io.*;
@@ -42,6 +41,7 @@ public class ClientHandler extends Thread {
                 .registerTypeAdapter(Request.class, new RequestDeserializer())
                 .registerTypeAdapter(Response.class, new ResponseSerializer())
                 .registerTypeAdapter(ModelStateInfo.class, new StateInfoSerializer())
+                .registerTypeAdapter(PlayerAction.class, new PlayerActionDeserializer())
                 .create();
     }
 
@@ -75,9 +75,9 @@ public class ClientHandler extends Thread {
             output.flush();
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
         } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+        } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }

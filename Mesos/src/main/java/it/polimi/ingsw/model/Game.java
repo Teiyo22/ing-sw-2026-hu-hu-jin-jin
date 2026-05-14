@@ -83,10 +83,7 @@ public class Game {
      * @param bottomPicks are the cards picked from the bottom row.
      *
      */
-    public boolean pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        if (!validateCardPick(player, topPicks, bottomPicks))
-            return false;
-
+    public void pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
         List<Pickable> top = getPickable(topPicks, board.getTopRow());
 
         for (Pickable p : top) {
@@ -102,33 +99,18 @@ public class Game {
         }
 
         gameState.update();
-
-        return true;
     }
 
     /**
      * Assigns the player to the selected offer tile and updates the game state.
      *
      * @param player is the player that picked the offer tile.
-     * @param offer  is the offer tile that the player picked.
+     * @param offerIndex  is the index of the offer tile that the player picked.
      *
      */
-    public boolean assignTo(Player player, OfferTile offer) {
-        if (!validateOfferPick(player, offer))
-            return false;
-
-        offer.setPlayer(player);
+    public void assignTo(Player player, int offerIndex) {
+        board.getOfferTrack()[offerIndex].setPlayer(player);
         gameState.update();
-
-        return true;
-    }
-
-    private boolean validateCardPick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        return true;
-    }
-
-    private boolean validateOfferPick(Player player, OfferTile offer) {
-        return true;
     }
 
     private List<Pickable> getPickable(Set<Integer> picks, Row row) {

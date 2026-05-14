@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 
@@ -88,19 +89,14 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
-    public void pickCards(ClientInterface pickerClient, Set<Integer> topPicks, Set<Integer> bottomPicks) {
+    public void playAction(ClientInterface pickerClient, PlayerAction action) {
         writeLock.lock();
         try {
-            state.pickCards(pickerClient, topPicks, bottomPicks);
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    public void pickOffer(ClientInterface pickerClient, int offerIndex) {
-        writeLock.unlock();
-        try {
-            state.pickOffer(pickerClient, offerIndex);
+            Player player = players.get(pickerClient);
+            if (player != null) {
+                action.setPlayer(player);
+                state.playAction(pickerClient, action);
+            }
         } finally {
             writeLock.unlock();
         }

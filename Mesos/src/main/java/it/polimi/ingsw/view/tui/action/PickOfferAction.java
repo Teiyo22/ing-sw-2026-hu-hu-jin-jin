@@ -40,7 +40,7 @@ public class PickOfferAction implements Action {
 
         offerID = parseOfferID(args[1]);
         if (offerID == null)
-            return Optional.of("Offer ID must be an integer from the list of available offers");
+            return Optional.of("Offer ID must be an integer");
 
         clientController.getCurrLobby().setIdleTurnState();
         new PickOfferCommand(offerID).execute(clientController);
@@ -54,20 +54,9 @@ public class PickOfferAction implements Action {
 
     private Integer parseOfferID(String input) {
          try {
-              int offerID = Integer.parseInt(input);
-
-              if (validateOfferID(offerID))
-                  return offerID;
-
-              return null;
+             return Integer.parseInt(input);
           } catch (NumberFormatException e) {
               return null;
           }
-    }
-
-    private boolean validateOfferID(int offerID) {
-        OfferTile[] offerTile = clientController.getCurrLobby().getBoard().getOfferTrack();
-
-        return offerID >= 0 && offerID < offerTile.length && offerTile[offerID].getAssignedPlayer() == null;
     }
 }

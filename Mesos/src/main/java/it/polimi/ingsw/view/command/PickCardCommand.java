@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.action.CardPickPlayerAction;
+import it.polimi.ingsw.model.action.OfferPickPlayerAction;
 
 import java.util.Set;
 
@@ -16,8 +18,8 @@ public class PickCardCommand implements Command {
     @Override
     public void execute(ClientController clientController) {
         clientController.executeCommand(() -> {
-            clientController.getServer().requestCards(clientController.getID(),
-                    clientController.getCurrLobby().getLobbyID(), topPicks, bottomPicks);
+            clientController.getServer().requestAction(clientController.getID(),
+                    clientController.getCurrLobby().getLobbyID(), new CardPickPlayerAction(topPicks, bottomPicks));
         });
     }
 }

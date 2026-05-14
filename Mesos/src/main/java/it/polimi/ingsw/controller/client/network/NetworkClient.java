@@ -8,14 +8,13 @@ import java.net.*;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
-import it.polimi.ingsw.utils.controller.RequestSerializer;
-import it.polimi.ingsw.utils.controller.ResponseDeserializer;
-import it.polimi.ingsw.utils.controller.StateInfoDeserializer;
+import it.polimi.ingsw.utils.controller.*;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.nio.charset.StandardCharsets;
@@ -42,6 +41,7 @@ public class NetworkClient extends Thread {
                 .registerTypeAdapter(Request.class, new RequestSerializer())
                 .registerTypeAdapter(Response.class, new ResponseDeserializer())
                 .registerTypeAdapter(ModelStateInfo.class, new StateInfoDeserializer())
+                .registerTypeAdapter(PlayerAction.class, new PlayerActionSerializer())
                 .create();
     }
 

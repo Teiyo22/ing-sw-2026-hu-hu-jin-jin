@@ -1,0 +1,27 @@
+package it.polimi.ingsw.model.action;
+
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
+
+public class OfferPickPlayerAction extends PlayerAction {
+    private int offerIndex;
+
+    public OfferPickPlayerAction(int offerIndex) {
+        this.type = ActionType.OFFER_PICK;
+        this.offerIndex = offerIndex;
+    }
+
+    @Override
+    public String canExecute(Game game) {
+        return game.getGameState().validate(this);
+    }
+
+    @Override
+    public void execute(Game game) {
+        game.assignTo(player, offerIndex);
+    }
+
+    public int getOfferIndex() {
+        return offerIndex;
+    }
+}

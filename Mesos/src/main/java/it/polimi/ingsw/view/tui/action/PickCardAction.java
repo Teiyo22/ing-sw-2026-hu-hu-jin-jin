@@ -46,18 +46,10 @@ public class PickCardAction implements Action {
             return Optional.of("Invalid number of arguments");
 
         topRow = parseIDList(args[1], true);
-        if (topRow == null)
-            return Optional.of("Top row must contain only valid card IDs");
-
         bottomRow = parseIDList(args[2], false);
-        if (bottomRow == null)
-            return Optional.of("Bottom row must contain only valid card IDs");
-
-        if (!validatePickCount(topRow, bottomRow))
-            return Optional.of("Pick count exceeded");
-
-        if (!validateFoodCost(topRow, bottomRow))
-            return Optional.of("Food cost exceeded");
+        if (topRow == null || bottomRow == null) {
+            return Optional.of("Card IDs must be integers separated by commas");
+        }
 
         clientController.getCurrLobby().setIdleTurnState();
         new PickCardCommand(topRow, bottomRow).execute(clientController);
@@ -77,61 +69,13 @@ public class PickCardAction implements Action {
 
         String[] split = stripped.split(",");
 
-
-
         try {
-             Set<Integer> set = Arrays.stream(split)
-                     .map(String::trim)
-                     .map(Integer::parseInt)
-                     .collect(Collectors.toSet());
-
-             if (validateIDList(set, top))
-                 return set;
-
-             return null;
+            return Arrays.stream(split)
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toSet());
          } catch (NumberFormatException e) {
              return null;
          }
-    }
-
-    private boolean validateIDList(Set<Integer> set, boolean top) {
-        Row row = top ? clientController.getCurrLobby().getBoard().getTopRow() : clientController.getCurrLobby().getBoard().getBottomRow();
-
-        Set<Integer> rowCardIDs = Stream.concat(
-                row.getBuildingCards().stream().map(b -> (AbstractCard) b),
-                row.getCharacterCards().stream().map(c -> (AbstractCard) c))
-                .map(AbstractCard::getID)
-                .collect(Collectors.toSet());
-
-        return rowCardIDs.containsAll(set);
-    }
-
-    private boolean validatePickCount(Set<Integer> top , Set<Integer> bottom) {
-        int idx = clientController.getCurrLobby().getTurnState().getIndex();
-        int topPickCount, bottomPickCount;
-
-        if (idx >= 0) {
-            OfferTile offerTile = clientController.getCurrLobby().getBoard().getOfferTrack()[idx];
-            topPickCount = offerTile.getTopRowPickable();
-            bottomPickCount = offerTile.getBottomRowPickable();
-        } else {
-            topPickCount = 1;
-            bottomPickCount = 0;
-        }
-
-        return top.size() <= topPickCount && bottom.size() <= bottomPickCount;
-    }
-
-    private boolean validateFoodCost(Set<Integer> top, Set<Integer> bottom) {
-        Player currPlayer = clientController.getCurrLobby().getCurrPlayer();
-        Board board = clientController.getCurrLobby().getBoard();
-
-        int foodCost = Stream.concat(
-                board.getTopRow().getBuildingCards().stream().filter(b -> top.contains(b.getID())),
-                board.getBottomRow().getBuildingCards().stream().filter(b -> bottom.contains(b.getID())))
-                .mapToInt(AbstractBuilding::getCost)
-                .sum();
-
-        return foodCost - currPlayer.getTribe().getBuilderDiscount() <= currPlayer.getFood();
     }
 }
