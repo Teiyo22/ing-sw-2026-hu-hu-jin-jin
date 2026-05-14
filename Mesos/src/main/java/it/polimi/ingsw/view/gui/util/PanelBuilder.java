@@ -72,7 +72,7 @@ public class PanelBuilder {
         return this;
     }
 
-    public PanelBuilder rounded(int radius, Color color) {
+    public PanelBuilder rounded(int radius,int gap, Color color, JComponent... components) {
         JPanel roundedPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -87,10 +87,11 @@ public class PanelBuilder {
         roundedPanel.setOpaque(false);
         roundedPanel.setLayout(new BoxLayout(roundedPanel, BoxLayout.Y_AXIS));
 
-        for (Component c : panel.getComponents()) {
+        for (JComponent c : components) {
+            c.setAlignmentX(Component.CENTER_ALIGNMENT);
             roundedPanel.add(c);
+            roundedPanel.add(Box.createVerticalStrut(gap));
         }
-
         panel = roundedPanel;
         return this;
     }
