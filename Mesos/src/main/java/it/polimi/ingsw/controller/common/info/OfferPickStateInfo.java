@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 public class OfferPickStateInfo extends ModelStateInfo {
     public OfferPickStateInfo(Player player, int idx) {
         super(player, idx);
-        type = StateInfoType.OFFER_PICk;
+        type = StateInfoType.OFFER_PICK;
     }
 
     @Override
