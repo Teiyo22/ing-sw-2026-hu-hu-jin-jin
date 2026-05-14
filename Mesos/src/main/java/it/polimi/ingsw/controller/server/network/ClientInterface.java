@@ -4,18 +4,15 @@ import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
-import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class ClientInterface implements VirtualClient {
@@ -36,7 +33,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void showLeaderboard(List<LeaderboardEntry> leaderboard);
     public abstract void updateState(int lobbyID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(Lobby lobby, Player player);
-    public abstract void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes);
+    public abstract void startLobby(int lobbyID, Board board, Collection<Player> players);
     public abstract void stopLobby(int lobbyID);
     public abstract void showError(String errorMessage);
     public abstract void ping();

@@ -12,11 +12,9 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class TCPClientInterface extends ClientInterface {
@@ -146,8 +144,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
-        StartLobbyResponse response = new StartLobbyResponse(lobbyID, board, tribes);
+    public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
+        StartLobbyResponse response = new StartLobbyResponse(lobbyID, board, players);
         sendMessage(response);
     }
 

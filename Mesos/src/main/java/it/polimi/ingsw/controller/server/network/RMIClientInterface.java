@@ -10,13 +10,11 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class RMIClientInterface extends ClientInterface implements Serializable {
@@ -178,10 +176,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
+    public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
         submitRemoteCall(
-                () -> wrappedClient.startLobby(lobbyID, board, tribes),
-                () -> this.startLobby(lobbyID, board, tribes)
+                () -> wrappedClient.startLobby(lobbyID, board, players),
+                () -> this.startLobby(lobbyID, board, players)
         );
     }
 

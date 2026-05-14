@@ -7,13 +7,11 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface VirtualClient extends Remote {
@@ -30,7 +28,7 @@ public interface VirtualClient extends Remote {
     void showLeaderboard(List<LeaderboardEntry> leaderboard) throws RemoteException;
     void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
     void createLobby(Lobby lobby, Player player) throws RemoteException;
-    void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) throws RemoteException;
+    void startLobby(int lobbyID, Board board, Collection<Player> players) throws RemoteException;
     void stopLobby(int lobbyID) throws RemoteException;
     void showError(String errorMessage) throws RemoteException;
 

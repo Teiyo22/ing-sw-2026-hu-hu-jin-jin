@@ -49,11 +49,9 @@ public class Lobby implements Serializable {
     // Model management methods
     //=============================================================================
 
-    public void initGame(Map<String, Tribe> tribes, Board board) {
+    public void initGame(Collection<Player> players, Board board) {
         this.board = board;
-
-        for (Player player : players.keySet())
-            player.setTribe(tribes.get(player.getName()));
+        this.updateTribes(players);
     }
 
     public void updateOrderTile(OrderSlot[] orderTile) {

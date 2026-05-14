@@ -31,7 +31,7 @@ public class LobbyWaitingState extends LobbyState {
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
         } else {
-            client.showError("Player name or totem already used");
+            client.showError("Totem already used");
         }
     }
 
@@ -86,8 +86,8 @@ public class LobbyWaitingState extends LobbyState {
     }
 
     private boolean validatePlayerInfo(Player newPlayer) {
-        for (Player players : lobbyController.getPlayers().values())
-            if (newPlayer.getTotem() == players.getTotem() || newPlayer.getName().equals(players.getName()))
+        for (Player player : lobbyController.getPlayers().values())
+            if (newPlayer.getTotem() == player.getTotem())
                 return false;
         return true;
     }

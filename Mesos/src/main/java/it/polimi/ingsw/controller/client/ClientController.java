@@ -16,7 +16,6 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
@@ -159,12 +158,12 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, Map<String, Tribe> tribes) {
+    public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
 
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             waitingLobbies.clear();
 
-            currLobby.initGame(tribes, board);
+            currLobby.initGame(players, board);
             view.transitionTo(ScreenType.GAME_PLAY);
         }
     }

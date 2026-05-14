@@ -7,22 +7,23 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class StartLobbyResponse extends Response {
     private int lobbyID;
     private Board board;
-    private Map<String, Tribe> tribes;
+    private Collection<Player> players;
 
-    public StartLobbyResponse(int lobbyID, Board board, Map<String, Tribe> tribes){
+    public StartLobbyResponse(int lobbyID, Board board, Collection<Player> players){
         this.type = MessageType.START_LOBBY;
         this.lobbyID = lobbyID;
-        this.tribes = tribes;
         this.board = board;
+        this.players = players;
     }
     @Override
     public void receive(ClientController clientController){
-        clientController.startLobby(lobbyID, board, tribes);
+        clientController.startLobby(lobbyID, board, players);
     }
 }
 

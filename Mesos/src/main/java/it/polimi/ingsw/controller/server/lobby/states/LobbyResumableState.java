@@ -35,12 +35,8 @@ public class LobbyResumableState extends LobbyState {
 
         Game model = lobbyController.getModel();
 
-        Map<String, Tribe> tribes = new HashMap<>();
-        for (Map.Entry<ClientInterface, Player> player : lobbyController.getPlayers().entrySet())
-            tribes.put(player.getKey().getID(), player.getValue().getTribe());
-
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
-            player.startLobby(lobbyController.getID(), model.getBoard(), tribes);
+            player.startLobby(lobbyController.getID(), model.getBoard(), lobbyController.getPlayers().values());
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
         }
 
