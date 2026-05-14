@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.action.GUILoginAction;
+import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
@@ -9,9 +11,13 @@ import java.awt.*;
 
 public class GUILoginScreen extends GUIScreen{
     private JPanel panel1;
+    private JPanel loginpanel;
 
     public GUILoginScreen(GUIView frame, ClientController clientController) {
         super(frame,clientController);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(300,0,0,0);
         panel1 = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -20,15 +26,22 @@ public class GUILoginScreen extends GUIScreen{
                 g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(400,0,0,0);
-        c.anchor = GridBagConstraints.EAST; c.gridx = 0;
-        JLabel name = WidgetFactory.createLabel("Insert username : ");
-        JTextField login = WidgetFactory.createTextField();
-        panel1.add(name,c);
-        c.gridx = 1;
-        panel1.add(login,c);
-        login.addActionListener(new GUILoginAction(clientController, login));
+        JLabel name = WidgetFactory.createLabel("Username");
+        name.setMaximumSize(new Dimension(250, 35));
+
+        JTextField username = WidgetFactory.createTextField();
+        username.setMaximumSize(new Dimension(250, 35));
+
+        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username));
+        login.setMaximumSize(new Dimension(250, 35));
+        login.setText("Login");
+
+        loginpanel = new PanelBuilder().rounded(40,5, new Color(Fonts.menu2.getRed(), Fonts.menu2.getGreen(), Fonts.menu2.getBlue(), 140),name,username,login)
+                .centered()
+                .buildPanel();
+        loginpanel.setPreferredSize(new Dimension(350, 200));
+
+        panel1.add(loginpanel,c);
     }
 
     @Override

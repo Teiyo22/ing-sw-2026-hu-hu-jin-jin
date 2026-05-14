@@ -257,6 +257,11 @@ public class ServerController implements VirtualServer {
         if (!allClients.containsKey(clientID)) // If true, it could mean the client already logged in
             return;
 
+        if (username == null || username.isBlank()) {
+            allClients.get(clientID).showError("Username cannot be empty");
+            return;
+        }
+
         ClientInterface previousValue = allClients.putIfAbsent(username, allClients.get(clientID));
 
         if (previousValue == null) {
