@@ -7,13 +7,14 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class GameEndResponse extends Response {
     private int lobbyID;
-    private Collection<Player> players;
+    private List<Player> players;
 
-    public GameEndResponse(int lobbyID, Collection<Player> players) {
+    public GameEndResponse(int lobbyID, List<Player> players) {
         this.type = MessageType.GAME_END;
         this.lobbyID = lobbyID;
         this.players = players;

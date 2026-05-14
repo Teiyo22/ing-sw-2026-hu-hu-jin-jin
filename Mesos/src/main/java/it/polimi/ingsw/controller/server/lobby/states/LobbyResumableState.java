@@ -10,10 +10,7 @@ import it.polimi.ingsw.model.player.Tribe;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LobbyResumableState extends LobbyState {
@@ -37,7 +34,7 @@ public class LobbyResumableState extends LobbyState {
         Game model = lobbyController.getModel();
 
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
-            player.startLobby(lobbyController.getID(), model.getBoard(), lobbyController.getPlayers().values());
+            player.startLobby(lobbyController.getID(), model.getBoard(), new ArrayList<>(lobbyController.getPlayers().values()));
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
         }
 

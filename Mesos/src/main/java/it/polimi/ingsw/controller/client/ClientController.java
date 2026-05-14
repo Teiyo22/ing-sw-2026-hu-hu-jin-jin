@@ -159,7 +159,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
+    public synchronized void startLobby(int lobbyID, Board board, List<Player> players) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             waitingLobbies.clear();
 
@@ -231,7 +231,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) {
+    public synchronized void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribes(players);
             currLobby.updateTopRow(topRow);
@@ -242,7 +242,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Collection<Player> players) {
+    public synchronized void updateModel(int lobbyID, List<Player> players) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
             currLobby.updateTribes(players);
             currLobby.setRanking(players);

@@ -7,14 +7,15 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Collection;
+import java.util.List;
 
 public class RoundEndResponse extends Response {
     private int lobbyID;
-    private Collection<Player> players;
+    private List<Player> players;
     private Row updatedTopRow;
     private Row updatedBottomRow;
 
-    public RoundEndResponse(int lobbyID, Collection<Player> players, Row updatedTopRow, Row updatedBottomRow) {
+    public RoundEndResponse(int lobbyID, List<Player> players, Row updatedTopRow, Row updatedBottomRow) {
         this.type = MessageType.ROUND_END;
         this.lobbyID = lobbyID;
         this.players = players;

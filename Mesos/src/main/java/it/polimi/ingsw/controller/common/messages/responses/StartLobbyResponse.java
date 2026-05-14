@@ -8,14 +8,14 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 public class StartLobbyResponse extends Response {
     private int lobbyID;
     private Board board;
-    private Collection<Player> players;
+    private List<Player> players;
 
-    public StartLobbyResponse(int lobbyID, Board board, Collection<Player> players){
+    public StartLobbyResponse(int lobbyID, Board board, List<Player> players){
         this.type = MessageType.START_LOBBY;
         this.lobbyID = lobbyID;
         this.board = board;

@@ -61,6 +61,8 @@ public class ClientHandler extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
@@ -77,7 +79,6 @@ public class ClientHandler extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-        } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }

@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -28,15 +27,15 @@ public interface VirtualClient extends Remote {
     void showLeaderboard(List<LeaderboardEntry> leaderboard) throws RemoteException;
     void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
     void createLobby(Lobby lobby, Player player) throws RemoteException;
-    void startLobby(int lobbyID, Board board, Collection<Player> players) throws RemoteException;
+    void startLobby(int lobbyID, Board board, List<Player> players) throws RemoteException;
     void stopLobby(int lobbyID) throws RemoteException;
     void showError(String errorMessage) throws RemoteException;
 
     void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) throws RemoteException;
     void updateModel(int lobbyID, Player player, Board board) throws RemoteException;
     void updateModel(int lobbyID, Player player, Row topRow) throws RemoteException;
-    void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) throws RemoteException;
-    void updateModel(int lobbyID, Collection<Player> players) throws RemoteException;
+    void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) throws RemoteException;
+    void updateModel(int lobbyID, List<Player> players) throws RemoteException;
 
     void ping() throws RemoteException;
 }

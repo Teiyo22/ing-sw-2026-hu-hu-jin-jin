@@ -11,11 +11,11 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ClientInterface implements VirtualClient {
+public abstract class ClientInterface implements VirtualClient, Serializable {
     protected String id;
     protected LobbyController currLobbyController = null;
     protected boolean isConnected = false;
@@ -33,7 +33,7 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void showLeaderboard(List<LeaderboardEntry> leaderboard);
     public abstract void updateState(int lobbyID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(Lobby lobby, Player player);
-    public abstract void startLobby(int lobbyID, Board board, Collection<Player> players);
+    public abstract void startLobby(int lobbyID, Board board, List<Player> players);
     public abstract void stopLobby(int lobbyID);
     public abstract void showError(String errorMessage);
     public abstract void ping();
@@ -41,8 +41,8 @@ public abstract class ClientInterface implements VirtualClient {
     public abstract void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
     public abstract void updateModel(int lobbyID, Player player, Board board);
     public abstract void updateModel(int lobbyID, Player player, Row topRow);
-    public abstract void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow);
-    public abstract void updateModel(int lobbyID, Collection<Player> players);
+    public abstract void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow);
+    public abstract void updateModel(int lobbyID, List<Player> players);
 
     public void cleanup() {};
 

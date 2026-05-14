@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -120,13 +119,13 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int lobbyID, Collection<Player> players, Row topRow, Row bottomRow) {
+    public void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
         RoundEndResponse response = new RoundEndResponse(lobbyID, players, topRow, bottomRow);
         sendMessage(response);
     }
 
     @Override
-    public void updateModel(int lobbyID, Collection<Player> players) {
+    public void updateModel(int lobbyID, List<Player> players) {
         GameEndResponse response = new GameEndResponse(lobbyID, players);
         sendMessage(response);
     }
@@ -144,7 +143,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, Collection<Player> players) {
+    public synchronized void startLobby(int lobbyID, Board board, List<Player> players) {
         StartLobbyResponse response = new StartLobbyResponse(lobbyID, board, players);
         sendMessage(response);
     }
