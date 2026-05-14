@@ -54,7 +54,6 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
-        setCurrLobbyController(lobbyID);
         LobbyInfoResponse response = new LobbyInfoResponse(lobbyID, connectedPlayers, disconnectedPlayers);
         sendMessage(response);
     }
@@ -142,8 +141,6 @@ public class TCPClientInterface extends ClientInterface {
 
     @Override
     public synchronized void createLobby(Lobby lobby, Player player) {
-        setCurrLobbyController(lobby.getLobbyID());
-
         CreateLobbyResponse response = new CreateLobbyResponse(lobby, player);
         sendMessage(response);
     }

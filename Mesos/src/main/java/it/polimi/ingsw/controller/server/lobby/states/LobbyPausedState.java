@@ -71,6 +71,7 @@ public class LobbyPausedState extends LobbyState {
     @Override
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
+        client.setCurrLobbyController(lobbyController);
 
         Set<Player> disconnectedPlayers = missingPlayers.stream()
                 .map(p -> new Player(p.getName(), p.getTotem()))

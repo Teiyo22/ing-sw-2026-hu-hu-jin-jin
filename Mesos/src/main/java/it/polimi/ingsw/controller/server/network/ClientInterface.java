@@ -58,15 +58,13 @@ public abstract class ClientInterface implements VirtualClient {
         this.id = clientID;
     }
 
-    public synchronized LobbyController getCurrLobbyController() {
+    public LobbyController getCurrLobbyController() {
         return currLobbyController;
     }
 
-    public void setCurrLobbyController(int lobbyID) {
+    public void setCurrLobbyController(LobbyController lobbyController) {
         if (currLobbyController != null)
             currLobbyController.getListeners().remove(this);
-
-        LobbyController lobbyController = ServerController.getInstance().getLobbies().get(lobbyID);
 
         lobbyController.getListeners().add(this);
         currLobbyController = lobbyController;
@@ -74,10 +72,6 @@ public abstract class ClientInterface implements VirtualClient {
 
     public void setConnected(boolean connected) {
         isConnected = connected;
-    }
-
-    public boolean isConnected() {
-        return isConnected;
     }
 
     @Override

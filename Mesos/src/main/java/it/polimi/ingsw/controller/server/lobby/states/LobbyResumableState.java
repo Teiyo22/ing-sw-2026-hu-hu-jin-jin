@@ -69,6 +69,7 @@ public class LobbyResumableState extends LobbyState {
     @Override
     public void getLobbyInfo(ClientInterface client) {
         lobbyController.getListeners().add(client);
+        client.setCurrLobbyController(lobbyController);
 
         Set<Player> disconnectedPlayers = new HashSet<>();
         Set<Player> connectedPlayers = lobbyController.getPlayers().values().stream()

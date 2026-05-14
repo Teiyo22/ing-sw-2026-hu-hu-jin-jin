@@ -77,6 +77,7 @@ public class ServerController implements VirtualServer {
 
             LobbyController lobbyController = new LobbyController(id, playerNum);
             lobbyController.add(client, player);
+            client.setCurrLobbyController(lobbyController);
             lobbies.put(lobbyController.getID(), lobbyController);
 
             client.createLobby(lobbyController.getLobby(), player);

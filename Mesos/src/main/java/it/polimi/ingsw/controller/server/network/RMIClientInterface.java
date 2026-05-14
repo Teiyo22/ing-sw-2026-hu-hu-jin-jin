@@ -56,8 +56,6 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
 
     @Override
     public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
-        setCurrLobbyController(lobbyID);
-
        submitRemoteCall(
                () -> wrappedClient.showLobbyInfo(lobbyID, connectedPlayers, disconnectedPlayers),
                () -> this.showLobbyInfo(lobbyID, connectedPlayers, disconnectedPlayers)
