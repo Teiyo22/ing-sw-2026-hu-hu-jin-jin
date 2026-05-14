@@ -3,8 +3,8 @@ package it.polimi.ingsw.controller.client.turn;
 import it.polimi.ingsw.model.player.Player;
 
 public class OfferPickState extends TurnState {
-    public OfferPickState(Player currPlayer, int index) {
-        super(currPlayer, index);
+    public OfferPickState(Player currPlayer, int index, int era) {
+        super(currPlayer, index, era);
     }
 
     @Override

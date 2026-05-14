@@ -3,8 +3,8 @@ package it.polimi.ingsw.controller.client.turn;
 import it.polimi.ingsw.model.player.Player;
 
 public class EndState extends TurnState {
-    public EndState(Player currPlayer, int index) {
-        super(currPlayer, index);
+    public EndState(Player currPlayer, int index, int era) {
+        super(currPlayer, index, era);
     }
 
     @Override
