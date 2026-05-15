@@ -33,7 +33,7 @@ public class StartLobbyAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new StartLobbyCommand(clientController.getCurrLobby().getLobbyID()).execute(clientController);
+        new StartLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID()).execute();
          return Optional.empty();
     }
 

@@ -177,7 +177,16 @@ public class Lobby implements Serializable {
     }
 
     public void setIdleTurnState() {
-        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex());
+        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex(), getBoard().getDeck().getCurrentEra());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Lobby)) return false;
+
+        Lobby other = (Lobby) obj;
+        return lobbyID == other.lobbyID;
+    }
 }

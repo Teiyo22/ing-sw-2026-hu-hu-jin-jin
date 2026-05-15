@@ -80,6 +80,10 @@ public abstract class AbstractCard implements Serializable {
         return ((AbstractCard) obj).getID() == this.ID;
     }
 
+    public String getResource() {
+        return resourceName;
+    }
+
     @Override
     public String toString() {
         String format = " %-10s | %-26s | %-15s ";

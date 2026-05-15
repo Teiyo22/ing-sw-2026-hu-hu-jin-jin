@@ -52,7 +52,7 @@ public class PickCardAction implements Action {
         }
 
         clientController.getCurrLobby().setIdleTurnState();
-        new PickCardCommand(topRow, bottomRow).execute(clientController);
+        new PickCardCommand(clientController, topRow, bottomRow).execute();
         return Optional.empty();
     }
 

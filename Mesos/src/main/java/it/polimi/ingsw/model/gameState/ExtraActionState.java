@@ -39,6 +39,6 @@ public class ExtraActionState extends GameState {
 
     @Override
     public ModelStateInfo getModelStateInfo() {
-        return new CardPickStateInfo(currPlayer, -1);
+        return new CardPickStateInfo(currPlayer, -1, game.getBoard().getDeck().getCurrentEra());
     }
 }

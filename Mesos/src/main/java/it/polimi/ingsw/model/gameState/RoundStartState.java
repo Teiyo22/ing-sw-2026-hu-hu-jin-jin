@@ -42,7 +42,7 @@ public class RoundStartState extends GameState {
 
     @Override
     public ModelStateInfo getModelStateInfo(){
-        return new OfferPickStateInfo(currPlayer, assignedSlots);
+        return new OfferPickStateInfo(currPlayer, assignedSlots, game.getBoard().getDeck().getCurrentEra());
     }
 
     @Override

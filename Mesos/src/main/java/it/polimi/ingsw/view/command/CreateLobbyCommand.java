@@ -6,16 +6,18 @@ import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.Screen;
 
 public class CreateLobbyCommand implements Command {
+    private final ClientController clientController;
     private final int size;
     private final Totem totem;
 
-    public CreateLobbyCommand(int size, Totem totem) {
+    public CreateLobbyCommand(ClientController clientController, int size, Totem totem) {
+        this.clientController = clientController;
         this.size = size;
         this.totem = totem;
     }
 
     @Override
-    public void execute(ClientController clientController) {
+    public void execute() {
         clientController.executeCommand(() -> {
             clientController.getServer().createLobby(clientController.getID(), size, totem);
         });

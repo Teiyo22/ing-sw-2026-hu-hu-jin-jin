@@ -13,11 +13,12 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Set;
 
-public class RMIClientInterface extends ClientInterface {
+public class RMIClientInterface extends ClientInterface implements Serializable {
     VirtualClient wrappedClient;
 
     public RMIClientInterface(VirtualClient wrappedClient) {

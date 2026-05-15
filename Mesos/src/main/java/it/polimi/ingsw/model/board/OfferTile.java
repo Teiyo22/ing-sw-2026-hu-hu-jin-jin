@@ -41,6 +41,10 @@ public class OfferTile implements Serializable {
         return bonusFood;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         String playerName = assignedPlayer == null ? "" : assignedPlayer.getName();

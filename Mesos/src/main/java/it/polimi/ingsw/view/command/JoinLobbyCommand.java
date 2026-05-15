@@ -6,16 +6,18 @@ import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.Screen;
 
 public class JoinLobbyCommand implements Command {
+    private final ClientController clientController;
     private final int lobbyID;
     private final Totem totem;
 
-    public JoinLobbyCommand(int lobbyID, Totem totem) {
+    public JoinLobbyCommand(ClientController clientController, int lobbyID, Totem totem) {
+        this.clientController = clientController;
         this.lobbyID = lobbyID;
         this.totem = totem;
     }
 
     @Override
-    public void execute(ClientController clientController) {
+    public void execute() {
         clientController.executeCommand(() -> {
             clientController.getServer().joinLobby(clientController.getID(), lobbyID, totem);
         });

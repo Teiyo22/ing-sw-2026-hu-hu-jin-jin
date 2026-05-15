@@ -43,7 +43,7 @@ public class PickOfferAction implements Action {
             return Optional.of("Offer ID must be an integer");
 
         clientController.getCurrLobby().setIdleTurnState();
-        new PickOfferCommand(offerID).execute(clientController);
+        new PickOfferCommand(clientController, offerID).execute();
         return Optional.empty();
     }
 

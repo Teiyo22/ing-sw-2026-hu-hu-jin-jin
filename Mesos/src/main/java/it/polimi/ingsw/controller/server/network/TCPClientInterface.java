@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Set;
 
