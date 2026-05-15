@@ -30,6 +30,7 @@ public class LobbyInfoSection implements GUISection{
     private final JButton start;
     private final JPanel totemSelect;
     private final JLabel totemLabel;
+    private final JPanel topBar;
 
     public LobbyInfoSection(ClientController clientController) {
         title = WidgetFactory.createLabel("Lobby Info");
@@ -39,7 +40,7 @@ public class LobbyInfoSection implements GUISection{
 
         model = new DefaultListModel<>();
         players = new JList<Map.Entry<Player, Boolean>>();
-        players.setBackground(Fonts.cream);
+        players.setOpaque(false);
         players.setFont(Fonts.small);
         players.setModel(model);
 
@@ -51,29 +52,36 @@ public class LobbyInfoSection implements GUISection{
             playerName.setForeground(Color.WHITE);
             cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
             cell.add(playerName);
-            cell.setOpaque(true);
+            cell.setOpaque(false);
             return cell;
         });
 
-
-        info = new PanelBuilder().column(0, lobbyID, count, players).buildPanel();
-
+        topBar = new PanelBuilder().border(null, title, null, null,null).buildPanel();
 
         totemLabel = WidgetFactory.createLabel("Totem:");
         JComboBox<Totem> totemBox = WidgetFactory.createBox(Totem.values());
+        totemBox.setMaximumSize(new Dimension(200,30));
 
-            join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController,(Totem)totemBox.getSelectedItem()));
+        totemSelect = new PanelBuilder().row(5, totemLabel, totemBox)
+                .centered()
+                .withPadding(40,0,0,0)
+                .buildPanel();
+
+        totemSelect.setMaximumSize(totemSelect.getPreferredSize());
+        totemSelect.setVisible(false);
+
+        info = new PanelBuilder().rounded(30,5,Fonts.select, lobbyID, count, players,totemSelect)
+                .centered()
+                .buildPanel();
+
+        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController,(Totem)totemBox.getSelectedItem()));
             leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
             start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
 
-
-        totemSelect = new PanelBuilder().row(5, totemLabel, totemBox).buildPanel();
-
-        bottomBar = new PanelBuilder().grid(3, 10, 0, join, leave, start).buildPanel();
-
-        panel = new PanelBuilder().border(title, info, totemSelect, bottomBar, null)
-                .withColor(Fonts.other_red)
+        bottomBar = new PanelBuilder().grid(3, 10, 0, join, leave, start)
                 .buildPanel();
+
+        panel = new PanelBuilder().border(topBar,info,bottomBar,null,null).buildPanel();
     }
 
     @Override
@@ -86,6 +94,12 @@ public class LobbyInfoSection implements GUISection{
         lobbyID.setText(String.format("Lobby ID: %3d", clientController.getCurrLobby().getLobbyID()));
         count.setText(String.format("Player Count: %3d/%3d",
                 clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
+
+        boolean isInLobby = clientController.getCurrLobby().getPlayer(clientController.getID()) != null;
+
+        totemSelect.setVisible(!isInLobby);
+
+
     }
 
     @Override

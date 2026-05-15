@@ -30,7 +30,7 @@ public class LobbyListSection implements GUISection {
 
         model = new DefaultListModel<>();
         lobbies = new JList<>();
-        lobbies.setBackground(Fonts.cream);
+        lobbies.setBackground(Fonts.select);
         lobbies.setFont(Fonts.small);
         lobbies.setModel(model);
         lobbies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -42,7 +42,7 @@ public class LobbyListSection implements GUISection {
             id.setForeground(Color.WHITE);
             cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
             cell.add(id, BorderLayout.WEST);
-            cell.setOpaque(true);
+            cell.setOpaque(false);
             return cell;
         });
 
@@ -60,16 +60,16 @@ public class LobbyListSection implements GUISection {
         });
 
         scrollPane = new JScrollPane(lobbies);
+        scrollPane.setOpaque(false);
 
         panel = new PanelBuilder().border(topBar, scrollPane, null, null, null)
-                .withColor(Fonts.weird_blue)
                 .buildPanel();
     }
 
     @Override
     public void render(ClientController clientController, JPanel panel) {
-        Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
         model.clear();
+        Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
         for(Lobby lobby : lobbies.values())
             if (!model.contains(lobby))
                 model.addElement(lobby);

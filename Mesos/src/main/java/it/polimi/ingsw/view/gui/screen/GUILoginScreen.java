@@ -17,7 +17,7 @@ public class GUILoginScreen extends GUIScreen{
         super(frame,clientController);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(300,0,0,0);
+        c.insets = new Insets(250,0,0,0);
         panel1 = new JPanel(new GridBagLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -30,13 +30,13 @@ public class GUILoginScreen extends GUIScreen{
         name.setMaximumSize(new Dimension(250, 35));
 
         JTextField username = WidgetFactory.createTextField();
-        username.setMaximumSize(new Dimension(250, 35));
+        username.setMaximumSize(new Dimension(250, 30));
 
         JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username));
         login.setMaximumSize(new Dimension(250, 35));
         login.setText("Login");
 
-        loginpanel = new PanelBuilder().rounded(40,5, new Color(Fonts.menu2.getRed(), Fonts.menu2.getGreen(), Fonts.menu2.getBlue(), 140),name,username,login)
+        loginpanel = new PanelBuilder().rounded(40,5, Fonts.select,name,username,login)
                 .centered()
                 .buildPanel();
         loginpanel.setPreferredSize(new Dimension(350, 200));

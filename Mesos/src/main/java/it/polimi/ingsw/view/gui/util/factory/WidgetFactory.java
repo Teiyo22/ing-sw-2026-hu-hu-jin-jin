@@ -32,8 +32,9 @@ public class WidgetFactory {
 
     public static JTextField createTextField() {
         JTextField textField = new JTextField();
-        textField.setFont(Fonts.medium);
-        textField.setBackground(Color.WHITE );
+        textField.setFont(Fonts.small);
+        textField.setForeground(Color.WHITE);
+        textField.setBackground(Fonts.menu);
         textField.setPreferredSize(new Dimension(200, 30));
         return textField;
     }
@@ -41,6 +42,8 @@ public class WidgetFactory {
     public static <E> JComboBox<E> createBox(E[] items) {
         JComboBox<E> box = new JComboBox<>(items);
         box.setFont(Fonts.small);
+        box.setForeground(Color.WHITE);
+        box.setBackground(Fonts.menu);
         box.setPreferredSize(new Dimension(200, 30));
 
         return box;

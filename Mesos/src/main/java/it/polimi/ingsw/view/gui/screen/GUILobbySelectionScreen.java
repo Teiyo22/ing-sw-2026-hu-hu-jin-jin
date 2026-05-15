@@ -18,7 +18,6 @@ import java.util.List;
 
 public class GUILobbySelectionScreen extends GUIScreen {
     private final JPanel main;
-    private final JPanel placeholder;
     private final JPanel lobbyListPanel;
     private final JPanel lobbyCreatePanel;
     private final JPanel lobbyInfoPanel;
@@ -28,51 +27,27 @@ public class GUILobbySelectionScreen extends GUIScreen {
     public GUILobbySelectionScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
 
-        placeholder = new JPanel(new CardLayout()) {
-            @Override
-            public Dimension getPreferredSize() {
-                for (Component c : getComponents()) {
-                    if (c.isVisible()) {
-                        return c.getPreferredSize();
-                    }
-                }
-                return super.getPreferredSize();
-            }
-        };
-
         sections = List.of(
                 new LobbyListSection(clientController),
-                new CreateGameSection(clientController, placeholder),
+                new CreateGameSection(clientController),
                 new LobbyInfoSection(clientController));
 
         lobbyListPanel = sections.get(0).getPanel();
         lobbyCreatePanel = sections.get(1).getPanel();
         lobbyInfoPanel = sections.get(2).getPanel();
 
-        placeholder.setMaximumSize(new Dimension(frame.getWidth() / 2, 300));
-
-        JButton create = WidgetFactory.createButton(new AbstractAction("Create Lobby") {
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) placeholder.getLayout()).show(placeholder, "form");
-            }
-        });
-
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setBackground(Color.DARK_GRAY);
-        buttonPanel.add(create);
-
-        placeholder.add(buttonPanel, "button");
-        placeholder.add(lobbyCreatePanel, "form");
-        ((CardLayout) placeholder.getLayout()).show(placeholder, "button");
-
         JPanel lobbySelectionPanel = new PanelBuilder()
-                .border(null, lobbyListPanel, placeholder, null, null)
+                .border(null, lobbyListPanel, lobbyCreatePanel, null, null)
                 .buildPanel();
+        lobbySelectionPanel.setOpaque(false);
 
         main = new PanelBuilder()
-                .grid(2, 0, 0, lobbySelectionPanel, lobbyInfoPanel)
-                .withColor(Fonts.brown)
+                .grid(2, 20, 0, lobbySelectionPanel, lobbyInfoPanel)
+                .withPadding(20,20,20,20)
                 .buildPanel();
+
+        this.setLayout(new BorderLayout());
+        this.add(main,BorderLayout.CENTER);
     }
 
     @Override
@@ -81,8 +56,7 @@ public class GUILobbySelectionScreen extends GUIScreen {
                 .filter(s -> s.isVisible(clientController))
                 .forEach(s -> s.render(clientController, main));
 
-        frame.setContentPane(main);
-        frame.setVisible(true);
+        frame.setContentPane(this);
         frame.revalidate();
         frame.repaint();
     }
