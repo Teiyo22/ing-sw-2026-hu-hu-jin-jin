@@ -74,7 +74,7 @@ public class LobbyInfoSection implements GUISection{
                 .centered()
                 .buildPanel();
 
-        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController,(Totem)totemBox.getSelectedItem()));
+        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController,totemBox));
             leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
             start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
 
