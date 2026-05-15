@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public abstract class GUIScreen extends JPanel implements ActionListener, Screen {
+public abstract class GUIScreen extends JPanel implements Screen {
     protected GUIView frame;
     protected ClientController clientController;
 
@@ -26,7 +26,4 @@ public abstract class GUIScreen extends JPanel implements ActionListener, Screen
         ImageIcon bg = new ImageIcon(getClass().getResource("/images/mesosBlurred.png"));
         g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e){}
 }

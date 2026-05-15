@@ -49,6 +49,7 @@ public class GUILoginScreen extends GUIScreen{
         frame.setContentPane(panel1);
         frame.setVisible(true);
     }
+
     @Override
     public void showError(String error) {
 

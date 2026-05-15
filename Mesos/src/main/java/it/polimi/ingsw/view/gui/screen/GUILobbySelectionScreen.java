@@ -62,11 +62,6 @@ public class GUILobbySelectionScreen extends GUIScreen {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-    @Override
     public void showError(String error) {
 
     }
