@@ -13,10 +13,18 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
     public OfferTileComponent(OfferTile offer, SelectionListener<OfferTile> selectionListener, int index) {
         super(offer, selectionListener);
         this.index = index;
-        this.setPreferredSize(new Dimension(180, 270));
+
+        this.setHorizontalAlignment(SwingConstants.CENTER);
+        this.setVerticalAlignment(SwingConstants.CENTER);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int height = (int) (screenSize.height * 0.35);
+        int width = (int) (height * (2.0 / 3.0));
 
         Image img = new ImageIcon(getClass().getResource("/images/offerTiles/" + element.getType() + ".png")).getImage();
-        this.setIcon(new ImageIcon(img.getScaledInstance(180, 270, Image.SCALE_DEFAULT)));
+        this.setIcon(new ImageIcon(img.getScaledInstance(width - 6, height - 6, Image.SCALE_DEFAULT)));
+        this.setPreferredSize(new Dimension(width, height));
     }
 
     public int getIndex() {

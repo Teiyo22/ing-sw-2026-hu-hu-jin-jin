@@ -25,12 +25,18 @@ public abstract class RowSection implements GUISection {
     public RowSection(CardPicksListener listener) {
         this.listener = listener;
 
-        buildings = new PanelBuilder().row(3).buildPanel();
-        characters = new PanelBuilder().row(3).buildPanel();
-        events = new PanelBuilder().row(3).buildPanel();
+        buildings = new PanelBuilder().row(0).buildPanel();
+        characters = new PanelBuilder().row(0).buildPanel();
+        events = new PanelBuilder().row(0).buildPanel();
 
         panel = new PanelBuilder().row(0, buildings, characters, events).buildPanel();
-        panel.setPreferredSize(new Dimension(1920, 200));
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int height = (int) (screenSize.height*0.3);
+        int width = screenSize.width;
+
+        panel.setPreferredSize(new Dimension(width, height));
     }
 
     public abstract List<AbstractBuilding> getBuildings(ClientController clientController);
@@ -57,6 +63,7 @@ public abstract class RowSection implements GUISection {
         listener.setEnabled(controller.getCurrLobby().getTurnState().canPickCard() &&
                 controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
         if(listener.isEnabled()) {
+            listener.resetPicks();
             listener.setTotalPicks(getTotalPicks(controller));
         }
 
@@ -66,7 +73,6 @@ public abstract class RowSection implements GUISection {
 
     public void renderCard(AbstractCard c, JPanel panel, CardPicksListener listener) {
         CardComponent cardComponent = new CardComponent(c, listener);
-        cardComponent.renderFront();
         panel.add(cardComponent);
     }
 

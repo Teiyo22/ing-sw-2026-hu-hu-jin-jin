@@ -36,6 +36,7 @@ public class OfferTrackSection implements GUISection {
 
         listener.setEnabled(controller.getCurrLobby().getTurnState().canPickOffer() &&
                 controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
+        listener.resetPick();
     }
 
     @Override

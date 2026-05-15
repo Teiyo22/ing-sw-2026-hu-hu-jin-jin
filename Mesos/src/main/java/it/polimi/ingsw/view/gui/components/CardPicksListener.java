@@ -23,6 +23,10 @@ public class CardPicksListener extends SelectionListener<AbstractCard> {
         this.totalPicks = totalPicks;
     }
 
+    public void resetPicks(){
+        picks.clear();
+    }
+
     @Override
     public boolean onSelect(AbstractCard card) {
         if (isEnabled && picks.size() < totalPicks) {

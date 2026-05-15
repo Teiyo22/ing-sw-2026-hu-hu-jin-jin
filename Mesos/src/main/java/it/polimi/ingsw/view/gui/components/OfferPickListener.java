@@ -24,6 +24,10 @@ public class OfferPickListener extends SelectionListener<OfferTile> {
         return -1;
     }
 
+    public void resetPick() {
+        selected = null;
+    }
+
     @Override
     public boolean onSelect(OfferTile offerTile) {
         if(isEnabled) {

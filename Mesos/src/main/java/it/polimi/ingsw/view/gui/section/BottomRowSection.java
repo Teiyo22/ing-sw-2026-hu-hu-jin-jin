@@ -30,6 +30,7 @@ public class BottomRowSection extends RowSection {
 
     @Override
     public int getTotalPicks(ClientController clientController) {
-        return clientController.getCurrLobby().getBoard().getBottomRow().getPickableCardCount();
+        return clientController.getCurrLobby().getBoard().getOfferTrack()[
+                clientController.getCurrLobby().getTurnState().getIndex()].getBottomRowPickable();
     }
 }
