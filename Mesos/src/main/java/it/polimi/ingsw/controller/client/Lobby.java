@@ -179,7 +179,7 @@ public class Lobby implements Serializable {
     }
 
     public void setIdleTurnState() {
-        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex());
+        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex(), getBoard().getDeck().getCurrentEra());
     }
 
     @Override

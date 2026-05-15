@@ -28,6 +28,8 @@ public class PanelBuilder {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setOpaque(false);
 
+        panel.add(Box.createHorizontalGlue());
+
         for (int i = 0; i < components.length; i++) {
             panel.add(components[i]);
             panel.add(Box.createHorizontalGlue());

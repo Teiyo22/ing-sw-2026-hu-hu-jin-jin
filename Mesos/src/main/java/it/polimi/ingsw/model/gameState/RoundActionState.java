@@ -69,6 +69,6 @@ public class RoundActionState extends GameState{
 
     @Override
     public ModelStateInfo getModelStateInfo(){
-        return new CardPickStateInfo(currPlayer, solvedOffers);
+        return new CardPickStateInfo(currPlayer, solvedOffers, game.getBoard().getDeck().getCurrentEra());
     }
 }

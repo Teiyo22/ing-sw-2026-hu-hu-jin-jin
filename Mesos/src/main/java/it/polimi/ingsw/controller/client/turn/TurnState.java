@@ -5,8 +5,9 @@ import it.polimi.ingsw.model.player.Player;
 public abstract class TurnState {
     protected Player currPlayer;
     protected int index;
+    protected int era;
 
-    public TurnState(Player currPlayer, int index){
+    public TurnState(Player currPlayer, int index, int era){
         this.currPlayer = currPlayer;
         this.index = index;
     }
@@ -21,5 +22,9 @@ public abstract class TurnState {
 
     public int getIndex() {
         return index;
+    }
+
+    public int getEra() {
+        return era;
     }
 }

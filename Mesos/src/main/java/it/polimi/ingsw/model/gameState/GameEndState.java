@@ -104,6 +104,6 @@ public class GameEndState extends GameState {
 
     @Override
     public ModelStateInfo getModelStateInfo() {
-        return new GameEndStateInfo(null, -1);
+        return new GameEndStateInfo(null, -1, game.getBoard().getDeck().getCurrentEra());
     }
 }

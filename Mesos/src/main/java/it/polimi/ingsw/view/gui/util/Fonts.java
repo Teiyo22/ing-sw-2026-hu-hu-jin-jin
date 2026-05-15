@@ -6,6 +6,18 @@ public class Fonts {
     public static final Font large  = new Font("Arial", Font.PLAIN, 40);
     public static final Font medium = new Font("Arial", Font.PLAIN, 30);
     public static final Font small  = new Font("Arial", Font.PLAIN, 20);
+    public static final Font monospaced = new Font(Font.MONOSPACED, Font.PLAIN, 15);
+
+    //Mesos cover art palette
+    public static final Color mesos_cream = new Color(254, 241, 205);
+    public static final Color mesos_yellow = new Color(244, 184, 56);
+    public static final Color mesos_orange = new Color(228, 111, 57);
+    public static final Color mesos_red = new Color(182, 43, 50);
+    public static final Color mesos_pinkish_red = new Color(106, 29, 46);
+    public static final Color mesos_shadow_red = new Color(71, 19, 30);
+    public static final Color mesos_shadow_red_low_opacity = new Color(71, 19, 30, 120);
+    public static final Color mesos_blue= new Color(20, 51, 68);
+    public static final Color mesos_dark_blue = new Color(10, 23, 35);
 
     public static final Color menu2 = new Color(0x0F051A);
     public static final Color select = new Color(15,5,26,140);

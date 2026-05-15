@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CardPicksListener extends SelectionListener<AbstractCard> {
@@ -23,6 +21,10 @@ public class CardPicksListener extends SelectionListener<AbstractCard> {
 
     public void setTotalPicks(int totalPicks) {
         this.totalPicks = totalPicks;
+    }
+
+    public void resetPicks(){
+        picks.clear();
     }
 
     @Override

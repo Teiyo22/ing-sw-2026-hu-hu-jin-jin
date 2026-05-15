@@ -2,26 +2,39 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.board.OfferTile;
 
-import javax.swing.*;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OfferPickListener extends SelectionListener<OfferTile> {
-    private final Map<OfferTile, Integer> offerIndexes;
-    private int selectedOfferIndex;
+    private final List<OfferTileComponent> components;
+    private OfferTile selected;
 
-    public OfferPickListener(Map<OfferTile, Integer> offerIndexes) {
-        this.offerIndexes = offerIndexes;
-        selectedOfferIndex = -1;
+    public OfferPickListener() {
+        components = new ArrayList<>();
+        selected = null;
     }
 
     public int getSelectedOfferIndex() {
-        return selectedOfferIndex;
+        for ( OfferTileComponent component : components ) {
+            if(component.getElement().equals(selected)) {
+                return component.getIndex();
+            }
+        }
+
+        return -1;
+    }
+
+    public void resetPick() {
+        selected = null;
     }
 
     @Override
     public boolean onSelect(OfferTile offerTile) {
         if(isEnabled) {
-            selectedOfferIndex = offerIndexes.get(offerTile);
+            selected = offerTile;
+            for(OfferTileComponent component : components) {
+                component.deselect();
+            }
             return true;
         } else return false;
     }
@@ -29,7 +42,15 @@ public class OfferPickListener extends SelectionListener<OfferTile> {
     @Override
     public void onDeselect(OfferTile offerTile) {
         if(isEnabled) {
-            selectedOfferIndex = -1;
+            selected = null;
         }
+    }
+
+    public void addComponent(OfferTileComponent offerTileComponent) {
+        components.add(offerTileComponent);
+    }
+
+    public List<OfferTileComponent> getComponents() {
+        return components;
     }
 }

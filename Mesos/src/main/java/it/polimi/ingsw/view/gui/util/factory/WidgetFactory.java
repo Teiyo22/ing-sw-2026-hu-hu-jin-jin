@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.function.Supplier;
 
 public class WidgetFactory {
@@ -26,6 +27,13 @@ public class WidgetFactory {
         label.setForeground(Color.WHITE);
         label.setOpaque(false);
 
+        return label;
+    }
+
+    public static JLabel createImageLabel(URL source, int width, int height) {
+        Image image = new ImageIcon(source).getImage();
+        JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        label.setPreferredSize(new Dimension(width, height));
         return label;
     }
 
