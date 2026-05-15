@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PanelBuilder {
-    private final JPanel panel;
+    private JPanel panel;
 
     public PanelBuilder() {
         panel = new JPanel();
@@ -62,18 +62,6 @@ public class PanelBuilder {
         return this;
     }
 
-    public PanelBuilder flow(JComponent... components) {
-        panel.setLayout(new FlowLayout());
-
-        for (JComponent c : components) {
-            c.setAlignmentY(Component.CENTER_ALIGNMENT);
-            c.setAlignmentX(Component.CENTER_ALIGNMENT);
-            panel.add(c);
-        }
-
-        return this;
-    }
-
     public PanelBuilder withColor(Color color) {
         panel.setOpaque(true);
         panel.setBackground(color);
@@ -83,6 +71,36 @@ public class PanelBuilder {
 
     public PanelBuilder withPadding(int top, int left, int bottom, int right) {
         panel.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+        return this;
+    }
+
+    public PanelBuilder rounded(int radius,int gap, Color color, JComponent... components) {
+        JPanel roundedPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(color);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+        roundedPanel.setOpaque(false);
+        roundedPanel.setLayout(new BoxLayout(roundedPanel, BoxLayout.Y_AXIS));
+
+        for (JComponent c : components) {
+            c.setAlignmentX(Component.CENTER_ALIGNMENT);
+            roundedPanel.add(c);
+            roundedPanel.add(Box.createVerticalStrut(gap));
+        }
+        panel = roundedPanel;
+        return this;
+    }
+
+    public PanelBuilder centered() {
+        panel.add(Box.createVerticalGlue(), 0);
+        panel.add(Box.createVerticalGlue());
         return this;
     }
 

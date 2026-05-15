@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.section.*;
+import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,11 +39,13 @@ public class GUIGamePlayScreen extends GUIScreen{
         offerTrackPanel = sections.get(2).getPanel();
         gameInfoPanel = sections.get(3).getPanel();
 
+        JPanel board = new PanelBuilder().border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null).buildPanel();
+
         this.setLayout(new BorderLayout());
-        this.add(topRowPanel, BorderLayout.NORTH);
-        this.add(bottomRowPanel, BorderLayout.SOUTH);
-        this.add(gameInfoPanel, BorderLayout.WEST);
-        this.add(offerTrackPanel, BorderLayout.CENTER);
+        this.add(new PanelBuilder().column(0, gameInfoPanel).withPadding(30, 30, 30, 0).buildPanel()
+                , BorderLayout.WEST);
+        this.add(board, BorderLayout.CENTER);
+
     }
 
     @Override

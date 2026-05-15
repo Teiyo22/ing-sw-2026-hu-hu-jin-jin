@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.function.Supplier;
 
 public class WidgetFactory {
@@ -30,9 +31,11 @@ public class WidgetFactory {
         return label;
     }
 
-    public static JLabel createImageLabel(String source, int width, int height) {
+    public static JLabel createImageLabel(URL source, int width, int height) {
         Image image = new ImageIcon(source).getImage();
-        return new JLabel(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
+        label.setPreferredSize(new Dimension(width, height));
+        return label;
     }
 
     public static JTextField createTextField() {
