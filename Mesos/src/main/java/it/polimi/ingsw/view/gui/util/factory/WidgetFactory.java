@@ -24,7 +24,6 @@ public class WidgetFactory {
         JLabel label = new JLabel(content, SwingConstants.CENTER);
         label.setFont(Fonts.medium);
         label.setForeground(Color.WHITE);
-        label.setBackground(Fonts.brown);
         label.setOpaque(false);
 
         return label;
