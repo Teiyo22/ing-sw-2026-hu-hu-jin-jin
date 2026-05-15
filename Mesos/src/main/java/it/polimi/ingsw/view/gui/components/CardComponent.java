@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 public class CardComponent extends SelectableComponent<AbstractCard> {
     private final ImageIcon front;

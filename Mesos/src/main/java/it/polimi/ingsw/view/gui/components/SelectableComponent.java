@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public abstract class SelectableComponent<E> extends JLabel implements MouseListener{
-    protected final E element;
+    protected E element;
     protected final SelectionListener<E> selectionListener;
     protected boolean selected;
     private boolean hover;
@@ -74,6 +74,10 @@ public abstract class SelectableComponent<E> extends JLabel implements MouseList
             hover = false;
             updateBorder();
         }
+    }
+
+    public E getElement() {
+        return element;
     }
 }
 

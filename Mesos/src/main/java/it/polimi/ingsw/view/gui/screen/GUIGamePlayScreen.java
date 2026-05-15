@@ -1,22 +1,17 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.section.*;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class GUIGamePlayScreen extends GUIScreen{
-    JPanel main;
 
     JPanel topRowPanel;
     JPanel bottomRowPanel;
@@ -31,9 +26,7 @@ public class GUIGamePlayScreen extends GUIScreen{
         CardPicksListener topListener = new CardPicksListener();
         CardPicksListener bottomListener = new CardPicksListener();
 
-        OfferTile[] offerTrack = clientController.getCurrLobby().getBoard().getOfferTrack();
-        OfferPickListener offerPickListener = new OfferPickListener(IntStream.range(0, offerTrack.length)
-                .boxed().collect(Collectors.toMap(i -> offerTrack[i], i -> i)));
+        OfferPickListener offerPickListener = new OfferPickListener();
 
         sections = List.of(new TopRowSection(topListener),
                 new BottomRowSection(bottomListener),
@@ -45,16 +38,20 @@ public class GUIGamePlayScreen extends GUIScreen{
         offerTrackPanel = sections.get(2).getPanel();
         gameInfoPanel = sections.get(3).getPanel();
 
-        main = new PanelBuilder().border(topRowPanel, offerTrackPanel, bottomRowPanel, gameInfoPanel, null).buildPanel();
+        this.setLayout(new BorderLayout());
+        this.add(topRowPanel, BorderLayout.NORTH);
+        this.add(bottomRowPanel, BorderLayout.SOUTH);
+        this.add(gameInfoPanel, BorderLayout.WEST);
+        this.add(offerTrackPanel, BorderLayout.CENTER);
     }
 
     @Override
     public void render() {
         sections.stream()
                 .filter(s -> s.isVisible(clientController))
-                .forEach(s -> s.render(clientController, main));
+                .forEach(s -> s.render(clientController, this));
 
-        frame.setContentPane(main);
+        frame.setContentPane(this);
         frame.setVisible(true);
         frame.revalidate();
         frame.repaint();

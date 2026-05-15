@@ -35,7 +35,7 @@ public class GameInfoSection implements GUISection {
         JPanel buttonsPanel = new PanelBuilder().column(1, pickCardsButton, pickOfferButton).buildPanel();
 
         panel = new PanelBuilder().column(5, infoPanel, orderTile, buttonsPanel)
-                .withColor(Fonts.cream).buildPanel();
+                .withColor(Fonts.other_red).buildPanel();
     }
 
     @Override

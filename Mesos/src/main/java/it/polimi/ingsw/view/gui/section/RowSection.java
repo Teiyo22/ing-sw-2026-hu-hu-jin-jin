@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.components.CardComponent;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
-import it.polimi.ingsw.view.gui.util.Fonts;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
@@ -26,11 +25,11 @@ public abstract class RowSection implements GUISection {
     public RowSection(CardPicksListener listener) {
         this.listener = listener;
 
-        buildings = new PanelBuilder().flow().withColor(Fonts.other_red).buildPanel();
-        characters = new PanelBuilder().flow().withColor(Fonts.light_brown).buildPanel();
-        events = new PanelBuilder().flow().withColor(Fonts.other_red).buildPanel();
+        buildings = new PanelBuilder().row(3).buildPanel();
+        characters = new PanelBuilder().row(3).buildPanel();
+        events = new PanelBuilder().row(3).buildPanel();
 
-        panel = new PanelBuilder().grid(3, 0, 0, buildings, characters, events).withColor(Fonts.blue).buildPanel();
+        panel = new PanelBuilder().row(0, buildings, characters, events).buildPanel();
         panel.setPreferredSize(new Dimension(1920, 200));
     }
 
