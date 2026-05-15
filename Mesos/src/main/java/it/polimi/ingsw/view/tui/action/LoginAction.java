@@ -38,7 +38,7 @@ public class LoginAction implements Action{
 
         username = args[1];
 
-        new LoginCommand(username).execute(clientController);
+        new LoginCommand(clientController, username).execute();
         return Optional.empty();
     }
 

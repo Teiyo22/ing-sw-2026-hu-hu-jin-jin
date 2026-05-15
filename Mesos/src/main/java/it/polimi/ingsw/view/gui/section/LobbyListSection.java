@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.view.command.LobbyInfoCommand;
-import it.polimi.ingsw.view.gui.action.GUIGetWaitingLobbiesAction;
 import it.polimi.ingsw.view.gui.util.Fonts;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;

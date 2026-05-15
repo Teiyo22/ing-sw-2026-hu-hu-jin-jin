@@ -6,8 +6,8 @@ import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.player.Player;
 
 public class OfferPickStateInfo extends ModelStateInfo {
-    public OfferPickStateInfo(Player player, int idx) {
-        super(player, idx);
+    public OfferPickStateInfo(Player player, int idx, int era) {
+        super(player, idx, era);
         type = StateInfoType.OFFER_PICK;
     }
 

@@ -200,22 +200,6 @@ public class ServerController implements VirtualServer {
         lobbies.remove(lobbyID);
     }
 
-    public void broadcastLobbyRemoval(int lobbyID) {
-        allClients.values().stream()
-                .filter(c -> !playingClients.containsKey(c.getID()))
-                .forEach(c -> c.removeLobby(lobbyID));
-    }
-
-    public void broadcastLobbyAddition(Lobby lobby) {
-        allClients.values().stream()
-                .filter(c -> !playingClients.containsKey(c.getID()))
-                .forEach(c -> c.addLobby(lobby));
-    }
-
-    public void removeLobby(int lobbyID) {
-        lobbies.remove(lobbyID);
-    }
-
     //=============================================================================
     // Game interaction methods
     //=============================================================================
@@ -255,7 +239,8 @@ public class ServerController implements VirtualServer {
         allClients.put(id, client);
         connectionMonitor.registerClient(client);
 
-        ClientInterface previousValue = allClients.putIfAbsent(username, allClients.get(clientID));
+        client.setConnected(true);
+        client.setID(id);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with temporary id: " + id);
     }

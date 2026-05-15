@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.command.PickCardCommand;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 
 import javax.swing.*;
@@ -20,7 +21,6 @@ public class GUICardPickAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        clientController.getServer().requestCards(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                topListener.getPicks(), bottomListener.getPicks());
+        new PickCardCommand(clientController, topListener.getPicks(), bottomListener.getPicks()).execute();
     }
 }

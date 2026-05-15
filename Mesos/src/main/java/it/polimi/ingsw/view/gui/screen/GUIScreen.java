@@ -18,14 +18,6 @@ public abstract class GUIScreen extends JPanel implements ActionListener, Screen
             this.clientController = clientController;
         }
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            ImageIcon bg = new ImageIcon(getClass().getResource("/images/select.png"));
-            g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
-        }
-
-
     public abstract void render();
 
     @Override

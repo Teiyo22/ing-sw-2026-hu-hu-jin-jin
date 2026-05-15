@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.view.command.PickOfferCommand;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 
 import javax.swing.*;
@@ -18,7 +19,6 @@ public class GUIOfferPickAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        clientController.getServer().requestOffer(clientController.getID(), clientController.getCurrLobby().getLobbyID(),
-                offerPickListener.getSelectedOfferIndex());
+        new PickOfferCommand(clientController, offerPickListener.getSelectedOfferIndex());
     }
 }
