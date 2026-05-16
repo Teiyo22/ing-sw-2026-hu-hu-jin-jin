@@ -21,23 +21,7 @@ public class TribesSection implements GUISection {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setOpaque(false);
 
-        tabbedPane = new JTabbedPane();
-        tabbedPane.setFont(Fonts.small.deriveFont(Font.BOLD));
-        tabbedPane.setBackground(Color.BLACK);
-        tabbedPane.setForeground(Color.WHITE);
-        tabbedPane.setOpaque(false);
-
-        tabbedPane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-            @Override
-            protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-            }
-
-            @Override
-            protected void paintTabBackground(Graphics g, int tabPane, int itemIndex, int x, int y, int w, int h, boolean isSelected) {
-                g.setColor(isSelected ? Color.BLACK : Color.DARK_GRAY);
-                g.fillRect(x, y, w, h);
-            }
-        });
+        tabbedPane = WidgetFactory.createTab();
 
         playerLabelsMap = new HashMap<>();
 

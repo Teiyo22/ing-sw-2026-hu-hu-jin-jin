@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.section.*;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
+import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,26 +51,10 @@ public class GUIGamePlayScreen extends GUIScreen{
         container.add(board, BorderLayout.CENTER);
         container.setOpaque(false);
 
-
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.setBackground(Color.BLACK);
-        tabs.setForeground(Color.WHITE);
-        tabs.setOpaque(false);
-        tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
-            @Override
-            protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-            }
-
-            @Override
-            protected void paintTabBackground(Graphics g, int tabPane, int itemIndex, int x, int y, int w, int h, boolean isSelected) {
-                g.setColor(isSelected ? Color.BLACK : Color.DARK_GRAY);
-                g.fillRect(x, y, w, h);
-            }
-        });
-
-        tabs.addTab("Game", container);
-
         JPanel tribesPanel = sections.get(4).getPanel();
+
+        JTabbedPane tabs = WidgetFactory.createTab();
+        tabs.addTab("Game", container);
         tabs.addTab("Tribes", tribesPanel);
 
         this.setLayout(new BorderLayout());
