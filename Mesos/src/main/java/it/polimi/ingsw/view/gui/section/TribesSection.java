@@ -94,28 +94,33 @@ public class TribesSection implements GUISection {
     @Override
     public void render(ClientController controller, JPanel container) {
 
-        for (Player p : controller.getCurrLobby().getPlayers().keySet()) {
-            PlayerLabels labels = playerLabelsMap.get(p);
+        for (Player player : controller.getCurrLobby().getPlayers().keySet()) {
+            PlayerLabels labels = playerLabelsMap.get(player);
 
             if (labels != null) {
-                labels.pp.setText("PP: " + p.getPP());
-                labels.food.setText("Food: " + p.getFood());
-                labels.fullSet.setText("Full Set: " + p.getTribe().getMinChar());
-                labels.sustenanceDiscount.setText("Sustenance Discount: " + p.getTribe().getSustenanceDiscount());
-                labels.stars.setText("Stars: " + p.getTribe().getStars());
-                labels.builderDiscount.setText("Builder Discount: " + p.getTribe().getBuilderDiscount());
-                labels.uniqueInventors.setText("Unique inventors: " + p.getTribe().getUniqueInventorsCount());
-                labels.collector.setText("Collectors: " + p.getTribe().getCollectorCount());
-                labels.hunter.setText("Hunters: " + p.getTribe().getHunterCount());
-                labels.builder.setText("Builders: " + p.getTribe().getBuilderCount());
-                labels.shaman.setText("Shamans: " + p.getTribe().getShamanCount());
-                labels.artist.setText("Artists: " + p.getTribe().getArtistCount());
-                labels.inventor.setText("Inventors: " + p.getTribe().getInventorCount());
+                setLabels(labels, player);
             }
         }
 
         mainPanel.revalidate();
         mainPanel.repaint();
+    }
+
+
+    public void setLabels(PlayerLabels labels, Player p){
+        labels.pp.setText("PP: " + p.getPP());
+        labels.food.setText("Food: " + p.getFood());
+        labels.fullSet.setText("Full Set: " + p.getTribe().getMinChar());
+        labels.sustenanceDiscount.setText("Sustenance Discount: " + p.getTribe().getSustenanceDiscount());
+        labels.stars.setText("Stars: " + p.getTribe().getStars());
+        labels.builderDiscount.setText("Builder Discount: " + p.getTribe().getBuilderDiscount());
+        labels.uniqueInventors.setText("Unique inventors: " + p.getTribe().getUniqueInventorsCount());
+        labels.collector.setText("Collectors: " + p.getTribe().getCollectorCount());
+        labels.hunter.setText("Hunters: " + p.getTribe().getHunterCount());
+        labels.builder.setText("Builders: " + p.getTribe().getBuilderCount());
+        labels.shaman.setText("Shamans: " + p.getTribe().getShamanCount());
+        labels.artist.setText("Artists: " + p.getTribe().getArtistCount());
+        labels.inventor.setText("Inventors: " + p.getTribe().getInventorCount());
     }
 
     @Override
