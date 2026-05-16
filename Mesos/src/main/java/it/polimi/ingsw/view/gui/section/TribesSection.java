@@ -16,14 +16,6 @@ public class TribesSection implements GUISection {
     private final JTabbedPane tabbedPane;
     private final Map<Player, PlayerLabels> playerLabelsMap;
 
-    private static class PlayerLabels {
-        JLabel name;
-        JLabel pp;
-        JLabel food;
-        JLabel fullSet;
-        JLabel sustenanceDiscount;
-    }
-
     public TribesSection(ClientController clientController) {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setOpaque(false);
@@ -91,12 +83,10 @@ public class TribesSection implements GUISection {
         return container;
     }
 
-    public void createLabels(String playerName, PlayerLabels labels){
-        labels.name = WidgetFactory.createTabBoxLabel(playerName);
-        labels.pp = WidgetFactory.createTabBoxLabel("PP: 0");
-        labels.food = WidgetFactory.createTabBoxLabel("Food: 0");
-        labels.fullSet = WidgetFactory.createTabBoxLabel("Full Set: 0");
-        labels.sustenanceDiscount = WidgetFactory.createTabBoxLabel("Sustenance Discount: 0");
+    public void setRowsMaxSize(JPanel...rows){
+        for(JPanel row: rows){
+            row.setMaximumSize(new Dimension(600, 60));
+        }
     }
 
     @Override
