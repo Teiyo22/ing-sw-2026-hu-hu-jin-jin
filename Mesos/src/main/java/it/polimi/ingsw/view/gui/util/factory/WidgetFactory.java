@@ -30,6 +30,16 @@ public class WidgetFactory {
         return label;
     }
 
+    public static JLabel createTabBoxLabel(String content) {
+        JLabel label = new JLabel(content, SwingConstants.CENTER);
+        label.setFont(Fonts.medium);
+        label.setForeground(Color.WHITE);
+        label.setOpaque(false);
+        label.setFont(Fonts.monospaced);
+
+        return label;
+    }
+
     public static JLabel createImageLabel(URL source, int width, int height) {
         Image image = new ImageIcon(source).getImage();
         JLabel label = new JLabel(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
