@@ -32,7 +32,6 @@ public class WidgetFactory {
 
     public static JLabel createTabBoxLabel(String content) {
         JLabel label = new JLabel(content, SwingConstants.CENTER);
-        label.setFont(Fonts.medium);
         label.setForeground(Color.WHITE);
         label.setOpaque(false);
         label.setFont(Fonts.monospaced);
@@ -54,6 +53,14 @@ public class WidgetFactory {
         textField.setBackground(Fonts.menu);
         textField.setPreferredSize(new Dimension(200, 30));
         return textField;
+    }
+
+
+    public static JSeparator createSeparator(){
+        JSeparator separator = new JSeparator();
+        separator.setForeground(new Color(0x888888));
+
+        return separator;
     }
 
     public static <E> JComboBox<E> createBox(E[] items) {
