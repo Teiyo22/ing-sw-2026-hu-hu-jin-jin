@@ -30,6 +30,28 @@ public class WidgetFactory {
         return label;
     }
 
+    public static JTabbedPane createTab(){
+        JTabbedPane tab = new JTabbedPane();
+        tab.setFont(Fonts.small.deriveFont(Font.BOLD));
+        tab.setBackground(Color.BLACK);
+        tab.setForeground(Color.WHITE);
+        tab.setOpaque(false);
+
+        tab.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            @Override
+            protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+            }
+
+            @Override
+            protected void paintTabBackground(Graphics g, int tabPane, int itemIndex, int x, int y, int w, int h, boolean isSelected) {
+                g.setColor(isSelected ? Color.BLACK : Color.DARK_GRAY);
+                g.fillRect(x, y, w, h);
+            }
+        });
+        
+        return tab;
+    }
+
     public static JLabel createTabBoxLabel(String content) {
         JLabel label = new JLabel(content, SwingConstants.CENTER);
         label.setForeground(Color.WHITE);
