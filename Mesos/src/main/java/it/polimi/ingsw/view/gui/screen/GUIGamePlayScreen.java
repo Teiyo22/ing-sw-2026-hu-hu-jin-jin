@@ -13,11 +13,10 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class GUIGamePlayScreen extends GUIScreen{
-
-    JPanel topRowPanel;
-    JPanel bottomRowPanel;
-    JPanel offerTrackPanel;
-    JPanel gameInfoPanel;
+    private JPanel topRowPanel;
+    private JPanel bottomRowPanel;
+    private JPanel offerTrackPanel;
+    private JPanel gameInfoPanel;
 
     private final List<GUISection> sections;
 

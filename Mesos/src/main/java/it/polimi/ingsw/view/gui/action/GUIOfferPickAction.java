@@ -19,6 +19,6 @@ public class GUIOfferPickAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new PickOfferCommand(clientController, offerPickListener.getSelectedOfferIndex());
+        new PickOfferCommand(clientController, offerPickListener.getSelectedOfferIndex()).execute();
     }
 }
