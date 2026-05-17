@@ -36,7 +36,7 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (totem != null) {
-            totem.paintIcon(this, g, 72, 61);
+            totem.paintIcon(this, g, 72, 60);
         }
     }
 
