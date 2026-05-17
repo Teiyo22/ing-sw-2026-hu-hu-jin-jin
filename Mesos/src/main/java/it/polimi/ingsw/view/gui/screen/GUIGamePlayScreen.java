@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
@@ -10,7 +12,9 @@ import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GUIGamePlayScreen extends GUIScreen{
     private JPanel topRowPanel;
@@ -28,10 +32,16 @@ public class GUIGamePlayScreen extends GUIScreen{
 
         OfferPickListener offerPickListener = new OfferPickListener();
 
+        Map<Totem, ImageIcon> totemIcons = new HashMap<>();
+        for(Player p: controller.getCurrLobby().getPlayers().keySet()){
+            Image img = new ImageIcon(getClass().getResource("/images/totems/"+p.getTotem()+".png")).getImage();
+            totemIcons.put(p.getTotem(), new ImageIcon(img.getScaledInstance(58, 40, Image.SCALE_DEFAULT)));
+        }
+
         sections = List.of(new TopRowSection(topListener),
                 new BottomRowSection(bottomListener),
-                new OfferTrackSection(controller, offerPickListener),
-                new GameInfoSection(clientController, topListener, bottomListener, offerPickListener));
+                new OfferTrackSection(controller, offerPickListener, totemIcons),
+                new GameInfoSection(clientController, topListener, bottomListener, offerPickListener, totemIcons));
 
         topRowPanel = sections.get(0).getPanel();
         bottomRowPanel = sections.get(1).getPanel();
