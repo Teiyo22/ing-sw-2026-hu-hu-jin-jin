@@ -26,7 +26,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void setID(String clientID) {
+    public void setID(String clientID) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to setID");
         this.id = clientID;
 
@@ -48,7 +48,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
+    public void showWaitingLobbies(List<Lobby> lobbies) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showWaitingLobbies");
         submitRemoteCall(
                 () -> wrappedClient.showWaitingLobbies(lobbies),
@@ -57,7 +57,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
+    public void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showLobbyInfo");
        submitRemoteCall(
                () -> wrappedClient.showLobbyInfo(lobbyID, connectedPlayers, disconnectedPlayers),
@@ -66,7 +66,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void addPlayer(int lobbyID, Player player) {
+    public void addPlayer(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to addPlayer");
         submitRemoteCall(
                 () -> wrappedClient.addPlayer(lobbyID, player),
@@ -105,7 +105,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void removeClient(int lobbyID, Player player) {
+    public void removeClient(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to removeClient");
         submitRemoteCall(
                 () -> wrappedClient.removeClient(lobbyID, player),
@@ -114,7 +114,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void removePlayer(int lobbyID, Player player) {
+    public void removePlayer(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to removePlayer");
         submitRemoteCall(
                 () -> wrappedClient.removeClient(lobbyID, player),
@@ -123,7 +123,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void showLeaderboard(List<LeaderboardEntry> leaderboard) {
+    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showLeaderboard");
         submitRemoteCall(
                 () -> wrappedClient.showLeaderboard(leaderboard),
@@ -132,7 +132,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
+    public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateState");
         submitRemoteCall(
                 () -> wrappedClient.updateState(lobbyID, modelStateInfo),
@@ -186,7 +186,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void createLobby(Lobby lobby, Player player) {
+    public void createLobby(Lobby lobby, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to createLobby");
         submitRemoteCall(
                 () -> wrappedClient.createLobby(lobby, player),
@@ -195,7 +195,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, List<Player> players) {
+    public void startLobby(int lobbyID, Board board, List<Player> players) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to startLobby");
         submitRemoteCall(
                 () -> wrappedClient.startLobby(lobbyID, board, players),
@@ -204,7 +204,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void stopLobby(int lobbyID) {
+    public void stopLobby(int lobbyID) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to stopLobby");
         submitRemoteCall(
                 () -> wrappedClient.stopLobby(lobbyID),
@@ -213,7 +213,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public synchronized void showError(String errorMessage) {
+    public void showError(String errorMessage) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showError");
         submitRemoteCall(
                 () -> wrappedClient.showError(errorMessage),

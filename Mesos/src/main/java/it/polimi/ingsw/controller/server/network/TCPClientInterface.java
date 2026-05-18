@@ -29,7 +29,7 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void setID(String clientID) {
+    public void setID(String clientID) {
         this.id = clientID;
 
         SetIDResponse response = new SetIDResponse(clientID);
@@ -45,19 +45,19 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void showWaitingLobbies(List<Lobby> lobbies) {
+    public void showWaitingLobbies(List<Lobby> lobbies) {
         WaitingLobbyResponse response = new WaitingLobbyResponse(lobbies);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
+    public void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
         LobbyInfoResponse response = new LobbyInfoResponse(lobbyID, connectedPlayers, disconnectedPlayers);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void addPlayer(int lobbyID, Player player) {
+    public void addPlayer(int lobbyID, Player player) {
         AddPlayerResponse response = new AddPlayerResponse(lobbyID, player);
         sendMessage(response);
     }
@@ -84,37 +84,37 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void removeClient(int lobbyID, Player player) {
+    public void removeClient(int lobbyID, Player player) {
         RemoveClientResponse response = new RemoveClientResponse(lobbyID, player);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void removePlayer(int lobbyID, Player player) {
+    public void removePlayer(int lobbyID, Player player) {
         RemovePlayerResponse response = new RemovePlayerResponse(lobbyID, player);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void showLeaderboard(List<LeaderboardEntry> leaderboard) {
+    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
         GetLeaderboardResponse response = new GetLeaderboardResponse(leaderboard);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
         OfferPickResponse response = new OfferPickResponse(lobbyID, orderTile, offerTrack);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Board board) {
+    public void updateModel(int lobbyID, Player player, Board board) {
         OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, board);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void updateModel(int lobbyID, Player player, Row topRow) {
+    public void updateModel(int lobbyID, Player player, Row topRow) {
         ExtraActionResponse response = new ExtraActionResponse(lobbyID, player, topRow);
         sendMessage(response);
     }
@@ -132,31 +132,31 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public synchronized void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
+    public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         UpdateStateResponse response = new UpdateStateResponse(lobbyID, modelStateInfo);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void createLobby(Lobby lobby, Player player) {
+    public void createLobby(Lobby lobby, Player player) {
         CreateLobbyResponse response = new CreateLobbyResponse(lobby, player);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void startLobby(int lobbyID, Board board, List<Player> players) {
+    public void startLobby(int lobbyID, Board board, List<Player> players) {
         StartLobbyResponse response = new StartLobbyResponse(lobbyID, board, players);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void stopLobby(int lobbyID) {
+    public void stopLobby(int lobbyID) {
         StopLobbyResponse response = new StopLobbyResponse(lobbyID);
         sendMessage(response);
     }
 
     @Override
-    public synchronized void showError(String errorMessage) {
+    public void showError(String errorMessage) {
         ErrorMessage message = new ErrorMessage(errorMessage);
         sendMessage(message);
     }
