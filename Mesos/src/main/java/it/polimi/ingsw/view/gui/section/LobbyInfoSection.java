@@ -96,10 +96,13 @@ public class LobbyInfoSection implements GUISection{
                 clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
 
         boolean isInLobby = clientController.getCurrLobby().getPlayer(clientController.getID()) != null;
+        boolean isFull = clientController.getCurrLobby().getPlayerCount() == clientController.getCurrLobby().getSize();
 
         totemSelect.setVisible(!isInLobby);
 
-
+        join.setEnabled(!isInLobby);
+        leave.setEnabled(isInLobby);
+        start.setEnabled(isFull);
     }
 
     @Override
