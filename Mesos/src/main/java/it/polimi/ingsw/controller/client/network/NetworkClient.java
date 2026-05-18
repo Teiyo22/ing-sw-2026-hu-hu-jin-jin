@@ -89,7 +89,7 @@ public class NetworkClient extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, "Error while sending message in TCP: " + e.getMessage());
             server.getClientController().disconnect();
         } catch (Exception e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread");
+            Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread: " + e.getMessage());
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } finally {
             lock.unlock();
