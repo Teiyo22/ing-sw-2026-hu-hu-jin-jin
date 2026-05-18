@@ -31,13 +31,19 @@ public class GUIView extends JFrame implements View {
 
     @Override
     public void close() {
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
+        });
+
         dispose();
-        JOptionPane.showMessageDialog(this, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
     public void displayError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        });
+
     }
 
     @Override
