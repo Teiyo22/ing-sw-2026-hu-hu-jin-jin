@@ -11,11 +11,13 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.*;
 import it.polimi.ingsw.controller.server.network.RMIClientInterface;
+import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
@@ -248,6 +250,38 @@ public class ClientController implements VirtualClient {
 
             view.update();
         }
+    }
+
+    //=============================================================================
+    // Server Related methods
+    //=============================================================================
+
+    public void createLobby(int size, Totem totem) {
+        server.createLobby(id, size, totem);
+    }
+
+    public void joinLobby(Totem totem) {
+        server.joinLobby(id, currLobby.getLobbyID(), totem);
+    }
+
+    public void leaveLobby() {
+        server.leaveLobby(id, currLobby.getLobbyID());
+    }
+
+    public void getLobbyInfo(int lobbyID) {
+        server.getLobbyInfo(id, lobbyID);
+    }
+
+    public void login(String username) {
+        server.login(id, username);
+    }
+
+    public void requestAction(PlayerAction action) {
+        server.requestAction(id, currLobby.getLobbyID(), action);
+    }
+
+    public void startLobby() {
+        server.startLobby(id, currLobby.getLobbyID());
     }
 
     //=============================================================================

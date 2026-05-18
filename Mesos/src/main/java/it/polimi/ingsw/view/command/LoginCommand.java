@@ -13,6 +13,6 @@ public class LoginCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().login(clientController.getID(), username);
+        clientController.login(username);
     }
 }

@@ -16,6 +16,6 @@ public class GUIStartLobbyAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new StartLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID()).execute();
+        new StartLobbyCommand(clientController).execute();
     }
 }

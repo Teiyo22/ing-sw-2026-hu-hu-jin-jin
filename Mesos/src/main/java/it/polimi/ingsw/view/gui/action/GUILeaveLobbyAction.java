@@ -16,6 +16,6 @@ public class GUILeaveLobbyAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new LeaveLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID()).execute();
+        new LeaveLobbyCommand(clientController).execute();
     }
 }

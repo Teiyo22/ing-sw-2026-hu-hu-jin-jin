@@ -4,15 +4,13 @@ import it.polimi.ingsw.controller.client.ClientController;
 
 public class StartLobbyCommand implements Command {
     private final ClientController clientController;
-    private final int lobbyID;
 
-    public StartLobbyCommand(ClientController clientController, int lobbyID) {
+    public StartLobbyCommand(ClientController clientController) {
         this.clientController = clientController;
-        this.lobbyID = lobbyID;
     }
 
     @Override
     public void execute() {
-        clientController.getServer().startLobby(clientController.getID(), lobbyID);
+        clientController.startLobby();
     }
 }

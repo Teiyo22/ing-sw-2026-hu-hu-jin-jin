@@ -31,7 +31,7 @@ public class LeaveLobbyAction implements Action {
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new LeaveLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID()).execute();
+        new LeaveLobbyCommand(clientController).execute();
         return Optional.empty();
     }
 

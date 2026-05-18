@@ -21,8 +21,8 @@ public abstract class TUIScreen implements Screen {
 
     @Override
     public void render() {
-        Formatter.clearScreen();
         synchronized (clientController) {
+            Formatter.clearScreen();
             sections.stream()
                     .filter(s -> s.isVisible(clientController))
                     .forEach(s -> s.render(clientController));

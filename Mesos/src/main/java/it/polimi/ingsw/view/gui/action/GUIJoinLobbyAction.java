@@ -21,6 +21,6 @@ public class GUIJoinLobbyAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new JoinLobbyCommand(clientController, clientController.getCurrLobby().getLobbyID(), (Totem) totemBox.getSelectedItem()).execute();
+        new JoinLobbyCommand(clientController, (Totem) totemBox.getSelectedItem()).execute();
     }
 }

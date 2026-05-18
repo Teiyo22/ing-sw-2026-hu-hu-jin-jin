@@ -18,7 +18,6 @@ public class PickCardCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.getServer().requestAction(clientController.getID(),
-                clientController.getCurrLobby().getLobbyID(), new CardPickPlayerAction(topPicks, bottomPicks));
+        clientController.requestAction(new CardPickPlayerAction(topPicks, bottomPicks));
     }
 }
