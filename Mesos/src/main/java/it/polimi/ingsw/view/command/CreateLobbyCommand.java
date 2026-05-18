@@ -16,6 +16,8 @@ public class CreateLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.createLobby(size, totem);
+        clientController.submitRequest(
+                () -> clientController.createLobby(size, totem)
+        );
     }
 }

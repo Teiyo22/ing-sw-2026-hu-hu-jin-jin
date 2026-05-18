@@ -11,6 +11,8 @@ public class DisconnectCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.disconnect();
+        clientController.submitRequest(
+                clientController::disconnect
+        );
     }
 }

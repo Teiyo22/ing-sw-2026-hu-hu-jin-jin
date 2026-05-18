@@ -11,6 +11,8 @@ public class StartLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.startLobby();
+        clientController.submitRequest(
+                clientController::startLobby
+        );
     }
 }

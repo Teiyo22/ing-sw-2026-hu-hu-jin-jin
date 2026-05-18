@@ -108,13 +108,12 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     private void submitRemoteCall(RunnableChecked remoteCall) {
-        if (!isConnected) return;
-        clientController.submitRequest(() -> {
-            try {
-                remoteCall.run();
-            } catch (RemoteException e) {
-                clientController.disconnect();
+            if (isConnected) {
+                try {
+                    remoteCall.run();
+                } catch (RemoteException e) {
+                    clientController.disconnect();
+                }
             }
-        });
-    }
+        }
 }

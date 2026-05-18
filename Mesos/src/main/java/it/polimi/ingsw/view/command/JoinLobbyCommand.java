@@ -14,6 +14,8 @@ public class JoinLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.joinLobby(totem);
+        clientController.submitRequest(
+                () -> clientController.joinLobby(totem)
+        );
     }
 }

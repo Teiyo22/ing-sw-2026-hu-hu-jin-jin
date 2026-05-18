@@ -14,6 +14,8 @@ public class PickOfferCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.requestAction(new OfferPickPlayerAction(offerID));
+        clientController.submitRequest(
+                () -> clientController.requestAction(new OfferPickPlayerAction(offerID))
+        );
     }
 }

@@ -134,8 +134,6 @@ public class TCPServerInterface extends ServerInterface {
 
     private void sendMessage(Request message) {
         if (isConnected)
-            clientController.submitRequest(
-                    () -> serverHandler.sendMessage(message)
-            );
+            serverHandler.sendMessage(message);
     }
 }
