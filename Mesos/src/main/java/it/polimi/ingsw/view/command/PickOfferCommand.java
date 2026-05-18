@@ -14,9 +14,7 @@ public class PickOfferCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.executeCommand(() -> {
-            clientController.getServer().requestAction(clientController.getID(),
-                    clientController.getCurrLobby().getLobbyID(), new OfferPickPlayerAction(offerID));
-        });
+        clientController.getServer().requestAction(clientController.getID(),
+                clientController.getCurrLobby().getLobbyID(), new OfferPickPlayerAction(offerID));
     }
 }

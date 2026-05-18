@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Totem;
 import java.util.Set;
 
 public abstract class ServerInterface implements VirtualServer {
+    protected boolean isConnected = false;
     protected ClientController clientController;
 
     public ServerInterface(ClientController clientController) {
@@ -30,5 +31,9 @@ public abstract class ServerInterface implements VirtualServer {
 
     public ClientController getClientController() {
         return clientController;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 }

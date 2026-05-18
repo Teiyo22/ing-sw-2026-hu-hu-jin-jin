@@ -34,14 +34,14 @@ import java.util.concurrent.*;
 
 
 public class ClientController implements VirtualClient {
-    private String id = "";
-    private boolean init = false;
+    private volatile String id = "";
+    private volatile boolean init = false;
 
     private View view = null;
     private ServerInterface server = null;
 
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private final ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
 
     private Lobby currLobby = null;
     private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
@@ -51,7 +51,7 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public void confirmLogin(String username) {
+    public synchronized void confirmLogin(String username) {
         id = username;
         view.transitionTo(ScreenType.LOBBY_SELECTION);
     }
@@ -131,7 +131,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void removeClient(int lobbyID, Player player) {
-
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.removeClient(player);
         view.update();
@@ -139,7 +138,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public synchronized void removePlayer(int lobbyID, Player player) {
-
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.removePlayer(player);
 
@@ -177,7 +175,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void showError(String error) {
+    public synchronized void showError(String error) {
         view.displayError(error);
     }
 
@@ -263,7 +261,8 @@ public class ClientController implements VirtualClient {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
             VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
-            this.server = new RMIServerInterface(this, serverStub);
+            server = new RMIServerInterface(this, serverStub);
+            server.setConnected(true);
 
             VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
             server.registerClient(new RMIClientInterface(stub));
@@ -289,6 +288,8 @@ public class ClientController implements VirtualClient {
 
         try {
             networkClient.connect(ip, tcpPort);
+            server.setConnected(true);
+
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
             System.out.println("Failed to connect with TCP to server: " + ip + ":" + tcpPort);
@@ -299,34 +300,29 @@ public class ClientController implements VirtualClient {
         return true;
     }
 
-    public void disconnect() {
-        if (!init)
-            return;
-
+    public synchronized void disconnect() {
         init = false;
 
         view.close();
 
         server.disconnect();
         connectionMonitor.stop();
-        taskExecutor.shutdown();
+        requestService.shutdown();
 
         try {
-            if (!taskExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
-                taskExecutor.shutdownNow();
+            if (!requestService.awaitTermination(2, TimeUnit.SECONDS)) {
+                requestService.shutdownNow();
             }
         } catch (InterruptedException e) {
-            taskExecutor.shutdownNow();
+            requestService.shutdownNow();
         }
 
         Formatter.clearScreen();
-        System.out.println("Client disconnected: press 'Enter' to exit...");
-
-        Logger.getInstance().print(LoggerLevel.CLIENT, "Disconnected from server");
+        System.exit(0);
     }
 
-    public void executeCommand(Runnable command) {
-        taskExecutor.submit(command);
+    public void submitRequest(Runnable task) {
+        requestService.submit(task);
     }
 
     @Override

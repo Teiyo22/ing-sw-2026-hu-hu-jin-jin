@@ -13,8 +13,6 @@ public class StartLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.executeCommand(() -> {
-            clientController.getServer().startLobby(clientController.getID(), lobbyID);
-        });
+        clientController.getServer().startLobby(clientController.getID(), lobbyID);
     }
 }

@@ -18,14 +18,16 @@ import it.polimi.ingsw.utils.controller.*;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class NetworkClient extends Thread {
-    private boolean init = false;
     private TCPServerInterface server;
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
     private final Gson gson;
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     public NetworkClient() {
         this.server = null;
@@ -60,16 +62,10 @@ public class NetworkClient extends Thread {
                 Response response = gson.fromJson(line, Response.class);
                 server.handleMessage(response);
             }
-        } catch (SocketException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "TCP Socket closed");
-        } catch (IOException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to read from TCP socket");
-        } catch (JsonParseException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Failed to parse JSON message");
-        } catch (Exception e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread");
+        } catch (SocketException | JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-        } finally {
+        } catch (IOException e) {
+            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
             server.getClientController().disconnect();
         }
     }
@@ -82,8 +78,7 @@ public class NetworkClient extends Thread {
      *
      */
     public void sendMessage(Request request) {
-        if (!init) return;
-
+        lock.lock();
         try {
             String msg = gson.toJson(request);
             Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message: " + msg);
@@ -95,6 +90,8 @@ public class NetworkClient extends Thread {
         } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Unexpected error in TCP thread");
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+        } finally {
+            lock.unlock();
         }
 
     }
@@ -106,8 +103,8 @@ public class NetworkClient extends Thread {
 
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-        this.init = true;
         new Thread(this).start();
+
     }
 
     public void setServer(TCPServerInterface server) {
@@ -115,8 +112,6 @@ public class NetworkClient extends Thread {
     }
 
     public void cleanup() {
-        init = false;
-
         try {
             this.interrupt();
 

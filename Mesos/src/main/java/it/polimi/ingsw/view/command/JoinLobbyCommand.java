@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.Screen;
 
 public class JoinLobbyCommand implements Command {
     private final ClientController clientController;
@@ -18,8 +16,6 @@ public class JoinLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.executeCommand(() -> {
-            clientController.getServer().joinLobby(clientController.getID(), lobbyID, totem);
-        });
+        clientController.getServer().joinLobby(clientController.getID(), lobbyID, totem);
     }
 }

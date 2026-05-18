@@ -13,8 +13,6 @@ public class LeaveLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.executeCommand(() -> {
-            clientController.getServer().leaveLobby(clientController.getID(), lobbyID);
-        });
+        clientController.getServer().leaveLobby(clientController.getID(), lobbyID);
     }
 }

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.controller.client.network;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
 
@@ -27,7 +29,7 @@ public class TCPServerInterface extends ServerInterface {
 
     public void login(String clientID, String username) {
         LoginRequest request = new LoginRequest(clientID, username);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
     /**
@@ -41,7 +43,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void createLobby(String clientID, int playerNum, Totem totem) {
         CreateLobbyRequest request = new CreateLobbyRequest(clientID, playerNum, totem);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
 
@@ -56,7 +58,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void joinLobby(String clientID, int lobbyID, Totem totem) {
         JoinLobbyRequest request = new JoinLobbyRequest(clientID, lobbyID, totem);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
 
@@ -65,7 +67,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void leaveLobby(String clientID, int lobbyID) {
         LeaveLobbyRequest request = new LeaveLobbyRequest(clientID, lobbyID);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
 
@@ -74,7 +76,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void startLobby(String clientID, int lobbyID) {
         StartLobbyRequest request = new StartLobbyRequest(clientID, lobbyID);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
     /**
@@ -87,7 +89,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void getLobbyInfo(String clientID, int lobbyID) {
         LobbyInfoRequest request = new LobbyInfoRequest(clientID, lobbyID);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
 
@@ -101,7 +103,7 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void getLeaderboard(String clientID, int playerNum) {
         GetLeaderboardRequest request = new GetLeaderboardRequest(clientID, playerNum);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
     /**
@@ -115,17 +117,25 @@ public class TCPServerInterface extends ServerInterface {
     @Override
     public void requestAction(String clientID, int lobbyID, PlayerAction action) {
         PlayerActionRequest request = new PlayerActionRequest(clientID, lobbyID, action);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
     @Override
     public void ping(String clientID) {
         PingRequest request = new PingRequest(clientID);
-        serverHandler.sendMessage(request);
+        sendMessage(request);
     }
 
     @Override
     public void disconnect() {
+        isConnected = false;
         serverHandler.cleanup();
+    }
+
+    private void sendMessage(Request message) {
+        if (isConnected)
+            clientController.submitRequest(
+                    () -> serverHandler.sendMessage(message)
+            );
     }
 }

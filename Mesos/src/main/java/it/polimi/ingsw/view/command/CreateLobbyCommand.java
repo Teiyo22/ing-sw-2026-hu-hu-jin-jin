@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.Screen;
 
 public class CreateLobbyCommand implements Command {
     private final ClientController clientController;
@@ -18,8 +16,6 @@ public class CreateLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.executeCommand(() -> {
-            clientController.getServer().createLobby(clientController.getID(), size, totem);
-        });
+        clientController.getServer().createLobby(clientController.getID(), size, totem);
     }
 }
