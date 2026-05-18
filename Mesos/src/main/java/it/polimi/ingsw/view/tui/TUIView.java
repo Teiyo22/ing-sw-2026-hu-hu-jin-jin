@@ -1,30 +1,40 @@
 package it.polimi.ingsw.view.tui;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.tui.screen.TUIScreen;
 
 import java.io.IOError;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TUIView implements View {
     private TUIScreen currScreen;
     private final ClientController clientController;
 
-    private boolean running = true;
+    private final AtomicBoolean running;
+    private final AtomicBoolean update;
+    private ScheduledExecutorService renderExecutor;
 
     public TUIView(ClientController clientController) {
         this.clientController = clientController;
+        running = new AtomicBoolean(false);
+        update = new AtomicBoolean(false);
+        currScreen = null;
     }
 
     @Override
     public void start() {
+        initRenderExecutor();
+        running.set(true);
+
         transitionTo(ScreenType.LOGIN);
         try (Scanner scanner = new Scanner(System.in)) {
-            while (running) {
+            while (running.get()) {
                 currScreen.render();
                 String input = scanner.nextLine().trim();
                 currScreen.handleInput(input);
@@ -36,7 +46,8 @@ public class TUIView implements View {
 
     @Override
     public void close() {
-        running = false;
+        running.set(false);
+        shutdownRenderExecutor();
     }
 
     @Override
@@ -45,14 +56,38 @@ public class TUIView implements View {
     }
 
     @Override
-    public void update() {
-        if (running)
-            currScreen.render();
+    public void notifyChange() {
+        update.set(true);
     }
 
     @Override
     public void transitionTo(ScreenType type) {
         currScreen = ScreenType.getTUIScreen(type, clientController);
-        currScreen.render();
+        update.set(true);
+    }
+
+    private void initRenderExecutor() {
+        renderExecutor = Executors.newSingleThreadScheduledExecutor();
+        renderExecutor.scheduleAtFixedRate(
+                () -> {
+                    if (running.get() && update.get()) {
+                        update.set(false);
+                        currScreen.render();
+                    }
+                },
+                0, 100, TimeUnit.MILLISECONDS
+        );
+    }
+
+    private void shutdownRenderExecutor() {
+        renderExecutor.shutdown();
+
+        try {
+            if (!renderExecutor.awaitTermination(100, TimeUnit.MILLISECONDS)) {
+                renderExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            renderExecutor.shutdownNow();
+        }
     }
 }

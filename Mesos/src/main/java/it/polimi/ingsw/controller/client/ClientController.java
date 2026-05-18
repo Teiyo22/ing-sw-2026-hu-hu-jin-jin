@@ -81,7 +81,7 @@ public class ClientController implements VirtualClient {
             if (currLobby != null)
                 waitingLobbies.put(currLobby.getLobbyID(), currLobby);
 
-            view.update();
+            view.notifyChange();
         } finally {
             writeLock.unlock();
         }
@@ -110,7 +110,7 @@ public class ClientController implements VirtualClient {
             writeLock.unlock();
         }
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -118,7 +118,7 @@ public class ClientController implements VirtualClient {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.addPlayer(player);
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -130,7 +130,7 @@ public class ClientController implements VirtualClient {
 
         waitingLobbies.put(lobby.getLobbyID(), lobby);
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ClientController implements VirtualClient {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby = null;
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -148,14 +148,14 @@ public class ClientController implements VirtualClient {
         if (waitingLobbies.containsKey(lobby.getLobbyID()))
             waitingLobbies.get(lobby.getLobbyID()).setPlayerCount(lobby.getPlayerCount());
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
     public  void removeClient(int lobbyID, Player player) {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.removeClient(player);
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class ClientController implements VirtualClient {
         if (currLobby != null && currLobby.getLobbyID() == lobbyID)
             currLobby.removePlayer(player);
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -176,7 +176,7 @@ public class ClientController implements VirtualClient {
 
         currLobby.setPlayers(players);
 
-        view.update();
+        view.notifyChange();
     }
 
     @Override
@@ -217,7 +217,7 @@ public class ClientController implements VirtualClient {
             TurnState turnState = modelStateInfo.getTurnState(player);
             currLobby.setTurnState(turnState);
 
-            view.update();
+            view.notifyChange();
         }
     }
 
@@ -227,7 +227,7 @@ public class ClientController implements VirtualClient {
             currLobby.updateOrderTile(orderTile);
             currLobby.updateOfferTrack(offerTrack);
 
-            view.update();
+            view.notifyChange();
         }
     }
 
@@ -237,7 +237,7 @@ public class ClientController implements VirtualClient {
             currLobby.updateTribe(player);
             currLobby.updateBoard(board);
 
-            view.update();
+            view.notifyChange();
         }
     }
 
@@ -247,7 +247,7 @@ public class ClientController implements VirtualClient {
             currLobby.updateTribe(player);
             currLobby.updateTopRow(topRow);
 
-            view.update();
+            view.notifyChange();
         }
     }
 
@@ -258,7 +258,7 @@ public class ClientController implements VirtualClient {
             currLobby.updateTopRow(topRow);
             currLobby.updateBottomRow(bottomRow);
 
-            view.update();
+            view.notifyChange();
         }
     }
 
@@ -268,7 +268,7 @@ public class ClientController implements VirtualClient {
             currLobby.updateTribes(players);
             currLobby.setRanking(players);
 
-            view.update();
+            view.notifyChange();
         }
     }
 

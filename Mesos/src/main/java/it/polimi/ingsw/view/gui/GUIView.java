@@ -56,7 +56,7 @@ public class GUIView extends JFrame implements View {
 
 
     @Override
-    public void update() {
+    public void notifyChange() {
         if (isDisplayable()) {
             SwingUtilities.invokeLater(() -> currScreen.render());
         }
