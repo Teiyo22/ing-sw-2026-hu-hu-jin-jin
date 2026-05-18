@@ -19,6 +19,7 @@ public class CreateGameSection implements GUISection {
     private final JComboBox<Totem> totemBox;
     private final JButton create;
     private final JButton back;
+    private final JButton createBtn;
     private final CardLayout cardLayout;
 
     public CreateGameSection(ClientController clientController) {
@@ -71,7 +72,7 @@ public class CreateGameSection implements GUISection {
                 .column(10, titleBar, playerInput, create)
                 .buildPanel();
 
-        JButton createBtn = WidgetFactory.createButton(new AbstractAction("Create Lobby") {
+        createBtn = WidgetFactory.createButton(new AbstractAction("Create Lobby") {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panel, "form");
             }
@@ -90,28 +91,33 @@ public class CreateGameSection implements GUISection {
 
     @Override
     public void render(ClientController clientController, JPanel container) {
-        boolean visible = isVisible(clientController);
-        panel.setVisible(visible);
 
-        if (visible) {
-            cardLayout.show(panel, "button");
-
-            panel.revalidate();
-            panel.repaint();
+        if (clientController == null) {
+            createBtn.setEnabled(false);
+            create.setEnabled(false);
+            playerInput.setVisible(false);
+            return;
         }
 
-    }
-    @Override
-    public boolean isVisible(ClientController clientController) {
-        if (clientController.getCurrLobby() == null) {return true;}
-
-        Map<Player, Boolean> players = clientController.getCurrLobby().getPlayers();
-        for (Player p : players.keySet()) {
-            if (p.getName().equals(clientController.getID())) {
-                return false;
+        boolean isInLobby = false;
+        if (clientController.getCurrLobby() != null) {
+            for (Player p : clientController.getCurrLobby().getPlayers().keySet()) {
+                if (p.getName().equals(clientController.getID())) {
+                    isInLobby = true;
+                    break;
+                }
             }
         }
 
+        if (isInLobby) {
+            createBtn.setEnabled(false);
+            cardLayout.show(panel, "button");
+        } else {
+            createBtn.setEnabled(true);
+        }
+    }
+    @Override
+    public boolean isVisible(ClientController clientController) {
         return true;
     }
 
