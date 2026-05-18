@@ -63,6 +63,7 @@ public class ClientHandler extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+            e.printStackTrace();
         } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
@@ -77,6 +78,7 @@ public class ClientHandler extends Thread {
             output.flush();
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+            ServerController.getInstance().disconnectClient(tcpClientInterface);
         } catch (Exception e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
             ServerController.getInstance().disconnectClient(tcpClientInterface);
