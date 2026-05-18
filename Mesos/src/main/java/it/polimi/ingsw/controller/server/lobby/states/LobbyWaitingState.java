@@ -41,13 +41,26 @@ public class LobbyWaitingState extends LobbyState {
 
     @Override
     public boolean removeClient(ClientInterface client) {
-        Player removedPlayer = lobbyController.getPlayers().remove(client);
+        Map<ClientInterface, Player> playersMap = lobbyController.getPlayers();
 
-        if (removedPlayer != null) {
-            for (ClientInterface listener : lobbyController.getListeners())
+        ClientInterface targetKey = null;
+        Player removedPlayer = null;
+
+        for (Map.Entry<ClientInterface, Player> entry : playersMap.entrySet()) {
+            if (entry.getKey().getID().equals(client.getID())) {
+                targetKey = entry.getKey();
+                removedPlayer = entry.getValue();
+                break;
+            }
+        }
+        if (targetKey != null) {
+            playersMap.remove(targetKey);
+
+            for (ClientInterface listener : lobbyController.getListeners()) {
                 listener.removePlayer(lobbyController.getID(), removedPlayer);
+            }
 
-            if (lobbyController.getPlayers().isEmpty()) {
+            if (playersMap.isEmpty()) {
                 ServerController.getInstance().removeLobby(lobbyController.getID());
                 ServerController.getInstance().broadcastLobbyRemoval(lobbyController.getID());
             }
