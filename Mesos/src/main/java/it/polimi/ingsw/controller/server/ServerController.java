@@ -30,11 +30,8 @@ public class ServerController implements VirtualServer {
 
     private NetworkServer networkServer;
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private final ExecutorService listenerService = Executors.newFixedThreadPool(28);
-    private final ExecutorService responseService = Executors.newFixedThreadPool(28);
-    private final ScheduledExecutorService retryService = Executors.newScheduledThreadPool(4);
-
-    private final long retryDelay = 3L;
+    private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
+    private final ExecutorService responseService = Executors.newVirtualThreadPerTaskExecutor();
 
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
     private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
@@ -295,7 +292,7 @@ public class ServerController implements VirtualServer {
 
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
-            listenerService.submit(networkServer);
+            requestService.submit(networkServer);
             Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + ":" + tcpPort);
@@ -328,9 +325,8 @@ public class ServerController implements VirtualServer {
         networkServer.cleanup();
         RMICleanup();
 
-        shutdownExecutor(listenerService);
+        shutdownExecutor(requestService);
         shutdownExecutor(responseService);
-        shutdownExecutor(retryService);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
@@ -383,13 +379,9 @@ public class ServerController implements VirtualServer {
         }
     }
 
-    public void scheduleRetry(Runnable task) {
-        if (!retryService.isShutdown())
-            retryService.schedule(task, retryDelay, TimeUnit.SECONDS);
-    }
 
-    public void submitListener(Runnable task) {
-        listenerService.submit(task);
+    public void submitRequest(Runnable task) {
+        requestService.submit(task);
     }
 
     public void submitResponse(Runnable task) {

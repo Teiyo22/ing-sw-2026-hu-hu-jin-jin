@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ClientHandler extends Thread {
     private TCPClientInterface tcpClientInterface;
@@ -27,6 +28,7 @@ public class ClientHandler extends Thread {
     private Gson gson;
     private BufferedReader input;
     private BufferedWriter output;
+    private ReentrantLock lock = new ReentrantLock();
 
     public ClientHandler(Socket clientSocket) throws IOException {
         this.socket = clientSocket;
@@ -61,15 +63,13 @@ public class ClientHandler extends Thread {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-        } catch (Exception e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-            e.printStackTrace();
         } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }
 
     public void sendMessage(Response response) {
+        lock.lock();
         try {
             String message = gson.toJson(response);
             Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message to client " + tcpClientInterface.getID() +": " + message);
@@ -79,9 +79,8 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
             ServerController.getInstance().disconnectClient(tcpClientInterface);
-        } catch (Exception e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
+        } finally {
+            lock.unlock();
         }
     }
 
