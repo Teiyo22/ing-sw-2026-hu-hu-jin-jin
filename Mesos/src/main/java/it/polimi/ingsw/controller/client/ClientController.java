@@ -273,35 +273,113 @@ public class ClientController implements VirtualClient {
     }
 
     //=============================================================================
-    // Server Related methods
+    // Server related methods
     //=============================================================================
 
     public void createLobby(int size, Totem totem) {
-        server.createLobby(id, size, totem);
+        String clientID;
+
+        readLock.lock();
+        try {
+            clientID = id;
+        } finally {
+            readLock.unlock();
+        }
+
+        server.createLobby(clientID, size, totem);
     }
 
     public void joinLobby(Totem totem) {
-        server.joinLobby(id, currLobby.getLobbyID(), totem);
+        String clientID;
+        int lobbyID;
+
+        readLock.lock();
+        try {
+            if (currLobby == null) return;
+
+            clientID = id;
+            lobbyID = currLobby.getLobbyID();
+        } finally {
+            readLock.unlock();
+        }
+
+        server.joinLobby(clientID, lobbyID, totem);
     }
 
     public void leaveLobby() {
-        server.leaveLobby(id, currLobby.getLobbyID());
+        String clientID;
+        int lobbyID;
+
+        readLock.lock();
+        try {
+            if (currLobby == null) return;
+
+            clientID = id;
+            lobbyID = currLobby.getLobbyID();
+        } finally {
+            readLock.unlock();
+        }
+
+        server.leaveLobby(clientID, lobbyID);
     }
 
     public void getLobbyInfo(int lobbyID) {
-        server.getLobbyInfo(id, lobbyID);
+        String clientID;
+
+        readLock.lock();
+        try {
+            clientID = id;
+        } finally {
+            readLock.unlock();
+        }
+
+        server.getLobbyInfo(clientID, lobbyID);
     }
 
     public void login(String username) {
-        server.login(id, username);
+        String clientID;
+
+        readLock.lock();
+        try {
+            clientID = id;
+        } finally {
+            readLock.unlock();
+        }
+
+        server.login(clientID, username);
     }
 
     public void requestAction(PlayerAction action) {
-        server.requestAction(id, currLobby.getLobbyID(), action);
+        String clientID;
+        int lobbyID;
+
+        readLock.lock();
+        try {
+            if (currLobby == null) return;
+
+            clientID = id;
+            lobbyID = currLobby.getLobbyID();
+        } finally {
+            readLock.unlock();
+        }
+        server.requestAction(clientID, lobbyID, action);
     }
 
     public void startLobby() {
-        server.startLobby(id, currLobby.getLobbyID());
+        String clientID;
+        int lobbyID;
+
+        readLock.lock();
+        try {
+            if (currLobby == null) return;
+
+            clientID = id;
+            lobbyID = currLobby.getLobbyID();
+        } finally {
+            readLock.unlock();
+        }
+
+        server.startLobby(clientID, lobbyID);
     }
 
     //=============================================================================
