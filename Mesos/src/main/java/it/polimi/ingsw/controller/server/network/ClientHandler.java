@@ -57,13 +57,10 @@ public class ClientHandler extends Thread {
                 Request request = gson.fromJson(line, Request.class);
                 tcpClientInterface.handleMessage(request);
             }
-        } catch (SocketException e) {
+        } catch (SocketException | JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-        } catch (JsonParseException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-        } finally {
             ServerController.getInstance().disconnectClient(tcpClientInterface);
         }
     }
