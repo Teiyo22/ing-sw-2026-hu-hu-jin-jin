@@ -12,6 +12,8 @@ import it.polimi.ingsw.model.player.PlayerConfig;
 import java.util.Map;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -25,6 +27,7 @@ public class LobbyController {
     private Game model = null;
     private LobbyState state;
 
+    private ExecutorService gameLoop;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
     private final Lock writeLock = lock.writeLock();
@@ -80,6 +83,17 @@ public class LobbyController {
         players.put(client, player);
     }
 
+    public void initGameLoop() {
+        gameLoop = Executors.newSingleThreadExecutor();
+    }
+
+    public void shutdownGameLoop() {
+        if (gameLoop != null) {
+            gameLoop.shutdown();
+            gameLoop = null;
+        }
+    }
+
     //=============================================================================
     // Model Interaction methods
     //=============================================================================
@@ -89,16 +103,20 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
-    public void playAction(ClientInterface pickerClient, PlayerAction action) {
-        writeLock.lock();
-        try {
-            Player player = players.get(pickerClient);
-            if (player != null) {
-                action.setPlayer(player);
-                state.playAction(pickerClient, action);
-            }
-        } finally {
-            writeLock.unlock();
+    public void playAction(ClientInterface client, PlayerAction action) {
+        Player player = players.get(client);
+        if (player == null) return;
+        action.setPlayer(player);
+
+        if (gameLoop != null) {
+            gameLoop.submit(() -> {
+                writeLock.lock();
+                try {
+                    state.playAction(client, action);
+                } finally {
+                    writeLock.unlock();
+                }
+            });
         }
     }
 

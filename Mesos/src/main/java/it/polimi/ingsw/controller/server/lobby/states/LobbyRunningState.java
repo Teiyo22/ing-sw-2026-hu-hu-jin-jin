@@ -47,14 +47,16 @@ public class LobbyRunningState extends LobbyState {
 
             ServerController.getInstance().removeFromPlayingClients(lobbyController.getPlayers().keySet());
 
-            Player removedPlayer = lobbyController.getPlayers().remove(client);
 
+            Player removedPlayer = lobbyController.getPlayers().remove(client);
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.removeClient(lobbyController.getID(), removedPlayer);
 
 
             lobbyController.setState(new LobbyPausedState(lobbyController));
+            lobbyController.shutdownGameLoop();
             model.setLobbyState(null);
+
             ServerController.getInstance().broadcastLobbyAddition(lobbyController.getLobby());
             return true;
         }

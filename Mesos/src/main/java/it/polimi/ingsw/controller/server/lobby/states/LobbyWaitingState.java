@@ -63,20 +63,6 @@ public class LobbyWaitingState extends LobbyState {
     }
 
     @Override
-    public void getLobbyInfo(ClientInterface client) {
-        lobbyController.getListeners().add(client);
-        client.setCurrLobbyController(lobbyController);
-
-        Set<Player> disconnectedPlayers = new HashSet<>();
-        Set<Player> connectedPlayers = lobbyController.getPlayers().values()
-                .stream()
-                .map(p -> new Player(p.getName(), p.getTotem()))
-                .collect(Collectors.toSet());
-
-        client.showLobbyInfo(lobbyController.getID(), connectedPlayers, disconnectedPlayers);
-    }
-
-    @Override
     public void playAction(ClientInterface client, PlayerAction action) {
         client.showError("Game not started yet.");
     }
