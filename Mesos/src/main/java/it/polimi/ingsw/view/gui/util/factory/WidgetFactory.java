@@ -2,10 +2,13 @@ package it.polimi.ingsw.view.gui.util.factory;
 
 import it.polimi.ingsw.view.command.Command;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WidgetFactory {
@@ -71,5 +74,46 @@ public class WidgetFactory {
         box.setPreferredSize(new Dimension(200, 30));
 
         return box;
+    }
+
+    public static <E> JComboBox<E> createBox(E[] items, int width, int height) {
+        JComboBox<E> box = createBox(items);
+        box.setMaximumSize(new Dimension(width, height));
+        return box;
+    }
+
+    public static <T> JList<T> createJList(
+            DefaultListModel<T> model,
+            Function<T, String> labelExtractor) {
+
+        JList<T> jlist = new JList<>();
+        jlist.setOpaque(false);
+        jlist.setFont(Fonts.small);
+        jlist.setModel(model);
+
+        jlist.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            JLabel label = createLabel(labelExtractor.apply(value));
+            JPanel cell = new PanelBuilder()
+                    .border(null, null, null, label, null)
+                    .withPadding(0, 5, 0, 5)
+                    .buildPanel();
+
+            cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
+            cell.setOpaque(false);
+            return cell;
+        });
+
+        return jlist;
+    }
+
+    public static <T> JList<T> createJList(
+            DefaultListModel<T> model,
+            Color background,
+            Function<T, String> labelExtractor) {
+
+        JList<T> jlist = createJList(model, labelExtractor);
+        jlist.setOpaque(true);
+        jlist.setBackground(background);
+        return jlist;
     }
 }

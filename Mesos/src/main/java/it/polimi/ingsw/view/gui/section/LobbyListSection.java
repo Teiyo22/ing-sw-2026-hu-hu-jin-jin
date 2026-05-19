@@ -15,36 +15,20 @@ public class LobbyListSection implements GUISection {
     private final JPanel panel;
 
     private final JLabel title;
-
     private final JScrollPane scrollPane;
     private final JList<Lobby> lobbies;
     private final DefaultListModel<Lobby> model;
 
-    private final JPanel topBar;
-
     public LobbyListSection(ClientController clientController) {
         title = WidgetFactory.createLabel("Lobby selection");
 
-        topBar = new PanelBuilder().border(null, title, null, null,null).buildPanel();
-
         model = new DefaultListModel<>();
-        lobbies = new JList<>();
-        lobbies.setBackground(Fonts.select);
-        lobbies.setFont(Fonts.small);
-        lobbies.setModel(model);
+        lobbies = WidgetFactory.createJList(model, Fonts.select,
+                entry -> String.format("Lobby #%-3d | Player Count %3d/%3d ",
+                    entry.getLobbyID(),
+                    entry.getPlayerCount(), entry.getSize()));
+
         lobbies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        lobbies.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-            JPanel cell = new JPanel(new BorderLayout());
-            JLabel id = new JLabel(String.format("Lobby #%3d |  %3d/%3d ", value.getLobbyID(),value.getPlayerCount(), value.getSize()));
-            id.setFont(Fonts.medium);
-            id.setForeground(Color.WHITE);
-            cell.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
-            cell.add(id, BorderLayout.WEST);
-            cell.setOpaque(false);
-            return cell;
-        });
-
         lobbies.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 Lobby selected = lobbies.getSelectedValue();
@@ -52,8 +36,6 @@ public class LobbyListSection implements GUISection {
                 if (selected != null) {
                     int id = selected.getLobbyID();
                     new LobbyInfoCommand(clientController, id).execute();
-                } else {
-                    System.out.println("No lobby selected.");
                 }
             }
         });
@@ -61,25 +43,29 @@ public class LobbyListSection implements GUISection {
         scrollPane = new JScrollPane(lobbies);
         scrollPane.setOpaque(false);
 
-        panel = new PanelBuilder().border(topBar, scrollPane, null, null, null)
+        panel = new PanelBuilder().border(title, scrollPane, null, null, null)
                 .buildPanel();
     }
 
     @Override
     public void render(ClientController clientController, JPanel panel) {
         model.clear();
-        Map<Integer, Lobby> lobbies = clientController.getWaitingLobbies();
-        for(Lobby lobby : lobbies.values())
+        Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
+        for(Lobby lobby : waitingLobbies.values())
             if (!model.contains(lobby))
                 model.addElement(lobby);
 
         int i = 0;
         while (i < model.size()) {
-            if (lobbies.get(model.get(i).getLobbyID()) == null)
+            if (waitingLobbies.get(model.get(i).getLobbyID()) == null)
                 model.remove(i);
             else
                 i++;
         }
+
+        Lobby currLobby = clientController.getCurrLobby();
+        if (currLobby != null)
+            lobbies.setEnabled(!currLobby.containsClient(clientController.getID()));
     }
 
     @Override

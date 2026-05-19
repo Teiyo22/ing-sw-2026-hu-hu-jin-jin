@@ -38,9 +38,4 @@ public class GUILobbySelectionScreen extends GUIScreen {
                 .withPadding(20,20,20,20);
 
     }
-
-    @Override
-    public void showError(String error) {
-
-    }
 }
