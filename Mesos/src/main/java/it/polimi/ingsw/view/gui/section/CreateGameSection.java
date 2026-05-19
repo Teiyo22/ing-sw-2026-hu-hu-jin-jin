@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUICreateLobbyAction;
 import it.polimi.ingsw.view.gui.util.Fonts;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 public class CreateGameSection implements GUISection {
     private JPanel panel;
@@ -17,9 +19,12 @@ public class CreateGameSection implements GUISection {
     private final JComboBox<Totem> totemBox;
     private final JButton create;
     private final JButton back;
+    private final JButton createBtn;
+    private final CardLayout cardLayout;
 
     public CreateGameSection(ClientController clientController) {
-        panel = new JPanel(new CardLayout()) {
+        cardLayout = new CardLayout();
+        panel = new JPanel(cardLayout) {
             @Override
             public Dimension getPreferredSize() {
                 for (Component c : getComponents()) {
@@ -53,7 +58,7 @@ public class CreateGameSection implements GUISection {
 
         back = WidgetFactory.createButton(new AbstractAction("←") {
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) panel.getLayout()).show(panel, "button");
+                cardLayout.show(panel, "button");
             }
         });
 
@@ -67,9 +72,9 @@ public class CreateGameSection implements GUISection {
                 .column(10, titleBar, playerInput, create)
                 .buildPanel();
 
-        JButton createBtn = WidgetFactory.createButton(new AbstractAction("Create Lobby") {
+        createBtn = WidgetFactory.createButton(new AbstractAction("Create Lobby") {
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) panel.getLayout()).show(panel, "form");
+                cardLayout.show(panel, "form");
             }
         });
 
@@ -80,24 +85,40 @@ public class CreateGameSection implements GUISection {
         panel.setOpaque(false);
         panel.add(buttonPanel, "button");
         panel.add(formPanel, "form");
-        ((CardLayout) panel.getLayout()).show(panel, "button");
+        cardLayout.show(panel, "button");
 
     }
 
     @Override
     public void render(ClientController clientController, JPanel container) {
 
+        if (clientController == null) {
+            createBtn.setEnabled(false);
+            create.setEnabled(false);
+            playerInput.setVisible(false);
+            return;
+        }
+
+        boolean isInLobby = false;
+        if (clientController.getCurrLobby() != null) {
+            for (Player p : clientController.getCurrLobby().getPlayers().keySet()) {
+                if (p.getName().equals(clientController.getID())) {
+                    isInLobby = true;
+                    break;
+                }
+            }
+        }
+
+        if (isInLobby) {
+            createBtn.setEnabled(false);
+            cardLayout.show(panel, "button");
+        } else {
+            createBtn.setEnabled(true);
+        }
     }
-
-    private boolean visible;
-
-    public void setVisible(boolean visible){
-        this.visible = visible;
-    }
-
     @Override
-    public boolean isVisible(ClientController controller) {
-        return visible;
+    public boolean isVisible(ClientController clientController) {
+        return true;
     }
 
     @Override

@@ -88,18 +88,41 @@ public class LobbyInfoSection implements GUISection{
     public void render(ClientController clientController, JPanel container) {
         model.clear();
 
-        for (Map.Entry<Player, Boolean> entry : clientController.getCurrLobby().getPlayers().entrySet())
+        if (clientController.getCurrLobby() == null) {
+            lobbyID.setText("Select or create a lobby...");
+            count.setText("Player Count: 0/0");
+
+            join.setEnabled(false);
+            leave.setEnabled(false);
+            start.setEnabled(false);
+            totemSelect.setVisible(false);
+
+            return;
+        }
+
+        for (Map.Entry<Player, Boolean> entry : clientController.getCurrLobby().getPlayers().entrySet()) {
             model.addElement(entry);
+        }
 
         lobbyID.setText(String.format("Lobby ID: %3d", clientController.getCurrLobby().getLobbyID()));
         count.setText(String.format("Player Count: %3d/%3d",
                 clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
 
-        boolean isInLobby = clientController.getCurrLobby().getPlayer(clientController.getID()) != null;
+        boolean isInLobby = false;
+        for (Player p : clientController.getCurrLobby().getPlayers().keySet()) {
+            if (p.getName().equals(clientController.getID())) {
+                isInLobby = true;
+                break;
+            }
+        }
+
+        boolean isFull = clientController.getCurrLobby().getPlayerCount() == clientController.getCurrLobby().getSize();
 
         totemSelect.setVisible(!isInLobby);
 
-
+        join.setEnabled(!isInLobby);
+        leave.setEnabled(isInLobby);
+        start.setEnabled(isFull && isInLobby);
     }
 
     @Override
