@@ -27,6 +27,8 @@ public class GUIView extends JFrame implements View {
 
         currScreen = new GUILoginScreen(this, controller);
         currScreen.render();
+
+        setVisible(true);
     }
 
     @Override
@@ -40,16 +42,14 @@ public class GUIView extends JFrame implements View {
 
     @Override
     public void displayError(String message) {
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-        });
-
+        currScreen.showError(message);
     }
 
     @Override
     public void transitionTo(ScreenType type) {
         SwingUtilities.invokeLater(() -> {
             currScreen = ScreenType.getGUIScreen(type, this, controller);
+            this.setContentPane(currScreen);
             currScreen.render();
         });
     }

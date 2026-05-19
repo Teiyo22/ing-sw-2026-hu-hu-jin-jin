@@ -20,6 +20,7 @@ public class GUILoginAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         String username = text.getText();
+        text.setText("");
         new LoginCommand(clientController,username).execute();
     }
 }

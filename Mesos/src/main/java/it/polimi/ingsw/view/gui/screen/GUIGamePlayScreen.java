@@ -13,13 +13,6 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class GUIGamePlayScreen extends GUIScreen{
-    private JPanel topRowPanel;
-    private JPanel bottomRowPanel;
-    private JPanel offerTrackPanel;
-    private JPanel gameInfoPanel;
-
-    private final List<GUISection> sections;
-
     public GUIGamePlayScreen(GUIView frame, ClientController controller) {
         super(frame, controller);
 
@@ -33,34 +26,20 @@ public class GUIGamePlayScreen extends GUIScreen{
                 new OfferTrackSection(controller, offerPickListener),
                 new GameInfoSection(clientController, topListener, bottomListener, offerPickListener));
 
-        topRowPanel = sections.get(0).getPanel();
-        bottomRowPanel = sections.get(1).getPanel();
-        offerTrackPanel = sections.get(2).getPanel();
-        gameInfoPanel = sections.get(3).getPanel();
+        JPanel topRowPanel = sections.get(0).getPanel();
+        JPanel bottomRowPanel = sections.get(1).getPanel();
+        JPanel offerTrackPanel = sections.get(2).getPanel();
+        JPanel gameInfoPanel = sections.get(3).getPanel();
 
-        JPanel board = new PanelBuilder().border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null).buildPanel();
+        JPanel board = new PanelBuilder()
+                .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
+                .buildPanel();
 
-        this.setLayout(new BorderLayout());
-        this.add(new PanelBuilder().column(0, gameInfoPanel).withPadding(30, 30, 30, 0).buildPanel()
-                , BorderLayout.WEST);
-        this.add(board, BorderLayout.CENTER);
+        JPanel gameInfoContainer = new PanelBuilder().column(0, gameInfoPanel)
+                .withPadding(30, 30, 30, 0)
+                .buildPanel();
 
-    }
-
-    @Override
-    public void render() {
-        sections.stream()
-                .filter(s -> s.isVisible(clientController))
-                .forEach(s -> s.render(clientController, this));
-
-        frame.setContentPane(this);
-        frame.setVisible(true);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    @Override
-    public void showError(String error) {
-
+        new PanelBuilder().edit(this)
+                .border(null, board, null, gameInfoContainer, null);
     }
 }

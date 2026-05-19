@@ -109,6 +109,11 @@ public class PanelBuilder {
         return this;
     }
 
+    public PanelBuilder edit(JPanel panel) {
+        this.panel = panel;
+        return this;
+    }
+
     public JPanel buildPanel() {
         return panel;
     }

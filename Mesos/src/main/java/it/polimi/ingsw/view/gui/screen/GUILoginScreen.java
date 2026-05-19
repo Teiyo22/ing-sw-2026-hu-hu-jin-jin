@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUILoginScreen extends GUIScreen {
-    private final JPanel loginPanel;
 
     public GUILoginScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
@@ -22,7 +21,7 @@ public class GUILoginScreen extends GUIScreen {
         JTextField username = WidgetFactory.createTextField(250, 30);
         JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username), 250, 35);
 
-        loginPanel = new PanelBuilder().rounded(40, 5, Fonts.select, name, username, login)
+        JPanel loginPanel = new PanelBuilder().rounded(40, 5, Fonts.select, name, username, login)
                 .centered()
                 .size(350, 200)
                 .buildPanel();
@@ -30,17 +29,6 @@ public class GUILoginScreen extends GUIScreen {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(250, 0, 0, 0);
         this.add(loginPanel, c);
-    }
-
-    @Override
-    public void render() {
-        frame.setContentPane(this);
-        frame.setVisible(true);
-    }
-
-    @Override
-    public void showError(String error) {
-
     }
 }
 

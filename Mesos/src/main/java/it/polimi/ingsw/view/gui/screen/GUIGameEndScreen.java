@@ -21,6 +21,7 @@ class GUIGameEndScreen extends GUIScreen {
         super(frame, clientController);
     }
 
+    @Override
     public void render() {
         JPanel panel= new JPanel(new BorderLayout());
         panel.setBackground(Fonts.red);
