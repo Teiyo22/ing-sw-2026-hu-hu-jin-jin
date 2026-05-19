@@ -7,26 +7,23 @@ import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.section.*;
+import it.polimi.ingsw.view.gui.util.CardCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GUIGamePlayScreen extends GUIScreen{
-    private JPanel topRowPanel;
-    private JPanel bottomRowPanel;
-    private JPanel offerTrackPanel;
-    private JPanel gameInfoPanel;
 
     private final List<GUISection> sections;
 
     public GUIGamePlayScreen(GUIView frame, ClientController controller) {
         super(frame, controller);
 
+        CardCache  cardCache = new CardCache();
         CardPicksListener topListener = new CardPicksListener();
         CardPicksListener bottomListener = new CardPicksListener();
 
@@ -35,18 +32,18 @@ public class GUIGamePlayScreen extends GUIScreen{
         Map<Totem, ImageIcon> totemIcons = new HashMap<>();
         for(Player p: controller.getCurrLobby().getPlayers().keySet()){
             Image img = new ImageIcon(getClass().getResource("/images/totems/"+p.getTotem()+".png")).getImage();
-            totemIcons.put(p.getTotem(), new ImageIcon(img.getScaledInstance(58, 40, Image.SCALE_DEFAULT)));
+            totemIcons.put(p.getTotem(), new ImageIcon(img.getScaledInstance(50, 34, Image.SCALE_DEFAULT)));
         }
 
-        sections = List.of(new TopRowSection(topListener),
-                new BottomRowSection(bottomListener),
+        sections = List.of(new TopRowSection(topListener, cardCache),
+                new BottomRowSection(bottomListener, cardCache),
                 new OfferTrackSection(controller, offerPickListener, totemIcons),
                 new GameInfoSection(clientController, topListener, bottomListener, offerPickListener, totemIcons));
 
-        topRowPanel = sections.get(0).getPanel();
-        bottomRowPanel = sections.get(1).getPanel();
-        offerTrackPanel = sections.get(2).getPanel();
-        gameInfoPanel = sections.get(3).getPanel();
+        JPanel topRowPanel = sections.get(0).getPanel();
+        JPanel bottomRowPanel = sections.get(1).getPanel();
+        JPanel offerTrackPanel = sections.get(2).getPanel();
+        JPanel gameInfoPanel = sections.get(3).getPanel();
 
         JPanel board = new PanelBuilder().border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null).buildPanel();
 

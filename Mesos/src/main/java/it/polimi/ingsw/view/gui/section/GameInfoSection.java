@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIOfferPickAction;
 import it.polimi.ingsw.view.gui.action.GUICardPickAction;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
@@ -34,16 +35,24 @@ public class GameInfoSection implements GUISection {
     public GameInfoSection(ClientController clientController, CardPicksListener topListener, CardPicksListener bottomListener,
                            OfferPickListener offerListener, Map<Totem, ImageIcon> totemIcons) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension panelSize = new Dimension((int)  (screenSize.width*0.2), screenSize.height);
+        Dimension panelSize = new Dimension((int)  (screenSize.width*0.15), screenSize.height);
 
         //buttons panel
         pickCardsButton = WidgetFactory.createButton(new GUICardPickAction(clientController, topListener, bottomListener));
-        pickCardsButton.setFont(Fonts.small);
+        pickCardsButton.setFont(Fonts.tiny);
         pickCardsButton.setBorderPainted(true);
         pickOfferButton = WidgetFactory.createButton(new GUIOfferPickAction(clientController, offerListener));
-        pickOfferButton.setFont(Fonts.small);
+        pickOfferButton.setFont(Fonts.tiny);
         pickOfferButton.setBorderPainted(true);
-        JPanel buttonsPanel = new PanelBuilder().column(10, pickCardsButton, pickOfferButton).buildPanel();
+        JPanel gameActionButtonsPanel = new PanelBuilder().column(10, pickCardsButton, pickOfferButton).buildPanel();
+
+
+        //leave button
+        JButton leaveButton = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
+        leaveButton.setFont(Fonts.tiny);
+        leaveButton.setBorderPainted(true);
+
+        JPanel buttonsPanel = new PanelBuilder().row(20, leaveButton, gameActionButtonsPanel).buildPanel();
 
         //order tile
         orderTile = new OrderTileComponent(clientController, totemIcons);
@@ -51,11 +60,12 @@ public class GameInfoSection implements GUISection {
         //infos panel
         List<JLabel> components = new ArrayList<>();
 
-        JLabel divider = new JLabel("-------------------------");
+        JLabel divider = new JLabel("--------------------");
         divider.setForeground(Color.WHITE);
         divider.setFont(Fonts.monospaced);
 
         JLabel generalInfoTitle = WidgetFactory.createLabel("Game Info");
+        generalInfoTitle.setFont(Fonts.small);
         currentEra = WidgetFactory.createLabel("");
         currentEra.setFont(Fonts.monospaced);
         currentPlayer = WidgetFactory.createLabel("");

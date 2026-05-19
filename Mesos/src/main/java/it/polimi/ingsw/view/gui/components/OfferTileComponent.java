@@ -24,7 +24,7 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        int height = (int) (screenSize.height * 0.35);
+        int height = (int) (screenSize.height * 0.3);
         int width = (int) (height * (2.0 / 3.0));
 
         Image img = new ImageIcon(getClass().getResource("/images/offerTiles/" + element.getType() + ".png")).getImage();
@@ -36,7 +36,7 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (totem != null) {
-            totem.paintIcon(this, g, 72, 60);
+            totem.paintIcon(this, g, 61, 50);
         }
     }
 

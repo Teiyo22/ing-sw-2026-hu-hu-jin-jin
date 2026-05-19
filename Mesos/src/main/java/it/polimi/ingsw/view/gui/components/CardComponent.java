@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.view.gui.util.CardCache;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,26 +13,17 @@ public class CardComponent extends SelectableComponent<AbstractCard> {
 
     private final Timer flipTimer;
 
-    public CardComponent(AbstractCard card, SelectionListener<AbstractCard> selectionListener) {
+    public CardComponent(AbstractCard card, SelectionListener<AbstractCard> selectionListener, CardCache cache) {
         super(card, selectionListener);
 
         this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setVerticalAlignment(SwingConstants.CENTER);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int height = (int) (screenSize.height * 0.22);
-        int width = (int) (height * (2.0 / 3.0));
-
-        String resource = card.getResource();
-        Image frontImg = new ImageIcon(getClass().getResource("/images/front/" + resource + ".png")).getImage();
-        Image backImg = new ImageIcon(getClass().getResource("/images/back/" + card.getEra() + ".png")).getImage();
-
-        this.front = new ImageIcon(frontImg.getScaledInstance(width - 6, height - 6, Image.SCALE_DEFAULT));
-        this.back = new ImageIcon(backImg.getScaledInstance(width - 6, height - 6, Image.SCALE_DEFAULT));
+        this.front = cache.getFront("/images/front/" + card.getResource() + ".png");
+        this.back = cache.getBack("/images/back/" + card.getEra() + ".png");
 
         this.setIcon(front);
-        this.setPreferredSize(new Dimension(width, height));
+        this.setPreferredSize(new Dimension(front.getIconWidth()+6, front.getIconHeight()+6));
 
         flipTimer = new Timer(200, e -> this.renderBack());
         flipTimer.setRepeats(false);
