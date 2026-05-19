@@ -104,6 +104,11 @@ public class PanelBuilder {
         return this;
     }
 
+    public PanelBuilder size(int width, int height) {
+        panel.setPreferredSize(new Dimension(width, height));
+        return this;
+    }
+
     public JPanel buildPanel() {
         return panel;
     }
