@@ -12,6 +12,7 @@ public class GUILoginAction extends AbstractAction {
     private final JTextField text;
 
     public GUILoginAction(ClientController clientController, JTextField text){
+        super("Login");
         this.clientController = clientController;
         this.text = text;
     }

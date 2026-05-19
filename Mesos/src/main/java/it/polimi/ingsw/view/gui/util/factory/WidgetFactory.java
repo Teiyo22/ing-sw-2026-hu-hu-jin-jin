@@ -21,12 +21,24 @@ public class WidgetFactory {
         return button;
     }
 
+    public static JButton createButton(AbstractAction action, int width, int height) {
+        JButton button = createButton(action);
+        button.setPreferredSize(new Dimension(width, height));
+        return button;
+    }
+
     public static JLabel createLabel(String content) {
         JLabel label = new JLabel(content, SwingConstants.CENTER);
         label.setFont(Fonts.medium);
         label.setForeground(Color.WHITE);
         label.setOpaque(false);
 
+        return label;
+    }
+
+    public static JLabel createLabel(String content, int width, int height) {
+        JLabel label = createLabel(content);
+        label.setPreferredSize(new Dimension(width, height));
         return label;
     }
 
@@ -42,7 +54,12 @@ public class WidgetFactory {
         textField.setFont(Fonts.small);
         textField.setForeground(Color.WHITE);
         textField.setBackground(Fonts.menu);
-        textField.setPreferredSize(new Dimension(200, 30));
+        return textField;
+    }
+
+    public static JTextField createTextField(int width, int height) {
+        JTextField textField = createTextField();
+        textField.setMaximumSize(new Dimension(width, height));
         return textField;
     }
 

@@ -20,15 +20,9 @@ public class GUILoginScreen extends GUIScreen {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(250,0,0,0);
 
-        JLabel name = WidgetFactory.createLabel("Username");
-        name.setMaximumSize(new Dimension(250, 35));
-
-        JTextField username = WidgetFactory.createTextField();
-        username.setMaximumSize(new Dimension(250, 30));
-
-        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username));
-        login.setMaximumSize(new Dimension(250, 35));
-        login.setText("Login");
+        JLabel name = WidgetFactory.createLabel("Username", 250, 35);
+        JTextField username = WidgetFactory.createTextField(250, 30);
+        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username), 250, 35);
 
         loginPanel = new PanelBuilder().rounded(40,5, Fonts.select,name,username,login)
                 .centered()
