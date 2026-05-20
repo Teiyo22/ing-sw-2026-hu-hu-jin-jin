@@ -25,6 +25,13 @@ public class Player implements Comparable<Player>, Serializable {
         this.tribe = null;
     }
 
+    public Player(String name, Totem totem, int rank, Tribe tribe) {
+        this.name = name;
+        this.totem = totem;
+        this.rank = rank;
+        this.tribe = tribe;
+    }
+
     /**
      * Initializes the player's tribe with the given initial food.
      *
@@ -146,6 +153,10 @@ public class Player implements Comparable<Player>, Serializable {
 
     public Totem getTotem() {
         return totem;
+    }
+
+    public Player copy() {
+        return new Player(name, totem, rank, tribe);
     }
 
     @Override

@@ -484,22 +484,65 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     public String getID() {
-        return id;
+        readLock.lock();
+        try {
+            return id;
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * @return a copy of the current waiting lobbies.
+     * */
+    public HashMap<Integer, Lobby> getWaitingLobbies() {
+        readLock.lock();
+        try {
+            return new HashMap<>(waitingLobbies);
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * @return if present returns a copy of the current lobby
+     * containing all the information of the original except board,
+     * otherwise returns null.
+     * */
+    public Lobby getCurrLobby() {
+        readLock.lock();
+        try {
+            if (currLobby != null)
+                return currLobby.copy();
+
+            return null;
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * @return if present returns a copy of the current board
+     * with references to the original components,
+     * otherwise returns null.
+     * */
+    public Board getBoard() {
+        readLock.lock();
+        try {
+            if (currLobby == null || currLobby.getBoard() == null)
+                return null;
+            return currLobby.getBoard().copy();
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+
+    public boolean isInit() {
+        return init;
     }
 
     public ServerInterface getServer() {
         return server;
-    }
-
-    public HashMap<Integer, Lobby> getWaitingLobbies() {
-        return new HashMap<>(waitingLobbies);
-    }
-
-    public Lobby getCurrLobby() {
-        return currLobby;
-    }
-
-    public boolean isInit() {
-        return init;
     }
 }

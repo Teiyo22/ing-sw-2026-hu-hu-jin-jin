@@ -10,44 +10,44 @@ import it.polimi.ingsw.view.tui.Formatter;
 import java.util.Map;
 
 public class PlayerFocusSection implements Section {
+    private Lobby currLobby;
+
     @Override
     public void render(ClientController clientController) {
-        Lobby currLobby = clientController.getCurrLobby();
-
-        Player player = currLobby.getShownPlayer();
+        Player shownPlayer = currLobby.getShownPlayer();
 
         System.out.println();
         System.out.println(Formatter.separatorLine("Player Data"));
-        System.out.println(Formatter.coloredLine("Name: " + player.getName(), player.getTotem().getColor()));
-        System.out.println(Formatter.line("Prestige Points: " + player.getPP()));
-        System.out.println(Formatter.line("Food: " + player.getFood()));
+        System.out.println(Formatter.coloredLine("Name: " + shownPlayer.getName(), shownPlayer.getTotem().getColor()));
+        System.out.println(Formatter.line("Prestige Points: " + shownPlayer.getPP()));
+        System.out.println(Formatter.line("Food: " + shownPlayer.getFood()));
 
         System.out.println(Formatter.separatorLine("Characters"));
         System.out.println(Formatter.line("Inventors: "));
         for (InventorType i : InventorType.values())
-            System.out.println(Formatter.line("- " + i + ": " + player.getTribe().getNumInventorType(i)));
+            System.out.println(Formatter.line("- " + i + ": " + shownPlayer.getTribe().getNumInventorType(i)));
 
         System.out.println(Formatter.line(""));
-        System.out.println(Formatter.line("Builders: " + player.getTribe().getBuilderCount()));
-        System.out.println(Formatter.line("Buildings Discount: " + player.getTribe().getBuilderDiscount()));
+        System.out.println(Formatter.line("Builders: " + shownPlayer.getTribe().getBuilderCount()));
+        System.out.println(Formatter.line("Buildings Discount: " + shownPlayer.getTribe().getBuilderDiscount()));
 
         System.out.println(Formatter.line(""));
-        System.out.println(Formatter.line("Hunter: " + player.getTribe().getHunterCount()));
+        System.out.println(Formatter.line("Hunter: " + shownPlayer.getTribe().getHunterCount()));
 
         System.out.println(Formatter.line(""));
-        System.out.println(Formatter.line("Shamans: " + player.getTribe().getShamanCount()));
-        System.out.println(Formatter.line("Stars: " + player.getTribe().getStars()));
+        System.out.println(Formatter.line("Shamans: " + shownPlayer.getTribe().getShamanCount()));
+        System.out.println(Formatter.line("Stars: " + shownPlayer.getTribe().getStars()));
 
         System.out.println(Formatter.line(""));
-        System.out.println(Formatter.line("Collectors: " + player.getTribe().getCollectorCount()));
-        System.out.println(Formatter.line("Sustenance Discount: " + player.getTribe().getSustenanceDiscount()));
+        System.out.println(Formatter.line("Collectors: " + shownPlayer.getTribe().getCollectorCount()));
+        System.out.println(Formatter.line("Sustenance Discount: " + shownPlayer.getTribe().getSustenanceDiscount()));
 
         System.out.println(Formatter.line(""));
-        System.out.println(Formatter.line("Artists: " + player.getTribe().getArtistCount()));
+        System.out.println(Formatter.line("Artists: " + shownPlayer.getTribe().getArtistCount()));
 
-        if (!player.getBuildings().isEmpty())
+        if (!shownPlayer.getBuildings().isEmpty())
             System.out.println(Formatter.separatorLine("Buildings"));
-        for (AbstractBuilding b : player.getBuildings())
+        for (AbstractBuilding b : shownPlayer.getBuildings())
             System.out.println(Formatter.line(b.toString()));
 
         System.out.println(Formatter.separatorLine(""));
@@ -55,9 +55,7 @@ public class PlayerFocusSection implements Section {
 
     @Override
     public boolean isVisible(ClientController clientController) {
-        Lobby currLobby = clientController.getCurrLobby();
-
-        return currLobby != null &&
-               currLobby.isShownPlayer();
+        currLobby = clientController.getCurrLobby();
+        return currLobby != null && currLobby.getShownPlayer() != null;
     }
 }

@@ -8,10 +8,11 @@ import java.io.Serializable;
 public class Board implements Serializable {
     transient Game game = null;
     transient Deck deck = null;
-    Row topRow;
-    Row bottomRow;
-    OrderSlot[] orderTile;
-    OfferTile[] offerTrack;
+
+    private Row topRow;
+    private Row bottomRow;
+    private OrderSlot[] orderTile;
+    private OfferTile[] offerTrack;
 
     public Board(Game game) {
         this.game = game;
@@ -19,6 +20,13 @@ public class Board implements Serializable {
         this.deck.init();
         this.topRow = new Row();
         this.bottomRow = new Row();
+    }
+
+    public Board(Row topRow, Row bottomRow, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+        this.topRow = topRow;
+        this.bottomRow = bottomRow;
+        this.orderTile = orderTile;
+        this.offerTrack = offerTrack;
     }
 
     /**
@@ -41,6 +49,10 @@ public class Board implements Serializable {
 
     public OrderSlot[] getOrderTile() {
         return orderTile;
+    }
+
+    public Board copy() {
+        return new Board(topRow, bottomRow, orderTile, offerTrack);
     }
 
     public Deck getDeck() {

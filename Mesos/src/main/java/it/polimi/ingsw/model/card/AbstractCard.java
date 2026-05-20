@@ -26,6 +26,7 @@ public abstract class AbstractCard implements Serializable {
      * @param source is the card template from which the new card is created.
      * */
     public AbstractCard(AbstractCard source) {
+        this.ID = source.ID;
         this.type = source.type;
         this.resourceName = source.resourceName;
         this.era = source.era;

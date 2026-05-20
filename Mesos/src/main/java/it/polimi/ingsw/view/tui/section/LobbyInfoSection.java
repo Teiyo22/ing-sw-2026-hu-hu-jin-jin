@@ -8,10 +8,10 @@ import it.polimi.ingsw.view.tui.Formatter;
 import java.util.Map;
 
 public class LobbyInfoSection implements Section {
+    private Lobby currLobby;
+
     @Override
     public void render(ClientController clientController) {
-        Lobby currLobby = clientController.getCurrLobby();
-
         System.out.println();
         System.out.println(Formatter.separatorLine("Lobby Info"));
 
@@ -27,7 +27,9 @@ public class LobbyInfoSection implements Section {
 
     @Override
     public boolean isVisible(ClientController clientController) {
-        Lobby currLobby = clientController.getCurrLobby();
-        return currLobby != null && !currLobby.getPlayers().isEmpty();
+        currLobby = clientController.getCurrLobby();
+        return currLobby != null &&
+               currLobby.getPlayers() != null &&
+               !currLobby.getPlayers().isEmpty();
     }
 }

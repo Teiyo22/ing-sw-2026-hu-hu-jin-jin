@@ -12,6 +12,11 @@ public class OrderSlot implements Serializable {
         this.foodDelta = foodDelta;
     }
 
+    public OrderSlot(Player assignedPlayer, int foodDelta) {
+        this.assignedPlayer = assignedPlayer;
+        this.foodDelta = foodDelta;
+    }
+
     public Player getAssignedPlayer() {
         return assignedPlayer;
     }
@@ -32,6 +37,10 @@ public class OrderSlot implements Serializable {
             getAssignedPlayer().addPP(-2);
         else
             getAssignedPlayer().addFood(foodDelta);
+    }
+
+    public OrderSlot copy() {
+        return new OrderSlot(assignedPlayer, foodDelta);
     }
 
     @Override

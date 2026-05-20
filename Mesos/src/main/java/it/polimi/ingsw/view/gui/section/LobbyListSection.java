@@ -43,13 +43,15 @@ public class LobbyListSection implements GUISection {
         scrollPane = new JScrollPane(lobbies);
         scrollPane.setOpaque(false);
 
-        panel = new PanelBuilder().border(title, scrollPane, null, null, null)
+        panel = new PanelBuilder()
+                .border(title, scrollPane, null, null, null)
                 .buildPanel();
     }
 
     @Override
     public void render(ClientController clientController, JPanel panel) {
         model.clear();
+
         Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
         for(Lobby lobby : waitingLobbies.values())
             if (!model.contains(lobby))

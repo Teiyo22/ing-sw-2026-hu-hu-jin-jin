@@ -17,6 +17,14 @@ public class OfferTile implements Serializable {
         this.bottomRowPickable = bottomRowPickable;
     }
 
+    public OfferTile(Player assignedPlayer, String type, int bonusFood, int topRowPickable, int bottomRowPickable) {
+        this.assignedPlayer = assignedPlayer;
+        this.type = type;
+        this.bonusFood = bonusFood;
+        this.topRowPickable = topRowPickable;
+        this.bottomRowPickable = bottomRowPickable;
+    }
+
     public Player getAssignedPlayer() {
         return assignedPlayer;
     }
@@ -43,6 +51,10 @@ public class OfferTile implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public OfferTile copy() {
+        return new OfferTile(assignedPlayer, type, bonusFood, topRowPickable, bottomRowPickable);
     }
 
     @Override

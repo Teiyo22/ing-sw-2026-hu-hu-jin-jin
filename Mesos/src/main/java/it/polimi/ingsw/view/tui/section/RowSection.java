@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.view.tui.Formatter;
 
 public class RowSection implements Section {
     private final boolean isTop;
+    private Board board;
 
     public RowSection(boolean isTop) {
         this.isTop = isTop;
@@ -18,8 +20,7 @@ public class RowSection implements Section {
 
     @Override
     public void render(ClientController clientController) {
-        Row row = isTop ? clientController.getCurrLobby().getBoard().getTopRow()
-                : clientController.getCurrLobby().getBoard().getBottomRow();
+        Row row = isTop ? board.getTopRow() : board.getBottomRow();
 
         System.out.println();
 
@@ -48,10 +49,7 @@ public class RowSection implements Section {
 
     @Override
     public boolean isVisible(ClientController clientController) {
-        Lobby currLobby = clientController.getCurrLobby();
-
-        return currLobby != null &&
-               currLobby.getBoard() != null &&
-               !currLobby.isShownPlayer();
+        board = clientController.getBoard();
+        return board != null;
     }
 }

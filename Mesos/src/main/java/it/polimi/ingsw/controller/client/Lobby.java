@@ -6,15 +6,15 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Lobby implements Serializable {
-    private int lobbyID;
-    private int size;
+    private final int lobbyID;
+    private final int size;
     private int playerCount;
 
     transient private Player shownPlayer = null;
@@ -160,8 +160,27 @@ public class Lobby implements Serializable {
         return shownPlayer != null;
     }
 
+    public Lobby copy() {
+        Lobby lobbyCopy = new Lobby(lobbyID, size, playerCount);
+        lobbyCopy.setPlayers(getPlayersCopy());
+        lobbyCopy.setShownPlayer(getShownPlayerCopy());
+        lobbyCopy.setTurnState(turnState);
+
+        return lobbyCopy;
+    }
+
+    private Map<Player, Boolean> getPlayersCopy() {
+        return players == null ? null :
+                players.entrySet().stream()
+                        .collect(Collectors.toMap(e -> e.getKey().copy(), Map.Entry::getValue));
+    }
+
+    private Player getShownPlayerCopy() {
+        return shownPlayer == null ? null : shownPlayer.copy();
+    }
+
     //=============================================================================
-    // Getters
+    // Setters
     //=============================================================================
 
     public void setPlayers(Map<Player, Boolean> players) {
@@ -172,12 +191,16 @@ public class Lobby implements Serializable {
         this.playerCount = playerCount;
     }
 
+    public void setShownPlayer(Player shownPlayer) {
+        this.shownPlayer = shownPlayer;
+    }
+
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;
     }
 
     public void setIdleTurnState() {
-        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex(), getBoard().getDeck().getCurrentEra());
+        this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex(), turnState.getEra());
     }
 
     @Override
