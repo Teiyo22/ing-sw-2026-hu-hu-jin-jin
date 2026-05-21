@@ -59,7 +59,7 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public  void confirmLogin(String username) {
+    public void confirmLogin(String username) {
         writeLock.lock();
         try {
             id = username;
@@ -70,7 +70,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public  void showWaitingLobbies(List<Lobby> lobbies) {
+    public void showWaitingLobbies(List<Lobby> lobbies) {
         writeLock.lock();
         try {
             waitingLobbies.clear();
@@ -88,7 +88,7 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public  void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
+    public void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
         writeLock.lock();
         try {
             Lobby lobby = waitingLobbies.get(lobbyID);
@@ -104,100 +104,142 @@ public class ClientController implements VirtualClient {
                     players.put(player, false);
 
                 currLobby.setPlayers(players);
+                view.notifyChange();
             } else
                 showError("This lobby is not available");
         } finally {
             writeLock.unlock();
         }
-
-        view.notifyChange();
     }
 
     @Override
-    public  void addPlayer(int lobbyID, Player player) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.addPlayer(player);
+    public void addPlayer(int lobbyID, Player player) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.addPlayer(player);
 
-        view.notifyChange();
-    }
-
-    @Override
-    public  void addLobby(Lobby lobby) {
-        if (currLobby != null && currLobby.getLobbyID() == lobby.getLobbyID()) {
-            currLobby.setPlayerCount(lobby.getPlayerCount());
-            lobby = currLobby;
-        }
-
-        waitingLobbies.put(lobby.getLobbyID(), lobby);
-
-        view.notifyChange();
-    }
-
-    @Override
-    public  void removeLobby(int lobbyID) {
-        waitingLobbies.remove(lobbyID);
-
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby = null;
-
-        view.notifyChange();
-    }
-
-    @Override
-        public  void updateLobby(Lobby lobby) {
-        if (waitingLobbies.containsKey(lobby.getLobbyID()))
-            waitingLobbies.get(lobby.getLobbyID()).setPlayerCount(lobby.getPlayerCount());
-
-        view.notifyChange();
-    }
-
-    @Override
-    public  void removeClient(int lobbyID, Player player) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.removeClient(player);
-        view.notifyChange();
-    }
-
-    @Override
-    public  void removePlayer(int lobbyID, Player player) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID)
-            currLobby.removePlayer(player);
-
-        view.notifyChange();
-    }
-
-    @Override
-    public  void createLobby(Lobby lobby, Player player) {
-        currLobby = lobby;
-        waitingLobbies.put(lobby.getLobbyID(), lobby);
-
-        Map<Player, Boolean> players = new HashMap<>();
-        players.put(player, true);
-
-        currLobby.setPlayers(players);
-
-        view.notifyChange();
-    }
-
-    @Override
-    public  void startLobby(int lobbyID, Board board, List<Player> players) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            waitingLobbies.clear();
-
-            currLobby.initGame(players, board);
-            view.transitionTo(ScreenType.GAME_PLAY);
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void stopLobby(int lobbyID) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            view.transitionTo(ScreenType.LOBBY_SELECTION);
+    public void addLobby(Lobby lobby) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobby.getLobbyID()) {
+                currLobby.setPlayerCount(lobby.getPlayerCount());
+                lobby = currLobby;
+            }
+
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void showError(String error) {
+    public void removeLobby(int lobbyID) {
+        writeLock.lock();
+        try {
+            waitingLobbies.remove(lobbyID);
+
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby = null;
+
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void updateLobby(Lobby lobby) {
+        writeLock.lock();
+        try {
+            if (waitingLobbies.containsKey(lobby.getLobbyID()))
+                waitingLobbies.get(lobby.getLobbyID()).setPlayerCount(lobby.getPlayerCount());
+
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void removeClient(int lobbyID, Player player) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.removeClient(player);
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void removePlayer(int lobbyID, Player player) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+                currLobby.removePlayer(player);
+
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void createLobby(Lobby lobby, Player player) {
+        writeLock.lock();
+        try {
+            currLobby = lobby;
+            waitingLobbies.put(lobby.getLobbyID(), lobby);
+
+            Map<Player, Boolean> players = new HashMap<>();
+            players.put(player, true);
+
+            currLobby.setPlayers(players);
+            view.notifyChange();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void startLobby(int lobbyID, Board board, List<Player> players) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                waitingLobbies.clear();
+
+                currLobby.initGame(players, board);
+                view.transitionTo(ScreenType.GAME_PLAY);
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void stopLobby(int lobbyID) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public void showError(String error) {
         view.displayError(error);
     }
 
@@ -211,64 +253,95 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public  void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            Player player = currLobby.getPlayer(id);
-            TurnState turnState = modelStateInfo.getTurnState(player);
-            currLobby.setTurnState(turnState);
+    public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
+        writeLock.lock();
 
-            view.notifyChange();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                Player player = currLobby.getPlayer(id);
+                TurnState turnState = modelStateInfo.getTurnState(player);
+                currLobby.setTurnState(turnState);
+
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateOrderTile(orderTile);
-            currLobby.updateOfferTrack(offerTrack);
+    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.updateOrderTile(orderTile);
+                currLobby.updateOfferTrack(offerTrack);
 
-            view.notifyChange();
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void updateModel(int lobbyID, Player player, Board board) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribe(player);
-            currLobby.updateBoard(board);
+    public void updateModel(int lobbyID, Player player, Board board) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.updateTribe(player);
+                currLobby.updateBoard(board);
 
-            view.notifyChange();
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void updateModel(int lobbyID, Player player, Row topRow) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribe(player);
-            currLobby.updateTopRow(topRow);
+    public void updateModel(int lobbyID, Player player, Row topRow) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.updateTribe(player);
+                currLobby.updateTopRow(topRow);
 
-            view.notifyChange();
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribes(players);
-            currLobby.updateTopRow(topRow);
-            currLobby.updateBottomRow(bottomRow);
+    public void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.updateTribes(players);
+                currLobby.updateTopRow(topRow);
+                currLobby.updateBottomRow(bottomRow);
 
-            view.notifyChange();
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
     @Override
-    public  void updateModel(int lobbyID, List<Player> players) {
-        if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-            currLobby.updateTribes(players);
-            currLobby.setRanking(players);
+    public void updateModel(int lobbyID, List<Player> players) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.updateTribes(players);
+                currLobby.setRanking(players);
 
-            view.notifyChange();
+                view.notifyChange();
+            }
+        } finally {
+            writeLock.unlock();
         }
     }
 
@@ -442,7 +515,7 @@ public class ClientController implements VirtualClient {
         return true;
     }
 
-    public  void disconnect() {
+    public void disconnect() {
         init = false;
 
         view.close();
@@ -514,7 +587,8 @@ public class ClientController implements VirtualClient {
 
     /**
      * @return a copy of the current waiting lobbies.
-     * */
+     *
+     */
     public HashMap<Integer, Lobby> getWaitingLobbies() {
         readLock.lock();
         try {
@@ -528,7 +602,8 @@ public class ClientController implements VirtualClient {
      * @return if present returns a copy of the current lobby
      * containing all the information of the original except board,
      * otherwise returns null.
-     * */
+     *
+     */
     public Lobby getCurrLobby() {
         readLock.lock();
         try {
@@ -545,7 +620,8 @@ public class ClientController implements VirtualClient {
      * @return if present returns a copy of the current board
      * with references to the original components,
      * otherwise returns null.
-     * */
+     *
+     */
     public Board getBoard() {
         readLock.lock();
         try {
