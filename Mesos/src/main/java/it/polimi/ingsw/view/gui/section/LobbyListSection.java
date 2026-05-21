@@ -69,7 +69,7 @@ public class LobbyListSection implements GUISection {
     }
 
     private String formatLobby(Lobby lobby) {
-        return String.format("Lobby #%-6d •  Players: [ %d / %d ]",
+        return String.format("Lobby #%d   •   Players: [ %d / %d ]",
                 lobby.getLobbyID(), lobby.getPlayerCount(), lobby.getSize());
     }
 }
