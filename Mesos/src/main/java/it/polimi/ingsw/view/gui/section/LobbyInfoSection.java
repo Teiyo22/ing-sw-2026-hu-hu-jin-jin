@@ -53,7 +53,9 @@ public class LobbyInfoSection implements GUISection {
                 .buildPanel();
 
         info = new PanelBuilder()
-                .rounded(30, 5, Fonts.select, lobbyID, count, players, totemSelect)
+                .rounded(30)
+                .withTranslucentColor(Fonts.select)
+                .column(5, lobbyID, count, players, totemSelect)
                 .centered()
                 .buildPanel();
 

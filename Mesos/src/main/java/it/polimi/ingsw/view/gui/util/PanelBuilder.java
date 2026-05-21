@@ -69,31 +69,32 @@ public class PanelBuilder {
         return this;
     }
 
+    public PanelBuilder withTranslucentColor(Color color) {
+        panel.setOpaque(false);
+        panel.setBackground(color);
+
+        return this;
+    }
+
     public PanelBuilder withPadding(int top, int left, int bottom, int right) {
         panel.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
         return this;
     }
 
-    public PanelBuilder rounded(int radius,int gap, Color color, JComponent... components) {
+    public PanelBuilder rounded(int radius) {
         JPanel roundedPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(color);
+                g2.setColor(getBackground());
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
                 g2.dispose();
-                super.paintComponent(g);
             }
         };
-        roundedPanel.setOpaque(false);
-        roundedPanel.setLayout(new BoxLayout(roundedPanel, BoxLayout.Y_AXIS));
 
-        for (JComponent c : components) {
-            c.setAlignmentX(Component.CENTER_ALIGNMENT);
-            roundedPanel.add(c);
-            roundedPanel.add(Box.createVerticalStrut(gap));
-        }
+        roundedPanel.setVisible(true);
         panel = roundedPanel;
         return this;
     }

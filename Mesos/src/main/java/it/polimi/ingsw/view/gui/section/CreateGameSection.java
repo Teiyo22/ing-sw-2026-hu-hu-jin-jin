@@ -50,7 +50,9 @@ public class CreateGameSection implements GUISection {
         totemBox.setMaximumSize(new Dimension(200,20));
 
         playerInput = new PanelBuilder()
-                .rounded(20, 5 ,Fonts.select, playerNumLabel,playerNumBox,totemLabel,totemBox)
+                .rounded(20)
+                .withTranslucentColor(Fonts.select)
+                .column(5, playerNumLabel, playerNumBox, totemLabel, totemBox)
                 .centered()
                 .buildPanel();
 

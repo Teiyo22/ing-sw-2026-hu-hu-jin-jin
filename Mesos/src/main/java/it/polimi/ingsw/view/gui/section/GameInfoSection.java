@@ -79,7 +79,9 @@ public class GameInfoSection implements GUISection {
         //putting together panels
         JPanel contentPanel = new PanelBuilder().column(20, buttonsPanel, orderTile, infoPanel).buildPanel();
 
-        panel = new PanelBuilder().rounded(30, 10, Fonts.mesos_shadow_red_low_opacity, contentPanel)
+        panel = new PanelBuilder().rounded(30)
+                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+                .column(10, contentPanel)
                 .withPadding(30, 10, 30, 10).buildPanel();
 
         panel.setPreferredSize(panelSize);

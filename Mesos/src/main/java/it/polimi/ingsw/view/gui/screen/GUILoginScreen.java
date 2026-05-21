@@ -21,9 +21,11 @@ public class GUILoginScreen extends GUIScreen {
         JTextField username = WidgetFactory.createTextField(250, 30);
         JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username), 250, 35);
 
-        JPanel loginPanel = new PanelBuilder().rounded(40, 5, Fonts.select, name, username, login)
+        JPanel loginPanel = new PanelBuilder().rounded(40)
+                .column(10, name, username, login)
+                .withTranslucentColor(Fonts.select)
                 .centered()
-                .size(350, 200)
+                .size(350, 150)
                 .buildPanel();
 
         GridBagConstraints c = new GridBagConstraints();
