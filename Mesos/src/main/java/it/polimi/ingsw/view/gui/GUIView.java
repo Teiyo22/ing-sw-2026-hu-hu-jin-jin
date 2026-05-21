@@ -7,6 +7,8 @@ import it.polimi.ingsw.view.gui.screen.GUIScreen;
 import it.polimi.ingsw.view.gui.screen.GUILoginScreen;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUIView extends JFrame implements View {
     private final ClientController controller;
@@ -15,16 +17,24 @@ public class GUIView extends JFrame implements View {
     public GUIView(ClientController controller) {
         super();
         this.controller = controller;
-    }
 
-    @Override
-    public void start() {
         setTitle("Mesos");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(1920, 1080);
         setLocationRelativeTo(null);
         setResizable(true);
 
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                controller.disconnect();
+                dispose();
+            }
+        });
+    }
+
+    @Override
+    public void start() {
         currScreen = new GUILoginScreen(this, controller);
         currScreen.render();
 
@@ -49,7 +59,6 @@ public class GUIView extends JFrame implements View {
     public void transitionTo(ScreenType type) {
         SwingUtilities.invokeLater(() -> {
             currScreen = ScreenType.getGUIScreen(type, this, controller);
-            this.setContentPane(currScreen);
             currScreen.render();
         });
     }
