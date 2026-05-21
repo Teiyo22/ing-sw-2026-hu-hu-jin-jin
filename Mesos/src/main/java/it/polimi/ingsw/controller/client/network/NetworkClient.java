@@ -62,6 +62,7 @@ public class NetworkClient extends Thread {
                 Response response = gson.fromJson(line, Response.class);
                 server.handleMessage(response);
             }
+            server.getClientController().disconnect();
         } catch (SocketException | JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (IOException e) {
@@ -114,23 +115,27 @@ public class NetworkClient extends Thread {
 
     public void cleanup() {
         try {
-            this.interrupt();
-
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-                socket = null;
+            if (output != null) {
+                output.flush();
+                output.close();
+                output = null;
             }
+        } catch (IOException ignore) {}
 
+        try {
             if (input != null) {
                 input.close();
                 input = null;
             }
-            if (output != null) {
-                output.close();
-                output = null;
-            }
+        } catch (IOException ignore) {}
 
-        } catch (IOException ignore) {
-        }
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                socket = null;
+            }
+        } catch (IOException ignore) {}
+
+        this.interrupt();
     }
 }
