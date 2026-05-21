@@ -22,7 +22,7 @@ public class LobbyListSection implements GUISection {
         title = WidgetFactory.createLabel("Lobby selection");
 
         model = new DefaultListModel<>();
-        lobbies = WidgetFactory.createJList(model,
+        lobbies = WidgetFactory.createJList(model, 15,
                 this::formatLobby,
                 lobby -> new LobbyInfoCommand(clientController, lobby.getLobbyID()).execute());
         scrollPane = WidgetFactory.createScrollPane(lobbies, Fonts.select);
