@@ -17,15 +17,16 @@ public class GUILoginScreen extends GUIScreen {
         this.backgroundPath = "/images/mesos.png";
         this.setLayout(new GridBagLayout());
 
-        JLabel name = WidgetFactory.createLabel("Username", 250, 35);
-        JTextField username = WidgetFactory.createTextField(250, 30);
-        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, username), 250, 35);
+        JLabel usernameLabel = WidgetFactory.createLabel("Username", 250, 35);
+        JTextField usernameTextField = WidgetFactory.createTextField(250, 30);
+        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, usernameTextField), 250, 35);
 
         JPanel loginPanel = new PanelBuilder().rounded(40)
-                .column(10, name, username, login)
+                .column(10, usernameLabel, usernameTextField, login)
                 .withTranslucentColor(Fonts.select)
                 .centered()
-                .size(350, 150)
+                .withPadding(10, 10, 10, 10)
+                .size(350, 200)
                 .buildPanel();
 
         GridBagConstraints c = new GridBagConstraints();
