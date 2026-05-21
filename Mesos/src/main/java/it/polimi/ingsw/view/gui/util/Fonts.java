@@ -21,6 +21,7 @@ public class Fonts {
 
     public static final Color menu2 = new Color(0x0F051A);
     public static final Color select = new Color(15,5,26,140);
+    public static final Color selected = new Color(15,5,26,180);
     public static final Color menu = new Color(0x47131E);
     public static final Color black   = new Color(0x000000);
     public static final Color grey = new Color(30, 30, 30);

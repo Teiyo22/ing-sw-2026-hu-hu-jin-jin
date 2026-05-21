@@ -23,25 +23,10 @@ public class LobbyListSection implements GUISection {
         title = WidgetFactory.createLabel("Lobby selection");
 
         model = new DefaultListModel<>();
-        lobbies = WidgetFactory.createJList(model, Fonts.select,
-                entry -> String.format("Lobby #%-3d | Player Count %3d/%3d ",
-                    entry.getLobbyID(),
-                    entry.getPlayerCount(), entry.getSize()));
-
-        lobbies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lobbies.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                Lobby selected = lobbies.getSelectedValue();
-
-                if (selected != null) {
-                    int id = selected.getLobbyID();
-                    new LobbyInfoCommand(clientController, id).execute();
-                }
-            }
-        });
-
-        scrollPane = new JScrollPane(lobbies);
-        scrollPane.setOpaque(false);
+        lobbies = WidgetFactory.createJList(model,
+                this::formatLobby,
+                lobby -> new LobbyInfoCommand(clientController, lobby.getLobbyID()).execute());
+        scrollPane = WidgetFactory.createScrollPane(lobbies, Fonts.select);
 
         panel = new PanelBuilder()
                 .border(title, scrollPane, null, null, null)
@@ -49,9 +34,27 @@ public class LobbyListSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController clientController, JPanel panel) {
-        model.clear();
+    public void render(ClientController clientController, JPanel panel) {;
+        updateLobbyList(clientController);
 
+        Lobby currLobby = clientController.getCurrLobby();
+        lobbies.setEnabled(currLobby == null || !currLobby.containsClient(clientController.getID()));
+
+        if (lobbies.getSelectedValue() != null && !lobbies.getSelectedValue().equals(clientController.getCurrLobby()))
+            lobbies.clearSelection();
+    }
+
+    @Override
+    public boolean isVisible(ClientController controller) {
+        return true;
+    }
+
+    @Override
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    private void updateLobbyList(ClientController clientController) {
         Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
         for(Lobby lobby : waitingLobbies.values())
             if (!model.contains(lobby))
@@ -64,19 +67,10 @@ public class LobbyListSection implements GUISection {
             else
                 i++;
         }
-
-        Lobby currLobby = clientController.getCurrLobby();
-        if (currLobby != null)
-            lobbies.setEnabled(!currLobby.containsClient(clientController.getID()));
     }
 
-    @Override
-    public boolean isVisible(ClientController controller) {
-        return true;
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
+    private String formatLobby(Lobby lobby) {
+        return String.format("Lobby #%-6d •  Players: [ %d / %d ]",
+                lobby.getLobbyID(), lobby.getPlayerCount(), lobby.getSize());
     }
 }

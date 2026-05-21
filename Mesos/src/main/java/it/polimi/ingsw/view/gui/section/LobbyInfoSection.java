@@ -40,9 +40,8 @@ public class LobbyInfoSection implements GUISection {
 
         model = new DefaultListModel<>();
         players = WidgetFactory.createJList(model,
-                value -> String.format("%10s - %5s (%s)",
-                        value.getKey().getName(), value.getKey().getTotem(),
-                        value.getValue() ? "Connected" : "Disconnected"));
+                this::formatPlayer,
+                null);
 
 
         totemLabel = WidgetFactory.createLabel("Totem: ");
@@ -111,6 +110,12 @@ public class LobbyInfoSection implements GUISection {
     @Override
     public JPanel getPanel() {
         return panel;
+    }
+
+    private String formatPlayer(Map.Entry<Player, Boolean> player) {
+        return String.format("%10s - %5s (%s)",
+                player.getKey().getName(), player.getKey().getTotem(),
+                player.getValue() ? "Connected" : "Disconnected");
     }
 }
 
