@@ -45,23 +45,23 @@ public class PickCardAction implements Action {
         if (args.length != argCount + 1)
             return Optional.of("Invalid number of arguments");
 
-        topRow = parseIDList(args[1], true);
-        bottomRow = parseIDList(args[2], false);
+        topRow = parseIDList(args[1]);
+        bottomRow = parseIDList(args[2]);
         if (topRow == null || bottomRow == null) {
             return Optional.of("Card IDs must be integers separated by commas");
         }
 
-        clientController.getCurrLobby().setIdleTurnState();
+        clientController.setIdleTurnState();
         new PickCardCommand(clientController, topRow, bottomRow).execute();
         return Optional.empty();
     }
 
     @Override
     public String toString() {
-        return String.format("[%s | %s] {<Top Row ID>,...} {<Bottom Row ID>,...}", key(), label());
+        return String.format("[%s | %s] [<Top Row ID>,...] [<Bottom Row ID>,...]", key(), label());
     }
 
-    private Set<Integer> parseIDList(String input, boolean top) {
+    private Set<Integer> parseIDList(String input) {
         String stripped = input.substring(1, input.length() - 1);
 
         if (stripped.isEmpty())

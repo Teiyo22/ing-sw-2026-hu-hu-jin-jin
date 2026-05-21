@@ -11,9 +11,6 @@ public class LobbyInfoAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
-    Map<Integer, Lobby> waitingLobbies;
-    Lobby currLobby;
-
     public LobbyInfoAction(ClientController clientController) {
         this.clientController = clientController;
     }
@@ -30,11 +27,10 @@ public class LobbyInfoAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        waitingLobbies = clientController.getWaitingLobbies();
-        currLobby = clientController.getCurrLobby();
+        Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
+        Lobby currLobby = clientController.getCurrLobby();
 
-        return waitingLobbies != null &&
-               !waitingLobbies.isEmpty() &&
+        return !waitingLobbies.isEmpty() &&
                !(currLobby != null && currLobby.containsClient(clientController.getID()));
     }
 
@@ -55,6 +51,7 @@ public class LobbyInfoAction implements Action {
     }
 
     private Integer parseLobbyID(String input) {
+        Map<Integer, Lobby> waitingLobbies = clientController.getWaitingLobbies();
         try {
             Integer n = Integer.parseInt(input);
 

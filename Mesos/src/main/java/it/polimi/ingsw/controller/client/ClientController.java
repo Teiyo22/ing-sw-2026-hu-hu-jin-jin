@@ -272,6 +272,16 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    public void showPlayer(Player player) {
+        writeLock.lock();
+        try {
+            if (currLobby != null)
+                currLobby.showPlayer(player);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
     //=============================================================================
     // Server related methods
     //=============================================================================
@@ -477,6 +487,16 @@ public class ClientController implements VirtualClient {
 
     public void setView(View view) {
         this.view = view;
+    }
+
+    public void setIdleTurnState() {
+        writeLock.lock();
+        try {
+            if (currLobby != null)
+                currLobby.setIdleTurnState();
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     //=============================================================================

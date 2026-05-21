@@ -25,7 +25,6 @@ public class LeaveLobbyAction implements Action {
     @Override
     public boolean isEnabled() {
         Lobby currLobby = clientController.getCurrLobby();
-
         return currLobby != null && currLobby.containsClient(clientController.getID());
     }
 

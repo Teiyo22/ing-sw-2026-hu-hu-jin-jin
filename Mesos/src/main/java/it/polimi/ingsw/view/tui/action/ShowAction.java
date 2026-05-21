@@ -10,8 +10,6 @@ public class ShowAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
-    private Lobby currLobby;
-
     public ShowAction(ClientController clientController) {
         this.clientController = clientController;
     }
@@ -30,7 +28,7 @@ public class ShowAction implements Action {
 
     @Override
     public boolean isEnabled() {
-        currLobby = clientController.getCurrLobby();
+        Lobby currLobby = clientController.getCurrLobby();
         return currLobby != null && !currLobby.isShownPlayer();
     }
 
@@ -45,11 +43,13 @@ public class ShowAction implements Action {
         if (player == null)
             return Optional.of("Invalid player name");
 
-        currLobby.showPlayer(player);
+        clientController.showPlayer(player);
         return Optional.empty();
     }
 
     private Player parseName(String input) {
+        Lobby currLobby = clientController.getCurrLobby();
+
         for (Player player : currLobby.getPlayers().keySet())
             if (player.getName().equals(input))
                 return player;

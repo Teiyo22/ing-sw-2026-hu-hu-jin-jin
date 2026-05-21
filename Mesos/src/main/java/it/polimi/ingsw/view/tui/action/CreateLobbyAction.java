@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.CreateLobbyCommand;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class CreateLobbyAction implements Action {
