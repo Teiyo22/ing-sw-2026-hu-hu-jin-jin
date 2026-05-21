@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.tui.Formatter;
 
-import java.util.Map;
-
-public class PlayerFocusSection implements Section {
+public class TUIPlayerFocusSection implements Section {
     private Lobby currLobby;
 
     @Override

@@ -2,23 +2,16 @@ package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.turn.TurnState;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.Row;
-import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.command.PickCardCommand;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class PickCardAction implements Action {
+public class TUIPickCardAction implements Action {
     final private ClientController clientController;
     final private int argCount = 2;
 
-    public PickCardAction(ClientController clientController) {
+    public TUIPickCardAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

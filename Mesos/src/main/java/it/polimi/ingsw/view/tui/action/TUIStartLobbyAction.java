@@ -2,35 +2,38 @@ package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.view.command.LeaveLobbyCommand;
+import it.polimi.ingsw.view.command.StartLobbyCommand;
 
 import java.util.Optional;
 
-public class LeaveLobbyAction implements Action {
+public class TUIStartLobbyAction implements Action {
     final private ClientController clientController;
 
-    public LeaveLobbyAction(ClientController clientController) {
+    public TUIStartLobbyAction(ClientController clientController) {
         this.clientController = clientController;
     }
+
     @Override
     public String key() {
-        return "5";
+        return "6";
     }
 
     @Override
     public String label() {
-        return "Leave";
+        return "Start";
     }
 
     @Override
     public boolean isEnabled() {
         Lobby currLobby = clientController.getCurrLobby();
-        return currLobby != null && currLobby.containsClient(clientController.getID());
+        return currLobby != null &&
+               currLobby.containsClient(clientController.getID()) &&
+               currLobby.getPlayerCount() == currLobby.getSize();
     }
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new LeaveLobbyCommand(clientController).execute();
+        new StartLobbyCommand(clientController).execute();
         return Optional.empty();
     }
 

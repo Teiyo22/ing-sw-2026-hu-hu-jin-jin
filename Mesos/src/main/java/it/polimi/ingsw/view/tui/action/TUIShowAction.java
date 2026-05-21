@@ -6,11 +6,11 @@ import it.polimi.ingsw.model.player.Player;
 
 import java.util.Optional;
 
-public class ShowAction implements Action {
+public class TUIShowAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
-    public ShowAction(ClientController clientController) {
+    public TUIShowAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

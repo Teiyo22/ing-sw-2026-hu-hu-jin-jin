@@ -2,16 +2,15 @@ package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.turn.TurnState;
-import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.command.PickOfferCommand;
 
 import java.util.Optional;
 
-public class PickOfferAction implements Action {
+public class TUIPickOfferAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
-    public PickOfferAction(ClientController clientController) {
+    public TUIPickOfferAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

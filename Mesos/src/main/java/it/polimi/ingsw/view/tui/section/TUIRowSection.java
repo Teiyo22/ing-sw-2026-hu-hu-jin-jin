@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
@@ -10,11 +9,11 @@ import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.view.tui.Formatter;
 
-public class RowSection implements Section {
+public class TUIRowSection implements Section {
     private final boolean isTop;
     private Board board;
 
-    public RowSection(boolean isTop) {
+    public TUIRowSection(boolean isTop) {
         this.isTop = isTop;
     }
 

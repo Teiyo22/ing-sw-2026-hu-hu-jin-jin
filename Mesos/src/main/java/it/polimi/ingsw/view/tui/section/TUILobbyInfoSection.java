@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.tui.Formatter;
 
 import java.util.Map;
 
-public class LobbyInfoSection implements Section {
+public class TUILobbyInfoSection implements Section {
     private Lobby currLobby;
 
     @Override

@@ -7,11 +7,11 @@ import it.polimi.ingsw.view.command.LobbyInfoCommand;
 import java.util.Map;
 import java.util.Optional;
 
-public class LobbyInfoAction implements Action {
+public class TUILobbyInfoAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
-    public LobbyInfoAction(ClientController clientController) {
+    public TUILobbyInfoAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

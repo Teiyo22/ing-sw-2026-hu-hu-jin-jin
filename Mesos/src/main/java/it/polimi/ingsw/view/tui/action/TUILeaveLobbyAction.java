@@ -1,35 +1,36 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.command.DisconnectCommand;
+import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.view.command.LeaveLobbyCommand;
 
 import java.util.Optional;
 
-public class DisconnectAction implements Action {
+public class TUILeaveLobbyAction implements Action {
     final private ClientController clientController;
 
-    public DisconnectAction(ClientController clientController) {
+    public TUILeaveLobbyAction(ClientController clientController) {
         this.clientController = clientController;
     }
-
     @Override
     public String key() {
-        return "0";
+        return "5";
     }
 
     @Override
     public String label() {
-        return "Disconnect";
+        return "Leave";
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        Lobby currLobby = clientController.getCurrLobby();
+        return currLobby != null && currLobby.containsClient(clientController.getID());
     }
 
     @Override
     public Optional<String> parseAction(String[] args) {
-        new DisconnectCommand(clientController).execute();
+        new LeaveLobbyCommand(clientController).execute();
         return Optional.empty();
     }
 

@@ -5,12 +5,12 @@ import it.polimi.ingsw.view.command.LoginCommand;
 
 import java.util.Optional;
 
-public class LoginAction implements Action{
+public class TUILoginAction implements Action{
     private final ClientController clientController;
     private final int argsCount = 1;
 
 
-    public LoginAction(ClientController clientController) {
+    public TUILoginAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

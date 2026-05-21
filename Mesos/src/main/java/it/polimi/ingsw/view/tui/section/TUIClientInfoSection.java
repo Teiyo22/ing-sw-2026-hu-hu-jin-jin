@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.tui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.tui.Formatter;
 
-public class ClientInfoSection implements Section {
+public class TUIClientInfoSection implements Section {
     @Override
     public void render(ClientController clientController) {
         System.out.println();

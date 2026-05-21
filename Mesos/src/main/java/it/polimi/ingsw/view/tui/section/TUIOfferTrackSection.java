@@ -1,12 +1,10 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.tui.Formatter;
 
-public class OfferTrackSection implements Section {
+public class TUIOfferTrackSection implements Section {
     private Board board;
 
     @Override

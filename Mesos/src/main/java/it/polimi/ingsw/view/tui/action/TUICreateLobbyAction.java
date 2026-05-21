@@ -2,18 +2,16 @@ package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.CreateLobbyCommand;
 
-import java.util.Map;
 import java.util.Optional;
 
-public class CreateLobbyAction implements Action {
+public class TUICreateLobbyAction implements Action {
     final private ClientController clientController;
     final private int argCount = 2;
 
-    public CreateLobbyAction(ClientController clientController) {
+    public TUICreateLobbyAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

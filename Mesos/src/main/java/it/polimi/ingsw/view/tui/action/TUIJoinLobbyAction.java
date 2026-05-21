@@ -6,16 +6,15 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.JoinLobbyCommand;
 
-import java.util.Map;
 import java.util.Optional;
 
-public class JoinLobbyAction implements Action {
+public class TUIJoinLobbyAction implements Action {
     final private ClientController clientController;
     final private int argCount = 1;
 
     private Lobby currLobby;
 
-    public JoinLobbyAction(ClientController clientController) {
+    public TUIJoinLobbyAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

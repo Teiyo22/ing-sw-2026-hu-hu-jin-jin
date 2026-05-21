@@ -5,11 +5,11 @@ import it.polimi.ingsw.controller.client.Lobby;
 
 import java.util.Optional;
 
-public class HideAction implements Action {
+public class TUIHideAction implements Action {
     final private ClientController clientController;
     private Lobby currLobby;
 
-    public HideAction(ClientController clientController) {
+    public TUIHideAction(ClientController clientController) {
         this.clientController = clientController;
     }
 

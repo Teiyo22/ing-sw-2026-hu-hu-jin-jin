@@ -5,10 +5,10 @@ import it.polimi.ingsw.view.tui.Formatter;
 import it.polimi.ingsw.view.tui.action.Action;
 import it.polimi.ingsw.view.tui.action.ActionRegistry;
 
-public class ActionSection implements Section {
+public class TUIActionSection implements Section {
     private final ActionRegistry actionRegistry;
 
-    public ActionSection(ActionRegistry actionRegistry) {
+    public TUIActionSection(ActionRegistry actionRegistry) {
         this.actionRegistry = actionRegistry;
     }
 

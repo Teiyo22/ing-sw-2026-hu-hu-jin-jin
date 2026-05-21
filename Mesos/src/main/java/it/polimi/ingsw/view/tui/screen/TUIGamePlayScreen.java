@@ -11,22 +11,22 @@ public class TUIGamePlayScreen extends TUIScreen {
         super(clientController);
 
         registry = new ActionRegistry()
-                .register(new DisconnectAction(clientController))
-                .register(new ShowAction(clientController))
-                .register(new HideAction(clientController))
-                .register(new PickOfferAction(clientController))
-                .register(new PickCardAction(clientController))
-                .register(new LeaveLobbyAction(clientController));
+                .register(new TUIDisconnectAction(clientController))
+                .register(new TUIShowAction(clientController))
+                .register(new TUIHideAction(clientController))
+                .register(new TUIPickOfferAction(clientController))
+                .register(new TUIPickCardAction(clientController))
+                .register(new TUILeaveLobbyAction(clientController));
 
         sections = List.of(
-                new ClientInfoSection(),
-                new ActionSection(registry),
-                new PlayerInfoSection(),
-                new OrderTileSection(),
-                new RowSection(true),
-                new OfferTrackSection(),
-                new RowSection(false),
-                new PlayerFocusSection()
+                new TUIClientInfoSection(),
+                new TUIActionSection(registry),
+                new TUIPlayerInfoSection(),
+                new TUIOrderTileSection(),
+                new TUIRowSection(true),
+                new TUIOfferTrackSection(),
+                new TUIRowSection(false),
+                new TUIPlayerFocusSection()
         );
     }
 
