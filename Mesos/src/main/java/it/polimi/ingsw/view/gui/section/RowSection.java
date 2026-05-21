@@ -45,7 +45,7 @@ public abstract class RowSection implements GUISection {
     public abstract int getTotalPicks(ClientController clientController);
 
     @Override
-    public void render(ClientController controller, JPanel container) {
+    public void render(ClientController controller) {
         buildings.removeAll();
         characters.removeAll();
         events.removeAll();

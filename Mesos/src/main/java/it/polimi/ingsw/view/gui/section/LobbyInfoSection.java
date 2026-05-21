@@ -11,7 +11,6 @@ import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Map;
 
 public class LobbyInfoSection implements GUISection {
@@ -69,7 +68,7 @@ public class LobbyInfoSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController clientController, JPanel container) {
+    public void render(ClientController clientController) {
         model.clear();
 
         if (clientController.getCurrLobby() == null) {

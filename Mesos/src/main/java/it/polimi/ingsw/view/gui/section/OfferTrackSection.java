@@ -7,7 +7,6 @@ import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class OfferTrackSection implements GUISection {
     private final JPanel panel;
@@ -27,7 +26,7 @@ public class OfferTrackSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController controller, JPanel container) {
+    public void render(ClientController controller) {
         //TODO: render totems on top of offer tiles
 
         for (OfferTileComponent c : listener.getComponents()) {

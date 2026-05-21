@@ -111,6 +111,11 @@ public class PanelBuilder {
         return this;
     }
 
+    public PanelBuilder size(Dimension size) {
+        panel.setPreferredSize(size);
+        return this;
+    }
+
     public PanelBuilder edit(JPanel panel) {
         this.panel = panel;
         return this;

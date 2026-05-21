@@ -7,8 +7,6 @@ import it.polimi.ingsw.view.gui.section.GUISection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public abstract class GUIScreen extends JPanel implements Screen {
@@ -26,7 +24,7 @@ public abstract class GUIScreen extends JPanel implements Screen {
     public void render() {
         sections.stream()
                 .filter(s -> s.isVisible(clientController))
-                .forEach(s -> s.render(clientController, this));
+                .forEach(s -> s.render(clientController));
 
         frame.setContentPane(this);
         frame.revalidate();

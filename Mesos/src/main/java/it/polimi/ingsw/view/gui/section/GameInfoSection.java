@@ -88,7 +88,7 @@ public class GameInfoSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController controller, JPanel container) {
+    public void render(ClientController controller) {
         currentEra.setText(String.format("<html><b>Current era</b>: %d</html>", controller.getCurrLobby().getTurnState().getEra()));
         currentPlayer.setText(String.format("<html><b>Current player</b>: %s</html>", controller.getCurrLobby().getTurnState().getCurrPlayer().getName()));
 

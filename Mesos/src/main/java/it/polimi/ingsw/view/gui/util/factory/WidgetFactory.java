@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -25,6 +26,15 @@ public class WidgetFactory {
         button.setAction(action);
 
         return button;
+    }
+
+    public static JButton createButton(String name, Runnable action) {
+        return createButton(new AbstractAction(name) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                action.run();
+            }
+        });
     }
 
     public static JButton createButton(AbstractAction action, int width, int height) {
@@ -74,7 +84,6 @@ public class WidgetFactory {
         box.setFont(Fonts.small);
         box.setForeground(Color.WHITE);
         box.setBackground(Fonts.menu);
-        box.setPreferredSize(new Dimension(200, 30));
 
         return box;
     }

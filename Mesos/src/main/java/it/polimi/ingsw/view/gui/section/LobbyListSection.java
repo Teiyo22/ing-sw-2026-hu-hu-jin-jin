@@ -8,7 +8,6 @@ import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Map;
 
 public class LobbyListSection implements GUISection {
@@ -34,7 +33,7 @@ public class LobbyListSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController clientController, JPanel panel) {;
+    public void render(ClientController clientController) {;
         updateLobbyList(clientController);
 
         Lobby currLobby = clientController.getCurrLobby();
