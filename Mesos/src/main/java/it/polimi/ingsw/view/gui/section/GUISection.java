@@ -6,6 +6,5 @@ import javax.swing.*;
 
 public interface GUISection {
     void render(ClientController controller);
-    boolean isVisible(ClientController controller);
     JPanel getPanel();
 }

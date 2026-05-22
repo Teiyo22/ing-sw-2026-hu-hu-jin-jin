@@ -30,7 +30,7 @@ public class OfferTrackSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController controller, JPanel container) {
+    public void render(ClientController controller) {
         for (OfferTileComponent c : listener.getComponents()) {
             c.update(controller);
         }
@@ -38,11 +38,6 @@ public class OfferTrackSection implements GUISection {
         listener.setEnabled(controller.getCurrLobby().getTurnState().canPickOffer() &&
                 controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
         listener.resetPick();
-    }
-
-    @Override
-    public boolean isVisible(ClientController controller) {
-        return true;
     }
 
     @Override

@@ -80,11 +80,6 @@ public abstract class RowSection implements GUISection {
     }
 
     @Override
-    public boolean isVisible(ClientController controller) {
-        return true;
-    }
-
-    @Override
     public JPanel getPanel() {
         return panel;
     }

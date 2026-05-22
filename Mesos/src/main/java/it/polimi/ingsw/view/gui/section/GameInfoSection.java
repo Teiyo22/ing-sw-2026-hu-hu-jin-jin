@@ -122,11 +122,6 @@ public class GameInfoSection implements GUISection {
     }
 
     @Override
-    public boolean isVisible(ClientController controller) {
-        return true;
-    }
-
-    @Override
     public JPanel getPanel() {
         return panel;
     }

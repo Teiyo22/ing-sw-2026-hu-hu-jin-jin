@@ -50,10 +50,6 @@ public class CreateGameSection implements GUISection {
             createBtn.setEnabled(true);
         }
     }
-    @Override
-    public boolean isVisible(ClientController clientController) {
-        return true;
-    }
 
     @Override
     public JPanel getPanel() {

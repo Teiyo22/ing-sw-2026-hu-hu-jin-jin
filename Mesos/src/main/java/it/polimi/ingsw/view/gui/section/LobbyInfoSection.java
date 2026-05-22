@@ -70,11 +70,6 @@ public class LobbyInfoSection implements GUISection {
     }
 
     @Override
-    public boolean isVisible(ClientController clientController) {
-        return true;
-    }
-
-    @Override
     public JPanel getPanel() {
         return panel;
     }
