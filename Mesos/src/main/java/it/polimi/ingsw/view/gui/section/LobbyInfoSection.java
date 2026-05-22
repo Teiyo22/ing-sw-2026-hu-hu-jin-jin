@@ -56,9 +56,9 @@ public class LobbyInfoSection implements GUISection {
         panel.setVisible(true);
         model.addAll(currLobby.getPlayers().entrySet());
 
-        lobbyID.setText(String.format("<html> \u3010 # %03d \u3011 </html>",
+        lobbyID.setText(String.format("\u3010 # %03d \u3011",
                 clientController.getCurrLobby().getLobbyID()));
-        count.setText(String.format("<html> \u3010 \u265F %d / %d \u3011 </html>",
+        count.setText(String.format("\u3010 \u265F %d / %d \u3011",
                 clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
 
         boolean isInLobby = currLobby.containsClient(clientController.getID());

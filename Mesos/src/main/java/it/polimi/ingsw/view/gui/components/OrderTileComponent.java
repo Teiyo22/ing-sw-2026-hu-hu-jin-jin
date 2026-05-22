@@ -11,17 +11,16 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderTileComponent extends JLabel {
-    private static final int[] firstSlotYPerPlayerNum =  { 63, 52, 40, 24 };  //pixel distance from order tile's top in order of number of players
-    private final int firstSlotY;
+    private static final double[] offsetMultipliers =  { 0.253, 0.21, 0.165, 0.095 };
 
-    private final Map<Totem, ImageIcon> totemIcons;
+    private final double offsetMultiplier;
+    private final Map<Totem, Image> totemIcons;
     private final List<ImageIcon> orderedTotems;
 
-    public OrderTileComponent(ClientController clientController, Map<Totem, ImageIcon> totemIcons) {
+    public OrderTileComponent(ClientController clientController, Map<Totem, Image> totemIcons) {
         this.totemIcons = totemIcons;
 
-        firstSlotY = firstSlotYPerPlayerNum[clientController.getCurrLobby().getSize()-2];
-
+        offsetMultiplier = offsetMultipliers[clientController.getCurrLobby().getSize() - 2];
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         int height = (int) (screenSize.height * 0.3);
@@ -39,7 +38,9 @@ public class OrderTileComponent extends JLabel {
         super.paintComponent(g);
         for(int i = 0; i < orderedTotems.size(); i++){
             if(orderedTotems.get(i)!=null){
-                orderedTotems.get(i).paintIcon(this, g, 62, firstSlotY + (i*44));
+                orderedTotems.get(i).paintIcon(this, g,
+                        (int) (this.getSize().width * 0.345 ),
+                        (int) (this.getSize().height * offsetMultiplier + i * this.getSize().height * 0.1725) );
             }
         }
     }
@@ -53,7 +54,11 @@ public class OrderTileComponent extends JLabel {
             if (orderSlot.getAssignedPlayer() == null) {
                 orderedTotems.add(null);
             } else {
-                orderedTotems.add(totemIcons.get(orderSlot.getAssignedPlayer().getTotem()));
+                ImageIcon totemIcon = new ImageIcon(totemIcons.get(orderSlot.getAssignedPlayer().getTotem()).getScaledInstance(
+                        Math.max((int) (this.getSize().width * 0.318), 1),
+                        Math.max((int) (this.getSize().height * 0.115), 1),
+                        Image.SCALE_DEFAULT));
+                orderedTotems.add(totemIcon);
             }
         }
     }

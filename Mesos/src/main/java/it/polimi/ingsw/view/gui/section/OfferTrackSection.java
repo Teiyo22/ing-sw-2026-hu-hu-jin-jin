@@ -17,7 +17,7 @@ public class OfferTrackSection implements GUISection {
 
     private final OfferPickListener listener;
 
-    public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, ImageIcon> totemIcons) {
+    public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, Image> totemIcons) {
         this.listener = listener;
 
         OfferTile[] offerTrack = controller.getBoard().getOfferTrack();

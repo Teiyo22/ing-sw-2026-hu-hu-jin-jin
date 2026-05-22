@@ -33,7 +33,7 @@ public class GameInfoSection implements GUISection {
     private final JButton pickOfferButton;
 
     public GameInfoSection(ClientController clientController, CardPicksListener topListener, CardPicksListener bottomListener,
-                           OfferPickListener offerListener, Map<Totem, ImageIcon> totemIcons) {
+                           OfferPickListener offerListener, Map<Totem, Image> totemIcons) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension panelSize = new Dimension((int)  (screenSize.width*0.15), screenSize.height);
         Dimension buttonSize = new Dimension(50,30);

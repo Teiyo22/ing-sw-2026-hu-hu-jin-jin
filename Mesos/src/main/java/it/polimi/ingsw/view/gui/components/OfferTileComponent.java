@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class OfferTileComponent extends SelectableComponent<OfferTile> {
     private final int index;
-    private final Map<Totem, ImageIcon> totemIcons;
+    private final Map<Totem, Image> totemIcons;
     private ImageIcon totem;
 
-    public OfferTileComponent(OfferTile offer, SelectionListener<OfferTile> selectionListener, int index,  Map<Totem, ImageIcon> totemIcons) {
+    public OfferTileComponent(OfferTile offer, SelectionListener<OfferTile> selectionListener, int index, Map<Totem, Image> totemIcons) {
         super(offer, selectionListener);
         this.index = index;
         this.totemIcons = totemIcons;
@@ -46,22 +46,23 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
 
     public void update(ClientController clientController) {
         element = clientController.getBoard().getOfferTrack()[index];
-        if(element.getAssignedPlayer()==null) {
+
+        if (element == null || element.getAssignedPlayer() == null) {
             deselect();
             totem = null;
         } else {
-            totem = totemIcons.get(element.getAssignedPlayer().getTotem());
+            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem()));
         }
     }
 
-    public void deselect(){
+    public void deselect() {
         selected = false;
         updateBorder();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(element.getAssignedPlayer() == null) {
+        if (element.getAssignedPlayer() == null) {
             super.mouseClicked(e);
         }
     }
