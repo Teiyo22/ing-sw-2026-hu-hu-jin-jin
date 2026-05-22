@@ -23,6 +23,7 @@ public class GUIView extends JFrame implements View {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setResizable(true);
+        pack();
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -45,9 +46,8 @@ public class GUIView extends JFrame implements View {
     public void close() {
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(this, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
         });
-
-        dispose();
     }
 
     @Override
