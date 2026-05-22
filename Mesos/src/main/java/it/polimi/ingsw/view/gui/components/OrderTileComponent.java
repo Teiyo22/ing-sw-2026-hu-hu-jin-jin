@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.player.Totem;
 
@@ -46,11 +47,12 @@ public class OrderTileComponent extends JLabel {
     }
 
     public void update(ClientController clientController) {
+        Board board = clientController.getBoard();
+        if (board == null)
+            return;
+
         orderedTotems.clear();
-
-        OrderSlot[] orderTile = clientController.getBoard().getOrderTile();
-
-        for (OrderSlot orderSlot : orderTile) {
+        for (OrderSlot orderSlot : board.getOrderTile()) {
             if (orderSlot.getAssignedPlayer() == null) {
                 orderedTotems.add(null);
             } else {
