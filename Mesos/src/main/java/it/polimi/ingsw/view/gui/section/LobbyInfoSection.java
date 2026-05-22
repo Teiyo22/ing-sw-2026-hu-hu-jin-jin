@@ -40,7 +40,10 @@ public class LobbyInfoSection implements GUISection {
                 .grid(3, 10, 0, join, leave, start)
                 .buildPanel();
 
-        panel = new PanelBuilder().border(title, infoPanel, bottomBar, null, null).buildPanel();
+        panel = new PanelBuilder()
+                .border(title, infoPanel, bottomBar, null, null)
+                .buildPanel();
+        panel.setVisible(false);
     }
 
     @Override
