@@ -20,6 +20,7 @@ public class GUIView extends JFrame implements View {
 
         setTitle("Mesos");
         setSize(1920, 1080);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setResizable(true);
 
