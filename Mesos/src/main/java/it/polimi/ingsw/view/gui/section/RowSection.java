@@ -71,7 +71,7 @@ public abstract class RowSection implements GUISection {
         for (AbstractCard c : getEvents(board))
             renderCard(c, events, null);
 
-        listener.setEnabled(currLobby.getTurnState().canPickCard());
+        listener.setEnabled(currLobby.getTurnState() != null && currLobby.getTurnState().canPickCard());
         if(listener.isEnabled())
             listener.setTotalPicks(getTotalPicks(controller));
         else
