@@ -93,7 +93,7 @@ public class GameInfoSection implements GUISection {
 
         panel = new PanelBuilder().rounded(30)
                 .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-                .column(10, contentPanel)
+                .column(10, fullPanel)
                 .withPadding(30, 10, 30, 10).buildPanel();
 
         panel.setPreferredSize(panelSize);
