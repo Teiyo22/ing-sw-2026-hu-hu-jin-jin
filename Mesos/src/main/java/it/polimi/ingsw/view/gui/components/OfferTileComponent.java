@@ -28,7 +28,7 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
         int width = (int) (height * (2.0 / 3.0));
 
         Image img = new ImageIcon(getClass().getResource("/images/offerTiles/" + element.getType() + ".png")).getImage();
-        this.setIcon(new ImageIcon(img.getScaledInstance(width - 6, height - 6, Image.SCALE_DEFAULT)));
+        this.setIcon(new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
         this.setPreferredSize(new Dimension(width, height));
     }
 
@@ -36,7 +36,9 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (totem != null) {
-            totem.paintIcon(this, g, 61, 50);
+            totem.paintIcon(this, g,
+                    (int) (this.getSize().width * 0.3245 ),
+                    (int) (this.getSize().height * 0.21) );
         }
     }
 
@@ -51,7 +53,10 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
             deselect();
             totem = null;
         } else {
-            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem()));
+            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem()).getScaledInstance(
+                    Math.max((int) (this.getSize().width * 0.3525), 1),
+                    Math.max((int) (this.getSize().height * 0.125), 1),
+                    Image.SCALE_DEFAULT));
         }
     }
 
