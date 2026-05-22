@@ -29,7 +29,6 @@ public class GUIView extends JFrame implements View {
             @Override
             public void windowClosing(WindowEvent e) {
                 controller.disconnect();
-                dispose();
             }
         });
     }
