@@ -23,10 +23,6 @@ public abstract class GUIScreen extends JPanel implements Screen {
 
     public void render() {
         sections.forEach(s -> s.render(clientController));
-
-        frame.setContentPane(this);
-        frame.revalidate();
-        frame.repaint();
     }
 
     @Override

@@ -23,7 +23,6 @@ public class GUIView extends JFrame implements View {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setResizable(true);
-        pack();
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -36,18 +35,14 @@ public class GUIView extends JFrame implements View {
 
     @Override
     public void start() {
-        currScreen = new GUILoginScreen(this, controller);
-        currScreen.render();
-
+        transitionTo(ScreenType.LOGIN);
+        notifyChange();
         setVisible(true);
     }
 
     @Override
     public void close() {
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, "Disconnected from server", "Error", JOptionPane.ERROR_MESSAGE);
-            dispose();
-        });
+        dispose();
     }
 
     @Override
@@ -57,16 +52,16 @@ public class GUIView extends JFrame implements View {
 
     @Override
     public void transitionTo(ScreenType type) {
-        SwingUtilities.invokeLater(() -> {
-            currScreen = ScreenType.getGUIScreen(type, this, controller);
-            currScreen.render();
-        });
+        currScreen = ScreenType.getGUIScreen(type, this, controller);
+        this.setContentPane(currScreen);
+        notifyChange();
     }
-
 
     @Override
     public void notifyChange() {
         if (isDisplayable()) {
+            this.revalidate();
+            this.repaint();
             SwingUtilities.invokeLater(() -> currScreen.render());
         }
     }
