@@ -91,25 +91,30 @@ public class WidgetFactory {
     public static <E> JComboBox<E> createBox(E[] items, int width, int height) {
         JComboBox<E> box = createBox(items);
         box.setMaximumSize(new Dimension(width, height));
+        box.setPreferredSize(new Dimension(width, height));
         return box;
     }
 
     public static <T> JList<T> createJList(
-            DefaultListModel<T> model,
-            Function<T, String> labelExtractor,
+            DefaultListModel<T> model, int padding,
+            Function<T, String> labelExtractor1,
+            Function<T, String> labelExtractor2,
             Consumer<T> action) {
 
         JList<T> jlist = new JList<>();
-        jlist.setOpaque(false);
-        jlist.setFont(Fonts.small);
         jlist.setModel(model);
         jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        jlist.setFont(Fonts.small);
+        jlist.setOpaque(false);
+
         jlist.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-            JLabel label = createLabel(labelExtractor.apply(value));
+            JLabel label1 = labelExtractor1 != null ? createLabel(labelExtractor1.apply(value)) : null;
+            JLabel label2 = labelExtractor2 != null ? createLabel(labelExtractor2.apply(value)) : null;
+
             JPanel cell = new PanelBuilder()
-                    .border(null, null, null, label, null)
-                    .withPadding(5, 10, 5, 10)
+                    .border(null, WidgetFactory.createLabel(""), null, label1, label2)
+                    .withPadding(padding, padding, padding, padding)
                     .withTranslucentColor(Fonts.select)
                     .buildPanel();
 
@@ -127,7 +132,8 @@ public class WidgetFactory {
                         action.accept(selected);
                 }
             });
-        }
+        } else
+            jlist.setEnabled(false);
 
         return jlist;
     }

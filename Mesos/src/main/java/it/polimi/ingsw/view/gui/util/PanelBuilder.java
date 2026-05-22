@@ -52,7 +52,12 @@ public class PanelBuilder {
     }
 
     public PanelBuilder border(JComponent north, JComponent center, JComponent south, JComponent west, JComponent east) {
-        panel.setLayout(new BorderLayout());
+        border(0, 0, north, center, south, west, east);
+        return this;
+    }
+
+    public PanelBuilder border(int hgap, int vgap, JComponent north, JComponent center, JComponent south, JComponent west, JComponent east) {
+        panel.setLayout(new BorderLayout(hgap, vgap));
 
         if (north != null) panel.add(north, BorderLayout.NORTH);
         if (center != null) panel.add(center, BorderLayout.CENTER);

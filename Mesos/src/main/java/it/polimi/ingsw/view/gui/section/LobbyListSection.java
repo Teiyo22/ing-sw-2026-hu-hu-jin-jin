@@ -13,19 +13,18 @@ import java.util.Map;
 public class LobbyListSection implements GUISection {
     private final JPanel panel;
 
-    private final JLabel title;
-    private final JScrollPane scrollPane;
     private final JList<Lobby> lobbies;
     private final DefaultListModel<Lobby> model;
 
     public LobbyListSection(ClientController clientController) {
-        title = WidgetFactory.createLabel("Lobby selection");
+        JLabel title = WidgetFactory.createLabel("Lobby selection");
 
         model = new DefaultListModel<>();
         lobbies = WidgetFactory.createJList(model, 15,
-                this::formatLobby,
+                this::formatLobbyID,
+                this::formatPlayerCount,
                 lobby -> new LobbyInfoCommand(clientController, lobby.getLobbyID()).execute());
-        scrollPane = WidgetFactory.createScrollPane(lobbies, Fonts.select);
+        JScrollPane scrollPane = WidgetFactory.createScrollPane(lobbies, Fonts.select);
 
         panel = new PanelBuilder()
                 .border(title, scrollPane, null, null, null)
@@ -68,8 +67,11 @@ public class LobbyListSection implements GUISection {
         }
     }
 
-    private String formatLobby(Lobby lobby) {
-        return String.format("Lobby #%d   •   Players: [ %d / %d ]",
-                lobby.getLobbyID(), lobby.getPlayerCount(), lobby.getSize());
+    private String formatLobbyID(Lobby lobby) {
+        return String.format("• Lobby #%d", lobby.getLobbyID());
+    }
+
+    private String formatPlayerCount(Lobby lobby) {
+        return String.format("Players: %d / %d   ", lobby.getPlayerCount(), lobby.getSize());
     }
 }

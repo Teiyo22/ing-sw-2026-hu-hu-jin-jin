@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUIJoinLobbyAction;
@@ -16,87 +17,54 @@ import java.util.Map;
 public class LobbyInfoSection implements GUISection {
     private final JPanel panel;
 
-    private final JLabel title;
+    private JLabel lobbyID;
+    private JLabel count;
 
-    private final JPanel info;
-    private final JLabel lobbyID;
-    private final JLabel count;
-    private final JList<Map.Entry<Player, Boolean>> players;
-    private final DefaultListModel<Map.Entry<Player, Boolean>> model;
+    private DefaultListModel<Map.Entry<Player, Boolean>> model;
 
-    private final JPanel bottomBar;
+    private JPanel totemSelect;
+    private JComboBox<Totem> totemBox;
+
     private final JButton join;
     private final JButton leave;
     private final JButton start;
-    private final JPanel totemSelect;
-    private final JLabel totemLabel;
 
     public LobbyInfoSection(ClientController clientController) {
-        title = WidgetFactory.createLabel("Lobby Info");
-
-        lobbyID = WidgetFactory.createLabel("");
-        count = WidgetFactory.createLabel("");
-
-        model = new DefaultListModel<>();
-        players = WidgetFactory.createJList(model,
-                this::formatPlayer,
-                null);
-
-
-        totemLabel = WidgetFactory.createLabel("Totem: ");
-        JComboBox<Totem> totemBox = WidgetFactory.createBox(Totem.values(), 200, 30);
-        totemSelect = new PanelBuilder().row(5, totemLabel, totemBox)
-                .centered()
-                .withPadding(40, 0, 0, 0)
-                .buildPanel();
-
-        info = new PanelBuilder()
-                .rounded(30)
-                .withTranslucentColor(Fonts.select)
-                .column(5, lobbyID, count, players, totemSelect)
-                .centered()
-                .buildPanel();
+        JLabel title = WidgetFactory.createLabel("Lobby Info");
+        JPanel infoPanel = createInfoPanel();
 
         join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController, totemBox));
         leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
         start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
-        bottomBar = new PanelBuilder()
+        JPanel bottomBar = new PanelBuilder()
                 .grid(3, 10, 0, join, leave, start)
                 .buildPanel();
 
-        panel = new PanelBuilder().border(title, info, bottomBar, null, null).buildPanel();
+        panel = new PanelBuilder().border(title, infoPanel, bottomBar, null, null).buildPanel();
     }
 
     @Override
     public void render(ClientController clientController) {
         model.clear();
 
-        if (clientController.getCurrLobby() == null) {
+        Lobby currLobby = clientController.getCurrLobby();
+        if (currLobby == null) {
             panel.setVisible(false);
             return;
         }
 
         panel.setVisible(true);
-        for (Map.Entry<Player, Boolean> entry : clientController.getCurrLobby().getPlayers().entrySet())
-            model.addElement(entry);
+        model.addAll(currLobby.getPlayers().entrySet());
 
-        lobbyID.setText(String.format("Lobby ID: %3d", clientController.getCurrLobby().getLobbyID()));
-        count.setText(String.format("Player Count: %3d/%3d",
-                clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
+        lobbyID.setText(String.format("【 # %03d 】", clientController.getCurrLobby().getLobbyID()));
+        count.setText(String.format("【 ♟ %d / %d 】", clientController.getCurrLobby().getPlayerCount(), clientController.getCurrLobby().getSize()));
 
-        boolean isInLobby = false;
-        for (Player p : clientController.getCurrLobby().getPlayers().keySet()) {
-            if (p.getName().equals(clientController.getID())) {
-                isInLobby = true;
-                break;
-            }
-        }
+        boolean isInLobby = currLobby.containsClient(clientController.getID());
+        boolean isFull = currLobby.getPlayerCount() == currLobby.getSize();
 
-        boolean isFull = clientController.getCurrLobby().getPlayerCount() == clientController.getCurrLobby().getSize();
+        totemSelect.setVisible(!isInLobby && !isFull);
 
-        totemSelect.setVisible(!isInLobby);
-
-        join.setEnabled(!isInLobby);
+        join.setEnabled(!isInLobby && !isFull);
         leave.setEnabled(isInLobby);
         start.setEnabled(isFull && isInLobby);
     }
@@ -112,9 +80,55 @@ public class LobbyInfoSection implements GUISection {
     }
 
     private String formatPlayer(Map.Entry<Player, Boolean> player) {
-        return String.format("%10s - %5s (%s)",
-                player.getKey().getName(), player.getKey().getTotem(),
-                player.getValue() ? "Connected" : "Disconnected");
+        Map<Totem, String> totemColor = Map.of(
+                Totem.RED, "#e74c3c", Totem.BLUE, "#2980b9", Totem.BLACK, "#2c2c2c",
+                Totem.WHITE, "#ffffff", Totem.YELLOW, "#f1c40f"
+        );
+
+        return String.format("<html>%s <font color='%s'>♦ %s </font></html>",
+                player.getKey().getName(),
+                totemColor.get(player.getKey().getTotem()),
+                player.getKey().getTotem());
+    }
+
+    private String formatConnectionStatus(Map.Entry<Player, Boolean> player) {
+        return player.getValue() ? "Connected ● " : "Disconnected ○ ";
+    }
+
+    private JPanel createInfoPanel() {
+        //  Generic info panel creation (ID, player count)
+        lobbyID = WidgetFactory.createLabel("");
+        count = WidgetFactory.createLabel("");
+        JPanel genericInfoPanel = new PanelBuilder()
+                .rounded(20)
+                .grid(1, 0, 0, lobbyID, count)
+                .withPadding(20, 20, 20, 20)
+                .withTranslucentColor(Fonts.select)
+                .buildPanel();
+
+
+        // Player List Creation
+        model = new DefaultListModel<>();
+        JList<Map.Entry<Player, Boolean>> players = WidgetFactory.createJList(model, 5,
+                this::formatPlayer,
+                this::formatConnectionStatus,
+                null);
+
+
+        // Totem selection panel creation
+        JLabel totemLabel = WidgetFactory.createLabel("Totem: ");
+        totemBox = WidgetFactory.createBox(Totem.values(), 200, 30);
+        totemSelect = new PanelBuilder().row(5, totemLabel, totemBox)
+                .centered()
+                .withPadding(40, 0, 0, 0)
+                .buildPanel();
+
+        return new PanelBuilder()
+                .rounded(30)
+                .withTranslucentColor(Fonts.select)
+                .border(0, 20, genericInfoPanel, players, totemSelect, null, null)
+                .withPadding(20, 20, 20, 20)
+                .buildPanel();
     }
 }
 
