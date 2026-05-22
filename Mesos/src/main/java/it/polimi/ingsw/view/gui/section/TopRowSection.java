@@ -5,12 +5,13 @@ import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
+import it.polimi.ingsw.view.gui.util.CardCache;
 
 import java.util.List;
 
 public class TopRowSection extends RowSection {
-    public TopRowSection(CardPicksListener listener) {
-        super(listener);
+    public TopRowSection(CardPicksListener listener, CardCache cardCache) {
+        super(listener, cardCache);
     }
 
     @Override

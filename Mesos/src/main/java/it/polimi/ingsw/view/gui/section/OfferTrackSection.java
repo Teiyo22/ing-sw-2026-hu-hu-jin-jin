@@ -2,23 +2,27 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Map;
+
 
 public class OfferTrackSection implements GUISection {
     private final JPanel panel;
 
     private final OfferPickListener listener;
 
-    public OfferTrackSection(ClientController controller, OfferPickListener listener) {
+    public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, ImageIcon> totemIcons) {
         this.listener = listener;
 
         OfferTile[] offerTrack = controller.getCurrLobby().getBoard().getOfferTrack();
         for(int i = 0; i<offerTrack.length; i++) {
-            OfferTileComponent offerTileComponent = new OfferTileComponent(offerTrack[i], listener, i);
+            OfferTileComponent offerTileComponent = new OfferTileComponent(offerTrack[i], listener, i, totemIcons);
             listener.addComponent(offerTileComponent);
         }
 
@@ -26,9 +30,7 @@ public class OfferTrackSection implements GUISection {
     }
 
     @Override
-    public void render(ClientController controller) {
-        //TODO: render totems on top of offer tiles
-
+    public void render(ClientController controller, JPanel container) {
         for (OfferTileComponent c : listener.getComponents()) {
             c.update(controller);
         }

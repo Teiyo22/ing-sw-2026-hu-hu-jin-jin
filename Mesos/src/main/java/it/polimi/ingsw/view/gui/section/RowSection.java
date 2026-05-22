@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.components.CardComponent;
 import it.polimi.ingsw.view.gui.components.CardPicksListener;
+import it.polimi.ingsw.view.gui.util.CardCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
@@ -17,13 +18,15 @@ public abstract class RowSection implements GUISection {
     private final JPanel panel;
 
     private final CardPicksListener listener;
+    private final CardCache cardCache;
 
     private final JPanel buildings;
     private final JPanel characters;
     private final JPanel events;
 
-    public RowSection(CardPicksListener listener) {
+    public RowSection(CardPicksListener listener, CardCache cardCache) {
         this.listener = listener;
+        this.cardCache = cardCache;
 
         buildings = new PanelBuilder().row(0).buildPanel();
         characters = new PanelBuilder().row(0).buildPanel();
@@ -72,7 +75,7 @@ public abstract class RowSection implements GUISection {
     }
 
     public void renderCard(AbstractCard c, JPanel panel, CardPicksListener listener) {
-        CardComponent cardComponent = new CardComponent(c, listener);
+        CardComponent cardComponent = new CardComponent(c, listener, cardCache);
         panel.add(cardComponent);
     }
 
