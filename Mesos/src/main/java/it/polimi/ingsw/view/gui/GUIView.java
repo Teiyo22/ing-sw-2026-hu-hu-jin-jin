@@ -61,8 +61,8 @@ public class GUIView extends JFrame implements View {
     public void notifyChange() {
         if (isDisplayable()) {
             this.revalidate();
-            this.repaint();
             SwingUtilities.invokeLater(() -> currScreen.render());
+            this.repaint();
         }
     }
 }
