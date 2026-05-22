@@ -3,10 +3,10 @@ package it.polimi.ingsw.view.gui.util;
 import java.awt.*;
 
 public class Fonts {
-    public static final Font large  = new Font(Font.SANS_SERIF, Font.PLAIN, 40);
-    public static final Font medium = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
-    public static final Font small  = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
-    public static final Font tiny  = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
+    public static final Font large  = new Font("Segoe UI", Font.PLAIN, 40);
+    public static final Font medium = new Font("Segoe UI", Font.PLAIN, 30);
+    public static final Font small  = new Font("Segoe UI", Font.PLAIN, 20);
+    public static final Font tiny  = new Font("Segoe UI", Font.PLAIN, 15);
     public static final Font monospaced = new Font(Font.MONOSPACED, Font.PLAIN, 15);
 
     //Mesos cover art palette
