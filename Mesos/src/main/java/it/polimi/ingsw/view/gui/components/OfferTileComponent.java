@@ -45,7 +45,7 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
     }
 
     public void update(ClientController clientController) {
-        element = clientController.getCurrLobby().getBoard().getOfferTrack()[index];
+        element = clientController.getBoard().getOfferTrack()[index];
         if(element.getAssignedPlayer()==null) {
             deselect();
             totem = null;

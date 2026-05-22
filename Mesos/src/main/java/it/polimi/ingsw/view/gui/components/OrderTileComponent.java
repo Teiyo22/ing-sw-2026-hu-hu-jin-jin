@@ -47,7 +47,7 @@ public class OrderTileComponent extends JLabel {
     public void update(ClientController clientController) {
         orderedTotems.clear();
 
-        OrderSlot[] orderTile = clientController.getCurrLobby().getBoard().getOrderTile();
+        OrderSlot[] orderTile = clientController.getBoard().getOrderTile();
 
         for (OrderSlot orderSlot : orderTile) {
             if (orderSlot.getAssignedPlayer() == null) {

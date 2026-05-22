@@ -20,8 +20,8 @@ public class OfferTrackSection implements GUISection {
     public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, ImageIcon> totemIcons) {
         this.listener = listener;
 
-        OfferTile[] offerTrack = controller.getCurrLobby().getBoard().getOfferTrack();
-        for(int i = 0; i<offerTrack.length; i++) {
+        OfferTile[] offerTrack = controller.getBoard().getOfferTrack();
+        for (int i = 0; i < offerTrack.length; i++) {
             OfferTileComponent offerTileComponent = new OfferTileComponent(offerTrack[i], listener, i, totemIcons);
             listener.addComponent(offerTileComponent);
         }
