@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
@@ -32,46 +34,48 @@ public abstract class RowSection implements GUISection {
         characters = new PanelBuilder().row(0).buildPanel();
         events = new PanelBuilder().row(0).buildPanel();
 
-        panel = new PanelBuilder().row(0, buildings, characters, events).buildPanel();
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        int height = (int) (screenSize.height*0.3);
+        int height = (int) (screenSize.height * 0.3);
         int width = screenSize.width;
 
-        panel.setPreferredSize(new Dimension(width, height));
+        panel = new PanelBuilder()
+                .row(0, buildings, characters, events)
+                .size(width, height)
+                .buildPanel();
     }
 
-    public abstract List<AbstractBuilding> getBuildings(ClientController clientController);
-    public abstract List<AbstractCharacter> getCharacters(ClientController clientController);
-    public abstract List<AbstractEvent> getEvents(ClientController clientController);
+    public abstract List<AbstractBuilding> getBuildings(Board board);
+    public abstract List<AbstractCharacter> getCharacters(Board board);
+    public abstract List<AbstractEvent> getEvents(Board board);
     public abstract int getTotalPicks(ClientController clientController);
 
     @Override
     public void render(ClientController controller) {
+        Lobby currLobby = controller.getCurrLobby();
+        Board board = controller.getBoard();
+
+        if (currLobby == null || board == null)
+            return;
+
         buildings.removeAll();
         characters.removeAll();
         events.removeAll();
 
-        for (AbstractCard c : getBuildings(controller)) {
+        for (AbstractCard c : getBuildings(board))
             renderCard(c, buildings, listener);
-        }
-        for (AbstractCard c : getCharacters(controller)) {
+
+        for (AbstractCard c : getCharacters(board))
             renderCard(c, characters, listener);
-        }
-        for (AbstractCard c : getEvents(controller)) {
+
+        for (AbstractCard c : getEvents(board))
             renderCard(c, events, null);
-        }
 
-        listener.setEnabled(controller.getCurrLobby().getTurnState().canPickCard() &&
-                controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
-        if(listener.isEnabled()) {
-            listener.resetPicks();
+        listener.setEnabled(currLobby.getTurnState().canPickCard());
+        if(listener.isEnabled())
             listener.setTotalPicks(getTotalPicks(controller));
-        }
-
-        panel.revalidate();
-        panel.repaint();
+        else
+            listener.resetPicks();
     }
 
     public void renderCard(AbstractCard c, JPanel panel, CardPicksListener listener) {

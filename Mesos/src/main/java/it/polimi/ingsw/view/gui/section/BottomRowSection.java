@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
@@ -15,23 +17,28 @@ public class BottomRowSection extends RowSection {
     }
 
     @Override
-    public List<AbstractBuilding> getBuildings(ClientController clientController) {
-        return clientController.getCurrLobby().getBoard().getBottomRow().getBuildingCards();
+    public List<AbstractBuilding> getBuildings(Board board) {
+        return board.getBottomRow().getBuildingCards();
     }
 
     @Override
-    public List<AbstractCharacter> getCharacters(ClientController clientController) {
-        return clientController.getCurrLobby().getBoard().getBottomRow().getCharacterCards();
+    public List<AbstractCharacter> getCharacters(Board board) {
+        return board.getBottomRow().getCharacterCards();
     }
 
     @Override
-    public List<AbstractEvent> getEvents(ClientController clientController) {
-        return clientController.getCurrLobby().getBoard().getBottomRow().getEventCards();
+    public List<AbstractEvent> getEvents(Board board) {
+        return board.getBottomRow().getEventCards();
     }
 
     @Override
     public int getTotalPicks(ClientController clientController) {
-        return clientController.getCurrLobby().getBoard().getOfferTrack()[
-                clientController.getCurrLobby().getTurnState().getIndex()].getBottomRowPickable();
+        Board board = clientController.getBoard();
+        Lobby currLobby = clientController.getCurrLobby();
+
+        if (board == null || currLobby == null)
+            return 0;
+
+        return board.getOfferTrack()[currLobby.getTurnState().getIndex()].getBottomRowPickable();
     }
 }
