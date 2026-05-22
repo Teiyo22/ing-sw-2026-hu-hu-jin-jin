@@ -32,6 +32,7 @@ public class LobbyResumableState extends LobbyState {
                 listener.removeClient(lobbyController.getID(), new Player(removedPlayer.getName(), removedPlayer.getTotem()));
 
             lobbyController.setState(new LobbyPausedState(lobbyController));
+            ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
             return true;
         }
 
