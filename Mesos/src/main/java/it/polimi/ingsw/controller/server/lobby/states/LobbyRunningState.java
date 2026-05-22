@@ -50,7 +50,7 @@ public class LobbyRunningState extends LobbyState {
 
             Player removedPlayer = lobbyController.getPlayers().remove(client);
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeClient(lobbyController.getID(), removedPlayer);
+                listener.removeClient(lobbyController.getID(), new Player(removedPlayer.getName(), removedPlayer.getTotem()));
 
 
             lobbyController.setState(new LobbyPausedState(lobbyController));

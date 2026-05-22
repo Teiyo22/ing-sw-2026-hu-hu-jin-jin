@@ -60,7 +60,7 @@ public class LobbyPausedState extends LobbyState {
             missingPlayers.add(removedPlayer);
 
             for (ClientInterface listener : lobbyController.getListeners())
-                listener.removeClient(lobbyController.getID(), removedPlayer);
+                listener.removeClient(lobbyController.getID(), new Player(removedPlayer.getName(), removedPlayer.getTotem()));
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
             return true;
