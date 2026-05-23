@@ -32,9 +32,6 @@ class GUIGameEndScreen extends GUIScreen {
 
         frame.getContentPane().removeAll();
         frame.add(panel);
-        frame.revalidate();
-        frame.repaint();
-        frame.setVisible(true);
     }
 
     private JLabel buildTitle() {

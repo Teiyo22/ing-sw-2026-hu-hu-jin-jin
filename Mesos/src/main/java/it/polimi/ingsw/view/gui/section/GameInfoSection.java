@@ -116,9 +116,6 @@ public class GameInfoSection implements GUISection {
 
         pickCardsButton.setEnabled(controller.getCurrLobby().getTurnState().canPickCard()
                 && controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
-
-        panel.revalidate();
-        panel.repaint();
     }
 
     @Override
