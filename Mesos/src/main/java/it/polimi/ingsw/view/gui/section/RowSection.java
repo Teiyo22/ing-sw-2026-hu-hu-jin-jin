@@ -17,8 +17,6 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class RowSection extends GUISection {
-    private final JPanel panel;
-
     private final CardPicksListener listener;
     private final CardCache cardCache;
 
@@ -81,10 +79,5 @@ public abstract class RowSection extends GUISection {
     public void renderCard(AbstractCard c, JPanel panel, CardPicksListener listener) {
         CardComponent cardComponent = new CardComponent(c, listener, cardCache);
         panel.add(cardComponent);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 }
