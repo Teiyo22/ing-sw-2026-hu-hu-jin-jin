@@ -36,7 +36,7 @@ public class TopRowSection extends RowSection {
         Board board = clientController.getBoard();
         Lobby currLobby = clientController.getCurrLobby();
 
-        if (board == null || currLobby == null)
+        if (board == null || currLobby == null || currLobby.getTurnState() == null)
             return 0;
 
         return board.getOfferTrack()[currLobby.getTurnState().getIndex()].getTopRowPickable();

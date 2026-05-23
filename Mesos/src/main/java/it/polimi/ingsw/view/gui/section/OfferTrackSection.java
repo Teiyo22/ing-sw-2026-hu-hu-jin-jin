@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.components.OfferPickListener;
@@ -29,12 +30,13 @@ public class OfferTrackSection extends GUISection {
 
     @Override
     public void render(ClientController controller) {
-        for (OfferTileComponent c : listener.getComponents()) {
-            c.update(controller);
-        }
+        for (OfferTileComponent offerTile : listener.getComponents())
+            offerTile.update(controller);
 
-        listener.setEnabled(controller.getCurrLobby().getTurnState().canPickOffer() &&
-                controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
-        listener.resetPick();
+        Lobby currLobby = controller.getCurrLobby();
+        if (currLobby != null && currLobby.getTurnState() != null)
+            listener.setEnabled(currLobby.getTurnState().canPickOffer());
+        else
+            listener.resetPick();
     }
 }
