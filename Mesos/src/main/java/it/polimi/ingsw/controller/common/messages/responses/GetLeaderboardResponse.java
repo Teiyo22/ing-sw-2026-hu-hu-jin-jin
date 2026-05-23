@@ -1,23 +1,22 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
+import it.polimi.ingsw.utils.LeaderboardResult;
 
-import java.util.List;
 
 public class GetLeaderboardResponse extends Response {
-    private List<LeaderboardEntry> leaderboards;
+    private final LeaderboardResult leaderboardResult;
 
-    public GetLeaderboardResponse(List<LeaderboardEntry> leaderboards){
+    public GetLeaderboardResponse(LeaderboardResult leaderboardResult) {
         this.type = MessageType.GET_LEADERBOARD;
-        this.leaderboards = leaderboards;
+        this.leaderboardResult = leaderboardResult;
     }
 
     @Override
     public void receive(ClientController clientController){
-        clientController.showLeaderboard(leaderboards);
+        clientController.showLeaderboard(leaderboardResult);
     }
 
 }

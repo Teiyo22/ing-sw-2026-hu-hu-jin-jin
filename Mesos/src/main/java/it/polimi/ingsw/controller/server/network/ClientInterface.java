@@ -10,6 +10,7 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardResult;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +31,7 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
     public abstract void updateLobby(Lobby lobby);
     public abstract void removeClient(int lobbyID, Player player);
     public abstract void removePlayer(int lobbyID, Player player);
-    public abstract void showLeaderboard(List<LeaderboardEntry> leaderboard);
+    public abstract void showLeaderboard(LeaderboardResult leaderboardResult);
     public abstract void updateState(int lobbyID, ModelStateInfo modelStateInfo);
     public abstract void createLobby(Lobby lobby, Player player);
     public abstract void startLobby(int lobbyID, Board board, List<Player> players);

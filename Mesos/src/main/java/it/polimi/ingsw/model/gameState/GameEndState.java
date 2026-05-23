@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardDatabase;
+
 import java.util.*;
 
 public class GameEndState extends GameState {
@@ -26,6 +28,7 @@ public class GameEndState extends GameState {
     /**
      * Resolves all remaining events in both the top and bottom rows.
      * Assigns bonus PP to each player, applies game end buildings effects, and sets the leaderboard.
+     * Saves the game results in the database.
      * */
     @Override
     public void update() {
@@ -36,6 +39,8 @@ public class GameEndState extends GameState {
 
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
+
+        LeaderboardDatabase.saveResults(game);
 
         game.getLobbyState().notifyGameEndUpdate();
     }

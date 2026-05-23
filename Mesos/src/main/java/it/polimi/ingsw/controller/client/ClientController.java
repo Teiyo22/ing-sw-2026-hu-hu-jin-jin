@@ -260,7 +260,7 @@ public class ClientController implements VirtualClient {
     //=============================================================================
 
     @Override
-    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
+    public void showLeaderboard(LeaderboardResult leaderboardResult) {
 
     }
 

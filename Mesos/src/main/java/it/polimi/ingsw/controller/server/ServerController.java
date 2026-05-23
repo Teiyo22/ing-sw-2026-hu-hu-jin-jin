@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.utils.LeaderboardDatabase;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.PersistenceUtil;
@@ -240,7 +241,8 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void getLeaderboard(String clientID, int playerNum) {
-
+        ClientInterface client = allClients.get(clientID);
+        client.showLeaderboard(LeaderboardDatabase.getLeaderboard(clientID, playerNum));
     }
 
     //=============================================================================

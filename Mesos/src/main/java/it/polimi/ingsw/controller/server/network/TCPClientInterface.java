@@ -10,6 +10,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardResult;
 
 import java.util.List;
 import java.util.Set;
@@ -93,8 +94,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
-        GetLeaderboardResponse response = new GetLeaderboardResponse(leaderboard);
+    public void showLeaderboard(LeaderboardResult leaderboardResult) {
+        GetLeaderboardResponse response = new GetLeaderboardResponse(leaderboardResult);
         sendMessage(response);
     }
 

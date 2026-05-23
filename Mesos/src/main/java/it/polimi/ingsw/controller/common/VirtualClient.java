@@ -7,6 +7,8 @@ import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardEntry;
+import it.polimi.ingsw.utils.LeaderboardResult;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -24,7 +26,7 @@ public interface VirtualClient extends Remote {
     void updateLobby(Lobby lobby) throws RemoteException;
     void removeClient(int lobbyID, Player player) throws RemoteException;
     void removePlayer(int lobbyID, Player player) throws RemoteException;
-    void showLeaderboard(List<LeaderboardEntry> leaderboard) throws RemoteException;
+    void showLeaderboard(LeaderboardResult leaderboardResult) throws RemoteException;
     void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
     void createLobby(Lobby lobby, Player player) throws RemoteException;
     void startLobby(int lobbyID, Board board, List<Player> players) throws RemoteException;
