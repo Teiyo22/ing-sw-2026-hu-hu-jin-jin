@@ -36,7 +36,6 @@ public class GUIView extends JFrame implements View {
     @Override
     public void start() {
         transitionTo(ScreenType.LOGIN);
-        notifyChange();
         setVisible(true);
     }
 
@@ -54,13 +53,13 @@ public class GUIView extends JFrame implements View {
     public void transitionTo(ScreenType type) {
         currScreen = ScreenType.getGUIScreen(type, this, controller);
         this.setContentPane(currScreen);
+        this.revalidate();
         notifyChange();
     }
 
     @Override
     public void notifyChange() {
         if (isDisplayable()) {
-            this.revalidate();
             SwingUtilities.invokeLater(() -> currScreen.render());
             this.repaint();
         }
