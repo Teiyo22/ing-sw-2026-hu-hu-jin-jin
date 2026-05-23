@@ -17,9 +17,9 @@ public class GUILoginScreen extends GUIScreen {
         this.backgroundPath = "/images/mesos.png";
         this.setLayout(new GridBagLayout());
 
-        JLabel usernameLabel = WidgetFactory.createLabel("Username", 250, 35);
-        JTextField usernameTextField = WidgetFactory.createTextField(250, 30);
-        JButton login = WidgetFactory.createButton(new GUILoginAction(clientController, usernameTextField), 250, 35);
+        JLabel usernameLabel = WidgetFactory.mediumLabel("Username", 250, 35);
+        JTextField usernameTextField = WidgetFactory.textField(250, 30);
+        JButton login = WidgetFactory.mediumButton(new GUILoginAction(clientController, usernameTextField), 250, 35);
 
         JPanel loginPanel = new PanelBuilder().rounded(40)
                 .column(10, usernameLabel, usernameTextField, login)

@@ -30,7 +30,7 @@ public class CreateGameSection implements GUISection {
         };
 
         JPanel formPanel = createFormPanel(clientController);
-        createBtn = WidgetFactory.createButton("Create Game", () -> cardLayout.show(panel, "form"));
+        createBtn = WidgetFactory.mediumButton("Create Game", () -> cardLayout.show(panel, "form"));
 
         panel.setOpaque(false);
         panel.add(createBtn, "button");
@@ -58,8 +58,8 @@ public class CreateGameSection implements GUISection {
 
     public JPanel createFormPanel(ClientController clientController) {
         // Title bar creation
-        JButton back = WidgetFactory.createButton("←", () -> cardLayout.show(panel, "button"));
-        JLabel title = WidgetFactory.createLabel("Create Game");
+        JButton back = WidgetFactory.mediumButton("←", () -> cardLayout.show(panel, "button"));
+        JLabel title = WidgetFactory.mediumLabel("Create Game");
         JPanel placeholder = new PanelBuilder().size(back.getPreferredSize()).buildPanel();
 
         JPanel titleBar = new PanelBuilder()
@@ -67,11 +67,11 @@ public class CreateGameSection implements GUISection {
                 .buildPanel();
 
         // Player input creation
-        JLabel playerNumLabel = WidgetFactory.createLabel("Player Number: ");
-        JComboBox<Integer> playerNumBox = WidgetFactory.createBox(new Integer[]{2, 3, 4, 5}, 200, 20);
+        JLabel playerNumLabel = WidgetFactory.mediumLabel("Player Number: ");
+        JComboBox<Integer> playerNumBox = WidgetFactory.comboBox(new Integer[]{2, 3, 4, 5}, 200, 20);
 
-        JLabel totemLabel = WidgetFactory.createLabel("Totem: ");
-        JComboBox<Totem> totemBox = WidgetFactory.createBox(Totem.values(), 200, 20);
+        JLabel totemLabel = WidgetFactory.mediumLabel("Totem: ");
+        JComboBox<Totem> totemBox = WidgetFactory.comboBox(Totem.values(), 200, 20);
 
         JPanel playerInput = new PanelBuilder()
                 .rounded(20)
@@ -80,7 +80,7 @@ public class CreateGameSection implements GUISection {
                 .withTranslucentColor(Fonts.select)
                 .buildPanel();
 
-        JButton create = WidgetFactory.createButton(new GUICreateLobbyAction(clientController, playerNumBox, totemBox));
+        JButton create = WidgetFactory.mediumButton(new GUICreateLobbyAction(clientController, playerNumBox, totemBox));
 
         return new PanelBuilder()
                 .column(10, titleBar, playerInput, create)

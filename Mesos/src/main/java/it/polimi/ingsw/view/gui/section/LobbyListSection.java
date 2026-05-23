@@ -17,14 +17,14 @@ public class LobbyListSection implements GUISection {
     private final DefaultListModel<Lobby> model;
 
     public LobbyListSection(ClientController clientController) {
-        JLabel title = WidgetFactory.createLabel("Lobby selection");
+        JLabel title = WidgetFactory.mediumLabel("Lobby selection");
 
         model = new DefaultListModel<>();
-        lobbies = WidgetFactory.createJList(model, 15,
+        lobbies = WidgetFactory.list(model, 15,
                 this::formatLobbyID,
                 this::formatPlayerCount,
                 lobby -> new LobbyInfoCommand(clientController, lobby.getLobbyID()).execute());
-        JScrollPane scrollPane = WidgetFactory.createScrollPane(lobbies, Fonts.select);
+        JScrollPane scrollPane = WidgetFactory.scrollPane(lobbies, Fonts.select);
 
         panel = new PanelBuilder()
                 .border(title, scrollPane, null, null, null)

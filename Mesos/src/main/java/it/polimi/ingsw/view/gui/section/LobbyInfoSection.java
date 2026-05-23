@@ -30,12 +30,12 @@ public class LobbyInfoSection implements GUISection {
     private final JButton start;
 
     public LobbyInfoSection(ClientController clientController) {
-        JLabel title = WidgetFactory.createLabel("Lobby Info");
+        JLabel title = WidgetFactory.mediumLabel("Lobby Info");
         JPanel infoPanel = createInfoPanel();
 
-        join = WidgetFactory.createButton(new GUIJoinLobbyAction(clientController, totemBox));
-        leave = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
-        start = WidgetFactory.createButton(new GUIStartLobbyAction(clientController));
+        join = WidgetFactory.mediumButton(new GUIJoinLobbyAction(clientController, totemBox));
+        leave = WidgetFactory.mediumButton(new GUILeaveLobbyAction(clientController));
+        start = WidgetFactory.mediumButton(new GUIStartLobbyAction(clientController));
         JPanel bottomBar = new PanelBuilder()
                 .grid(3, 10, 0, join, leave, start)
                 .buildPanel();
@@ -97,8 +97,8 @@ public class LobbyInfoSection implements GUISection {
 
     private JPanel createInfoPanel() {
         //  Generic info panel creation (ID, player count)
-        lobbyID = WidgetFactory.createLabel("");
-        count = WidgetFactory.createLabel("");
+        lobbyID = WidgetFactory.mediumLabel("");
+        count = WidgetFactory.mediumLabel("");
         JPanel genericInfoPanel = new PanelBuilder()
                 .rounded(20)
                 .grid(1, 0, 0, lobbyID, count)
@@ -109,15 +109,15 @@ public class LobbyInfoSection implements GUISection {
 
         // Player List Creation
         model = new DefaultListModel<>();
-        JList<Map.Entry<Player, Boolean>> players = WidgetFactory.createJList(model, 5,
+        JList<Map.Entry<Player, Boolean>> players = WidgetFactory.list(model, 5,
                 this::formatPlayer,
                 this::formatConnectionStatus,
                 null);
 
 
         // Totem selection panel creation
-        JLabel totemLabel = WidgetFactory.createLabel("Totem: ");
-        totemBox = WidgetFactory.createBox(Totem.values(), 200, 30);
+        JLabel totemLabel = WidgetFactory.mediumLabel("Totem: ");
+        totemBox = WidgetFactory.comboBox(Totem.values(), 200, 30);
         totemSelect = new PanelBuilder().row(5, totemLabel, totemBox)
                 .centered()
                 .withPadding(40, 0, 0, 0)

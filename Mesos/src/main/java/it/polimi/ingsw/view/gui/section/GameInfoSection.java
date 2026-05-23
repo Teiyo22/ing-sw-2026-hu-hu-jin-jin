@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
@@ -15,17 +16,16 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameInfoSection implements GUISection {
     private final JPanel panel;
 
-    private final JLabel currentEra;
-    private final JLabel currentPlayer;
-    private final Map<Player, JLabel> playerEntries;
+    private JLabel currentEra;
+    private JLabel currentPlayer;
+    private Map<Player, JLabel> playerEntries;
 
     private final OrderTileComponent orderTile;
 
@@ -35,91 +35,82 @@ public class GameInfoSection implements GUISection {
     public GameInfoSection(ClientController clientController, CardPicksListener topListener, CardPicksListener bottomListener,
                            OfferPickListener offerListener, Map<Totem, Image> totemIcons) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension panelSize = new Dimension((int)  (screenSize.width*0.15), screenSize.height);
-        Dimension buttonSize = new Dimension(50,30);
 
-        //buttons panel
-        pickCardsButton = WidgetFactory.createButton(new GUICardPickAction(clientController, topListener, bottomListener));
-        pickCardsButton.setFont(Fonts.tiny);
-        pickCardsButton.setBorderPainted(true);
-        pickOfferButton = WidgetFactory.createButton(new GUIOfferPickAction(clientController, offerListener));
-        pickOfferButton.setFont(Fonts.tiny);
-        pickOfferButton.setBorderPainted(true);
-        JPanel buttonsPanel = new PanelBuilder().column(5, pickCardsButton, pickOfferButton).buildPanel();
-
-        //order tile
+        // Player action panel
+        pickCardsButton = WidgetFactory.tinyButton(new GUICardPickAction(clientController, topListener, bottomListener));
+        pickCardsButton.setEnabled(false);
+        pickOfferButton = WidgetFactory.tinyButton(new GUIOfferPickAction(clientController, offerListener));
+        pickOfferButton.setEnabled(false);
         orderTile = new OrderTileComponent(clientController, totemIcons);
 
-        //infos panel
-        List<JLabel> components = new ArrayList<>();
+        JPanel playerActionPanel = new PanelBuilder()
+                .column(5, pickCardsButton, pickOfferButton, orderTile)
+                .buildPanel();
 
-        JLabel divider = new JLabel("--------------------");
-        divider.setForeground(Color.WHITE);
-        divider.setFont(Fonts.monospaced);
+        // Info panel
+        JPanel infoPanel = createInfoPanel(clientController);
 
-        JLabel generalInfoTitle = WidgetFactory.createLabel("Game Info");
-        generalInfoTitle.setFont(Fonts.small);
-        currentEra = WidgetFactory.createLabel("");
-        currentEra.setFont(Fonts.monospaced);
-        currentPlayer = WidgetFactory.createLabel("");
-        currentPlayer.setFont(Fonts.monospaced);
-
-        playerEntries = new HashMap<>();
-        for(Player p : clientController.getCurrLobby().getPlayers().keySet()){
-            JLabel entry = WidgetFactory.createLabel("");
-            entry.setFont(Fonts.monospaced);
-            playerEntries.put(p, entry);
-        }
-
-        components.add(generalInfoTitle);
-        components.add(currentEra);
-        components.add(currentPlayer);
-        components.add(divider);
-        components.addAll(playerEntries.values());
-
-        JPanel infoPanel = new PanelBuilder().column(0, components.toArray(new JLabel[0])).buildPanel();
-
-        //leave button
-        JButton leaveButton = WidgetFactory.createButton(new GUILeaveLobbyAction(clientController));
-        leaveButton.setFont(Fonts.tiny);
-        leaveButton.setBorderPainted(true);
-        JPanel leavePanel = new JPanel();
-        leavePanel.setOpaque(false);
-        leavePanel.add(leaveButton);
-
-        //putting together panels
-        JPanel contentPanel = new PanelBuilder().column(10, buttonsPanel, orderTile, infoPanel).buildPanel();
-        JPanel fullPanel = new PanelBuilder().border(null, contentPanel, leavePanel, null, null).buildPanel();
+        // Leave button
+        JButton leaveButton = WidgetFactory.tinyButton(new GUILeaveLobbyAction(clientController));
+        JPanel leavePanel = new PanelBuilder().column(0, leaveButton).buildPanel();
 
         panel = new PanelBuilder().rounded(30)
+                .border(playerActionPanel, infoPanel, leavePanel, null, null)
                 .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-                .column(10, fullPanel)
-                .withPadding(30, 10, 30, 10).buildPanel();
-
-        panel.setPreferredSize(panelSize);
+                .withPadding(30, 10, 30, 10)
+                .size(new Dimension((int) (screenSize.width * 0.15), screenSize.height))
+                .buildPanel();
     }
 
     @Override
     public void render(ClientController controller) {
-        currentEra.setText(String.format("<html><b>Current era</b>: %d</html>", controller.getCurrLobby().getTurnState().getEra()));
-        currentPlayer.setText(String.format("<html><b>Current player</b>: %s</html>", controller.getCurrLobby().getTurnState().getCurrPlayer().getName()));
+        Lobby currLobby = controller.getCurrLobby();
 
-        for(Player p : controller.getCurrLobby().getPlayers().keySet()){
+        if (currLobby == null)
+            return;
+
+        if (currLobby.getTurnState() != null) {
+            currentEra.setText(String.format("<html><b>Current era</b>: %d</html>", currLobby.getTurnState().getEra()));
+            currentPlayer.setText(String.format("<html><b>Current player</b>: %s</html>", currLobby.getTurnState().getCurrPlayer().getName()));
+            pickOfferButton.setEnabled(currLobby.getTurnState().canPickOffer());
+            pickCardsButton.setEnabled(currLobby.getTurnState().canPickCard());
+        }
+
+        for (Player p : currLobby.getPlayers().keySet()) {
             playerEntries.get(p).setText(String.format("<html><b>%s [%s]</b><br>&emsp;PP: %d | Food: %d</html>",
                     p.getName(), p.getTotem(), p.getPP(), p.getFood()));
         }
 
         orderTile.update(controller);
-
-        pickOfferButton.setEnabled(controller.getCurrLobby().getTurnState().canPickOffer()
-                && controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
-
-        pickCardsButton.setEnabled(controller.getCurrLobby().getTurnState().canPickCard()
-                && controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
     }
 
     @Override
     public JPanel getPanel() {
         return panel;
+    }
+
+    private JPanel createInfoPanel(ClientController clientController) {
+        // Game info panel
+        JLabel divider = WidgetFactory.monospacedLabel("--------------------");
+        JLabel gameInfoLabel = WidgetFactory.smallLabel("Game Info");
+        currentEra = WidgetFactory.monospacedLabel("");
+        currentPlayer = WidgetFactory.monospacedLabel("");
+        JPanel gameInfoPanel = new PanelBuilder()
+                .column(0, gameInfoLabel, currentEra, currentPlayer, divider)
+                .buildPanel();
+
+        // Player info panel
+        playerEntries = clientController.getCurrLobby().getPlayers().keySet().stream()
+                .map(p -> Map.entry(p, WidgetFactory.monospacedLabel("")))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        JPanel playerInfoPanel = new PanelBuilder()
+                .column(0, playerEntries.values().toArray(new JLabel[0]))
+                .buildPanel();
+
+        // Info panel
+        return new PanelBuilder()
+                .column(10, orderTile, gameInfoPanel, playerInfoPanel)
+                .buildPanel();
     }
 }
