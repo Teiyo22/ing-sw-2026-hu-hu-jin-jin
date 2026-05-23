@@ -16,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public abstract class RowSection implements GUISection {
+public abstract class RowSection extends GUISection {
     private final JPanel panel;
 
     private final CardPicksListener listener;

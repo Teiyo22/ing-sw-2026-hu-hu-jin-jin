@@ -20,9 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class GameInfoSection implements GUISection {
-    private final JPanel panel;
-
+public class GameInfoSection extends GUISection {
     private JLabel currentEra;
     private JLabel currentPlayer;
     private Map<Player, JLabel> playerEntries;
@@ -82,11 +80,6 @@ public class GameInfoSection implements GUISection {
         }
 
         orderTile.update(controller);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 
     private JPanel createInfoPanel(ClientController clientController) {

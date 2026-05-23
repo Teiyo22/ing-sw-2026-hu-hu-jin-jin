@@ -12,9 +12,7 @@ import java.awt.*;
 import java.util.Map;
 
 
-public class OfferTrackSection implements GUISection {
-    private final JPanel panel;
-
+public class OfferTrackSection extends GUISection {
     private final OfferPickListener listener;
 
     public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, Image> totemIcons) {
@@ -38,10 +36,5 @@ public class OfferTrackSection implements GUISection {
         listener.setEnabled(controller.getCurrLobby().getTurnState().canPickOffer() &&
                 controller.getCurrLobby().getCurrPlayer().equals(controller.getCurrLobby().getPlayer(controller.getID())));
         listener.resetPick();
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 }

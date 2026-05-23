@@ -10,8 +10,7 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 import javax.swing.*;
 import java.awt.*;
 
-public class CreateGameSection implements GUISection {
-    private final JPanel panel;
+public class CreateGameSection extends GUISection {
     private final JButton createBtn;
     private final CardLayout cardLayout;
 
@@ -49,11 +48,6 @@ public class CreateGameSection implements GUISection {
         } else {
             createBtn.setEnabled(true);
         }
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 
     public JPanel createFormPanel(ClientController clientController) {

@@ -14,9 +14,7 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 import javax.swing.*;
 import java.util.Map;
 
-public class LobbyInfoSection implements GUISection {
-    private final JPanel panel;
-
+public class LobbyInfoSection extends GUISection {
     private JLabel lobbyID;
     private JLabel count;
 
@@ -70,11 +68,6 @@ public class LobbyInfoSection implements GUISection {
         join.setEnabled(!isInLobby && !isFull);
         leave.setEnabled(isInLobby);
         start.setEnabled(isFull && isInLobby);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 
     private String formatPlayer(Map.Entry<Player, Boolean> player) {

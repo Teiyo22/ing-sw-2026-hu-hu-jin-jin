@@ -4,7 +4,12 @@ import it.polimi.ingsw.controller.client.ClientController;
 
 import javax.swing.*;
 
-public interface GUISection {
-    void render(ClientController controller);
-    JPanel getPanel();
+public abstract class GUISection {
+    protected JPanel panel;
+
+    public abstract void render(ClientController controller);
+
+    public JPanel getPanel() {
+        return panel;
+    }
 }

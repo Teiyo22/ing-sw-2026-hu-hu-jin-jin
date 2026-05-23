@@ -10,9 +10,7 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 import javax.swing.*;
 import java.util.Map;
 
-public class LobbyListSection implements GUISection {
-    private final JPanel panel;
-
+public class LobbyListSection extends GUISection {
     private final JList<Lobby> lobbies;
     private final DefaultListModel<Lobby> model;
 
@@ -40,11 +38,6 @@ public class LobbyListSection implements GUISection {
 
         if (lobbies.getSelectedValue() != null && !lobbies.getSelectedValue().equals(clientController.getCurrLobby()))
             lobbies.clearSelection();
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
     }
 
     private void updateLobbyList(ClientController clientController) {
