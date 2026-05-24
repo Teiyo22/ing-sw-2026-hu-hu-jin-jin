@@ -1,67 +1,36 @@
 package it.polimi.ingsw.view.gui.components;
 
+import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public abstract class SelectableComponent<E> extends JLabel implements MouseListener{
+public abstract class SelectableComponent<E> extends JLabel implements MouseListener {
     protected E element;
-    protected final SelectionListener<E> selectionListener;
-    protected boolean selected;
-    private boolean hover;
+    protected final SelectionListener<SelectableComponent<E>> selectionListener;
 
-    private final Border selectionBorder;
-    private final Border hoverBorder;
-    private final Border emptyBorder;
+    private Border innerBorder;
+    private Border outerBorder;
 
-    public SelectableComponent(E element, SelectionListener<E> selectionListener) {
+    public abstract void render(E newElement);
+
+    public SelectableComponent(E element, SelectionListener<SelectableComponent<E>> selectionListener) {
         this.element = element;
         this.selectionListener = selectionListener;
-        this.selected = false;
         this.addMouseListener(this);
 
-        selectionBorder = BorderFactory.createLineBorder(Fonts.mesos_yellow, 3);
-        hoverBorder = BorderFactory.createRaisedBevelBorder();
-        emptyBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
-
-        this.setBorder(BorderFactory.createCompoundBorder(emptyBorder, emptyBorder));
-    }
-
-    public void updateBorder(){
-        Border innerBorder;
-        Border outerBorder;
-
-        if(selected){
-            innerBorder = selectionBorder;
-        } else {
-            innerBorder = emptyBorder;
-        }
-
-        if(hover){
-            outerBorder = hoverBorder;
-        } else {
-            outerBorder = emptyBorder;
-        }
-
+        this.innerBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
+        this.outerBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
         this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(selectionListener !=null){
-            if(selected){
-                selectionListener.onDeselect(element);
-                selected = false;
-                updateBorder();
-            } else {
-                selected = selectionListener.onSelect(element);
-                updateBorder();
-            }
-        }
+        if (selectionListener != null)
+            selectionListener.onSelect(this);
     }
 
     @Override
@@ -74,18 +43,20 @@ public abstract class SelectableComponent<E> extends JLabel implements MouseList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(selectionListener !=null){
-            hover = true;
-            updateBorder();
-        }
+        outerBorder = BorderFactory.createRaisedBevelBorder();
+        this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(selectionListener !=null){
-            hover = false;
-            updateBorder();
-        }
+        outerBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
+        this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+    }
+
+    public void setSelected(boolean selected) {
+        innerBorder = selected ? BorderFactory.createLineBorder(Fonts.mesos_yellow, 3)
+                : BorderFactory.createEmptyBorder(3, 3, 3, 3);
+        this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
 
     public E getElement() {

@@ -4,49 +4,64 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.card.character.AbstractCharacter;
-import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.components.CardComponent;
-import it.polimi.ingsw.view.gui.components.CardPicksListener;
+import it.polimi.ingsw.view.gui.components.SelectableComponent;
+import it.polimi.ingsw.view.gui.components.SelectionListener;
 import it.polimi.ingsw.view.gui.util.CardCache;
+import it.polimi.ingsw.view.gui.util.Fonts;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
+import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
 
-public abstract class RowSection extends GUISection {
-    private final CardPicksListener listener;
-    private final CardCache cardCache;
+public abstract class RowSection extends GUISection implements SelectionListener<SelectableComponent<AbstractCard>> {
+    private final Set<Integer> picks;
 
-    private final JPanel buildings;
-    private final JPanel characters;
-    private final JPanel events;
+    private final List<CardComponent> buildings;
+    private final List<CardComponent> characters;
+    private final List<CardComponent> events;
 
-    public RowSection(CardPicksListener listener, CardCache cardCache) {
-        this.listener = listener;
-        this.cardCache = cardCache;
+    public abstract List<AbstractCard> getBuildings(Board board);
+    public abstract List<AbstractCard> getCharacters(Board board);
+    public abstract List<AbstractCard> getEvents(Board board);
 
-        buildings = new PanelBuilder().row(0).buildPanel();
-        characters = new PanelBuilder().row(0).buildPanel();
-        events = new PanelBuilder().row(0).buildPanel();
+    public RowSection(CardCache cardCache) {
+        picks = new HashSet<>();
 
+        events = IntStream.range(0, 4).mapToObj(i -> new CardComponent(null, cardCache)).toList();
+        characters = IntStream.range(0, 9).mapToObj(i -> new CardComponent(this, cardCache)).toList();
+        buildings = IntStream.range(0, 5).mapToObj(i -> new CardComponent(this, cardCache)).toList();
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int) (screenSize.height * 0.3);
-        int width = screenSize.width;
+        JPanel eventsPanel = new PanelBuilder().rounded(20)
+                .row(0, events.toArray(new CardComponent[0]))
+                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+                .withPadding(10, 20, 10, 20)
+                .buildPanel();
+
+        JPanel charactersPanel = new PanelBuilder().rounded(20)
+                .row(0, characters.toArray(new CardComponent[0]))
+                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+                .withPadding(10, 20, 10, 20)
+                .buildPanel();
+
+        JPanel buildingsPanel = new PanelBuilder().rounded(20)
+                .row(0, buildings.toArray(new CardComponent[0]))
+                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+                .withPadding(10, 20, 10, 20)
+                .buildPanel();
 
         panel = new PanelBuilder()
-                .row(0, buildings, characters, events)
-                .size(width, height)
+                .row(10, eventsPanel, charactersPanel,buildingsPanel)
                 .buildPanel();
-    }
 
-    public abstract List<AbstractBuilding> getBuildings(Board board);
-    public abstract List<AbstractCharacter> getCharacters(Board board);
-    public abstract List<AbstractEvent> getEvents(Board board);
-    public abstract int getTotalPicks(ClientController clientController);
+        panel.setEnabled(false);
+    }
 
     @Override
     public void render(ClientController controller) {
@@ -56,28 +71,55 @@ public abstract class RowSection extends GUISection {
         if (currLobby == null || board == null)
             return;
 
-        buildings.removeAll();
-        characters.removeAll();
-        events.removeAll();
+        renderCards(getBuildings(board), buildings);
+        renderCards(getCharacters(board), characters);
+        renderCards(getEvents(board), events);
 
-        for (AbstractCard c : getBuildings(board))
-            renderCard(c, buildings, listener);
-
-        for (AbstractCard c : getCharacters(board))
-            renderCard(c, characters, listener);
-
-        for (AbstractCard c : getEvents(board))
-            renderCard(c, events, null);
-
-        listener.setEnabled(currLobby.getTurnState() != null && currLobby.getTurnState().canPickCard());
-        if(listener.isEnabled())
-            listener.setTotalPicks(getTotalPicks(controller));
-        else
-            listener.resetPicks();
+        if (currLobby.getTurnState() != null && currLobby.getTurnState().canPickCard()) {
+            panel.setEnabled(true);
+        } else {
+            panel.setEnabled(false);
+            resetSelection();
+        }
     }
 
-    public void renderCard(AbstractCard c, JPanel panel, CardPicksListener listener) {
-        CardComponent cardComponent = new CardComponent(c, listener, cardCache);
-        panel.add(cardComponent);
+    public void renderCards(List<AbstractCard> cards, List<CardComponent> components) {
+        for (int i = 0; i < components.size(); i++) {
+            AbstractCard card = i < cards.size() ? cards.get(i) : null;
+            components.get(i).render(card);
+        }
+    }
+
+    public Set<Integer> getPicks() {
+        return picks;
+    }
+
+    @Override
+    public void onSelect(SelectableComponent<AbstractCard> cardComponent) {
+        if (!panel.isEnabled())
+            return;
+
+        int id = cardComponent.getElement().getID();
+        if (picks.contains(id)) {
+            picks.remove(id);
+            cardComponent.setSelected(false);
+        } else {
+            picks.add(id);
+            cardComponent.setSelected(true);
+        }
+    }
+
+    @Override
+    public void resetSelection() {
+        picks.clear();
+
+        for (CardComponent cardComponent: buildings)
+            cardComponent.setSelected(false);
+
+        for (CardComponent cardComponent: characters)
+            cardComponent.setSelected(false);
+
+        for (CardComponent cardComponent: events)
+            cardComponent.setSelected(false);
     }
 }

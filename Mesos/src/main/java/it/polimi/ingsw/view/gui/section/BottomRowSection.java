@@ -3,42 +3,34 @@ package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.card.character.AbstractCharacter;
-import it.polimi.ingsw.model.card.event.AbstractEvent;
-import it.polimi.ingsw.view.gui.components.CardPicksListener;
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.view.gui.util.CardCache;
 
 import java.util.List;
 
 public class BottomRowSection extends RowSection {
-    public BottomRowSection(CardPicksListener listener, CardCache cardCache) {
-        super(listener, cardCache);
+    public BottomRowSection(CardCache cardCache) {
+        super(cardCache);
     }
 
     @Override
-    public List<AbstractBuilding> getBuildings(Board board) {
-        return board.getBottomRow().getBuildingCards();
+    public List<AbstractCard> getBuildings(Board board) {
+        return board.getBottomRow().getBuildingCards().stream()
+                .map(b -> (AbstractCard) b)
+                .toList();
     }
 
     @Override
-    public List<AbstractCharacter> getCharacters(Board board) {
-        return board.getBottomRow().getCharacterCards();
+    public List<AbstractCard> getCharacters(Board board) {
+        return board.getBottomRow().getCharacterCards().stream()
+                .map(c -> (AbstractCard) c)
+                .toList();
     }
 
     @Override
-    public List<AbstractEvent> getEvents(Board board) {
-        return board.getBottomRow().getEventCards();
-    }
-
-    @Override
-    public int getTotalPicks(ClientController clientController) {
-        Board board = clientController.getBoard();
-        Lobby currLobby = clientController.getCurrLobby();
-
-        if (board == null || currLobby == null)
-            return 0;
-
-        return board.getOfferTrack()[currLobby.getTurnState().getIndex()].getBottomRowPickable();
+    public List<AbstractCard> getEvents(Board board) {
+        return board.getBottomRow().getEventCards().stream()
+                .map(e -> (AbstractCard) e)
+                .toList();
     }
 }

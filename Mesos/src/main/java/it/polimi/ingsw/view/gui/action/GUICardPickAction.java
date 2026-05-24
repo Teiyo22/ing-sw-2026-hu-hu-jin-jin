@@ -2,25 +2,25 @@ package it.polimi.ingsw.view.gui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.command.PickCardCommand;
-import it.polimi.ingsw.view.gui.components.CardPicksListener;
+import it.polimi.ingsw.view.gui.section.RowSection;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class GUICardPickAction extends AbstractAction {
     private final ClientController clientController;
-    private final CardPicksListener topListener;
-    private final CardPicksListener bottomListener;
+    private final RowSection topRowSection;
+    private final RowSection bottomRowSection;
 
-    public GUICardPickAction(ClientController clientController, CardPicksListener topListener, CardPicksListener bottomListener) {
+    public GUICardPickAction(ClientController clientController, RowSection topRowSection, RowSection bottomRowSection) {
         super("Pick Cards");
         this.clientController = clientController;
-        this.topListener = topListener;
-        this.bottomListener = bottomListener;
+        this.topRowSection = topRowSection;
+        this.bottomRowSection = bottomRowSection;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new PickCardCommand(clientController, topListener.getPicks(), bottomListener.getPicks()).execute();
+        new PickCardCommand(clientController, topRowSection.getPicks(), bottomRowSection.getPicks()).execute();
     }
 }

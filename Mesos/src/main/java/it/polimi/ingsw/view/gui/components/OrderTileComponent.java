@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderTileComponent extends JLabel {
-    private static final double[] offsetMultipliers =  { 0.253, 0.21, 0.165, 0.095 };
+    private static final double[] offsetMultipliers = {0.253, 0.21, 0.165, 0.095};
 
     private final double offsetMultiplier;
     private final Map<Totem, Image> totemIcons;
@@ -20,14 +20,13 @@ public class OrderTileComponent extends JLabel {
 
     public OrderTileComponent(ClientController clientController, Map<Totem, Image> totemIcons) {
         this.totemIcons = totemIcons;
-
         offsetMultiplier = offsetMultipliers[clientController.getCurrLobby().getSize() - 2];
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
         int height = (int) (screenSize.height * 0.3);
-        int width = (int) (height * (2.0/3.0));
+        int width = (int) (height * (2.0 / 3.0));
 
-        Image image = new ImageIcon(getClass().getResource("/images/orderTiles/"+clientController.getCurrLobby().getPlayerCount()+".png")).getImage();
+        Image image = new ImageIcon(getClass().getResource("/images/orderTiles/" + clientController.getCurrLobby().getPlayerCount() + ".png")).getImage();
         this.setIcon(new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
         this.setPreferredSize(new Dimension(width, height));
 
@@ -37,29 +36,30 @@ public class OrderTileComponent extends JLabel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(int i = 0; i < orderedTotems.size(); i++){
-            if(orderedTotems.get(i)!=null){
-                orderedTotems.get(i).paintIcon(this, g,
-                        (int) (this.getSize().width * 0.345 ),
-                        (int) (this.getSize().height * offsetMultiplier + i * this.getSize().height * 0.1725) );
-            }
+        for (int i = 0; i < orderedTotems.size(); i++) {
+            orderedTotems.get(i).paintIcon(this, g,
+                (int) (this.getSize().width * 0.345),
+                (int) (this.getSize().height * offsetMultiplier + i * this.getSize().height * 0.1725)
+            );
         }
     }
 
-    public void update(ClientController clientController) {
+
+    public void render(ClientController clientController) {
         Board board = clientController.getBoard();
         if (board == null)
             return;
 
         orderedTotems.clear();
         for (OrderSlot orderSlot : board.getOrderTile()) {
-            if (orderSlot.getAssignedPlayer() == null) {
-                orderedTotems.add(null);
-            } else {
-                ImageIcon totemIcon = new ImageIcon(totemIcons.get(orderSlot.getAssignedPlayer().getTotem()).getScaledInstance(
+            if (orderSlot.getAssignedPlayer() != null) {
+                ImageIcon totemIcon = new ImageIcon(totemIcons.get(orderSlot.getAssignedPlayer().getTotem())
+                    .getScaledInstance(
                         Math.max((int) (this.getSize().width * 0.318), 1),
                         Math.max((int) (this.getSize().height * 0.115), 1),
-                        Image.SCALE_DEFAULT));
+                        Image.SCALE_DEFAULT
+                    ));
+
                 orderedTotems.add(totemIcon);
             }
         }

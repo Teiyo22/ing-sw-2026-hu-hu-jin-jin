@@ -2,41 +2,92 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.components.OfferTileComponent;
+import it.polimi.ingsw.view.gui.components.SelectableComponent;
+import it.polimi.ingsw.view.gui.components.SelectionListener;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
-public class OfferTrackSection extends GUISection {
-    private final OfferPickListener listener;
+public class OfferTrackSection extends GUISection implements SelectionListener<SelectableComponent<OfferTile>> {
+    private final List<SelectableComponent<OfferTile>> components;
+    private SelectableComponent<OfferTile> selectedComponent;
 
-    public OfferTrackSection(ClientController controller, OfferPickListener listener, Map<Totem, Image> totemIcons) {
-        this.listener = listener;
+    public OfferTrackSection(ClientController controller, Map<Totem, Image> totemIcons) {
+        components = new ArrayList<>();
+        selectedComponent = null;
 
-        OfferTile[] offerTrack = controller.getBoard().getOfferTrack();
-        for (int i = 0; i < offerTrack.length; i++) {
-            OfferTileComponent offerTileComponent = new OfferTileComponent(offerTrack[i], listener, i, totemIcons);
-            listener.addComponent(offerTileComponent);
-        }
+        Board board = controller.getBoard();
+        if (board != null)
+            for (OfferTile offerTile : board.getOfferTrack())
+                components.add(new OfferTileComponent(offerTile, this, totemIcons));
 
-        panel = new PanelBuilder().row(0, listener.getComponents().toArray(new OfferTileComponent[0])).buildPanel();
+        panel = new PanelBuilder()
+                .row(5, components.toArray(new SelectableComponent[0]))
+                .buildPanel();
+        panel.setEnabled(false);
     }
 
     @Override
     public void render(ClientController controller) {
-        for (OfferTileComponent offerTile : listener.getComponents())
-            offerTile.update(controller);
-
+        Board board = controller.getBoard();
         Lobby currLobby = controller.getCurrLobby();
-        if (currLobby != null && currLobby.getTurnState() != null)
-            listener.setEnabled(currLobby.getTurnState().canPickOffer());
-        else
-            listener.resetPick();
+
+        if (currLobby == null || board == null)
+            return;
+
+        for (int i = 0; i < board.getOfferTrack().length; i++)
+            components.get(i).render(board.getOfferTrack()[i]);
+
+        if (currLobby.getTurnState() != null && currLobby.getTurnState().canPickOffer()) {
+            panel.setEnabled(true);
+        } else {
+            panel.setEnabled(false);
+            resetSelection();
+        }
+    }
+
+    @Override
+    public void onSelect(SelectableComponent<OfferTile> offerTileComponent) {
+        if (!panel.isEnabled())
+            return;
+
+        if (selectedComponent != null)
+            selectedComponent.setSelected(false);
+
+        if (offerTileComponent != selectedComponent) {
+            selectedComponent = offerTileComponent;
+            selectedComponent.setSelected(true);
+        } else {
+            selectedComponent = null;
+        }
+    }
+
+    @Override
+    public void resetSelection() {
+        if (selectedComponent != null) {
+            selectedComponent.setSelected(false);
+            selectedComponent = null;
+        }
+    }
+
+    public int getSelectedOfferIndex() {
+        for (int i = 0; i < components.size(); i++) {
+            if (components.get(i) == selectedComponent)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public List<SelectableComponent<OfferTile>> getComponents() {
+        return components;
     }
 }

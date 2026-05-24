@@ -27,14 +27,14 @@ public class GameInfoSection extends GUISection {
     private final JButton pickCardsButton;
     private final JButton pickOfferButton;
 
-    public GameInfoSection(ClientController clientController, CardPicksListener topListener, CardPicksListener bottomListener,
-                           OfferPickListener offerListener, Map<Totem, Image> totemIcons) {
+    public GameInfoSection(ClientController clientController, RowSection topRowSection, RowSection bottomRowSection,
+                           OfferTrackSection offerTrackSection, Map<Totem, Image> totemIcons) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Player action panel
-        pickCardsButton = WidgetFactory.tinyButton(new GUICardPickAction(clientController, topListener, bottomListener));
+        pickCardsButton = WidgetFactory.tinyButton(new GUICardPickAction(clientController, topRowSection, bottomRowSection));
         pickCardsButton.setEnabled(false);
-        pickOfferButton = WidgetFactory.tinyButton(new GUIOfferPickAction(clientController, offerListener));
+        pickOfferButton = WidgetFactory.tinyButton(new GUIOfferPickAction(clientController, offerTrackSection));
         pickOfferButton.setEnabled(false);
         orderTile = new OrderTileComponent(clientController, totemIcons);
 

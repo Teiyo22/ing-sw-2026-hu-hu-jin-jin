@@ -4,8 +4,6 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.GUIView;
-import it.polimi.ingsw.view.gui.components.CardPicksListener;
-import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.section.*;
 import it.polimi.ingsw.view.gui.util.CardCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
@@ -21,10 +19,6 @@ public class GUIGamePlayScreen extends GUIScreen {
         super(frame, controller);
 
         CardCache cardCache = new CardCache();
-        CardPicksListener topListener = new CardPicksListener();
-        CardPicksListener bottomListener = new CardPicksListener();
-
-        OfferPickListener offerPickListener = new OfferPickListener();
 
         Map<Totem, Image> totemIcons = new HashMap<>();
         for (Player p : controller.getCurrLobby().getPlayers().keySet()) {
@@ -32,11 +26,15 @@ public class GUIGamePlayScreen extends GUIScreen {
                     new ImageIcon(getClass().getResource("/images/totems/" + p.getTotem() + ".png")).getImage());
         }
 
+        RowSection topRowSection = new TopRowSection(cardCache);
+        RowSection bottomRowSection = new BottomRowSection(cardCache);
+        OfferTrackSection offerTrackSection = new OfferTrackSection(controller, totemIcons);
+
         sections = List.of(
-                new TopRowSection(topListener, cardCache),
-                new BottomRowSection(bottomListener, cardCache),
-                new OfferTrackSection(controller, offerPickListener, totemIcons),
-                new GameInfoSection(clientController, topListener, bottomListener, offerPickListener, totemIcons)
+                topRowSection,
+                bottomRowSection,
+                offerTrackSection,
+                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, totemIcons)
         );
 
         JPanel topRowPanel = sections.get(0).getPanel();
@@ -46,6 +44,7 @@ public class GUIGamePlayScreen extends GUIScreen {
 
         JPanel board = new PanelBuilder()
                 .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
+                .withPadding(30, 30, 30, 30)
                 .buildPanel();
 
         JPanel gameInfoContainer = new PanelBuilder().column(0, gameInfoPanel)

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.components;
 
-import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.view.gui.section.OfferTrackSection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,20 +10,18 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 
 public class OfferTileComponent extends SelectableComponent<OfferTile> {
-    private final int index;
     private final Map<Totem, Image> totemIcons;
     private ImageIcon totem;
 
-    public OfferTileComponent(OfferTile offer, SelectionListener<OfferTile> selectionListener, int index, Map<Totem, Image> totemIcons) {
+    public OfferTileComponent(OfferTile offer, OfferTrackSection selectionListener, Map<Totem, Image> totemIcons) {
         super(offer, selectionListener);
-        this.index = index;
         this.totemIcons = totemIcons;
+        this.totem = null;
 
         this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setVerticalAlignment(SwingConstants.CENTER);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
         int height = (int) (screenSize.height * 0.3);
         int width = (int) (height * (2.0 / 3.0));
 
@@ -37,32 +35,25 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
         super.paintComponent(g);
         if (totem != null) {
             totem.paintIcon(this, g,
-                    (int) (this.getSize().width * 0.3245 ),
-                    (int) (this.getSize().height * 0.21) );
+                (int) (this.getSize().width * 0.3245),
+                (int) (this.getSize().height * 0.21));
         }
     }
 
-    public int getIndex() {
-        return index;
-    }
+    @Override
+    public void render(OfferTile offerTile) {
+        element = offerTile;
 
-    public void update(ClientController clientController) {
-        element = clientController.getBoard().getOfferTrack()[index];
-
-        if (element == null || element.getAssignedPlayer() == null) {
-            deselect();
-            totem = null;
-        } else {
-            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem()).getScaledInstance(
+        if (element.getAssignedPlayer() != null) {
+            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem())
+                .getScaledInstance(
                     Math.max((int) (this.getSize().width * 0.3525), 1),
                     Math.max((int) (this.getSize().height * 0.125), 1),
-                    Image.SCALE_DEFAULT));
+                    Image.SCALE_DEFAULT
+                ));
+        } else {
+            totem = null;
         }
-    }
-
-    public void deselect() {
-        selected = false;
-        updateBorder();
     }
 
     @Override

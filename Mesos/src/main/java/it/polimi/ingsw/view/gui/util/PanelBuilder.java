@@ -33,11 +33,11 @@ public class PanelBuilder {
 
         for (int i = 0; i < components.length; i++) {
             panel.add(components[i]);
-            panel.add(Box.createHorizontalGlue());
             if (i < components.length - 1)
                 panel.add(Box.createHorizontalStrut(gap));
         }
 
+        panel.add(Box.createHorizontalGlue());
         return this;
     }
 
