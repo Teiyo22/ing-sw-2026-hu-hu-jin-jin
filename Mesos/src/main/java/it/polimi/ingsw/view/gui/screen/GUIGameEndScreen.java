@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.view.gui.action.GUILeaderboardAction;
+import it.polimi.ingsw.view.gui.action.GUILoginAction;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import it.polimi.ingsw.controller.client.ClientController;
@@ -26,8 +28,13 @@ public class GUIGameEndScreen extends GUIScreen {
     public GUIGameEndScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
 
+
+        JButton leaderboard = WidgetFactory.createButton(new GUILeaderboardAction(clientController));
+        leaderboard.setBorderPainted(true);
+        leaderboard.setText("See Leaderboard");
+
         panel = new PanelBuilder()
-                .border(WidgetFactory.createLabel("FINAL RANKING"), buildTable(), null, null, null)
+                .border(WidgetFactory.createLabel("FINAL RANKING"), buildTable(), leaderboard, null, null)
                 .withPadding(40, 60, 40, 60)
                 .buildPanel();
 
@@ -55,10 +62,11 @@ public class GUIGameEndScreen extends GUIScreen {
             cells.add(WidgetFactory.createRankCell(header, Fonts.mesos_dark_blue_low_opacity));
         }
 
-        List<Player> players = new ArrayList<>(clientController.getCurrLobby().getPlayers().keySet());
-        players.sort(null);
+        List<Player> ranking = new ArrayList<>(clientController.getCurrLobby().getPlayers().keySet());
+        ranking.sort(null);
 
-        for (Player player : players) {
+
+        for (Player player : ranking) {
             Color rowColor = rowColor(player.getRank());
 
             cells.add(WidgetFactory.createRankCell(String.valueOf(player.getRank()), rowColor));
