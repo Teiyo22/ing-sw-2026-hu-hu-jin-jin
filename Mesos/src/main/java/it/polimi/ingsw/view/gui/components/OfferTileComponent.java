@@ -27,7 +27,6 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
 
         Image img = new ImageIcon(getClass().getResource("/images/offerTiles/" + element.getType() + ".png")).getImage();
         this.setIcon(new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
-        this.setPreferredSize(new Dimension(width, height));
     }
 
     @Override

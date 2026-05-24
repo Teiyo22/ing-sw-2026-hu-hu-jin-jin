@@ -28,7 +28,9 @@ public abstract class RowSection extends GUISection implements SelectionListener
     private final List<CardComponent> events;
 
     public abstract List<AbstractCard> getBuildings(Board board);
+
     public abstract List<AbstractCard> getCharacters(Board board);
+
     public abstract List<AbstractCard> getEvents(Board board);
 
     public RowSection(CardCache cardCache) {
@@ -39,26 +41,26 @@ public abstract class RowSection extends GUISection implements SelectionListener
         buildings = IntStream.range(0, 5).mapToObj(i -> new CardComponent(this, cardCache)).toList();
 
         JPanel eventsPanel = new PanelBuilder().rounded(20)
-                .row(0, events.toArray(new CardComponent[0]))
-                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-                .withPadding(10, 20, 10, 20)
-                .buildPanel();
+            .row(0, events.toArray(new CardComponent[0]))
+            .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+            .withPadding(10, 20, 10, 20)
+            .buildPanel();
 
         JPanel charactersPanel = new PanelBuilder().rounded(20)
-                .row(0, characters.toArray(new CardComponent[0]))
-                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-                .withPadding(10, 20, 10, 20)
-                .buildPanel();
+            .row(0, characters.toArray(new CardComponent[0]))
+            .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+            .withPadding(10, 20, 10, 20)
+            .buildPanel();
 
         JPanel buildingsPanel = new PanelBuilder().rounded(20)
-                .row(0, buildings.toArray(new CardComponent[0]))
-                .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-                .withPadding(10, 20, 10, 20)
-                .buildPanel();
+            .row(0, buildings.toArray(new CardComponent[0]))
+            .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+            .withPadding(10, 20, 10, 20)
+            .buildPanel();
 
         panel = new PanelBuilder()
-                .row(10, eventsPanel, charactersPanel,buildingsPanel)
-                .buildPanel();
+            .row(10, eventsPanel, charactersPanel, buildingsPanel)
+            .buildPanel();
 
         panel.setEnabled(false);
     }
@@ -84,9 +86,14 @@ public abstract class RowSection extends GUISection implements SelectionListener
     }
 
     public void renderCards(List<AbstractCard> cards, List<CardComponent> components) {
-        for (int i = 0; i < components.size(); i++) {
-            AbstractCard card = i < cards.size() ? cards.get(i) : null;
-            components.get(i).render(card);
+        if (!cards.isEmpty()) {
+            components.getFirst().getParent().setVisible(true);
+            for (int i = 0; i < components.size(); i++) {
+                AbstractCard card = i < cards.size() ? cards.get(i) : null;
+                components.get(i).render(card);
+            }
+        } else {
+            components.getFirst().getParent().setVisible(false);
         }
     }
 
@@ -113,13 +120,13 @@ public abstract class RowSection extends GUISection implements SelectionListener
     public void resetSelection() {
         picks.clear();
 
-        for (CardComponent cardComponent: buildings)
+        for (CardComponent cardComponent : buildings)
             cardComponent.setSelected(false);
 
-        for (CardComponent cardComponent: characters)
+        for (CardComponent cardComponent : characters)
             cardComponent.setSelected(false);
 
-        for (CardComponent cardComponent: events)
+        for (CardComponent cardComponent : events)
             cardComponent.setSelected(false);
     }
 }
