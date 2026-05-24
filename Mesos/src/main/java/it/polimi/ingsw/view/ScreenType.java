@@ -9,7 +9,8 @@ public enum ScreenType {
     LOGIN,
     LOBBY_SELECTION,
     GAME_PLAY,
-    GAME_END;
+    GAME_END,
+    LEADERBOARD;
 
     public static TUIScreen getTUIScreen(ScreenType type, ClientController clientController) {
         return switch (type) {
@@ -17,6 +18,7 @@ public enum ScreenType {
             case LOBBY_SELECTION -> new TUILobbySelectionScreen(clientController);
             case GAME_PLAY -> new TUIGamePlayScreen(clientController);
             case GAME_END -> null;
+            case LEADERBOARD -> null;
         };
     }
 
@@ -26,7 +28,7 @@ public enum ScreenType {
             case LOBBY_SELECTION -> new GUILobbySelectionScreen(frame, clientController);
             case GAME_PLAY -> new GUIGamePlayScreen(frame, clientController);
             case GAME_END -> new GUIGameEndScreen(frame, clientController);
-
+            case LEADERBOARD -> new GUILeaderboardScreen(frame, clientController);
         };
     }
 }

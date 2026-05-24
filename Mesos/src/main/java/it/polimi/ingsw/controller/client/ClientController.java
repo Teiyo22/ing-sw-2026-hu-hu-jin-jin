@@ -17,7 +17,8 @@ import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.utils.LeaderboardEntry;
+import it.polimi.ingsw.utils.LeaderboardResult;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
@@ -49,6 +50,8 @@ public class ClientController implements VirtualClient {
 
     private Lobby currLobby = null;
     private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
+
+    private LeaderboardResult ClientLeaderboardResult;
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
@@ -261,7 +264,9 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void showLeaderboard(LeaderboardResult leaderboardResult) {
+        ClientLeaderboardResult = leaderboardResult;
 
+        view.transitionTo(ScreenType.LEADERBOARD);
     }
 
     @Override
@@ -580,6 +585,10 @@ public class ClientController implements VirtualClient {
     //=============================================================================
     // Getters
     //=============================================================================
+
+    public List<LeaderboardEntry> getLeaderboard(){
+        return ClientLeaderboardResult.getLeaderboardEntries();
+    }
 
     public String getID() {
         readLock.lock();
