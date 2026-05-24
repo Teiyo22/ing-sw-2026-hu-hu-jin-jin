@@ -34,6 +34,18 @@ public class WidgetFactory {
         return label;
     }
 
+    public static JLabel createLeaderboardCell(String content, Color color) {
+        JLabel label = new JLabel(content, SwingConstants.CENTER);
+        label.setFont(Fonts.small);
+        label.setForeground(Color.WHITE);
+        label.setBackground(color);
+        label.setPreferredSize(new Dimension(0, 60));
+        label.setBorder(new EmptyBorder(0, 10, 0, 10));
+        label.setOpaque(true);
+
+        return label;
+    }
+
     public static JLabel createLabel(String content) {
         JLabel label = new JLabel(content, SwingConstants.CENTER);
         label.setFont(Fonts.medium);
