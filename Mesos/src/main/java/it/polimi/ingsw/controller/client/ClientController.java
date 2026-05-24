@@ -333,7 +333,7 @@ public class ClientController implements VirtualClient {
                 currLobby.updateTribes(players);
                 currLobby.setRanking(players);
 
-                view.notifyChange();
+                view.transitionTo(ScreenType.GAME_END);
             }
         } finally {
             writeLock.unlock();

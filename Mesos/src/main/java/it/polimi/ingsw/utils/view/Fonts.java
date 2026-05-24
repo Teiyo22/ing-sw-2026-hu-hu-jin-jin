@@ -19,6 +19,8 @@ public class Fonts {
     public static final Color mesos_shadow_red_low_opacity = new Color(71, 19, 30, 120);
     public static final Color mesos_blue= new Color(20, 51, 68);
     public static final Color mesos_dark_blue = new Color(10, 23, 35);
+    public static final Color mesos_dark_blue_low_opacity = new Color(10, 23, 35, 175);
+
 
     public static final Color menu2 = new Color(0x0F051A);
     public static final Color select = new Color(15,5,26,140);
@@ -28,9 +30,9 @@ public class Fonts {
     public static final Color grey = new Color(30, 30, 30);
     public static final Color red      = new Color(0xEE3F2A);
     public static final Color parchment   = new Color(0xFFF3D3);
-    public static final Color gold       = new Color(255, 215,   0);
-    public static final Color silver      = new Color(211, 211, 211);
-    public static final Color bronze = new Color(205, 127,  50);
+    public static final Color gold       = new Color(255, 215,   0, 120);
+    public static final Color silver      = new Color(211, 211, 211, 120);
+    public static final Color bronze = new Color(205, 127,  50, 120);
 
 
     public static final Color blue      = new Color(0x2B2E4A);

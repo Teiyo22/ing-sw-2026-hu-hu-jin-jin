@@ -22,6 +22,6 @@ public class GameEndResponse extends Response {
 
     @Override
     public void receive(ClientController clientController) {
-
+        clientController.updateModel(lobbyID, players);
     }
 }
