@@ -7,8 +7,6 @@ import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIOfferPickAction;
 import it.polimi.ingsw.view.gui.action.GUICardPickAction;
-import it.polimi.ingsw.view.gui.components.CardPicksListener;
-import it.polimi.ingsw.view.gui.components.OfferPickListener;
 import it.polimi.ingsw.view.gui.components.OrderTileComponent;
 import it.polimi.ingsw.view.gui.util.Fonts;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
@@ -16,7 +14,6 @@ import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -68,8 +65,8 @@ public class GameInfoSection extends GUISection {
             return;
 
         if (currLobby.getTurnState() != null) {
-            currentEra.setText(String.format("<html><b>Current era</b>: %d</html>", currLobby.getTurnState().getEra()));
-            currentPlayer.setText(String.format("<html><b>Current player</b>: %s</html>", currLobby.getTurnState().getCurrPlayer().getName()));
+            currentEra.setText(formatEra(currLobby.getTurnState().getEra()));
+            currentPlayer.setText(formatCurrentPlayer(currLobby.getTurnState().getCurrPlayer()));
             pickOfferButton.setEnabled(currLobby.getTurnState().canPickOffer());
             pickCardsButton.setEnabled(currLobby.getTurnState().canPickCard());
         }
@@ -79,7 +76,7 @@ public class GameInfoSection extends GUISection {
                     p.getName(), p.getTotem(), p.getPP(), p.getFood()));
         }
 
-        orderTile.update(controller);
+        orderTile.render(controller);
     }
 
     private JPanel createInfoPanel(ClientController clientController) {
@@ -105,5 +102,13 @@ public class GameInfoSection extends GUISection {
         return new PanelBuilder()
                 .column(10, orderTile, gameInfoPanel, playerInfoPanel)
                 .buildPanel();
+    }
+
+    private String formatCurrentPlayer(Player player) {
+        return String.format("<html><b>Current player</b>: %s</html>", player != null ? player.getName() : "None");
+    }
+
+    private String formatEra(int era) {
+        return String.format("<html><b>Current era</b>: %s</html>", era != -1 ? era : "Ended");
     }
 }
