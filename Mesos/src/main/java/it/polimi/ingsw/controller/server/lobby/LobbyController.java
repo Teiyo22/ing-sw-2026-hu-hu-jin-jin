@@ -152,12 +152,20 @@ public class LobbyController {
         return state.isShowable();
     }
 
+    public LobbyState getState(){
+        return state;
+    }
+
     //=============================================================================
     // Setters
     //=============================================================================
 
     public void setState(LobbyState state) {
         this.state = state;
+    }
+
+    public void setModel(Game model){
+        this.model = model;
     }
 
     @Override
