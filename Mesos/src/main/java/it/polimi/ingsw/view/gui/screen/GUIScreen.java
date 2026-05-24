@@ -12,8 +12,8 @@ import java.util.List;
 public abstract class GUIScreen extends JPanel implements Screen {
     protected ClientController clientController;
     protected GUIView frame;
+    protected Image background;
 
-    protected String backgroundPath = "/images/mesos_blurred.png";
     protected List<GUISection> sections = List.of();
 
         public GUIScreen(GUIView frame, ClientController clientController) {
@@ -28,8 +28,7 @@ public abstract class GUIScreen extends JPanel implements Screen {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ImageIcon bg = new ImageIcon(getClass().getResource(backgroundPath));
-        g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
 
     @Override

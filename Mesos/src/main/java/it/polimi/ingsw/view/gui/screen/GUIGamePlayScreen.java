@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.section.*;
-import it.polimi.ingsw.view.gui.util.CardCache;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import javax.swing.*;
@@ -17,24 +17,24 @@ import java.util.Map;
 public class GUIGamePlayScreen extends GUIScreen {
     public GUIGamePlayScreen(GUIView frame, ClientController controller) {
         super(frame, controller);
+        this.background = ImageCache.loadImage("/images/mesos_blurred.png");
 
-        CardCache cardCache = new CardCache();
+        ImageCache imageCache = new ImageCache();
 
-        Map<Totem, Image> totemIcons = new HashMap<>();
-        for (Player p : controller.getCurrLobby().getPlayers().keySet()) {
-            totemIcons.put(p.getTotem(),
-                    new ImageIcon(getClass().getResource("/images/totems/" + p.getTotem() + ".png")).getImage());
-        }
+        for (Player p : controller.getCurrLobby().getPlayers().keySet())
+            imageCache.getImage("/images/totems/" + p.getTotem() + ".png");
 
-        RowSection topRowSection = new TopRowSection(cardCache);
-        RowSection bottomRowSection = new BottomRowSection(cardCache);
-        OfferTrackSection offerTrackSection = new OfferTrackSection(controller, totemIcons);
+        int maxCardCount = getMaxCardCount(controller.getCurrLobby().getSize());
+
+        RowSection topRowSection = new TopRowSection(imageCache, maxCardCount);
+        RowSection bottomRowSection = new BottomRowSection(imageCache, maxCardCount);
+        OfferTrackSection offerTrackSection = new OfferTrackSection(controller, imageCache);
 
         sections = List.of(
                 topRowSection,
                 bottomRowSection,
                 offerTrackSection,
-                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, totemIcons)
+                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache)
         );
 
         JPanel topRowPanel = sections.get(0).getPanel();
@@ -44,7 +44,7 @@ public class GUIGamePlayScreen extends GUIScreen {
 
         JPanel board = new PanelBuilder()
                 .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
-                .withPadding(30, 30, 30, 30)
+                .withPadding(30, 5, 30, 5)
                 .buildPanel();
 
         JPanel gameInfoContainer = new PanelBuilder().column(0, gameInfoPanel)
@@ -53,5 +53,11 @@ public class GUIGamePlayScreen extends GUIScreen {
 
         new PanelBuilder().edit(this)
                 .border(null, board, null, gameInfoContainer, null);
+    }
+
+    private int getMaxCardCount(int lobbySize) {
+        int maxDrawn = lobbySize + 4;
+        int maxBuildings = (int) Math.ceil((double) lobbySize / 2);
+        return maxDrawn + maxBuildings;
     }
 }

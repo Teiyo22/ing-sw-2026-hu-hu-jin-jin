@@ -28,12 +28,12 @@ public abstract class RowSection extends GUISection implements SelectionListener
     public abstract List<AbstractCard> getCharacters(Board board);
     public abstract List<AbstractCard> getEvents(Board board);
 
-    public RowSection(ImageCache imageCache) {
+    public RowSection(ImageCache imageCache, int maxCardCount) {
         picks = new HashSet<>();
 
-        events = IntStream.range(0, 4).mapToObj(i -> new CardComponent(null, imageCache)).toList();
-        characters = IntStream.range(0, 9).mapToObj(i -> new CardComponent(this, imageCache)).toList();
-        buildings = IntStream.range(0, 5).mapToObj(i -> new CardComponent(this, imageCache)).toList();
+        events = IntStream.range(0, 4).mapToObj(i -> new CardComponent(null, imageCache, maxCardCount)).toList();
+        characters = IntStream.range(0, 9).mapToObj(i -> new CardComponent(this, imageCache, maxCardCount)).toList();
+        buildings = IntStream.range(0, 5).mapToObj(i -> new CardComponent(this, imageCache, maxCardCount)).toList();
 
         JPanel eventsPanel = createCardPanel(events);
         JPanel charactersPanel = createCardPanel(characters);
@@ -48,6 +48,9 @@ public abstract class RowSection extends GUISection implements SelectionListener
 
     @Override
     public void render(ClientController controller) {
+        Dimension parentSize = panel.getParent().getSize();
+        panel.setPreferredSize(new Dimension(parentSize.width, parentSize.height / 4));
+
         Lobby currLobby = controller.getCurrLobby();
         Board board = controller.getBoard();
 
@@ -116,7 +119,7 @@ public abstract class RowSection extends GUISection implements SelectionListener
         return new PanelBuilder().rounded(20)
             .row(0, cards.toArray(new CardComponent[0]))
             .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
-            .withPadding(10, 20, 10, 20)
+            .withPadding(10, 10, 10, 10)
             .buildPanel();
     }
 }

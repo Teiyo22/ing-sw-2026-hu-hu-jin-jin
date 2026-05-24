@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.action.GUILoginAction;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
@@ -14,7 +15,7 @@ public class GUILoginScreen extends GUIScreen {
 
     public GUILoginScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
-        this.backgroundPath = "/images/mesos.png";
+        this.background = ImageCache.loadImage("/images/mesos.png");
         this.setLayout(new GridBagLayout());
 
         JLabel usernameLabel = WidgetFactory.mediumLabel("Username", 250, 35);

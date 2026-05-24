@@ -3,12 +3,12 @@ package it.polimi.ingsw.view.gui.section;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIOfferPickAction;
 import it.polimi.ingsw.view.gui.action.GUICardPickAction;
 import it.polimi.ingsw.view.gui.components.OrderTileComponent;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
@@ -28,7 +28,7 @@ public class GameInfoSection extends GUISection {
     private final JButton pickOfferButton;
 
     public GameInfoSection(ClientController clientController, RowSection topRowSection, RowSection bottomRowSection,
-                           OfferTrackSection offerTrackSection, Map<Totem, Image> totemIcons) {
+                           OfferTrackSection offerTrackSection, ImageCache imageCache) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Player action panel
@@ -36,7 +36,7 @@ public class GameInfoSection extends GUISection {
         pickCardsButton.setEnabled(false);
         pickOfferButton = WidgetFactory.tinyButton(new GUIOfferPickAction(clientController, offerTrackSection));
         pickOfferButton.setEnabled(false);
-        orderTile = new OrderTileComponent(clientController, totemIcons);
+        orderTile = new OrderTileComponent(clientController, imageCache);
 
         JPanel playerActionPanel = new PanelBuilder()
                 .column(5, pickCardsButton, pickOfferButton, orderTile)

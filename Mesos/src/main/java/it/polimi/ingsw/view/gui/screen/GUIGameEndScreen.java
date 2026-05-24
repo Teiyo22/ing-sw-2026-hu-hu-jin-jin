@@ -3,13 +3,12 @@ package it.polimi.ingsw.view.gui.screen;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 
 class GUIGameEndScreen extends GUIScreen {
     private static final int COLS = 4;
@@ -19,6 +18,7 @@ class GUIGameEndScreen extends GUIScreen {
 
     public GUIGameEndScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
+        this.background = ImageCache.loadImage("/images/mesos_blurred.png");
     }
 
     @Override

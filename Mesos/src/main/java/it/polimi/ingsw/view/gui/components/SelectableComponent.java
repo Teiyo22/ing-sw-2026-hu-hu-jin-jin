@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.gui.util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -61,6 +62,27 @@ public abstract class SelectableComponent<E> extends JLabel implements MouseList
 
     public E getElement() {
         return element;
+    }
+
+    protected Dimension computeSize(Dimension baselineSize, Dimension imageSize) {
+        int baselineWidth = baselineSize.width;
+        int baselineHeight = baselineSize.height;
+
+        int imageWidth = imageSize.width;
+        int imageHeight = imageSize.height;
+
+        double baselineRatio = (double) baselineWidth / baselineHeight;
+        double imageRatio = (double) imageWidth / imageHeight;
+
+        int finalWidth = baselineWidth;
+        int finalHeight = baselineHeight;
+
+        if (baselineRatio > imageRatio)
+            finalWidth = (int) (baselineHeight * imageRatio);
+        else
+            finalHeight = (int) (baselineWidth / imageRatio);
+
+        return new Dimension(finalWidth, finalHeight);
     }
 }
 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.gui.section.GUISection;
 import it.polimi.ingsw.view.gui.section.LobbyInfoSection;
 import it.polimi.ingsw.view.gui.section.LobbyListSection;
 import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class GUILobbySelectionScreen extends GUIScreen {
     public GUILobbySelectionScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
+        background = ImageCache.loadImage("/images/mesos_blurred.png");
 
         sections = List.of(
                 new LobbyListSection(clientController),

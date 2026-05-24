@@ -1,58 +1,49 @@
 package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.section.OfferTrackSection;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Map;
 
 public class OfferTileComponent extends SelectableComponent<OfferTile> {
-    private final Map<Totem, Image> totemIcons;
-    private ImageIcon totem;
+    private final ImageCache imageCache;
+    private final Image offerImage;
 
-    public OfferTileComponent(OfferTile offer, OfferTrackSection selectionListener, Map<Totem, Image> totemIcons) {
-        super(offer, selectionListener);
-        this.totemIcons = totemIcons;
-        this.totem = null;
+    public OfferTileComponent(OfferTile offerTile, OfferTrackSection selectionListener, ImageCache imageCache) {
+        super(offerTile, selectionListener);
+        this.imageCache = imageCache;
+        offerImage = ImageCache.loadImage("/images/offerTiles/" + element.getType() + ".png");
 
         this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setVerticalAlignment(SwingConstants.CENTER);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int) (screenSize.height * 0.3);
-        int width = (int) (height * (2.0 / 3.0));
-
-        Image img = new ImageIcon(getClass().getResource("/images/offerTiles/" + element.getType() + ".png")).getImage();
-        this.setIcon(new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_DEFAULT)));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (totem != null) {
-            totem.paintIcon(this, g,
-                (int) (this.getSize().width * 0.3245),
-                (int) (this.getSize().height * 0.21));
+
+        g.drawImage(offerImage, 3, 3, getWidth() - 6, getHeight() - 6, this);
+
+        Dimension componentSize = getSize();
+        if (element.getAssignedPlayer() != null) {
+            g.drawImage(
+                imageCache.getImage("/images/totems/" + element.getAssignedPlayer().getTotem() + ".png"),
+                (int) (componentSize.width * 0.3245),
+                (int) (componentSize.height * 0.21),
+                (int) (componentSize.width * 0.3525),
+                (int) (componentSize.height * 0.125),
+                this
+            );
         }
+
     }
 
     @Override
     public void render(OfferTile offerTile) {
         element = offerTile;
-
-        if (element.getAssignedPlayer() != null) {
-            totem = new ImageIcon(totemIcons.get(element.getAssignedPlayer().getTotem())
-                .getScaledInstance(
-                    Math.max((int) (this.getSize().width * 0.3525), 1),
-                    Math.max((int) (this.getSize().height * 0.125), 1),
-                    Image.SCALE_DEFAULT
-                ));
-        } else {
-            totem = null;
-        }
     }
 
     @Override
@@ -60,5 +51,22 @@ public class OfferTileComponent extends SelectableComponent<OfferTile> {
         if (element.getAssignedPlayer() == null) {
             super.mouseClicked(e);
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        Container parent = getParent();
+        if (parent != null && parent.getWidth() > 0) {
+            return computeSize(
+                new Dimension(parent.getWidth() / 8, parent.getHeight()),
+                new Dimension(offerImage.getWidth(this), offerImage.getHeight(this))
+            );
+        }
+        return super.getPreferredSize();
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return getPreferredSize();
     }
 }

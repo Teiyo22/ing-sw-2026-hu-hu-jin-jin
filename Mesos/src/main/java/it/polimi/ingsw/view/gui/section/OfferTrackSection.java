@@ -4,39 +4,41 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import it.polimi.ingsw.view.gui.components.SelectableComponent;
 import it.polimi.ingsw.view.gui.components.SelectionListener;
+import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class OfferTrackSection extends GUISection implements SelectionListener<SelectableComponent<OfferTile>> {
     private final List<SelectableComponent<OfferTile>> components;
     private SelectableComponent<OfferTile> selectedComponent;
 
-    public OfferTrackSection(ClientController controller, Map<Totem, Image> totemIcons) {
+    public OfferTrackSection(ClientController controller, ImageCache imageCache) {
         components = new ArrayList<>();
         selectedComponent = null;
 
         Board board = controller.getBoard();
         if (board != null)
             for (OfferTile offerTile : board.getOfferTrack())
-                components.add(new OfferTileComponent(offerTile, this, totemIcons));
+                components.add(new OfferTileComponent(offerTile, this, imageCache));
 
         panel = new PanelBuilder()
-                .row(5, components.toArray(new SelectableComponent[0]))
-                .buildPanel();
+            .row(5, components.toArray(new SelectableComponent[0]))
+            .buildPanel();
         panel.setEnabled(false);
     }
 
     @Override
     public void render(ClientController controller) {
+        Dimension parentSize = panel.getParent().getSize();
+        panel.setPreferredSize(new Dimension(parentSize.width, parentSize.height / 2));
+
         Board board = controller.getBoard();
         Lobby currLobby = controller.getCurrLobby();
 
