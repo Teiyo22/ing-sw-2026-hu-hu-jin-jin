@@ -40,7 +40,7 @@ public class GameEndState extends GameState {
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
 
-        LeaderboardDatabase.saveResults(game);
+        new LeaderboardDatabase().saveResults(game);
 
         game.getLobbyState().notifyGameEndUpdate();
     }
