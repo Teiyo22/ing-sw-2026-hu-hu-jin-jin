@@ -80,9 +80,8 @@ public class RoundEndState extends GameState {
         top.getEventCards().clear();
 
         List<Sustenance> sustenance = top.getSustenanceEventCards();
-        for(Sustenance s: sustenance){
+        for(Sustenance s: sustenance)
             s.moveTo(bottom);
-        }
         top.getSustenanceEventCards().clear();
 
         redrawCards();
@@ -95,29 +94,33 @@ public class RoundEndState extends GameState {
      * */
     private void redrawCards() {
         List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() + 4);
-        int ID = 0;
+        int nextID = 0;
 
         for(AbstractCard card: cards) {
-            if (card.getEra() > deck.getCurrentEra()) {
-                bottom.getBuildingCards().clear();
-                deck.changeEra();
+            if (card.getEra() > deck.getCurrentEra())
+                resolveEraChange();
 
-                for(AbstractCard building: top.getBuildingCards()){
-                    building.moveTo(bottom);
-                }
-                top.getBuildingCards().clear();
-
-                List<AbstractCard> buildings = deck.drawBuildingCards();
-                for(AbstractCard building: buildings){
-                    building.setID(ID);
-                    ID++;
-                    building.moveTo(top);
-                }
-            }
-
-            card.setID(ID);
-            ID++;
+            card.setID(nextID);
+            nextID++;
             card.moveTo(top);
+        }
+    }
+
+    private void resolveEraChange() {
+        int nextBuildingID = 10;
+
+        bottom.getBuildingCards().clear();
+        deck.changeEra();
+
+        for(AbstractCard building: top.getBuildingCards())
+            building.moveTo(bottom);
+        top.getBuildingCards().clear();
+
+        List<AbstractCard> buildings = deck.drawBuildingCards();
+        for(AbstractCard building: buildings){
+            building.setID(nextBuildingID);
+            building.moveTo(top);
+            nextBuildingID++;
         }
     }
 
