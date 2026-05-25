@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
-import it.polimi.ingsw.model.card.character.Builder;
-import it.polimi.ingsw.model.card.character.Inventor;
-import it.polimi.ingsw.model.card.character.InventorType;
-import it.polimi.ingsw.model.card.character.Shaman;
+import it.polimi.ingsw.model.card.character.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,14 +13,14 @@ public class Tribe implements Serializable {
     private int food;
     private int pp;
 
-    private final List<AbstractBuilding> buildings;
+    private List<AbstractBuilding> buildings;
 
-    private final Map<InventorType, Integer> inventors;
-    private final List<Builder> builders;
-    private final int[] shamans;
-    private final int[] hunters;
-    private int collectors;
-    private int artists;
+    private Map<InventorType, List<Inventor>> inventors;
+    private List<Builder> builders;
+    private List<Shaman> shamans;
+    private List<Hunter> hunters;
+    private List<Collector> collectors;
+    private List<Artist> artists;
 
     private int stars;
     private int sustenanceDiscount;
@@ -36,51 +33,140 @@ public class Tribe implements Serializable {
         this.pp = 0;
 
         this.buildings = new ArrayList<>();
-
         this.inventors = new HashMap<>();
         this.builders = new ArrayList<>();
-        this.hunters = new int[2];
-        this.shamans = new int[3];
-        this.collectors = 0;
-        this.artists = 0;
+        this.hunters = new ArrayList<>();
+        this.shamans = new ArrayList<>();
+        this.collectors = new ArrayList<>();
+        this.artists = new ArrayList<>();
 
         this.stars = 0;
         this.sustenanceDiscount = 0;
+        this.noLossRitualMod = false;
+        this.doubleRitualMod = false;
     }
 
-    public int getTribeSize() {
-        return getArtistCount() + getBuilderCount() + getCollectorCount() + getHunterCount() + getInventorCount() + getShamanCount();
+    public Tribe lightCopy() {
+        Tribe tribe = new Tribe();
+        tribe.food = this.food;
+        tribe.pp = this.pp;
+
+        tribe.buildings = null;
+        tribe.inventors = null;
+        tribe.builders = null;
+        tribe.hunters = null;
+        tribe.shamans = null;
+        tribe.collectors = null;
+        tribe.artists = null;
+
+        tribe.stars = this.stars;
+        tribe.sustenanceDiscount = this.sustenanceDiscount;
+        tribe.noLossRitualMod = this.noLossRitualMod;
+        tribe.doubleRitualMod = this.doubleRitualMod;
+        return tribe;
     }
+
+    // ================================================================
+    // Inventor related methods
+    // ================================================================
 
     public int getInventorCount() {
-        return inventors.values().stream().reduce(0, Integer::sum);
+        return inventors.values().stream()
+            .mapToInt(List::size)
+            .sum();
     }
 
     public int getNumInventorType(InventorType type) {
-        return inventors.getOrDefault(type, 0);
+        return inventors.getOrDefault(type, null) == null
+            ? 0
+            : inventors.get(type).size();
     }
 
-    public int getShamanCount() {
-        int totShamans = 0;
-        for (int i = 0; i < 3; i++)
-            totShamans += shamans[i];
-        return totShamans;
+    /**
+     * Get the bonus PP provided by the inventors.
+     * The bonus PP is the product of the number of unique inventor types and the number of inventors.
+     */
+    public int getInventorBonusPP() {
+        int types = inventors.size();
+        return getInventorCount() * types;
     }
+
+    /**
+     * Add an inventor in the tribe.
+     * If {@link InventorType} is already present, increment the number of inventors, otherwise add it with value 1.
+     */
+    public void addInventor(Inventor inventor) {
+        InventorType type = inventor.getInventorType();
+
+        List<Inventor> inventorList = inventors.getOrDefault(type, new ArrayList<>());
+        inventorList.add(inventor);
+        inventors.put(type, inventorList);
+    }
+
+    public int getUniqueInventorsCount(){
+        return this.inventors.size();
+    }
+
+    public List<Inventor> getInventors() {
+        return inventors.values().stream()
+            .flatMap(List::stream)
+            .toList();
+    }
+
+    // ================================================================
+    // Shaman related methods
+    // ================================================================
+
+    public int getShamanCount() {
+        return shamans.size();
+    }
+
+    /**
+     * Add shaman based on the number of stars.
+     */
+    public void addShaman(Shaman shaman) {
+        shamans.add(shaman);
+    }
+
+    public List<Shaman> getShamans() {
+        return new ArrayList<>(shamans);
+    }
+
+    /**
+     * Add the provided number of stars to the total stars.
+     *
+     * @param stars is provided by either the shamans or the bonus stars building.
+     * */
+    public void addStars(int stars) {
+        this.stars += stars;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setNoLossRitualMod(boolean b) {
+        noLossRitualMod = b;
+    }
+
+    public void setDoubleRitualMod(boolean b) {
+        doubleRitualMod = b;
+    }
+
+    public boolean getNoLossRitualMod() {
+        return noLossRitualMod;
+    }
+
+    public boolean getDoubleRitualMod() {
+        return doubleRitualMod;
+    }
+
+    // ================================================================
+    // Builder related methods
+    // ================================================================
 
     public int getBuilderCount() {
         return builders.size();
-    }
-
-    public int getCollectorCount() {
-        return collectors;
-    }
-
-    public int getHunterCount() {
-        return hunters[0] + hunters[1];
-    }
-
-    public int getArtistCount() {
-        return artists;
     }
 
     /**
@@ -88,11 +174,88 @@ public class Tribe implements Serializable {
      * The discount is the sum of all the discounts provided by the builders.
      */
     public int getBuilderDiscount() {
-        int totDiscount = 0;
+        return builders.stream()
+            .mapToInt(Builder::getBuildingDiscount)
+            .sum();
+    }
+
+    public void addBuilder(Builder builder) {
+        builders.add(builder);
+    }
+
+    public List<Builder> getBuilders() {
+        return new ArrayList<>(builders);
+    }
+
+    /**
+     * Get the builder bonus PP
+     * Every builder has a bonus PP that is added to the total PP at the end of the game.
+     */
+    public int getBuilderBonusPP() {
+        int totalBonus = 0;
         for (Builder builder : builders) {
-            totDiscount += builder.getBuildingDiscount();
+            totalBonus += builder.getBonusPP();
         }
-        return totDiscount;
+        return totalBonus;
+    }
+
+    public List<AbstractBuilding> getBuildings() {
+        return buildings;
+    }
+
+    public void addBuilding(AbstractBuilding building) {
+        buildings.add(building);
+    }
+
+    // ================================================================
+    // Hunter related methods
+    // ================================================================
+
+    public int getHunterCount() {
+        return hunters.size();
+    }
+
+    /**
+     * Add a hunter based on the presence of the icon.
+     * */
+    public void addHunter(Hunter hunter) {
+        hunters.add(hunter);
+    }
+
+    public List<Hunter> getHunters() {
+        return new ArrayList<>(hunters);
+    }
+
+    // ================================================================
+    // Artist related methods
+    // ================================================================
+
+    public int getArtistCount() {
+        return artists.size();
+    }
+
+    public void addArtist(Artist artist) {
+        artists.add(artist);
+    }
+
+    public List<Artist> getArtists() {
+        return new ArrayList<>(artists);
+    }
+
+    // ================================================================
+    // Collector related methods
+    // ================================================================
+
+    public int getCollectorCount() {
+        return collectors.size();
+    }
+
+    public void addCollector(Collector collector) {
+        collectors.add(collector);
+    }
+
+    public List<Collector> getCollectors() {
+        return new ArrayList<>(collectors);
     }
 
     public int getSustenanceDiscount() {
@@ -108,83 +271,18 @@ public class Tribe implements Serializable {
         this.sustenanceDiscount += discount;
     }
 
-    /**
-     * Add the provided number of stars to the total stars.
-     *
-     * @param stars is provided by either the shamans or the bonus stars building.
-     * */
-    public void addStars(int stars) {
-        this.stars += stars;
+    public int getTribeSize() {
+        return getArtistCount() +
+            getBuilderCount() +
+            getCollectorCount() +
+            getHunterCount() +
+            getInventorCount() +
+            getShamanCount();
     }
 
-
-    public int getStars() {
-        return stars;
-    }
-
-    /**
-     * Get the bonus PP provided by the inventors.
-     * The bonus PP is the product of the number of unique inventor types and the number of inventors.
-     */
-    public int getInventorBonusPP() {
-        int types = inventors.size();
-        return getInventorCount() * types;
-    }
-
-    /**
-     * Get the builder bonus PP
-     * Every builder has a bonus PP that is added to the total PP at the end of the game.
-     */
-    public int getBuilderBonusPP() {
-        int totalBonus = 0;
-        for (Builder builder : builders) {
-            totalBonus += builder.getBonusPP();
-        }
-        return totalBonus;
-    }
-
-    /**
-     * Add an inventor in the tribe.
-     * If {@link InventorType} is already present, increment the number of inventors, otherwise add it with value 1.
-     */
-    public void addInventor(Inventor inventor) {
-        InventorType type = inventor.getInventorType();
-        int value = 1;
-
-        if(inventors.containsKey(type))
-            value = inventors.get(type) + 1;
-        inventors.put(type, value);
-    }
-
-    /**
-     * Add shaman based on the number of stars.
-     */
-    public void addShaman(Shaman shaman) {
-        int shamanStars = shaman.getStar();
-        shamans[shamanStars-1]++;
-    }
-
-    public void addBuilder(Builder builder) {
-        builders.add(builder);
-    }
-
-    public void addCollector() {
-        collectors++;
-    }
-
-    /**
-     * Add a hunter based on the presence of the icon.
-     * */
-    public void addHunter(boolean hasIcon) {
-        if(hasIcon)
-            hunters[0]++;
-        else
-            hunters[1]++;
-    }
-
-    public void addArtist() {
-        artists++;
-    }
+    // ================================================================
+    // Other tribe methods
+    // ================================================================
 
     /**
      * Return the character with the minimum count.
@@ -209,10 +307,6 @@ public class Tribe implements Serializable {
         return min;
     }
 
-    public int getUniqueInventorsCount(){
-        return this.inventors.size();
-    }
-
     public int getFood() {
         return food;
     }
@@ -221,12 +315,12 @@ public class Tribe implements Serializable {
         this.food = food;
     }
 
-    public void setPP(int pp) {
-        this.pp = pp;
-    }
-
     public void addFood(int foodDelta) {
         this.food += foodDelta;
+    }
+
+    public void setPP(int pp) {
+        this.pp = pp;
     }
 
     public int getPP() {
@@ -235,29 +329,5 @@ public class Tribe implements Serializable {
 
     public void addPP(int ppDelta) {
         this.pp += ppDelta;
-    }
-
-    public List<AbstractBuilding> getBuildings() {
-        return buildings;
-    }
-
-    public void addBuilding(AbstractBuilding building) {
-        buildings.add(building);
-    }
-
-    public void setNoLossRitualMod(boolean b) {
-        noLossRitualMod = b;
-    }
-
-    public void setDoubleRitualMod(boolean b) {
-        doubleRitualMod = b;
-    }
-
-    public boolean getNoLossRitualMod() {
-        return noLossRitualMod;
-    }
-
-    public boolean getDoubleRitualMod() {
-        return doubleRitualMod;
     }
 }

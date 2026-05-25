@@ -20,7 +20,7 @@ public class Artist extends AbstractCharacter {
 
     @Override
     public void addToTribeOf(Player p) {
-        p.getTribe().addArtist();
+        p.getTribe().addArtist(this);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class Hunter extends AbstractCharacter {
 
     @Override
     public void addToTribeOf(Player p) {
-        p.getTribe().addHunter(hasIcon);
+        p.getTribe().addHunter(this);
 
         if(hasIcon) {
             p.addFood(p.getTribe().getHunterCount());
