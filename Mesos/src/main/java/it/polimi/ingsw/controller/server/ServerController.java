@@ -250,7 +250,14 @@ public class ServerController implements VirtualServer {
         try {
             if (!allClients.containsKey(clientID)) return;
 
-            ClientInterface previousValue = allClients.putIfAbsent(username, allClients.get(clientID));
+            ClientInterface client = allClients.get(clientID);
+            if (username.isEmpty()) {
+                client.showError("Username cannot be empty");
+                Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] failed to login as [%s]", clientID, username));
+                return;
+            }
+
+            ClientInterface previousValue = allClients.putIfAbsent(username, client);
             if (previousValue == null) {
                 ClientInterface loggedInClient = allClients.remove(clientID);
                 loggedInClient.confirmLogin(username);
