@@ -21,10 +21,6 @@ public class GUIGamePlayScreen extends GUIScreen {
         this.background = ImageCache.loadImage("/images/mesos_blurred.png");
 
         ImageCache imageCache = new ImageCache();
-
-        for (Player p : controller.getCurrLobby().getPlayers().keySet())
-            imageCache.getImage("/images/totems/" + p.getTotem() + ".png");
-
         int maxCardCount = getMaxCardCount(controller.getCurrLobby().getSize());
 
         RowSection topRowSection = new TopRowSection(imageCache, maxCardCount);
@@ -32,11 +28,11 @@ public class GUIGamePlayScreen extends GUIScreen {
         OfferTrackSection offerTrackSection = new OfferTrackSection(controller, imageCache);
 
         sections = List.of(
-                topRowSection,
-                bottomRowSection,
-                offerTrackSection,
-                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache),
-                new TribesSection(clientController)
+            topRowSection,
+            bottomRowSection,
+            offerTrackSection,
+            new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache),
+            new TribesSection(clientController)
         );
 
         JPanel topRowPanel = sections.get(0).getPanel();
@@ -46,26 +42,26 @@ public class GUIGamePlayScreen extends GUIScreen {
         JPanel tribesPanel = sections.get(4).getPanel();
 
         JPanel board = new PanelBuilder()
-                .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
-                .withPadding(30, 5, 30, 5)
-                .buildPanel();
+            .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
+            .withPadding(30, 5, 30, 5)
+            .buildPanel();
 
         JPanel gameInfoContainer = new PanelBuilder().column(0, gameInfoPanel)
-                .withPadding(30, 30, 30, 0)
-                .buildPanel();
+            .withPadding(30, 30, 30, 0)
+            .buildPanel();
 
-        JPanel container = new PanelBuilder()
-                .border(null, board, null, gameInfoContainer, null);
-
+        JPanel gamePanel = new PanelBuilder()
+            .border(null, board, null, gameInfoContainer, null)
+            .buildPanel();
 
         JTabbedPane tabs = WidgetFactory.createTab();
-        tabs.addTab("Game", container);
+        tabs.addTab("Game", gamePanel);
         tabs.addTab("Tribes", tribesPanel);
 
         this.setLayout(new BorderLayout());
         this.add(tabs, BorderLayout.CENTER);
     }
-        
+
 
     private int getMaxCardCount(int lobbySize) {
         int maxDrawn = lobbySize + 4;

@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TribesSection implements GUISection {
+public class TribesSection extends GUISection {
     private final JPanel mainPanel;
     private final JTabbedPane tabbedPane;
     private final Map<Player, PlayerLabels> playerLabelsMap;
@@ -56,9 +56,10 @@ public class TribesSection implements GUISection {
 
         setRowsMaxSize(row1, row2, row3, row4, row5);
 
-        JPanel infoBox = new PanelBuilder()
-                .rounded(25, 12, new Color(0x5D2030), row1, sep1, row2, sep2, row3, sep3, row4, sep4, row5)
-                .buildPanel();
+        JPanel infoBox = new PanelBuilder().rounded(25)
+            .column(12, row1, sep1, row2, sep2, row3, sep3, row4, sep4, row5)
+            .withTranslucentColor(new Color(0x5D2030))
+            .buildPanel();
 
         infoBox.setMaximumSize(new Dimension(600, 500));
         infoBox.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -69,14 +70,14 @@ public class TribesSection implements GUISection {
         return container;
     }
 
-    public void setRowsMaxSize(JPanel...rows){
-        for(JPanel row: rows){
+    public void setRowsMaxSize(JPanel... rows) {
+        for (JPanel row : rows) {
             row.setMaximumSize(new Dimension(600, 60));
         }
     }
 
     @Override
-    public void render(ClientController controller, JPanel container) {
+    public void render(ClientController controller) {
 
         for (Player player : controller.getCurrLobby().getPlayers().keySet()) {
             PlayerLabels labels = playerLabelsMap.get(player);
@@ -91,7 +92,7 @@ public class TribesSection implements GUISection {
     }
 
 
-    public void setLabels(PlayerLabels labels, Player p){
+    public void setLabels(PlayerLabels labels, Player p) {
         labels.pp.setText("PP: " + p.getPP());
         labels.food.setText("Food: " + p.getFood());
         labels.fullSet.setText("Full Set: " + p.getTribe().getMinChar());
@@ -105,11 +106,6 @@ public class TribesSection implements GUISection {
         labels.shaman.setText("Shamans: " + p.getTribe().getShamanCount());
         labels.artist.setText("Artists: " + p.getTribe().getArtistCount());
         labels.inventor.setText("Inventors: " + p.getTribe().getInventorCount());
-    }
-
-    @Override
-    public boolean isVisible(ClientController controller) {
-        return true;
     }
 
     @Override
