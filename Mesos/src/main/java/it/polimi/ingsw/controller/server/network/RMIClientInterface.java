@@ -6,8 +6,6 @@ import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
@@ -129,10 +127,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public void updateModel(int lobbyID, Player player, int offerIndex) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, orderTile, offerTrack)
+                () -> wrappedClient.updateModel(lobbyID, player, offerIndex)
         );
     }
 

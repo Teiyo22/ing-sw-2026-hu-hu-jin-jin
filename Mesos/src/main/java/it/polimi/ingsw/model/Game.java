@@ -111,6 +111,9 @@ public class Game {
     public void assignTo(Player player, int offerIndex) {
         board.getOfferTrack()[offerIndex].setPlayer(player);
         gameState.update();
+
+        if (lobbyState != null)
+            lobbyState.notifyOfferPick(player, offerIndex);
     }
 
     private List<Pickable> getPickable(Set<Integer> picks, Row row) {

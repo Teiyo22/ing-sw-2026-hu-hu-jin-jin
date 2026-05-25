@@ -6,8 +6,6 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
@@ -38,7 +36,7 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
     public abstract void showError(String errorMessage);
     public abstract void ping();
 
-    public abstract void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack);
+    public abstract void updateModel(int lobbyID, Player player, int offerIndex);
     public abstract void updateModel(int lobbyID, Player player, Board board);
     public abstract void updateModel(int lobbyID, Player player, Row topRow);
     public abstract void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow);

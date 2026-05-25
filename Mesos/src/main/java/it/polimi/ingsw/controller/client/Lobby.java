@@ -54,12 +54,19 @@ public class Lobby implements Serializable {
         this.updateTribes(players);
     }
 
-    public void updateOrderTile(OrderSlot[] orderTile) {
-        this.board.setOrderTile(orderTile);
-    }
+    public void resolveOfferPick(Player player, int offerIndex) {
+        Player movedPlayer = null;
 
-    public void updateOfferTrack(OfferTile[] offerTrack) {
-        this.board.setOfferTrack(offerTrack);
+        for (OrderSlot orderSlot: board.getOrderTile()) {
+            if (player.equals(orderSlot.getAssignedPlayer())) {
+                movedPlayer = orderSlot.getAssignedPlayer();
+                orderSlot.setPlayer(null);
+                break;
+            }
+        }
+
+        if (movedPlayer != null)
+            board.getOfferTrack()[offerIndex].setPlayer(movedPlayer);
     }
 
     public void updateTribe(Player updatedPlayer) {

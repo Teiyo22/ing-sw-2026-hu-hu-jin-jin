@@ -44,14 +44,11 @@ public class LobbyRunningState extends LobbyState {
 
             for (ClientInterface player : lobbyController.getPlayers().keySet())
                 player.stopLobby(lobbyController.getID());
-
             ServerController.getInstance().removeFromPlayingClients(lobbyController.getPlayers().keySet());
-
 
             Player removedPlayer = lobbyController.getPlayers().remove(client);
             for (ClientInterface listener : lobbyController.getListeners())
                 listener.removeClient(lobbyController.getID(), new Player(removedPlayer.getName(), removedPlayer.getTotem()));
-
 
             lobbyController.setState(new LobbyPausedState(lobbyController));
             lobbyController.shutdownGameLoop();
@@ -82,12 +79,11 @@ public class LobbyRunningState extends LobbyState {
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
     }
 
-    public void notifyOfferPick() {
-        OrderSlot[] orderTile = model.getBoard().getOrderTile();
-        OfferTile[] offerTrack = model.getBoard().getOfferTrack();
+    public void notifyOfferPick(Player player, int offerIndex) {
+        Player playerCopy = player.lightCopy();
 
-        for (ClientInterface player : lobbyController.getPlayers().keySet())
-            player.updateModel(lobbyController.getID(), orderTile, offerTrack);
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.updateModel(lobbyController.getID(), playerCopy, offerIndex);
     }
 
     public void notifyOfferResolution(Player player) {

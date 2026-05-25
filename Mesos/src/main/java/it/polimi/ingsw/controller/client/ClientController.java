@@ -13,8 +13,6 @@ import it.polimi.ingsw.controller.common.*;
 import it.polimi.ingsw.controller.server.network.RMIClientInterface;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
@@ -270,12 +268,11 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public void updateModel(int lobbyID, Player player, int offerIndex) {
         writeLock.lock();
         try {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                currLobby.updateOrderTile(orderTile);
-                currLobby.updateOfferTrack(offerTrack);
+                currLobby.resolveOfferPick(player, offerIndex);
 
                 view.notifyChange();
             }

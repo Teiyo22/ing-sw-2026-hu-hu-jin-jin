@@ -8,12 +8,9 @@ import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.common.messages.responses.*;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Set;
 
@@ -102,8 +99,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int lobbyID, OrderSlot[] orderTile, OfferTile[] offerTrack) {
-        OfferPickResponse response = new OfferPickResponse(lobbyID, orderTile, offerTrack);
+    public void updateModel(int lobbyID, Player player, int offerIndex) {
+        OfferPickResponse response = new OfferPickResponse(lobbyID, player, offerIndex);
         sendMessage(response);
     }
 

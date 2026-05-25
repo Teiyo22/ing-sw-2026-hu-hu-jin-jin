@@ -32,6 +32,10 @@ public class Player implements Comparable<Player>, Serializable {
         this.tribe = tribe;
     }
 
+    public Player lightCopy() {
+        return new Player(name, totem);
+    }
+
     /**
      * Initializes the player's tribe with the given initial food.
      *

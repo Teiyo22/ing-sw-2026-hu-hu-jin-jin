@@ -25,7 +25,6 @@ public class RoundStartState extends GameState {
     public void update() {
         if(currPlayer != null) {
             game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
-            game.getLobbyState().notifyOfferPick();
         }
 
         assignedSlots++;
