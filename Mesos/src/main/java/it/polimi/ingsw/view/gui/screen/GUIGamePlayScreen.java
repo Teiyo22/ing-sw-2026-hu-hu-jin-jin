@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.section.*;
 import it.polimi.ingsw.view.gui.util.ImageCache;
 import it.polimi.ingsw.view.gui.util.PanelBuilder;
+import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,13 +35,15 @@ public class GUIGamePlayScreen extends GUIScreen {
                 topRowSection,
                 bottomRowSection,
                 offerTrackSection,
-                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache)
+                new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache),
+                new TribesSection(clientController)
         );
 
         JPanel topRowPanel = sections.get(0).getPanel();
         JPanel bottomRowPanel = sections.get(1).getPanel();
         JPanel offerTrackPanel = sections.get(2).getPanel();
         JPanel gameInfoPanel = sections.get(3).getPanel();
+        JPanel tribesPanel = sections.get(4).getPanel();
 
         JPanel board = new PanelBuilder()
                 .border(topRowPanel, offerTrackPanel, bottomRowPanel, null, null)
@@ -51,9 +54,18 @@ public class GUIGamePlayScreen extends GUIScreen {
                 .withPadding(30, 30, 30, 0)
                 .buildPanel();
 
-        new PanelBuilder().edit(this)
+        JPanel container = new PanelBuilder()
                 .border(null, board, null, gameInfoContainer, null);
+
+
+        JTabbedPane tabs = WidgetFactory.createTab();
+        tabs.addTab("Game", container);
+        tabs.addTab("Tribes", tribesPanel);
+
+        this.setLayout(new BorderLayout());
+        this.add(tabs, BorderLayout.CENTER);
     }
+        
 
     private int getMaxCardCount(int lobbySize) {
         int maxDrawn = lobbySize + 4;

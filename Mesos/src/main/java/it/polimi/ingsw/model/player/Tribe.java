@@ -209,6 +209,10 @@ public class Tribe implements Serializable {
         return min;
     }
 
+    public int getUniqueInventorsCount(){
+        return this.inventors.size();
+    }
+
     public int getFood() {
         return food;
     }
