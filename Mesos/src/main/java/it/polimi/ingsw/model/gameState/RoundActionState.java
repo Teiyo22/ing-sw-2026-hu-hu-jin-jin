@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +24,9 @@ public class RoundActionState extends GameState {
 
     private int solvedOffers = 0;
     private int assignedPlayers = 0;
+
+    private int topRowPickable = 0;
+    private int bottomRowPickable = 0;
 
     public RoundActionState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -42,7 +46,8 @@ public class RoundActionState extends GameState {
             game.getLobbyState().notifyOfferResolution(currPlayer);
         }
 
-        for (; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++);
+        for (; solvedOffers < offerTrack.length && offerTrack[solvedOffers].getAssignedPlayer() == null; solvedOffers++)
+            ;
 
         if (offerTrack.length == solvedOffers) {
             game.setGameState(new ExtraActionState(game, buildingHandler));
@@ -52,15 +57,52 @@ public class RoundActionState extends GameState {
 
         currPlayer = offerTrack[solvedOffers].getAssignedPlayer();
         offerTrack[solvedOffers].solveBonusFood();
+        computePickable();
 
-        if (offerTrack[solvedOffers].getTopRowPickable() * game.getBoard().getTopRow().getPickableCardCount() == 0 &&
-            offerTrack[solvedOffers].getBottomRowPickable() * game.getBoard().getBottomRow().getPickableCardCount() == 0)
+        if (topRowPickable == 0 && bottomRowPickable == 0)
             update();
     }
 
     /**
-     * After a player has finished his action turn, he is assigned to the correct order slot.
+     * Computes how many cards the player has to pick from the top and bottom row.
      *
+     */
+    private void computePickable() {
+        topRowPickable = game.getBoard().getTopRow().getCharacterCards().size();
+        bottomRowPickable = game.getBoard().getBottomRow().getCharacterCards().size();
+
+        List<Integer> topBuildingCost = getBuildingsCost(game.getBoard().getTopRow());
+        List<Integer> bottomBuildingCost = getBuildingsCost(game.getBoard().getBottomRow());
+
+        int buildingDiscount = currPlayer.getTribe().getBuilderDiscount();
+
+        int food = currPlayer.getFood();
+        for (Integer c : topBuildingCost)
+            if (c - buildingDiscount <= food) {
+                topRowPickable++;
+                food -= Math.max(0, c - buildingDiscount);
+            }
+
+        food = currPlayer.getFood();
+        for (Integer c : bottomBuildingCost)
+            if (c - buildingDiscount <= food) {
+                bottomRowPickable++;
+                food -= Math.max(0, c - buildingDiscount);
+            }
+
+        topRowPickable = Math.min(topRowPickable, offerTrack[solvedOffers].getTopRowPickable());
+        bottomRowPickable = Math.min(bottomRowPickable, offerTrack[solvedOffers].getBottomRowPickable());
+    }
+
+    private List<Integer> getBuildingsCost(Row row) {
+        return row.getBuildingCards().stream()
+            .map(AbstractBuilding::getCost)
+            .sorted()
+            .toList();
+    }
+
+    /**
+     * After a player has finished his action turn, he is assigned to the correct order slot.
      */
     public void assignToOrderSlot(OfferTile offerTile) {
         OrderSlot orderSlot = game.getBoard().getOrderTile()[assignedPlayers];
@@ -83,44 +125,40 @@ public class RoundActionState extends GameState {
     @Override
     public String validate(CardPickPlayerAction action) {
         return validatePlayer(action.getPlayer()) +
-               validateIDList(action.getTopPicks(), game.getBoard().getTopRow()) +
-               validateIDList(action.getBottomPicks(), game.getBoard().getBottomRow()) +
-               validatePickCount(action.getTopPicks(), action.getBottomPicks()) +
-               validateFoodCost(action.getTopPicks(), action.getBottomPicks());
+            validatePickCount(action.getTopPicks(), action.getBottomPicks()) +
+            validateIDList(action.getTopPicks(), game.getBoard().getTopRow()) +
+            validateIDList(action.getBottomPicks(), game.getBoard().getBottomRow()) +
+            validateFoodCost(action.getTopPicks(), action.getBottomPicks());
+    }
+
+    private String validatePlayer(Player player) {
+        return player.equals(currPlayer) ? "" : "You can only play during your turn | ";
+    }
+
+    private String validatePickCount(Set<Integer> top, Set<Integer> bottom) {
+        return top.size() == topRowPickable && bottom.size() == bottomRowPickable
+            ? ""
+            : "Invalid number of picks | ";
     }
 
     private String validateIDList(Set<Integer> picks, Row row) {
         Set<Integer> rowCardIDs = row.getPickableCards().stream()
-                .map(AbstractCard::getID)
-                .collect(Collectors.toSet());
+            .map(AbstractCard::getID)
+            .collect(Collectors.toSet());
 
-        return rowCardIDs.containsAll(picks) ? "" : "The card ID(s) must be present |";
-    }
-
-    private String validatePickCount(Set<Integer> top , Set<Integer> bottom) {
-        int topPickCount, bottomPickCount;
-
-        OfferTile offerTile = offerTrack[solvedOffers];
-        topPickCount = offerTile.getTopRowPickable();
-        bottomPickCount = offerTile.getBottomRowPickable();
-
-        return top.size() <= topPickCount && bottom.size() <= bottomPickCount ? "" : "Invalid number of picks |";
+        return rowCardIDs.containsAll(picks) ? "" : "The card ID(s) must be present | ";
     }
 
     private String validateFoodCost(Set<Integer> top, Set<Integer> bottom) {
         Board board = game.getBoard();
 
         int buildingCost = Stream.concat(
-                board.getTopRow().getBuildingCards().stream().filter(b -> top.contains(b.getID())),
-                board.getBottomRow().getBuildingCards().stream().filter(b -> bottom.contains(b.getID())))
-                .mapToInt(AbstractBuilding::getCost)
-                .map(c -> Math.max(0, c - currPlayer.getTribe().getBuilderDiscount()))
-                .sum();
+             board.getTopRow().getBuildingCards().stream().filter(b -> top.contains(b.getID())),
+             board.getBottomRow().getBuildingCards().stream().filter(b -> bottom.contains(b.getID())))
+            .mapToInt(AbstractBuilding::getCost)
+            .map(c -> Math.max(0, c - currPlayer.getTribe().getBuilderDiscount()))
+            .sum();
 
-        return buildingCost <= currPlayer.getFood() ? "" : "Not enough food for the buildings |";
-    }
-
-    private String validatePlayer(Player player) {
-        return player.equals(currPlayer) ? "" : "You can only play during your turn |";
+        return buildingCost <= currPlayer.getFood() ? "" : "Not enough food for the buildings | ";
     }
 }

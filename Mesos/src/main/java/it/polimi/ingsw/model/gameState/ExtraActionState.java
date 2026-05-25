@@ -4,7 +4,16 @@ import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
+import it.polimi.ingsw.model.action.CardPickPlayerAction;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Row;
+import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.Player;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;
@@ -33,8 +42,55 @@ public class ExtraActionState extends GameState {
         if(currPlayer == null) {
             game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
-        } else if (game.getBoard().getTopRow().getPickableCardCount() == 0)
+        } else if (!canPick())
             update();
+    }
+
+    private boolean canPick() {
+        if (!game.getBoard().getTopRow().getCharacterCards().isEmpty())
+            return true;
+
+        for (AbstractBuilding b: game.getBoard().getTopRow().getBuildingCards())
+            if (b.getCost() - currPlayer.getTribe().getBuilderDiscount() <= currPlayer.getFood())
+                return true;
+
+        return false;
+    }
+
+    @Override
+    public String validate(CardPickPlayerAction action) {
+        return validatePlayer(action.getPlayer()) +
+               validatePickCount(action.getTopPicks(), action.getBottomPicks()) +
+               validateIDList(action.getTopPicks(), game.getBoard().getTopRow()) +
+               validateFoodCost(action.getTopPicks());
+    }
+
+    private String validatePlayer(Player player) {
+        return player.equals(currPlayer) ? "" : "You can only play during your turn | ";
+    }
+
+    private String validatePickCount(Set<Integer> top, Set<Integer> bottom) {
+        return top.size() == 1 && bottom.isEmpty() ? "" : "Invalid number of picks | ";
+    }
+
+    private String validateIDList(Set<Integer> picks, Row row) {
+        Set<Integer> rowCardIDs = row.getPickableCards().stream()
+            .map(AbstractCard::getID)
+            .collect(Collectors.toSet());
+
+        return rowCardIDs.containsAll(picks) ? "" : "The card ID(s) must be present | ";
+    }
+
+    private String validateFoodCost(Set<Integer> top) {
+        Board board = game.getBoard();
+
+        int buildingCost = board.getTopRow().getBuildingCards().stream()
+            .filter(b -> top.contains(b.getID()))
+            .mapToInt(AbstractBuilding::getCost)
+            .map(c -> Math.max(0, c - currPlayer.getTribe().getBuilderDiscount()))
+            .sum();
+
+        return buildingCost <= currPlayer.getFood() ? "" : "Not enough food for the buildings | ";
     }
 
     @Override
