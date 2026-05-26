@@ -46,7 +46,7 @@ public class ServerController implements VirtualServer {
     private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
     private final ExecutorService responseService = Executors.newVirtualThreadPerTaskExecutor();
     private final ScheduledExecutorService persistenceService = Executors.newSingleThreadScheduledExecutor();
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new Gson();
 
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
     private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
@@ -313,6 +313,8 @@ public class ServerController implements VirtualServer {
             persistenceService.scheduleAtFixedRate(() -> {
                 writeLock.lock();
                 try {
+                    System.out.println("[Persistence] Lobbies totali: " + lobbies.size());
+                    lobbies.forEach((id, lc) -> System.out.println("[Persistence] Lobby " + id + " stato: " + lc.getState().getClass().getSimpleName()));
                     //gets lobby in Running,Paused and Resumable
                     Map<Integer, Game> persLobby = lobbies.entrySet().stream()
                             .filter(e -> {
@@ -324,13 +326,15 @@ public class ServerController implements VirtualServer {
                             .collect(Collectors.toMap(Map.Entry::getKey,
                                     e -> e.getValue().getModel()
                             ));
-
-                    FileWriter writer = new FileWriter("saves/lobbies.json");
-                    gson.toJson(persLobby, writer);
-                    writer.close();
-
+                    System.out.println("[Persistence] Lobby da salvare: " + persLobby.size());
+                    new File("saves").mkdirs();
+                    try (FileWriter writer = new FileWriter("saves/lobbies.json")) {
+                        gson.toJson(persLobby, writer);
+                        writer.flush();
+                    }
                 } catch (IOException e) {
                     System.err.println("[Persistence] Errore: " + e.getMessage());
+                    System.err.println("[Persistence] Path: " + new File("saves").getAbsolutePath());
                 } finally {
                     writeLock.unlock();
                 }
@@ -345,6 +349,7 @@ public class ServerController implements VirtualServer {
                 FileReader reader = new FileReader(file);
                 Type type = new TypeToken<Map<Integer, Game>>(){}.getType();
                 Map<Integer, Game> savedMap = gson.fromJson(reader, type);
+                reader.close();
 
                 if (savedMap == null || savedMap.isEmpty()) return;
 
