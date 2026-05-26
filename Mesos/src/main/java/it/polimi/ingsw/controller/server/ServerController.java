@@ -22,8 +22,6 @@ import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -162,9 +160,9 @@ public class ServerController implements VirtualServer {
         readLock.lock();
         try {
             return this.lobbies.values().stream()
-                    .filter(LobbyController::isShowable)
-                    .map(LobbyController::getLobby)
-                    .toList();
+                .filter(LobbyController::isShowable)
+                .map(LobbyController::getLobby)
+                .toList();
         } finally {
             readLock.unlock();
         }
@@ -192,20 +190,20 @@ public class ServerController implements VirtualServer {
 
     public void broadcastLobbyRemoval(int lobbyID) {
         allClients.values().stream()
-                .filter(c -> !playingClients.containsKey(c.getID()))
-                .forEach(c -> c.removeLobby(lobbyID));
+            .filter(c -> !playingClients.containsKey(c.getID()))
+            .forEach(c -> c.removeLobby(lobbyID));
     }
 
     public void broadcastLobbyAddition(Lobby lobby) {
         allClients.values().stream()
-                .filter(c -> !playingClients.containsKey(c.getID()))
-                .forEach(c -> c.addLobby(lobby));
+            .filter(c -> !playingClients.containsKey(c.getID()))
+            .forEach(c -> c.addLobby(lobby));
     }
 
     public void broadcastLobbyUpdate(Lobby lobby) {
         allClients.values().stream()
-                .filter(c -> !playingClients.containsKey(c.getID()))
-                .forEach(c -> c.updateLobby(lobby));
+            .filter(c -> !playingClients.containsKey(c.getID()))
+            .forEach(c -> c.updateLobby(lobby));
     }
 
     public void removeLobby(int lobbyID) {
@@ -309,69 +307,70 @@ public class ServerController implements VirtualServer {
     // Persistence
     //=============================================================================
 
-        public void persistLobbies() {
-            persistenceService.scheduleAtFixedRate(() -> {
-                writeLock.lock();
-                try {
-                    System.out.println("[Persistence] Lobbies totali: " + lobbies.size());
-                    lobbies.forEach((id, lc) -> System.out.println("[Persistence] Lobby " + id + " stato: " + lc.getState().getClass().getSimpleName()));
-                    //gets lobby in Running,Paused and Resumable
-                    Map<Integer, Game> persLobby = lobbies.entrySet().stream()
-                            .filter(e -> {
-                                LobbyState state = e.getValue().getState();
-                                return state instanceof LobbyRunningState || state instanceof LobbyPausedState
-                                        || state instanceof LobbyResumableState;
-                            })
-                            //gets the lobbyID as Key and model as value
-                            .collect(Collectors.toMap(Map.Entry::getKey,
-                                    e -> e.getValue().getModel()
-                            ));
-                    System.out.println("[Persistence] Lobby da salvare: " + persLobby.size());
-                    new File("saves").mkdirs();
-                    try (FileWriter writer = new FileWriter("saves/lobbies.json")) {
-                        gson.toJson(persLobby, writer);
-                        writer.flush();
-                    }
-                } catch (IOException e) {
-                    System.err.println("[Persistence] Errore: " + e.getMessage());
-                    System.err.println("[Persistence] Path: " + new File("saves").getAbsolutePath());
-                } finally {
-                    writeLock.unlock();
-                }
-            }, 10, 10, TimeUnit.SECONDS);
-        }
-
-        public void loadPersistedLobbies() throws FileNotFoundException {
-            File file = new File("saves/lobbies.json");
-            if (!file.exists()) return;
-
+    public void persistLobbies() {
+        persistenceService.scheduleAtFixedRate(() -> {
+            writeLock.lock();
             try {
-                FileReader reader = new FileReader(file);
-                Type type = new TypeToken<Map<Integer, Game>>(){}.getType();
-                Map<Integer, Game> savedMap = gson.fromJson(reader, type);
-                reader.close();
-
-                if (savedMap == null || savedMap.isEmpty()) return;
-
-                int maxId = 0;
-                for (Map.Entry<Integer, Game> entry : savedMap.entrySet()) {
-                    Game game = entry.getValue();
-                    int id    = entry.getKey();
-
-                    LobbyController lc = new LobbyController(id, game.getPlayerConfig().getNum());
-                    lc.setModel(game);
-                    lc.setState(new LobbyPausedState(lc));
-
-                    savedLobbies.put(id, lc);
-                    if (id > maxId) maxId = id;
+                System.out.println("[Persistence] Lobbies totali: " + lobbies.size());
+                lobbies.forEach((id, lc) -> System.out.println("[Persistence] Lobby " + id + " stato: " + lc.getState().getClass().getSimpleName()));
+                //gets lobby in Running,Paused and Resumable
+                Map<Integer, Game> persLobby = lobbies.entrySet().stream()
+                    .filter(e -> {
+                        LobbyState state = e.getValue().getState();
+                        return state instanceof LobbyRunningState || state instanceof LobbyPausedState
+                            || state instanceof LobbyResumableState;
+                    })
+                    //gets the lobbyID as Key and model as value
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().getModel()
+                    ));
+                System.out.println("[Persistence] Lobby da salvare: " + persLobby.size());
+                new File("saves").mkdirs();
+                try (FileWriter writer = new FileWriter("saves/lobbies.json")) {
+                    gson.toJson(persLobby, writer);
+                    writer.flush();
                 }
-
-                nextLobbyID.set(maxId + 1);
-
             } catch (IOException e) {
-                System.err.println("[Boot] Errore caricamento: " + e.getMessage());
+                System.err.println("[Persistence] Errore: " + e.getMessage());
+                System.err.println("[Persistence] Path: " + new File("saves").getAbsolutePath());
+            } finally {
+                writeLock.unlock();
             }
+        }, 10, 10, TimeUnit.SECONDS);
+    }
+
+    public void loadPersistedLobbies() throws FileNotFoundException {
+        File file = new File("saves/lobbies.json");
+        if (!file.exists()) return;
+
+        try {
+            FileReader reader = new FileReader(file);
+            Type type = new TypeToken<Map<Integer, Game>>() {
+            }.getType();
+            Map<Integer, Game> savedMap = gson.fromJson(reader, type);
+            reader.close();
+
+            if (savedMap == null || savedMap.isEmpty()) return;
+
+            int maxId = 0;
+            for (Map.Entry<Integer, Game> entry : savedMap.entrySet()) {
+                Game game = entry.getValue();
+                int id = entry.getKey();
+
+                LobbyController lc = new LobbyController(id, game.getPlayerConfig().getNum());
+                lc.setModel(game);
+                lc.setState(new LobbyPausedState(lc));
+
+                savedLobbies.put(id, lc);
+                if (id > maxId) maxId = id;
+            }
+
+            nextLobbyID.set(maxId + 1);
+
+        } catch (IOException e) {
+            System.err.println("[Boot] Errore caricamento: " + e.getMessage());
         }
+    }
 
     //=============================================================================
     // Network related methods
@@ -440,7 +439,7 @@ public class ServerController implements VirtualServer {
     public void disconnectClient(ClientInterface client) {
         writeLock.lock();
         try {
-            ClientInterface removedClient =  allClients.remove(client.getID());
+            ClientInterface removedClient = allClients.remove(client.getID());
             if (removedClient == null) return;
 
             playingClients.remove(client.getID());
