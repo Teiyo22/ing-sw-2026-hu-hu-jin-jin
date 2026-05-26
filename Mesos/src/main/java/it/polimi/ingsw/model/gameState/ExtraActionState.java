@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,8 +40,10 @@ public class ExtraActionState extends GameState {
         if(currPlayer == null) {
             game.setGameState(new RoundEndState(game, buildingHandler));
             game.getGameState().update();
-        } else if (!canPick())
+        } else if (!canPick()) {
+            game.getLobbyState().notifyOfferResolution(currPlayer, new HashSet<>(), new HashSet<>());
             update();
+        }
     }
 
     private boolean canPick() {

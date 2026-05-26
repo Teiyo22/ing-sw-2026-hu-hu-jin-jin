@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gameState;
 
 import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.CardPickPlayerAction;
 import it.polimi.ingsw.model.board.Board;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,8 +60,10 @@ public class RoundActionState extends GameState {
         offerTrack[solvedOffers].solveBonusFood();
         computePickable();
 
-        if (topRowPickable == 0 && bottomRowPickable == 0)
+        if (topRowPickable == 0 && bottomRowPickable == 0) {
+            game.getLobbyState().notifyOfferResolution(currPlayer, new HashSet<>(), new HashSet<>());
             update();
+        }
     }
 
     /**
