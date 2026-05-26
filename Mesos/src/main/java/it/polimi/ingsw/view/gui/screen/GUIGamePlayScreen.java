@@ -32,7 +32,7 @@ public class GUIGamePlayScreen extends GUIScreen {
             bottomRowSection,
             offerTrackSection,
             new GameInfoSection(clientController, topRowSection, bottomRowSection, offerTrackSection, imageCache),
-            new TribesSection(clientController)
+            new TribesSection(clientController, imageCache)
         );
 
         JPanel topRowPanel = sections.get(0).getPanel();

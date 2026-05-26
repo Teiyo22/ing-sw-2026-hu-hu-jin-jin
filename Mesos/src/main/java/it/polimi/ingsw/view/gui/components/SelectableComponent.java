@@ -44,19 +44,23 @@ public abstract class SelectableComponent<E> extends JLabel implements MouseList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        outerBorder = BorderFactory.createRaisedBevelBorder();
-        this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+        if (selectionListener != null) {
+            outerBorder = BorderFactory.createRaisedBevelBorder();
+            this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        outerBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
-        this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+        if (selectionListener != null) {
+            outerBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
+            this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+        }
     }
 
     public void setSelected(boolean selected) {
         innerBorder = selected ? BorderFactory.createLineBorder(Fonts.mesos_yellow, 3)
-                : BorderFactory.createEmptyBorder(3, 3, 3, 3);
+            : BorderFactory.createEmptyBorder(3, 3, 3, 3);
         this.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }
 

@@ -2,114 +2,57 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.PlayerLabels;
+import it.polimi.ingsw.view.gui.util.*;
 import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TribesSection extends GUISection {
-    private final JPanel mainPanel;
     private final JTabbedPane tabbedPane;
-    private final Map<Player, PlayerLabels> playerLabelsMap;
+    private final List<PlayerInfo> playerLabelsList;
+    private final List<PlayerCards> playerCardsList;
 
-    public TribesSection(ClientController clientController) {
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setOpaque(false);
-
+    public TribesSection(ClientController clientController, ImageCache imageCache) {
         tabbedPane = WidgetFactory.createTab();
 
-        playerLabelsMap = new HashMap<>();
+        playerLabelsList = new ArrayList<>();
+        playerCardsList = new ArrayList<>();
 
         for (Player p : clientController.getCurrLobby().getPlayers().keySet()) {
-            PlayerLabels labels = new PlayerLabels(p.getName());
-            JPanel playerTabContainer = buildSinglePlayerTab(labels);
+            PlayerInfo labels = new PlayerInfo(p);
+            PlayerCards cards = new PlayerCards(p, imageCache);
+            JPanel playerTabContainer = buildSinglePlayerTab(labels, cards);
 
-            playerLabelsMap.put(p, labels);
+            playerLabelsList.add(labels);
+            playerCardsList.add(cards);
             tabbedPane.addTab(p.getName(), playerTabContainer);
         }
 
-        mainPanel.add(tabbedPane, BorderLayout.CENTER);
+        panel = new PanelBuilder().border(null, tabbedPane, null, null, null).buildPanel();
     }
 
-    private JPanel buildSinglePlayerTab(PlayerLabels labels) {
-        JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        container.setOpaque(false);
-        container.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
-
-        JPanel row1 = new PanelBuilder().row(0, labels.name, labels.pp).buildPanel();
-        JPanel row2 = new PanelBuilder().row(0, labels.food, labels.fullSet, labels.sustenanceDiscount).buildPanel();
-        JPanel row3 = new PanelBuilder().row(0, labels.stars, labels.builderDiscount, labels.uniqueInventors).buildPanel();
-        JPanel row4 = new PanelBuilder().row(0, labels.collector, labels.hunter, labels.builder).buildPanel();
-        JPanel row5 = new PanelBuilder().row(0, labels.shaman, labels.artist, labels.inventor).buildPanel();
-
-        JSeparator sep1 = WidgetFactory.createSeparator();
-        JSeparator sep2 = WidgetFactory.createSeparator();
-        JSeparator sep3 = WidgetFactory.createSeparator();
-        JSeparator sep4 = WidgetFactory.createSeparator();
-
-
-        setRowsMaxSize(row1, row2, row3, row4, row5);
-
-        JPanel infoBox = new PanelBuilder().rounded(25)
-            .column(12, row1, sep1, row2, sep2, row3, sep3, row4, sep4, row5)
-            .withTranslucentColor(new Color(0x5D2030))
+    private JPanel buildSinglePlayerTab(PlayerInfo info, PlayerCards cards) {
+        JPanel infoColumn = new PanelBuilder()
+            .grid(1, 0, 5, info.getRows())
+            .withPadding(5, 5, 5, 5)
             .buildPanel();
 
-        infoBox.setMaximumSize(new Dimension(600, 500));
-        infoBox.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        JPanel cardColumn = new PanelBuilder()
+            .grid(1, 0, 5, cards.getRows())
+            .withPadding(5, 5, 5, 5)
+            .buildPanel();
 
-        container.add(infoBox);
-        container.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        return container;
-    }
-
-    public void setRowsMaxSize(JPanel... rows) {
-        for (JPanel row : rows) {
-            row.setMaximumSize(new Dimension(600, 60));
-        }
+        return new PanelBuilder().border(null, cardColumn, null, infoColumn, null).buildPanel();
     }
 
     @Override
     public void render(ClientController controller) {
+        for (PlayerInfo playerInfo : playerLabelsList)
+            playerInfo.renderLabels();
 
-        for (Player player : controller.getCurrLobby().getPlayers().keySet()) {
-            PlayerLabels labels = playerLabelsMap.get(player);
-
-            if (labels != null) {
-                setLabels(labels, player);
-            }
-        }
-
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
-
-    public void setLabels(PlayerLabels labels, Player p) {
-        labels.pp.setText("PP: " + p.getPP());
-        labels.food.setText("Food: " + p.getFood());
-        labels.fullSet.setText("Full Set: " + p.getTribe().getMinChar());
-        labels.sustenanceDiscount.setText("Sustenance Discount: " + p.getTribe().getSustenanceDiscount());
-        labels.stars.setText("Stars: " + p.getTribe().getStars());
-        labels.builderDiscount.setText("Builder Discount: " + p.getTribe().getBuilderDiscount());
-        labels.uniqueInventors.setText("Unique inventors: " + p.getTribe().getUniqueInventorsCount());
-        labels.collector.setText("Collectors: " + p.getTribe().getCollectorCount());
-        labels.hunter.setText("Hunters: " + p.getTribe().getHunterCount());
-        labels.builder.setText("Builders: " + p.getTribe().getBuilderCount());
-        labels.shaman.setText("Shamans: " + p.getTribe().getShamanCount());
-        labels.artist.setText("Artists: " + p.getTribe().getArtistCount());
-        labels.inventor.setText("Inventors: " + p.getTribe().getInventorCount());
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return mainPanel;
+        for(PlayerCards playerCards : playerCardsList)
+            playerCards.renderCards();
     }
 }

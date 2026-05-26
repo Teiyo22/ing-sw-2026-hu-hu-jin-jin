@@ -23,19 +23,30 @@ public class CardComponent extends SelectableComponent<AbstractCard> {
         this.maxCardCount = maxCardCount;
 
         this.cache = cache;
+
         flipTimer = new Timer(200, e -> this.renderBack());
         flipTimer.setRepeats(false);
 
         this.setVisible(false);
     }
 
-    public void render(AbstractCard card){
-        this.element = card;
-
-        if (cardImage == null)
+    public void render(AbstractCard card) {
+        if (element != card) {
+            element = card;
             renderFront();
+        }
 
-        setVisible(card != null);
+        setVisible(element != null);
+    }
+
+    public void renderFront() {
+        cardImage = element == null ? null : cache.getImage("/images/front/" + element.getResource() + ".png");
+        repaint();
+    }
+
+    public void renderBack() {
+        cardImage = element == null ? null : cache.getImage("/images/back/" + element.getEra() + ".png");
+        repaint();
     }
 
     @Override
@@ -47,30 +58,31 @@ public class CardComponent extends SelectableComponent<AbstractCard> {
     @Override
     public Dimension getPreferredSize() {
         if (cardImage != null && getParent() != null) {
-            Container grandparent = getParent().getParent();
-            if (grandparent != null && grandparent.getWidth() > 0) {
+            Container baseline;
+
+            if (maxCardCount == 0) {
+                baseline = getParent();
                 return computeSize(
-                    new Dimension(grandparent.getWidth() / maxCardCount, grandparent.getHeight()),
+                    new Dimension(baseline.getWidth(), baseline.getHeight()),
+                    new Dimension(cardImage.getWidth(this), cardImage.getHeight(this))
+                );
+            }
+
+            baseline = getParent().getParent();
+            if (baseline != null && baseline.getHeight() > 0) {
+                return computeSize(
+                    new Dimension(baseline.getWidth() / maxCardCount, baseline.getHeight()),
                     new Dimension(cardImage.getWidth(this), cardImage.getHeight(this))
                 );
             }
         }
+
         return super.getPreferredSize();
     }
 
     @Override
     public Dimension getMaximumSize() {
         return getPreferredSize();
-    }
-
-    public void renderFront() {
-        cardImage = element == null ? null : cache.getImage("/images/front/" + element.getResource() + ".png");
-        repaint();
-    }
-
-    public void renderBack() {
-        cardImage = element == null ? null : cache.getImage("/images/back/" + element.getEra() + ".png");
-        repaint();
     }
 
     @Override
