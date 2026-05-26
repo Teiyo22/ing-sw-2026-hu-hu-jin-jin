@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.tui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.view.Screen;
-import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.utils.view.Formatter;
 import it.polimi.ingsw.view.tui.action.Action;
 import it.polimi.ingsw.view.tui.action.ActionRegistry;
 import it.polimi.ingsw.view.tui.section.Section;

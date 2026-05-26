@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.server.lobby.LobbyController;
-import it.polimi.ingsw.controller.common.info.GameEndStateInfo;
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.GameEndStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;

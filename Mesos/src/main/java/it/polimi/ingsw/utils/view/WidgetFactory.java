@@ -1,7 +1,4 @@
-package it.polimi.ingsw.view.gui.util.factory;
-
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
+package it.polimi.ingsw.utils.view;
 
 import javax.swing.*;
 import java.awt.*;

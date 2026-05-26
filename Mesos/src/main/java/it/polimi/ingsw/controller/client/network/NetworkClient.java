@@ -5,7 +5,7 @@ import com.google.gson.*;
 import java.io.*;
 import java.net.*;
 
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.action.PlayerAction;

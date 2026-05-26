@@ -7,10 +7,10 @@ import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIOfferPickAction;
 import it.polimi.ingsw.view.gui.action.GUICardPickAction;
 import it.polimi.ingsw.view.gui.components.OrderTileComponent;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.ImageCache;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.Fonts;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;

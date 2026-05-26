@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.gui.section.OfferTrackSection;
-import it.polimi.ingsw.view.gui.util.ImageCache;
+import it.polimi.ingsw.utils.view.ImageCache;
 
 import javax.swing.*;
 import java.awt.*;

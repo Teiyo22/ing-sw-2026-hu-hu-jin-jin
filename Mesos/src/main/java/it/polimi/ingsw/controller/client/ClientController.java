@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
 import it.polimi.ingsw.controller.client.turn.TurnState;
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
@@ -21,7 +21,7 @@ import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.utils.view.Formatter;
 
 import java.io.IOException;
 import java.rmi.server.UnicastRemoteObject;

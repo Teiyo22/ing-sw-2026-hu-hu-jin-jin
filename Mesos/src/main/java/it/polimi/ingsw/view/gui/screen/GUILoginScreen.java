@@ -3,10 +3,10 @@ package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.action.GUILoginAction;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.ImageCache;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.Fonts;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;

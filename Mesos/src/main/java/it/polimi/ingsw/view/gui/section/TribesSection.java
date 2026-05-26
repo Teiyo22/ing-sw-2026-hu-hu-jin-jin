@@ -2,8 +2,11 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.gui.util.*;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.view.gui.components.PlayerCards;
+import it.polimi.ingsw.view.gui.components.PlayerInfo;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 import java.util.ArrayList;

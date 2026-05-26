@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.components;
 
-import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.gui.util.Fonts;
+import it.polimi.ingsw.utils.view.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.Border;

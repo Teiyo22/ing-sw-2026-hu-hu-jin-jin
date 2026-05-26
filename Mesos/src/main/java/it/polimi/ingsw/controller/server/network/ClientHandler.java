@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.server.ServerController;

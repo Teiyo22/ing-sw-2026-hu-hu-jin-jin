@@ -1,19 +1,15 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.section.*;
-import it.polimi.ingsw.view.gui.util.ImageCache;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GUIGamePlayScreen extends GUIScreen {
     public GUIGamePlayScreen(GUIView frame, ClientController controller) {

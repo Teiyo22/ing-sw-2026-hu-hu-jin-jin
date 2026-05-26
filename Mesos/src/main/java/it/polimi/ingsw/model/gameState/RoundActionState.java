@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
-import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
+import it.polimi.ingsw.model.gameState.info.CardPickStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.CardPickPlayerAction;
 import it.polimi.ingsw.model.board.Board;

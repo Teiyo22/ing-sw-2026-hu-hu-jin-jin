@@ -3,18 +3,12 @@ package it.polimi.ingsw.view.gui.screen;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.section.CreateGameSection;
-import it.polimi.ingsw.view.gui.section.GUISection;
 import it.polimi.ingsw.view.gui.section.LobbyInfoSection;
 import it.polimi.ingsw.view.gui.section.LobbyListSection;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.ImageCache;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class GUILobbySelectionScreen extends GUIScreen {

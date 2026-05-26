@@ -1,7 +1,9 @@
-package it.polimi.ingsw.view.gui.util;
+package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.Fonts;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 

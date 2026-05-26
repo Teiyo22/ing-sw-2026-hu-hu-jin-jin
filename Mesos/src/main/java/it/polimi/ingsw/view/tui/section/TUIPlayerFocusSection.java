@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.utils.view.Formatter;
 
 public class TUIPlayerFocusSection implements Section {
     private Lobby currLobby;

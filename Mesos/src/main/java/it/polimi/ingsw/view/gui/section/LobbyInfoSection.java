@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.gui.action.GUIJoinLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 import it.polimi.ingsw.view.gui.action.GUIStartLobbyAction;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
-import it.polimi.ingsw.view.gui.util.factory.WidgetFactory;
+import it.polimi.ingsw.utils.view.Fonts;
+import it.polimi.ingsw.utils.view.PanelBuilder;
+import it.polimi.ingsw.utils.view.WidgetFactory;
 
 import javax.swing.*;
 import java.util.Map;

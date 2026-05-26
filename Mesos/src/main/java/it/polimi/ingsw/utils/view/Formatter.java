@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.tui;
+package it.polimi.ingsw.utils.view;
 
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;

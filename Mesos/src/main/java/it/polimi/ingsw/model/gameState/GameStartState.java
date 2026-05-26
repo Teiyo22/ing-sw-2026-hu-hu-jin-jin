@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;

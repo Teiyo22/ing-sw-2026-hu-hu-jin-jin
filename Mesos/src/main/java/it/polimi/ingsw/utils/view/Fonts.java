@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.util;
+package it.polimi.ingsw.utils.view;
 
 import java.awt.*;
 

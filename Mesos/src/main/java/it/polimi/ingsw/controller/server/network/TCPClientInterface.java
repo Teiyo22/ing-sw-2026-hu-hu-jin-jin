@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.messages.Request;

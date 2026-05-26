@@ -2,12 +2,10 @@ package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.view.gui.section.RowSection;
-import it.polimi.ingsw.view.gui.util.ImageCache;
+import it.polimi.ingsw.utils.view.ImageCache;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 
 public class CardComponent extends SelectableComponent<AbstractCard> {

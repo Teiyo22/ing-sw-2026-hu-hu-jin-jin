@@ -3,14 +3,10 @@ package it.polimi.ingsw.view.gui.components;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.view.gui.util.ImageCache;
+import it.polimi.ingsw.utils.view.ImageCache;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class OrderTileComponent extends JLabel {
     private static final double[] offsetMultipliers = {0.253, 0.21, 0.165, 0.095};

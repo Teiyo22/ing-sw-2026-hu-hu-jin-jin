@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.utils.view.Formatter;
 
 public class TUIClientInfoSection implements Section {
     @Override

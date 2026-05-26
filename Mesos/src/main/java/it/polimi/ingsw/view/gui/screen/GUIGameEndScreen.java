@@ -8,8 +8,8 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.gui.GUIView;
-import it.polimi.ingsw.view.gui.util.Fonts;
-import it.polimi.ingsw.view.gui.util.ImageCache;
+import it.polimi.ingsw.utils.view.Fonts;
+import it.polimi.ingsw.utils.view.ImageCache;
 
 class GUIGameEndScreen extends GUIScreen {
     private static final int COLS = 4;

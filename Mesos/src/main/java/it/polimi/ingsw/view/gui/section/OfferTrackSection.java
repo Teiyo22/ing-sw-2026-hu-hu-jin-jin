@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import it.polimi.ingsw.view.gui.components.SelectableComponent;
 import it.polimi.ingsw.view.gui.components.SelectionListener;
-import it.polimi.ingsw.view.gui.util.ImageCache;
-import it.polimi.ingsw.view.gui.util.PanelBuilder;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.info.CardPickStateInfo;
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.CardPickStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.action.CardPickPlayerAction;
@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ExtraActionState extends GameState {
     private Player currPlayer = null;

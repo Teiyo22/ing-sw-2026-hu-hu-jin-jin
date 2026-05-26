@@ -1,11 +1,10 @@
 package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
-import it.polimi.ingsw.view.gui.util.ImageCache;
+import it.polimi.ingsw.utils.view.ImageCache;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
-import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.utils.view.Formatter;
 
 public class TUIRowSection implements Section {
     private final boolean isTop;

@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.controller.common.info.ModelStateInfo;
-import it.polimi.ingsw.controller.common.info.OfferPickStateInfo;
+import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.model.gameState.info.OfferPickStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.action.OfferPickPlayerAction;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.ArrayList;
 import java.util.List;

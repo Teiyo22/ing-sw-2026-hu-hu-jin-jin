@@ -1,12 +1,12 @@
-package it.polimi.ingsw.view.gui.util;
+package it.polimi.ingsw.view.gui.components;
 
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.view.gui.components.CardComponent;
+import it.polimi.ingsw.utils.view.ImageCache;
+import it.polimi.ingsw.utils.view.PanelBuilder;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class PlayerCards {
     private final ImageCache cache;
