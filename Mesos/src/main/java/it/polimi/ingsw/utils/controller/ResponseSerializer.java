@@ -18,7 +18,6 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case LOGIN -> context.serialize(src, LoginResponse.class);
             case OFFER_PICK -> context.serialize(src, OfferPickResponse.class);
             case OFFER_RESOLUTION -> context.serialize(src, OfferResolutionResponse.class);
-            case EXTRA_ACTION -> context.serialize(src, ExtraActionResponse.class);
             case GAME_END -> context.serialize(src, GameEndResponse.class);
             case UPDATE_STATE -> context.serialize(src, UpdateStateResponse.class);
             case CREATE_LOBBY -> context.serialize(src, CreateLobbyResponse.class);

@@ -20,7 +20,7 @@ public class Collector extends AbstractCharacter{
 
     @Override
     public void addToTribeOf(Player p) {
-        p.getTribe().addCollector();
+        p.getTribe().addCollector(this);
         p.getTribe().addSustenanceDiscount(3);
     }
 
