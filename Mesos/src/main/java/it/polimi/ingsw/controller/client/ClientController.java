@@ -350,6 +350,16 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    public void hidePlayer() {
+        writeLock.lock();
+        try {
+            if (currLobby != null)
+                currLobby.hidePlayer();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
     //=============================================================================
     // Server related methods
     //=============================================================================

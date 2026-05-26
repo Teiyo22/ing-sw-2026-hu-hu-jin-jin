@@ -31,7 +31,7 @@ public class TUIHideAction implements Action {
 
     @Override
     public boolean parseAction(String[] args) {
-        currLobby.hidePlayer();
+        clientController.hidePlayer();
         return true;
     }
 
