@@ -35,6 +35,7 @@ public class ResponseSerializer implements JsonSerializer<Response> {
             case SET_ID -> context.serialize(src, SetIDResponse.class);
             case PING -> context.serialize(src, PingResponse.class);
             case ERROR -> context.serialize(src, ErrorMessage.class);
+            case EVENT_RESULT -> context.serialize(src, EventResultMessage.class);
             default -> throw new IllegalArgumentException("Unknown message type: " + type);
         };
     }

@@ -17,18 +17,18 @@ public class Formatter {
 
     public static String separatorLine(String title) {
         if (title == null || title.isEmpty())
-            return "+" + "=".repeat(width - 2) + "+";
+            return "+" + "=".repeat(Math.max(0, width - 2)) + "+";
 
         float multiplier = (width - 4 - title.length()) / 2.0f;
-        return "+" + "=".repeat((int) Math.floor(multiplier)) + " " + title + " " + "=".repeat((int) Math.ceil(multiplier)) + "+";
+        return "+" + "=".repeat(Math.max(0, (int) Math.floor(multiplier))) + " " + title + " " + "=".repeat(Math.max(0, (int) Math.ceil(multiplier))) + "+";
     }
 
     public static String line(String content) {
-        return "| " + content + " ".repeat(width - 4 - content.length()) + " |";
+        return "| " + content + " ".repeat(Math.max(0, width - 4 - content.length())) + " |";
     }
 
     public static String coloredLine(String content, String color) {
-        return "| " + color + content + reset + " ".repeat(width - 4 - content.length()) + " |";
+        return "| " + color + content + reset + " ".repeat(Math.max(0, width - 4 - content.length())) + " |";
     }
 
     public static String lobbyID(int content) {

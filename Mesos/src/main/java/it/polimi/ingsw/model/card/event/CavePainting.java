@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CavePainting extends AbstractEvent{
     @Expose private int bonusPP;  //must be a positive number
@@ -45,6 +47,9 @@ public class CavePainting extends AbstractEvent{
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();
+        List<EventResult> results = players.stream()
+            .map(EventResult::new)
+            .toList();
 
         for(Player player: players){  //apply effects for each player
             int numArtists = player.getTribe().getArtistCount();
@@ -57,6 +62,8 @@ public class CavePainting extends AbstractEvent{
         }
 
         game.getGameState().getBuildingHandler().applyCavePaintingEffects();
+        results.forEach(EventResult::computeDelta);
+        game.getLobbyState().notifyEventResolution("Cave Painting", results);
     }
 
     @Override

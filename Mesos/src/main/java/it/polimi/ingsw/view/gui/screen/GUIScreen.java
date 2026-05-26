@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.components.ErrorPanel;
@@ -42,4 +43,7 @@ public abstract class GUIScreen extends JPanel implements Screen {
                 JOptionPane.PLAIN_MESSAGE);
         });
     }
+
+    @Override
+    public void showEventResult(EventResultMessage eventResultMessage) {}
 }

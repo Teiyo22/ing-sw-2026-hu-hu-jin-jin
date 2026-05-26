@@ -22,7 +22,7 @@ public class ErrorPanel extends JPanel {
 
     private JLabel[] createErrorRows(List<String> errors) {
         return errors.stream()
-            .map(WidgetFactory::errorLabel)
+            .map(WidgetFactory::messageLabel)
             .toArray(JLabel[]::new);
     }
 }

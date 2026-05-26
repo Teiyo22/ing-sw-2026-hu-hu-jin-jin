@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.client.network.RMIServerInterface;
 import it.polimi.ingsw.controller.client.network.ServerInterface;
 import it.polimi.ingsw.controller.client.network.TCPServerInterface;
 import it.polimi.ingsw.controller.client.turn.TurnState;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.VirtualClient;
@@ -241,6 +242,17 @@ public class ClientController implements VirtualClient {
     @Override
     public void showError(ErrorMessage errorMsg) {
         view.displayError(errorMsg);
+    }
+
+    @Override
+    public void showEventResults(EventResultMessage eventResultMessage) {
+        writeLock.lock();
+        try {
+            if (currLobby != null && eventResultMessage.getLobbyID() == currLobby.getLobbyID())
+                view.displayEventResult(eventResultMessage);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     //=============================================================================

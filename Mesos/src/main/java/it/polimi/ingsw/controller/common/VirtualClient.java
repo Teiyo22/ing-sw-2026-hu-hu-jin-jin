@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.common;
 
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.board.Board;
@@ -29,6 +30,7 @@ public interface VirtualClient extends Remote {
     void startLobby(int lobbyID, Board board, List<Player> players) throws RemoteException;
     void stopLobby(int lobbyID) throws RemoteException;
     void showError(ErrorMessage errorMsg) throws RemoteException;
+    void showEventResults(EventResultMessage eventResultMessage) throws RemoteException;
 
     void updateModel(int lobbyID, Player player, int offerIndex) throws RemoteException;
     void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) throws RemoteException;

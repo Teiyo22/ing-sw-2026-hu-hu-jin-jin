@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.screen.GUIScreen;
@@ -47,6 +48,11 @@ public class GUIView extends JFrame implements View {
     @Override
     public void displayError(ErrorMessage errorMsg) {
         currScreen.showErrors(errorMsg);
+    }
+
+    @Override
+    public void displayEventResult(EventResultMessage eventResultMessage) {
+        currScreen.showEventResult(eventResultMessage);
     }
 
     @Override

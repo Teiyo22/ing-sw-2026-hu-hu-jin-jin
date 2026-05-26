@@ -152,6 +152,11 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
+    public void showEventResults(EventResultMessage eventResultMessage) {
+        sendMessage(eventResultMessage);
+    }
+
+    @Override
     public void ping() {
         PingResponse message = new PingResponse();
         sendMessage(message);

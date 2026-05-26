@@ -36,6 +36,9 @@ public class ShamanicRitual extends AbstractEvent {
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();
+        List<EventResult> results = players.stream()
+            .map(EventResult::new)
+            .toList();
 
         int minStars = players.getFirst().getTribe().getStars();
         int maxStars = minStars;  //number of stars owned by the player(s) who has the most
@@ -67,6 +70,9 @@ public class ShamanicRitual extends AbstractEvent {
                 }
             }
         }
+
+        results.forEach(EventResult::computeDelta);
+        game.getLobbyState().notifyEventResolution("Shamanic Ritual", results);
     }
 
     @Override

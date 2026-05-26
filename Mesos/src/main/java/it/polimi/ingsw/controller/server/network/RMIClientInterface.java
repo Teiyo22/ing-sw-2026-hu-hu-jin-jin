@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server.network;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
@@ -188,6 +189,14 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showError");
         submitRemoteCall(
                 () -> wrappedClient.showError(errorMsg)
+        );
+    }
+
+    @Override
+    public void showEventResults(EventResultMessage eventResultMessage) {
+        Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showEventResults");
+        submitRemoteCall(
+                () -> wrappedClient.showEventResults(eventResultMessage)
         );
     }
 

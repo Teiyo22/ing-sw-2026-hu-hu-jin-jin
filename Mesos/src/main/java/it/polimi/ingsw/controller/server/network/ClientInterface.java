@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
@@ -35,12 +36,14 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
     public abstract void startLobby(int lobbyID, Board board, List<Player> players);
     public abstract void stopLobby(int lobbyID);
     public abstract void showError(ErrorMessage errorMsg);
-    public abstract void ping();
+    public abstract void showEventResults(EventResultMessage eventResultMessage);
 
     public abstract void updateModel(int lobbyID, Player player, int offerIndex);
     public abstract void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks);
     public abstract void updateModel(int lobbyID, List<Player> players, Row topRow);
     public abstract void updateModel(int lobbyID, List<Player> players);
+
+    public abstract void ping();
 
     public void cleanup() {};
 

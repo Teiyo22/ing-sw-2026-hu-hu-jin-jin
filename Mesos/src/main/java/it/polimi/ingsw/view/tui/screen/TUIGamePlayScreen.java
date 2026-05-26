@@ -4,11 +4,14 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.tui.action.*;
 import it.polimi.ingsw.view.tui.section.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TUIGamePlayScreen extends TUIScreen {
     public TUIGamePlayScreen(ClientController clientController) {
         super(clientController);
+
+        eventResults = new ArrayList<>();
 
         registry = new ActionRegistry()
                 .register(new TUIDisconnectAction(clientController))
@@ -29,6 +32,4 @@ public class TUIGamePlayScreen extends TUIScreen {
                 new TUIPlayerFocusSection()
         );
     }
-
-
 }

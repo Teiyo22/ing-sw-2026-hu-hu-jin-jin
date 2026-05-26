@@ -41,6 +41,9 @@ public class Sustenance extends AbstractEvent {
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();
+        List<EventResult> results = players.stream()
+            .map(EventResult::new)
+            .toList();
 
         for(Player player: players) {  //apply the effects for each player
             //get the number of tribe members
@@ -54,6 +57,9 @@ public class Sustenance extends AbstractEvent {
                 player.addFood(-foodCost);  //otherwise just remove the needed amount of food, 1 per member
             }
         }
+
+        results.forEach(EventResult::computeDelta);
+        game.getLobbyState().notifyEventResolution("Sustenance", results);
     }
 
     @Override

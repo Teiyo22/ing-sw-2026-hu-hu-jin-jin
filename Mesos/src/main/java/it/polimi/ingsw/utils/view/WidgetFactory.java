@@ -96,13 +96,14 @@ public class WidgetFactory {
         return label;
     }
 
-    public static JLabel errorLabel(String content) {
+    public static JLabel messageLabel(String content) {
         JLabel label = defaultLabel(content);
         label.setForeground(Color.BLACK);
-        label.setFont(Fonts.tiny);
+        label.setFont(Fonts.monospaced);
 
         return label;
     }
+
 
     // ===============================================================
     // Other factory methods

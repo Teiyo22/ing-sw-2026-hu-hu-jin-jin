@@ -1,0 +1,38 @@
+package it.polimi.ingsw.model.card.event;
+
+import it.polimi.ingsw.model.player.Player;
+
+public class EventResult {
+    private Player player;
+    private int ppDelta;
+    private int foodDelta;
+    
+    public EventResult(Player player) {
+        this.player = player;
+        this.ppDelta = player.getPP();
+        this.foodDelta = player.getFood();
+    }
+
+    public int getFoodDelta() {
+        return foodDelta;
+    }
+
+    public int getPPDelta() {
+        return ppDelta;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void computeDelta() {
+        ppDelta = player.getPP() - ppDelta;
+        foodDelta = player.getFood() - foodDelta;
+        player = player.shallowCopy();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%10s | %10d | %10d", player.getName(), foodDelta, ppDelta);
+    }
+}

@@ -93,7 +93,7 @@ public class RoundEndState extends GameState {
      * the buildings in the top row are moved to the bottom row, and new buildings are drawn for the top row.
      * */
     private void redrawCards() {
-        List<AbstractCard> cards = deck.drawCards(game.getPlayers().size() + 4);
+        List<AbstractCard> cards = deck.drawCards(game.getPlayerConfig().getNum() + 4);
         int nextID = 0;
 
         for(AbstractCard card: cards) {

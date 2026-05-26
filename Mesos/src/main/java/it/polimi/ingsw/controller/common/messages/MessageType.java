@@ -25,5 +25,6 @@ public enum MessageType {
     GAME_END,
     PING,
     ERROR,
+    EVENT_RESULT,
     UPDATE_STATE
 }

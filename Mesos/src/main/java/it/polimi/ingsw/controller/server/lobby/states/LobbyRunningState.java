@@ -1,11 +1,13 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.model.card.event.EventResult;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.*;
@@ -101,6 +103,11 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(lobbyController.getID(), players);
 
         lobbyController.setState(new LobbyEndedState(lobbyController));
+    }
+
+    public void notifyEventResolution(String context, List<EventResult> results) {
+        for (ClientInterface client : lobbyController.getPlayers().keySet())
+            client.showEventResults(new EventResultMessage(lobbyController.getID(), context, results));
     }
 
     @Override

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.view.gui.GUIView;
+import it.polimi.ingsw.view.gui.components.EventResultPanel;
 import it.polimi.ingsw.view.gui.section.*;
 import it.polimi.ingsw.utils.view.ImageCache;
 import it.polimi.ingsw.utils.view.PanelBuilder;
@@ -63,5 +65,15 @@ public class GUIGamePlayScreen extends GUIScreen {
         int maxDrawn = lobbySize + 4;
         int maxBuildings = (int) Math.ceil((double) lobbySize / 2);
         return maxDrawn + maxBuildings;
+    }
+
+    @Override
+    public void showEventResult(EventResultMessage eventResultMessage) {
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this,
+                new EventResultPanel(eventResultMessage.getResults()),
+                eventResultMessage.getContext(),
+                JOptionPane.PLAIN_MESSAGE);
+        });
     }
 }

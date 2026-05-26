@@ -31,6 +31,9 @@ public class Hunt extends AbstractEvent {
     @Override
     public void onEvent(Game game) {
         List<Player> players = game.getPlayers();
+        List<EventResult> results = players.stream()
+            .map(EventResult::new)
+            .toList();
 
         for(Player player: players){  //apply effects for each player
             int numHunters = player.getTribe().getHunterCount();
@@ -39,6 +42,8 @@ public class Hunt extends AbstractEvent {
         }
 
         game.getGameState().getBuildingHandler().applyHuntEffects();
+        results.forEach(EventResult::computeDelta);
+        game.getLobbyState().notifyEventResolution("Hunt", results);
     }
 
     @Override
