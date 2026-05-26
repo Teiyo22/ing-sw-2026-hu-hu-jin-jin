@@ -43,6 +43,10 @@ public class Player implements Comparable<Player>, Serializable {
         return new Player(name, totem, rank);
     }
 
+    public Player mediumCopy() {
+        return new Player(name, totem, rank, tribe.lightCopy());
+    }
+
     /**
      * Initializes the player's tribe with the given initial food.
      *

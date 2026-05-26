@@ -57,6 +57,7 @@ public class Lobby implements Serializable {
     private void setTribes(Collection<Player> players) {
         for (Player player : players) {
             Player matchingPlayer = getPlayerReference(player);
+
             if (matchingPlayer != null)
                 matchingPlayer.setTribe(player.getTribe());
         }

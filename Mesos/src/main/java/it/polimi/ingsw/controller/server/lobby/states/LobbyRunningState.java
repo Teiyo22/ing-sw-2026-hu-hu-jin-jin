@@ -85,12 +85,12 @@ public class LobbyRunningState extends LobbyState {
 
     public void notifyOfferResolution(Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), player, topRowPicks, bottomRowPicks);
+            client.updateModel(lobbyController.getID(), player.mediumCopy(), topRowPicks, bottomRowPicks);
     }
 
     public void notifyRoundEndUpdate() {
         List<Player> players = lobbyController.getPlayers().values().stream()
-            .map(Player::lightCopy)
+            .map(Player::mediumCopy)
             .toList();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
@@ -99,7 +99,7 @@ public class LobbyRunningState extends LobbyState {
 
     public void notifyGameEndUpdate() {
         List<Player> players = lobbyController.getPlayers().values().stream()
-            .map(Player::lightCopy)
+            .map(Player::mediumCopy)
             .toList();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
