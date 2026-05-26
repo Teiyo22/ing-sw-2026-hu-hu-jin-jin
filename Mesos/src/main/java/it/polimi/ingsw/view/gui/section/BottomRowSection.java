@@ -2,6 +2,9 @@ package it.polimi.ingsw.view.gui.section;
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.util.ImageCache;
 
 import java.util.List;
@@ -12,23 +15,17 @@ public class BottomRowSection extends RowSection {
     }
 
     @Override
-    public List<AbstractCard> getBuildings(Board board) {
-        return board.getBottomRow().getBuildingCards().stream()
-                .map(b -> (AbstractCard) b)
-                .toList();
+    public List<AbstractBuilding> getBuildings(Board board) {
+        return board.getBottomRow().getBuildingCards();
     }
 
     @Override
-    public List<AbstractCard> getCharacters(Board board) {
-        return board.getBottomRow().getCharacterCards().stream()
-                .map(c -> (AbstractCard) c)
-                .toList();
+    public List<AbstractCharacter> getCharacters(Board board) {
+        return board.getBottomRow().getCharacterCards();
     }
 
     @Override
-    public List<AbstractCard> getEvents(Board board) {
-        return board.getBottomRow().getEventCards().stream()
-                .map(e -> (AbstractCard) e)
-                .toList();
+    public List<AbstractEvent> getEvents(Board board) {
+        return board.getBottomRow().getEventCards();
     }
 }

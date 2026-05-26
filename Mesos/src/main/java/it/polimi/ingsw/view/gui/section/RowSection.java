@@ -4,6 +4,9 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.view.gui.components.CardComponent;
 import it.polimi.ingsw.view.gui.components.SelectableComponent;
 import it.polimi.ingsw.view.gui.components.SelectionListener;
@@ -24,9 +27,9 @@ public abstract class RowSection extends GUISection implements SelectionListener
     private final List<CardComponent> characters;
     private final List<CardComponent> events;
 
-    public abstract List<AbstractCard> getBuildings(Board board);
-    public abstract List<AbstractCard> getCharacters(Board board);
-    public abstract List<AbstractCard> getEvents(Board board);
+    public abstract List<AbstractBuilding> getBuildings(Board board);
+    public abstract List<AbstractCharacter> getCharacters(Board board);
+    public abstract List<AbstractEvent> getEvents(Board board);
 
     public RowSection(ImageCache imageCache, int maxCardCount) {
         picks = new HashSet<>();
@@ -69,7 +72,7 @@ public abstract class RowSection extends GUISection implements SelectionListener
         }
     }
 
-    public void renderCards(List<AbstractCard> cards, List<CardComponent> components) {
+    public void renderCards(List<? extends AbstractCard> cards, List<CardComponent> components) {
         if (!cards.isEmpty()) {
             for (int i = 0; i < components.size(); i++) {
                 AbstractCard card = i < cards.size() ? cards.get(i) : null;
