@@ -16,7 +16,6 @@ public class OrderTileComponent extends JLabel {
     private static final double[] offsetMultipliers = {0.253, 0.21, 0.165, 0.095};
 
     private final double offsetMultiplier;
-    private final Image orderTileImage;
     private final ImageCache imageCache;
     private OrderSlot[] orderTile;
 
@@ -24,7 +23,7 @@ public class OrderTileComponent extends JLabel {
         this.imageCache = imageCache;
         offsetMultiplier = offsetMultipliers[clientController.getCurrLobby().getSize() - 2];
         orderTile = clientController.getBoard().getOrderTile();
-        orderTileImage = ImageCache.loadImage("/images/orderTiles/" + clientController.getCurrLobby().getSize() + ".png");
+        Image orderTileImage = ImageCache.loadImage("/images/orderTiles/" + clientController.getCurrLobby().getSize() + ".png");
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = (int) (screenSize.height * 0.3);
@@ -39,15 +38,16 @@ public class OrderTileComponent extends JLabel {
         super.paintComponent(g);
 
         Dimension componentSize = this.getSize();
-        for (int i = 0; i < orderTile.length && orderTile[i].getAssignedPlayer() != null; i++) {
-            g.drawImage(
-                imageCache.getImage("/images/totems/" + orderTile[i].getAssignedPlayer().getTotem() + ".png"),
-                (int) (componentSize.width * 0.345),
-                (int) (componentSize.height * offsetMultiplier + i * componentSize.height * 0.1725),
-                (int) (componentSize.width * 0.318),
-                (int) (componentSize.height * 0.115),
-                this
-            );
+        for (int i = 0; i < orderTile.length; i++) {
+            if (orderTile[i].getAssignedPlayer() != null)
+                g.drawImage(
+                    imageCache.getImage("/images/totems/" + orderTile[i].getAssignedPlayer().getTotem() + ".png"),
+                    (int) (componentSize.width * 0.345),
+                    (int) (componentSize.height * offsetMultiplier + i * componentSize.height * 0.1725),
+                    (int) (componentSize.width * 0.318),
+                    (int) (componentSize.height * 0.115),
+                    this
+                );
         }
     }
 

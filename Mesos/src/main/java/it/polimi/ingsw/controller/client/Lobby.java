@@ -113,7 +113,7 @@ public class Lobby implements Serializable {
 
     private boolean removeFromOfferTrack(Player player) {
         for (int i = 0; i < board.getOfferTrack().length; i++) {
-            if (board.getOfferTrack()[i].getAssignedPlayer() == player) {
+            if (player.equals(board.getOfferTrack()[i].getAssignedPlayer())) {
                 board.getOfferTrack()[i].setPlayer(null);
                 return true;
             }
