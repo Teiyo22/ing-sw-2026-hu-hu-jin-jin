@@ -88,7 +88,8 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addCardPickBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addCardPickBuilding(this);
     }
 
     @Override

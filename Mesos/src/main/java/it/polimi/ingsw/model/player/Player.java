@@ -155,6 +155,16 @@ public class Player implements Comparable<Player>, Serializable {
         this.tribe = tribe;
     }
 
+    public void updateTribe(Tribe tribe) {
+        this.tribe.setFood(tribe.getFood());
+        this.tribe.setPP(tribe.getPP());
+
+        this.tribe.setStars(tribe.getStars());
+        this.tribe.setSustenanceDiscount(tribe.getSustenanceDiscount());
+        this.tribe.setNoLossRitualMod(tribe.getNoLossRitualMod());
+        this.tribe.setDoubleRitualMod(tribe.getDoubleRitualMod());
+    }
+
     public Totem getTotem() {
         return totem;
     }

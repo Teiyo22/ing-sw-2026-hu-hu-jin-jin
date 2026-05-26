@@ -145,6 +145,10 @@ public class Tribe implements Serializable {
         return stars;
     }
 
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
     public void setNoLossRitualMod(boolean b) {
         noLossRitualMod = b;
     }
@@ -269,6 +273,10 @@ public class Tribe implements Serializable {
      */
     public void addSustenanceDiscount(int discount) {
         this.sustenanceDiscount += discount;
+    }
+
+    public void setSustenanceDiscount(int discount) {
+        this.sustenanceDiscount = discount;
     }
 
     public int getTribeSize() {

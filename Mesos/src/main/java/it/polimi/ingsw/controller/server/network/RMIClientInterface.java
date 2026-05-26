@@ -135,18 +135,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void updateModel(int lobbyID, Player player, Board board) {
+    public void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, board)
-        );
-    }
-
-    @Override
-    public void updateModel(int lobbyID, Player player, Row topRow) {
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
-        submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, topRow)
+                () -> wrappedClient.updateModel(lobbyID, player, topRowPicks, bottomRowPicks)
         );
     }
 

@@ -26,7 +26,8 @@ public class ExtraActionBuilding extends AbstractBuilding implements VisitableBu
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addExtraActionBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addExtraActionBuilding(this);
     }
 
     @Override

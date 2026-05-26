@@ -32,7 +32,8 @@ public class CavePaintingBuilding extends AbstractBuilding implements VisitableB
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addCavePaintingBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addCavePaintingBuilding(this);
     }
 
     @Override

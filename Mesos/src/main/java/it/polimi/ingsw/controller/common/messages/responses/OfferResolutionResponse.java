@@ -5,24 +5,27 @@ import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
+
+import java.util.Set;
 
 
 public class OfferResolutionResponse extends Response {
     private int lobbyID;
     private Player player;
-    private Board updatedBoard;
+    private Set<Integer> topRowPicks;
+    private Set<Integer> bottomRowPicks;
 
-    public OfferResolutionResponse(int lobbyID, Player player, Board updatedBoard){
+    public OfferResolutionResponse(int lobbyID, Player player, Set<Integer> getTopRowPicks, Set<Integer> getBottomRowPicks ){
         this.type = MessageType.OFFER_RESOLUTION;
         this.lobbyID = lobbyID;
         this.player = player;
-        this.updatedBoard = updatedBoard;
+        this.topRowPicks = getTopRowPicks;
+        this.bottomRowPicks = getBottomRowPicks;
     }
 
     @Override
     public void receive(ClientController clientController) {
-        clientController.updateModel(lobbyID, player, updatedBoard);
+        clientController.updateModel(lobbyID, player, topRowPicks, bottomRowPicks);
     }
 }
 

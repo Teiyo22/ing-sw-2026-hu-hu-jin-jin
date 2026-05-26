@@ -35,7 +35,8 @@ public class HuntBuilding extends AbstractBuilding implements VisitableBuilding 
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addHuntBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addHuntBuilding(this);
     }
 
     @Override

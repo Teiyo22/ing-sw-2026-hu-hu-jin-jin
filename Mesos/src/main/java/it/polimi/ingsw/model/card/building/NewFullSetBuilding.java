@@ -26,7 +26,8 @@ public class NewFullSetBuilding extends AbstractBuilding implements VisitableBui
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addCardPickBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addCardPickBuilding(this);
         minForSet = owner.getTribe().getMinChar() + 1;
     }
 

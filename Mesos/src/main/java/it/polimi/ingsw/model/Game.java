@@ -84,21 +84,18 @@ public class Game {
      *
      */
     public void pick(Player player, Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        List<Pickable> top = getPickable(topPicks, board.getTopRow());
-
-        for (Pickable p : top) {
+        for (Pickable p : board.getPickable(topPicks, true)) {
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getTopRow());
         }
 
-        List<Pickable> bottom = getPickable(bottomPicks, board.getBottomRow());
-
-        for (Pickable p : bottom) {
+        for (Pickable p : board.getPickable(bottomPicks, false)) {
             p.onPick(player, buildingHandler);
             p.removeFrom(board.getBottomRow());
         }
 
         gameState.update();
+        lobbyState.notifyOfferResolution(player, topPicks, bottomPicks);
     }
 
     /**
@@ -110,22 +107,10 @@ public class Game {
      */
     public void assignTo(Player player, int offerIndex) {
         board.getOfferTrack()[offerIndex].setPlayer(player);
+
         gameState.update();
-
-        if (lobbyState != null)
-            lobbyState.notifyOfferPick(player, offerIndex);
+        lobbyState.notifyOfferPick(player, offerIndex);
     }
 
-    private List<Pickable> getPickable(Set<Integer> picks, Row row) {
-        // It's fundamental that building cards are concatenated before character cards,
-        // to avoid the possibility of changing the player's building discount during the pick,
-        // thus influencing the cost of the buildings.
-        return Stream.concat(row.getBuildingCards().stream()
-            .filter(b -> picks.contains(b.getID()))
-            .map(b -> (Pickable) b),
-            row.getCharacterCards().stream()
-            .filter(c -> picks.contains(c.getID()))
-            .map(c -> (Pickable) c))
-            .toList();
-    }
+
 }

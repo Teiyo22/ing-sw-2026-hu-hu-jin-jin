@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class Board implements Serializable {
     transient Game game = null;
@@ -75,16 +79,21 @@ public class Board implements Serializable {
         this.bottomRow = bottomRow;
     }
 
-    public void setOfferTrack(OfferTile[] offerTrack) {
-        this.offerTrack = offerTrack;
-    }
-
-    public void setOrderTile(OrderSlot[] orderTile) {
-        this.orderTile = orderTile;
-    }
-
     public Game getGame() {
         return game;
     }
 
+    public List<Pickable> getPickable(Set<Integer> picks, boolean isTop) {
+        // It's fundamental that building cards are concatenated before character cards,
+        // to avoid the possibility of changing the player's building discount during the pick,
+        // thus influencing the cost of the buildings.
+        Row row = isTop ? topRow : bottomRow;
+        return Stream.concat(row.getBuildingCards().stream()
+                    .filter(b -> picks.contains(b.getID()))
+                    .map(b -> (Pickable) b),
+                row.getCharacterCards().stream()
+                    .filter(c -> picks.contains(c.getID()))
+                    .map(c -> (Pickable) c))
+            .toList();
+    }
 }

@@ -28,7 +28,8 @@ public abstract class AbstractCharacter extends AbstractCard implements Pickable
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         addToTribeOf(player);
-        buildingHandler.applyCardPickEffects(this, player);
+        if (buildingHandler != null)
+            buildingHandler.applyCardPickEffects(this, player);
     }
 
     @Override

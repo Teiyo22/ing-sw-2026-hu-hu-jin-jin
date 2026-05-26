@@ -5,11 +5,11 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
+import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Lobby implements Serializable {
@@ -57,7 +57,7 @@ public class Lobby implements Serializable {
     public void resolveOfferPick(Player player, int offerIndex) {
         Player movedPlayer = null;
 
-        for (OrderSlot orderSlot: board.getOrderTile()) {
+        for (OrderSlot orderSlot : board.getOrderTile()) {
             if (player.equals(orderSlot.getAssignedPlayer())) {
                 movedPlayer = orderSlot.getAssignedPlayer();
                 orderSlot.setPlayer(null);
@@ -70,13 +70,55 @@ public class Lobby implements Serializable {
     }
 
     public void updateTribe(Player updatedPlayer) {
-        for (Player player : players.keySet())
-            if (player.equals(updatedPlayer))
-                player.setTribe(updatedPlayer.getTribe());
+        Player actionPlayer = getPlayerReference(updatedPlayer);
+
+        if (actionPlayer != null)
+            actionPlayer.updateTribe(updatedPlayer.getTribe());
     }
 
-    public void updateBoard(Board board) {
-        this.board = board;
+    public void resolveCardPicks(Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
+        Player actionPlayer = getPlayerReference(player);
+
+        if (actionPlayer == null) return;
+
+        pickCards(actionPlayer, board.getPickable(topRowPicks, true), board.getTopRow());
+        pickCards(actionPlayer, board.getPickable(bottomRowPicks, false), board.getBottomRow());
+
+        if (removeFromOfferTrack(actionPlayer))
+            addToOrderTile(actionPlayer);
+    }
+
+    private void pickCards(Player player, List<Pickable> picks, Row row) {
+        for (Pickable p : picks) {
+            p.onPick(player, null);
+            p.removeFrom(row);
+        }
+    }
+
+    private Player getPlayerReference(Player player) {
+        for (Player p : players.keySet())
+            if (p.equals(player))
+                return p;
+        return null;
+    }
+
+    private boolean removeFromOfferTrack(Player player) {
+        for (int i = 0; i < board.getOfferTrack().length; i++) {
+            if (board.getOfferTrack()[i].getAssignedPlayer() == player) {
+                board.getOfferTrack()[i].setPlayer(null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addToOrderTile(Player player) {
+        for (int i = 0; i < board.getOrderTile().length; i++) {
+            if (board.getOrderTile()[i].getAssignedPlayer() == null) {
+                board.getOrderTile()[i].setPlayer(player);
+                return;
+            }
+        }
     }
 
     public void updateTopRow(Row row) {
@@ -178,8 +220,8 @@ public class Lobby implements Serializable {
 
     private Map<Player, Boolean> getPlayersCopy() {
         return players == null ? null :
-                players.entrySet().stream()
-                        .collect(Collectors.toMap(e -> e.getKey().copy(), Map.Entry::getValue));
+            players.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().copy(), Map.Entry::getValue));
     }
 
     private Player getShownPlayerCopy() {

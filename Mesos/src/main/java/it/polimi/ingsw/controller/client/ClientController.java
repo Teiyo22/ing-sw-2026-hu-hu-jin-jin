@@ -282,27 +282,12 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateModel(int lobbyID, Player player, Board board) {
+    public void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         writeLock.lock();
         try {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.resolveCardPicks(player, topRowPicks, bottomRowPicks);
                 currLobby.updateTribe(player);
-                currLobby.updateBoard(board);
-
-                view.notifyChange();
-            }
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    @Override
-    public void updateModel(int lobbyID, Player player, Row topRow) {
-        writeLock.lock();
-        try {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                currLobby.updateTribe(player);
-                currLobby.updateTopRow(topRow);
 
                 view.notifyChange();
             }

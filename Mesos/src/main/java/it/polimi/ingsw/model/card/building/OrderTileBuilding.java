@@ -26,7 +26,8 @@ public class OrderTileBuilding extends AbstractBuilding implements VisitableBuil
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
         super.onPick(player, buildingHandler);
-        buildingHandler.addOrderTileBuilding(this);
+        if (buildingHandler !=  null)
+            buildingHandler.addOrderTileBuilding(this);
     }
 
     @Override

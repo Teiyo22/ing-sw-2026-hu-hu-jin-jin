@@ -105,14 +105,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int lobbyID, Player player, Board board) {
-        OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, board);
-        sendMessage(response);
-    }
-
-    @Override
-    public void updateModel(int lobbyID, Player player, Row topRow) {
-        ExtraActionResponse response = new ExtraActionResponse(lobbyID, player, topRow);
+    public void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
+        OfferResolutionResponse response = new OfferResolutionResponse(lobbyID, player, topRowPicks, bottomRowPicks);
         sendMessage(response);
     }
 

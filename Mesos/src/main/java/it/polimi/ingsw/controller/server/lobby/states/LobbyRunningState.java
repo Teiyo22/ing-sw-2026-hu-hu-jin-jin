@@ -86,18 +86,9 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(lobbyController.getID(), playerCopy, offerIndex);
     }
 
-    public void notifyOfferResolution(Player player) {
-        Board board = model.getBoard();
-
+    public void notifyOfferResolution(Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), player, board);
-    }
-
-    public void notifyExtraActionResolution(Player player) {
-        Row topRow = model.getBoard().getTopRow();
-
-        for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), player, topRow);
+            client.updateModel(lobbyController.getID(), player, topRowPicks, bottomRowPicks);
     }
 
     public void notifyRoundEndUpdate() {
