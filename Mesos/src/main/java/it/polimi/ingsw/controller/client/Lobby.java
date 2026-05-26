@@ -131,8 +131,14 @@ public class Lobby implements Serializable {
     }
 
     public void updateRows(Row newTopRow) {
-        board.setBottomRow(board.getTopRow());
+        Row oldTopRow = board.getTopRow();
+
+        board.setBottomRow(oldTopRow);
         board.setTopRow(newTopRow);
+
+        if (!oldTopRow.getBuildingCards().isEmpty() &&
+            oldTopRow.getBuildingCards().getFirst().getEra() == newTopRow.getBuildingCards().getFirst().getEra())
+            oldTopRow.getBuildingCards().clear();
     }
 
     public void updateTribes(Collection<Player> updatedPlayers) {
@@ -142,7 +148,7 @@ public class Lobby implements Serializable {
     public void setRanking(Collection<Player> updatedPlayers) {
         for (Player updatedPlayer : updatedPlayers)
             for (Player player : players.keySet())
-                if (player.equals(updatedPlayers))
+                if (player.equals(updatedPlayer))
                     player.setRank(updatedPlayer.getRank());
     }
 
