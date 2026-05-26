@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
 import java.util.*;
@@ -233,11 +232,11 @@ public class Lobby implements Serializable {
     private Map<Player, Boolean> getPlayersCopy() {
         return players == null ? null :
             players.entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey().copy(), Map.Entry::getValue));
+                .collect(Collectors.toMap(e -> e.getKey().deepCopy(), Map.Entry::getValue));
     }
 
     private Player getShownPlayerCopy() {
-        return shownPlayer == null ? null : shownPlayer.copy();
+        return shownPlayer == null ? null : shownPlayer.deepCopy();
     }
 
     //=============================================================================

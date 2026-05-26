@@ -24,12 +24,13 @@ public class Row implements Serializable {
         this.buildingCards = new ArrayList<>();
     }
 
-    public Row(List<Sustenance> sustenanceEventCards, List<AbstractEvent> eventCards,
-               List<AbstractCharacter> characterCards, List<AbstractBuilding> buildingCards) {
-        this.sustenanceEventCards = sustenanceEventCards;
-        this.eventCards = eventCards;
-        this.characterCards = characterCards;
-        this.buildingCards = buildingCards;
+    public Row deepCopy() {
+        Row copy = new Row();
+        copy.sustenanceEventCards = new ArrayList<>(sustenanceEventCards);
+        copy.eventCards = new ArrayList<>(eventCards);
+        copy.characterCards = new ArrayList<>(characterCards);
+        copy.buildingCards = new ArrayList<>(buildingCards);
+        return copy;
     }
 
     public void addSustenanceEvent(Sustenance event){ sustenanceEventCards.add(event); }
@@ -62,44 +63,5 @@ public class Row implements Serializable {
         pickableCards.addAll(buildingCards);
 
         return pickableCards;
-    }
-
-    public Row copy() {
-        return new Row(sustenanceCopy(), eventCopy(), characterCopy(), buildingCopy());
-    }
-
-    private List<Sustenance> sustenanceCopy() {
-        return sustenanceEventCards.stream()
-                .map(Sustenance::clone)
-                .map(c -> (Sustenance) c)
-                .toList();
-    }
-
-    private List<AbstractEvent> eventCopy() {
-        return eventCards.stream()
-                .map(AbstractEvent::clone)
-                .map(c -> (AbstractEvent) c)
-                .toList();
-    }
-
-    private List<AbstractBuilding> buildingCopy() {
-        return buildingCards.stream()
-                .map(AbstractBuilding::clone)
-                .map(c -> (AbstractBuilding) c)
-                .toList();
-    }
-
-    private List<AbstractCharacter> characterCopy() {
-        return characterCards.stream()
-                .map(AbstractCharacter::clone)
-                .map(c -> (AbstractCharacter) c)
-                .toList();
-    }
-
-    /**
-     * Returns the number of remaining pickable cards in the row.
-     * */
-    public int getPickableCardCount() {
-        return characterCards.size() + buildingCards.size();
     }
 }

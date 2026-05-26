@@ -46,7 +46,7 @@ public class Tribe implements Serializable {
         this.doubleRitualMod = false;
     }
 
-    public Tribe lightCopy() {
+    public Tribe shallowCopy() {
         Tribe tribe = new Tribe();
         tribe.food = this.food;
         tribe.pp = this.pp;
@@ -63,6 +63,20 @@ public class Tribe implements Serializable {
         tribe.sustenanceDiscount = this.sustenanceDiscount;
         tribe.noLossRitualMod = this.noLossRitualMod;
         tribe.doubleRitualMod = this.doubleRitualMod;
+
+        return tribe;
+    }
+
+    public Tribe deepCopy() {
+        Tribe tribe = shallowCopy();
+        tribe.buildings = new ArrayList<>(this.buildings);
+        tribe.inventors = new HashMap<>(this.inventors);
+        tribe.builders = new ArrayList<>(this.builders);
+        tribe.hunters = new ArrayList<>(this.hunters);
+        tribe.shamans = new ArrayList<>(this.shamans);
+        tribe.collectors = new ArrayList<>(this.collectors);
+        tribe.artists = new ArrayList<>(this.artists);
+
         return tribe;
     }
 

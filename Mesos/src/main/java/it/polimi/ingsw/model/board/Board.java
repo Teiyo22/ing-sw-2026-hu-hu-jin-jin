@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -33,6 +34,22 @@ public class Board implements Serializable {
         this.offerTrack = offerTrack;
     }
 
+    public Board deepCopy() {
+        OrderSlot[] orderTileCopy = new OrderSlot[orderTile.length];
+        for (int i = 0; i < orderTile.length; i++)
+            orderTileCopy[i] = orderTile[i].copy();
+
+        OfferTile[] offerTrackCopy = new OfferTile[offerTrack.length];
+        for (int i = 0; i < offerTrack.length; i++)
+            offerTrackCopy[i] = offerTrack[i].copy();
+
+        return new Board(
+            topRow.deepCopy(),
+            bottomRow.deepCopy(),
+            orderTileCopy,
+            offerTrackCopy);
+    }
+
     /**
      * Initializes the offer track by loading the configurations associated with the game's player config.
      */
@@ -55,9 +72,7 @@ public class Board implements Serializable {
         return orderTile;
     }
 
-    public Board copy() {
-        return new Board(topRow, bottomRow, orderTile, offerTrack);
-    }
+
 
     public Deck getDeck() {
         return deck;

@@ -5,16 +5,9 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.PlayerAction;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
 
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class LobbyRunningState extends LobbyState {
     final private Game model;
@@ -77,7 +70,7 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyOfferPick(Player player, int offerIndex) {
-        Player playerCopy = player.lightCopy();
+        Player playerCopy = player.shallowCopy();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
             client.updateModel(lobbyController.getID(), playerCopy, offerIndex);

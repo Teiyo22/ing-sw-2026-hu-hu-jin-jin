@@ -25,26 +25,24 @@ public class Player implements Comparable<Player>, Serializable {
         this.tribe = null;
     }
 
-    public Player(String name, Totem totem, int rank) {
-        this.name = name;
-        this.totem = totem;
-        this.rank = rank;
-        this.tribe = null;
-    }
-
-    public Player(String name, Totem totem, int rank, Tribe tribe) {
-        this.name = name;
-        this.totem = totem;
-        this.rank = rank;
-        this.tribe = tribe;
-    }
-
-    public Player lightCopy() {
-        return new Player(name, totem, rank);
+    public Player shallowCopy() {
+        Player copy = new Player(name, totem);
+        copy.setRank(rank);
+        return copy;
     }
 
     public Player mediumCopy() {
-        return new Player(name, totem, rank, tribe.lightCopy());
+        Player copy = new Player(name, totem);
+        copy.setRank(rank);
+        copy.tribe = tribe.shallowCopy();
+        return copy;
+    }
+
+    public Player deepCopy() {
+        Player copy = new Player(name, totem);
+        copy.rank = rank;
+        copy.tribe = tribe.deepCopy();
+        return copy;
     }
 
     /**
@@ -180,9 +178,7 @@ public class Player implements Comparable<Player>, Serializable {
         return totem;
     }
 
-    public Player copy() {
-        return new Player(name, totem, rank, tribe);
-    }
+
 
     @Override
     public boolean equals(Object obj) {
