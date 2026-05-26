@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.view.ImageCache;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class BottomRowSection extends RowSection {
     public BottomRowSection(ImageCache imageCache, int maxCardCount) {
@@ -25,6 +26,9 @@ public class BottomRowSection extends RowSection {
 
     @Override
     public List<AbstractEvent> getEvents(Board board) {
-        return board.getBottomRow().getEventCards();
+        return Stream.concat(
+            board.getBottomRow().getEventCards().stream(),
+            board.getBottomRow().getSustenanceEventCards().stream()
+        ).toList();
     }
 }

@@ -8,8 +8,6 @@ import it.polimi.ingsw.utils.view.WidgetFactory;
 import javax.swing.*;
 
 public class PlayerInfo {
-    private final Player player;
-
     public JLabel name;
     public JLabel pp;
     public JLabel food;
@@ -24,10 +22,8 @@ public class PlayerInfo {
     public JLabel artist;
     public JLabel inventor;
 
-    public PlayerInfo(Player player){
-        this.player = player;
-
-        this.name               = WidgetFactory.monospacedLabel(player.getName());
+    public PlayerInfo() {
+        this.name               = WidgetFactory.monospacedLabel("");
         this.pp                 = WidgetFactory.monospacedLabel("PP: 0");
         this.food               = WidgetFactory.monospacedLabel("Food: 0");
         this.sustenanceDiscount = WidgetFactory.monospacedLabel("Sustenance Discount: 0");
@@ -42,7 +38,8 @@ public class PlayerInfo {
         this.inventor           = WidgetFactory.monospacedLabel("Inventors: 0");
     }
 
-    public void renderLabels() {
+    public void renderLabels(Player player) {
+        name.setText(player.getName());
         pp.setText("PP: " + player.getPP());
         food.setText("Food: " + player.getFood());
         sustenanceDiscount.setText("Sustenance Discount: " + player.getTribe().getSustenanceDiscount());

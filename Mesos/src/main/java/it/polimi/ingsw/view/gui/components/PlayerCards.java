@@ -10,7 +10,6 @@ import java.util.List;
 
 public class PlayerCards {
     private final ImageCache cache;
-    private final Player player;
 
     private JPanel buildingRow;
     private JPanel collectorRow;
@@ -20,8 +19,7 @@ public class PlayerCards {
     private JPanel artistRow;
     private JPanel inventorRow;
 
-    public PlayerCards(Player player, ImageCache cache) {
-        this.player = player;
+    public PlayerCards(ImageCache cache) {
         this.cache = cache;
 
         buildingRow = new PanelBuilder().row(0).buildPanel();
@@ -33,7 +31,7 @@ public class PlayerCards {
         inventorRow = new PanelBuilder().row(0).buildPanel();
     }
 
-    public void renderCards() {
+    public void renderCards(Player player) {
         renderRow(buildingRow, player.getBuildings());
         renderRow(collectorRow, player.getTribe().getCollectors());
         renderRow(hunterRow, player.getTribe().getHunters());
