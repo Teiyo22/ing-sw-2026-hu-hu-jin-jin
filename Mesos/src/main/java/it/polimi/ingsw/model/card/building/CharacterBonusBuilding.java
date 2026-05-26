@@ -98,6 +98,6 @@ public class CharacterBonusBuilding extends AbstractBuilding implements Visitabl
 
         String format = "| %-25s ".repeat(bonuses.size());
 
-        return String.format(format, ID, type, bonuses);
+        return super.toString() + String.format(format, bonuses);
     }
 }

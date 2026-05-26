@@ -47,9 +47,9 @@ public class CavePaintingBuilding extends AbstractBuilding implements VisitableB
 
     @Override
     public String toString() {
-        String format = " %| %-25s ";
+        String format = " | %-25s ";
         String BONUSFOOD = String.format("BonusPP: %d", bonusFood);
 
-        return String.format(format, BONUSFOOD);
+        return super.toString() + String.format(format, BONUSFOOD);
     }
 }
