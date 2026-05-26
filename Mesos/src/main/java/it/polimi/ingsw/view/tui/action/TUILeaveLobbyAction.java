@@ -29,9 +29,9 @@ public class TUILeaveLobbyAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         new LeaveLobbyCommand(clientController).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

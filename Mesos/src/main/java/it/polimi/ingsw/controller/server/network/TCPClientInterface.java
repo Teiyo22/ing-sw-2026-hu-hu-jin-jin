@@ -147,9 +147,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void showError(String errorMessage) {
-        ErrorMessage message = new ErrorMessage(errorMessage);
-        sendMessage(message);
+    public void showError(ErrorMessage errorMsg) {
+        sendMessage(errorMsg);
     }
 
     @Override

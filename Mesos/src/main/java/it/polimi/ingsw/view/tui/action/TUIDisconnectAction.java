@@ -28,9 +28,9 @@ public class TUIDisconnectAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         new DisconnectCommand(clientController).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

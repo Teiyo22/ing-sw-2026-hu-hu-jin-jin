@@ -32,9 +32,9 @@ public class TUIStartLobbyAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         new StartLobbyCommand(clientController).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

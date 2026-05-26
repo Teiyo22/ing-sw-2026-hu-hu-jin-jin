@@ -28,7 +28,7 @@ public class Lobby implements Serializable {
     }
 
     //=============================================================================
-    // Player Management methods
+    // Lobby Management methods
     //=============================================================================
 
     public void addPlayer(Player player) {
@@ -42,6 +42,10 @@ public class Lobby implements Serializable {
 
     public void removePlayer(Player player) {
         players.remove(player);
+    }
+
+    public void stop() {
+        players.keySet().forEach(p -> p.setTribe(null));
     }
 
     //=============================================================================

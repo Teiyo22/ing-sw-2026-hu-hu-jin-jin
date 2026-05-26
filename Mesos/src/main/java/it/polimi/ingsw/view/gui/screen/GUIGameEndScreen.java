@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.view.gui.GUIView;
 import it.polimi.ingsw.view.gui.util.Fonts;
@@ -88,7 +89,7 @@ class GUIGameEndScreen extends GUIScreen {
     }
 
     @Override
-    public void showError(String error) {
+    public void showErrors(ErrorMessage errorMsg) {
 
     }
 }

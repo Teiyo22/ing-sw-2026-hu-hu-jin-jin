@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RoundStartState extends GameState {
     private Player currPlayer = null;
     private int assignedSlots = -1;
@@ -45,9 +48,17 @@ public class RoundStartState extends GameState {
     }
 
     @Override
-    public String validate(OfferPickPlayerAction action) {
-        return (action.getPlayer().equals(currPlayer) ? "" : "You can only play during your turn |") +
-                (action.getOfferIndex() >= 0 && action.getOfferIndex() < game.getBoard().getOfferTrack().length ? "" : "Offer index out of range |") +
-                (game.getBoard().getOfferTrack()[action.getOfferIndex()].getAssignedPlayer() == null ? "" : "Offer already picked by another player ");
+    public String[] validate(OfferPickPlayerAction action) {
+        List<String> errors = new ArrayList<>();
+
+        if (!action.getPlayer().equals(currPlayer))
+            errors.add("Actions are only allowed during your turn");
+
+        if (action.getOfferIndex() < 0 || action.getOfferIndex() >= game.getBoard().getOfferTrack().length)
+            errors.add("Invalid offer index");
+        else if (game.getBoard().getOfferTrack()[action.getOfferIndex()].getAssignedPlayer() != null)
+            errors.add("Offer already picked by another player");
+
+        return errors.toArray(new String[0]);
     }
 }

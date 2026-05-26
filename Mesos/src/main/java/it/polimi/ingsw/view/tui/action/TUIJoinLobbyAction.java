@@ -36,18 +36,18 @@ public class TUIJoinLobbyAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Totem totem;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         totem = parseTotem(args[1]);
         if (totem == null)
-            return Optional.of("Totem must be unique and one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
+            return false;
 
         new JoinLobbyCommand(clientController, totem).execute();
-        return Optional.empty();
+        return true;
     }
 
     private Totem parseTotem(String input) {

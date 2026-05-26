@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
@@ -19,12 +20,12 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError("The lobby is already running");
+        client.showError(new ErrorMessage("Join Lobby Error", "Game is running"));
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError("The lobby is already running");
+        client.showError(new ErrorMessage("Start Lobby Error", "Game is running"));
     }
 
     @Override
@@ -53,17 +54,18 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public void getLobbyInfo(ClientInterface client) {
-        client.showError("The lobby is already running");
+        client.showError(new ErrorMessage("Lobby Info Error", "The lobby is already running"));
     }
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        String error = action.canExecute(model);
-
-        if (error.isEmpty())
+        System.out.println("WTF2");
+        String[] errors = action.canExecute(model);
+        System.out.println("WTF");
+        if (errors.length == 0)
             action.execute(model);
         else
-            client.showError(error);
+            client.showError(new ErrorMessage("Lobby Action Error", errors));
 
         for (ClientInterface player : lobbyController.getPlayers().keySet())
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());

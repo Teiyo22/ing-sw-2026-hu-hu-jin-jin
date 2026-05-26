@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.common;
 
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
@@ -27,7 +28,7 @@ public interface VirtualClient extends Remote {
     void createLobby(Lobby lobby, Player player) throws RemoteException;
     void startLobby(int lobbyID, Board board, List<Player> players) throws RemoteException;
     void stopLobby(int lobbyID) throws RemoteException;
-    void showError(String errorMessage) throws RemoteException;
+    void showError(ErrorMessage errorMsg) throws RemoteException;
 
     void updateModel(int lobbyID, Player player, int offerIndex) throws RemoteException;
     void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) throws RemoteException;

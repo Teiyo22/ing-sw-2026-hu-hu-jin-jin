@@ -1,17 +1,11 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Tribe;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class LobbyFullState extends LobbyState {
     public LobbyFullState(LobbyController lobbyController) {
@@ -20,7 +14,7 @@ public class LobbyFullState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError("The lobby is full");
+        client.showError(new ErrorMessage("Join Lobby Error", "The lobby is full"));
     }
 
     @Override
@@ -41,7 +35,7 @@ public class LobbyFullState extends LobbyState {
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        client.showError("Game not started yet.");
+        client.showError(new ErrorMessage("Lobby Action Error", "The lobby is full"));
     }
 
     @Override

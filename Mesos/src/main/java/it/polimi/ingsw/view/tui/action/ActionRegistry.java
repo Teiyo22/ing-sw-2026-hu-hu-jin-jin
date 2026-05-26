@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
-import it.polimi.ingsw.controller.client.ClientController;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ActionRegistry {
     private final List<Action> actions = new ArrayList<>();
@@ -14,12 +11,13 @@ public class ActionRegistry {
         return this;
     }
 
-    public Optional<Action> resolve(String[] args, ClientController clientController) {
-        return actions.stream()
-                .filter(a -> (
-                        a.key().equalsIgnoreCase(args[0]) || a.label().equalsIgnoreCase(args[0])) &&
-                        a.isEnabled())
-                .findFirst();
+    public Action resolve(String cmd) {
+        for (Action action : actions) {
+            if ((action.key().equalsIgnoreCase(cmd) || action.label().equalsIgnoreCase(cmd)) && action.isEnabled())
+                return action;
+        }
+
+        return null;
     }
 
     public List<Action> enabled() {

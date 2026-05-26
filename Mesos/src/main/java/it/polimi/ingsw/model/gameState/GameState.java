@@ -25,11 +25,11 @@ public abstract class GameState {
 
     public abstract ModelStateInfo getModelStateInfo();
 
-    public String validate(CardPickPlayerAction action) {
-        return "This action is not available";
+    public String[] validate(CardPickPlayerAction action) {
+        return new String[]{"This action is not available"};
     }
 
-    public String validate(OfferPickPlayerAction action) {
-        return "This action is not available";
+    public String[] validate(OfferPickPlayerAction action) {
+        return new String[]{"This action is not available"};
     }
 }

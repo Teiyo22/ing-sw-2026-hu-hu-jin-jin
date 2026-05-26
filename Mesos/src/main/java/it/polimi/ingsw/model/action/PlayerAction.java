@@ -10,7 +10,7 @@ public abstract class PlayerAction implements Serializable {
     transient protected Player player;
 
     public abstract void execute(Game game);
-    public abstract String canExecute(Game game);
+    public abstract String[] canExecute(Game game);
 
     public Player getPlayer() {
         return player;

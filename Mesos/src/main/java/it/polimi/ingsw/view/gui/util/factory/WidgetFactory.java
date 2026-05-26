@@ -99,11 +99,10 @@ public class WidgetFactory {
         return label;
     }
 
-    public static JLabel createTabBoxLabel(String content) {
-        JLabel label = new JLabel(content, SwingConstants.CENTER);
-        label.setForeground(Color.WHITE);
-        label.setOpaque(false);
-        label.setFont(Fonts.monospaced);
+    public static JLabel errorLabel(String content) {
+        JLabel label = defaultLabel(content);
+        label.setForeground(Color.BLACK);
+        label.setFont(Fonts.tiny);
 
         return label;
     }

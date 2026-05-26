@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
@@ -41,14 +42,16 @@ public class LobbyPausedState extends LobbyState {
                 lobbyController.setState(new LobbyResumableState(lobbyController));
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
+        } else if (lobbyController.getPlayers().containsKey(client)) {
+            client.showError(new ErrorMessage("Join Lobby Error", "Already in the lobby"));
         } else {
-            client.showError("Player name or totem already used");
+            client.showError(new ErrorMessage("Join Lobby Error", "Invalid name or totem"));
         }
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError("Not enough players to start the game");
+        client.showError(new ErrorMessage("Lobby Start Error", "Not enough players to start the game"));
     }
 
     @Override
@@ -86,7 +89,7 @@ public class LobbyPausedState extends LobbyState {
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        client.showError("Game not started yet.");
+        client.showError(new ErrorMessage("Lobby Action Error", "The lobby is paused"));
     }
 
     @Override

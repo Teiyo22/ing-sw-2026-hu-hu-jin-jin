@@ -10,6 +10,7 @@ import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.*;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.network.RMIClientInterface;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.board.Board;
@@ -104,7 +105,7 @@ public class ClientController implements VirtualClient {
                 currLobby.setPlayers(players);
                 view.notifyChange();
             } else
-                showError("This lobby is not available");
+                showError(new ErrorMessage("LobbyInfo", "This lobby is not available"));
         } finally {
             writeLock.unlock();
         }
@@ -229,6 +230,7 @@ public class ClientController implements VirtualClient {
         writeLock.lock();
         try {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
+                currLobby.stop();
                 view.transitionTo(ScreenType.LOBBY_SELECTION);
             }
         } finally {
@@ -237,8 +239,8 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void showError(String error) {
-        view.displayError(error);
+    public void showError(ErrorMessage errorMsg) {
+        view.displayError(errorMsg);
     }
 
     //=============================================================================

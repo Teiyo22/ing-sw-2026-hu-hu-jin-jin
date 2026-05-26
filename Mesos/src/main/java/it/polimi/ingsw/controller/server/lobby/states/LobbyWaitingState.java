@@ -1,18 +1,13 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class LobbyWaitingState extends LobbyState {
     public LobbyWaitingState(LobbyController lobbyController) {
@@ -32,13 +27,13 @@ public class LobbyWaitingState extends LobbyState {
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
         } else {
-            client.showError("Totem already used");
+            client.showError(new ErrorMessage("Join Lobby Error", "Totem already used"));
         }
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError("Not enough players to start the game");
+        client.showError(new ErrorMessage("Start Lobby Error", "Not enough players to start the game"));
     }
 
     @Override
@@ -77,7 +72,7 @@ public class LobbyWaitingState extends LobbyState {
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        client.showError("Game not started yet.");
+        client.showError(new ErrorMessage("Lobby Action Error", "Game is not running"));
     }
 
     private boolean validatePlayerInfo(Player newPlayer) {

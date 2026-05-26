@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.server;
 import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualServer;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.action.PlayerAction;
@@ -66,7 +67,7 @@ public class ServerController implements VirtualServer {
 
             LobbyController currLobbyController = client.getCurrLobbyController();
             if (currLobbyController != null && currLobbyController.getPlayers().containsKey(client)) {
-                client.showError("You are already in a lobby");
+                client.showError(new ErrorMessage("Lobby Create Error", "You are already in a lobby"));
                 return;
             }
 
@@ -100,7 +101,7 @@ public class ServerController implements VirtualServer {
                 Player player = new Player(clientID, totem);
                 lobbyController.joinLobby(client, player);
             } else {
-                client.showError("This lobby is not available");
+                client.showError(new ErrorMessage("Join Lobby Error", "This lobby is not available"));
             }
         } finally {
             readLock.unlock();
@@ -137,7 +138,7 @@ public class ServerController implements VirtualServer {
             if (lobbyController != null)
                 lobbyController.startLobby(client);
             else
-                client.showError("This lobby is not available");
+                client.showError(new ErrorMessage("Start Lobby Error", "This lobby is not available"));
         } finally {
             readLock.unlock();
         }
@@ -169,7 +170,7 @@ public class ServerController implements VirtualServer {
             if (lobbyController != null)
                 lobbyController.getLobbyInfo(client);
             else
-                client.showError("This lobby is not available");
+                client.showError(new ErrorMessage("Lobby Info Error", "Lobby not found"));
         } finally {
             readLock.unlock();
         }
@@ -214,7 +215,7 @@ public class ServerController implements VirtualServer {
             if (lobby != null)
                 lobby.playAction(client, action);
             else
-                client.showError("This lobby is not available");
+                client.showError(new ErrorMessage("Lobby Action Error", "This lobby is not available"));
         } finally {
             readLock.unlock();
         }
@@ -252,7 +253,7 @@ public class ServerController implements VirtualServer {
 
             ClientInterface client = allClients.get(clientID);
             if (username.isEmpty()) {
-                client.showError("Username cannot be empty");
+                client.showError(new ErrorMessage("Login Error", "Username cannot be empty"));
                 Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] failed to login as [%s]", clientID, username));
                 return;
             }
@@ -267,7 +268,7 @@ public class ServerController implements VirtualServer {
 
                 Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully logged in as [%s]", clientID, username));
             } else {
-                allClients.get(clientID).showError("Username already in use");
+                client.showError(new ErrorMessage("Login Error", "Username already in use"));
                 Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] failed to login as [%s]", clientID, username));
             }
         } finally {

@@ -30,16 +30,16 @@ public class TUILoginAction implements Action{
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         String username;
 
         if (args.length != argsCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         username = args[1];
 
         new LoginCommand(clientController, username).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

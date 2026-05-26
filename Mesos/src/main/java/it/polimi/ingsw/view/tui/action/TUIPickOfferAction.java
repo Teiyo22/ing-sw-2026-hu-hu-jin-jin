@@ -31,19 +31,19 @@ public class TUIPickOfferAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Integer offerID;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         offerID = parseOfferID(args[1]);
         if (offerID == null)
-            return Optional.of("Offer ID must be an integer");
+            return false;
 
         clientController.setIdleTurnState();
         new PickOfferCommand(clientController, offerID).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

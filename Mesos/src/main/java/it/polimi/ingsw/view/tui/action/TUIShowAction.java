@@ -33,18 +33,18 @@ public class TUIShowAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Player player;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         player = parseName(args[1]);
         if (player == null)
-            return Optional.of("Invalid player name");
+            return false;
 
         clientController.showPlayer(player);
-        return Optional.empty();
+        return true;
     }
 
     private Player parseName(String input) {

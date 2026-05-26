@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.tui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.tui.Formatter;
+import it.polimi.ingsw.view.tui.action.Action;
 import it.polimi.ingsw.view.tui.action.ActionRegistry;
 import it.polimi.ingsw.view.tui.section.Section;
 
@@ -13,7 +15,7 @@ public abstract class TUIScreen implements Screen {
     protected ActionRegistry registry;
     protected List<Section> sections;
 
-    private String errorMsg = "";
+    private ErrorMessage errorMsg = null;
 
     public TUIScreen(ClientController clientController) {
         this.clientController = clientController;
@@ -24,28 +26,37 @@ public abstract class TUIScreen implements Screen {
         synchronized (clientController) {
             Formatter.clearScreen();
             sections.stream()
-                    .filter(s -> s.isVisible(clientController))
-                    .forEach(s -> s.render(clientController));
+                .filter(s -> s.isVisible(clientController))
+                .forEach(s -> s.render(clientController));
         }
 
-        System.out.println("\u001B[1m\u001B[31m" + errorMsg + "\u001B[0m");
+        renderError();
         System.out.print("Enter action: ");
+
     }
 
     @Override
-    public void showError(String error) {
-        errorMsg = error;
-        render();
+    public void showErrors(ErrorMessage errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
     public void handleInput(String input) {
         String[] args = input.split(" ");
 
-        if (args.length > 0)
-            errorMsg = registry.resolve(args, clientController)
-                    .flatMap(a -> a.parseAction(args))
-                    .orElse("");
-        else
-            errorMsg = "Missing input";
+        Action action = registry.resolve(args[0]);
+        if (action == null || !action.parseAction(args))
+            showErrors(new ErrorMessage("Input Error", "Invalid input"));
     }
+
+    public void renderError() {
+        if (errorMsg != null) {
+            System.out.println();
+            System.out.println(Formatter.separatorLine(errorMsg.getContext()));
+            errorMsg.getErrors().stream().map(Formatter::line).forEach(System.out::println);
+            System.out.println(Formatter.separatorLine(""));
+
+            errorMsg = null;
+        }
+    }
+
 }

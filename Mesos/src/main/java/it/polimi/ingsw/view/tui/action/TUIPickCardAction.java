@@ -32,21 +32,20 @@ public class TUIPickCardAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Set<Integer> topRow, bottomRow;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
-
+            return false;
         topRow = parseIDList(args[1]);
         bottomRow = parseIDList(args[2]);
         if (topRow == null || bottomRow == null) {
-            return Optional.of("Card IDs must be integers separated by commas");
+            return false;
         }
 
         clientController.setIdleTurnState();
         new PickCardCommand(clientController, topRow, bottomRow).execute();
-        return Optional.empty();
+        return true;
     }
 
     @Override

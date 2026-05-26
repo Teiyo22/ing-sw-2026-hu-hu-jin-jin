@@ -25,19 +25,19 @@ public class PlayerInfo {
     public PlayerInfo(Player player){
         this.player = player;
 
-        this.name               = WidgetFactory.createTabBoxLabel(player.getName());
-        this.pp                 = WidgetFactory.createTabBoxLabel("PP: 0");
-        this.food               = WidgetFactory.createTabBoxLabel("Food: 0");
-        this.sustenanceDiscount = WidgetFactory.createTabBoxLabel("Sustenance Discount: 0");
-        this.stars              = WidgetFactory.createTabBoxLabel("Stars: 0");
-        this.builderDiscount    = WidgetFactory.createTabBoxLabel("Builder Discount: 0");
-        this.uniqueInventors    = WidgetFactory.createTabBoxLabel("Unique inventors: 0");
-        this.collector          = WidgetFactory.createTabBoxLabel("Collectors: 0");
-        this.hunter             = WidgetFactory.createTabBoxLabel("Hunters: 0");
-        this.builder            = WidgetFactory.createTabBoxLabel("Builders: 0");
-        this.shaman             = WidgetFactory.createTabBoxLabel("Shamans: 0");
-        this.artist             = WidgetFactory.createTabBoxLabel("Artists: 0");
-        this.inventor           = WidgetFactory.createTabBoxLabel("Inventors: 0");
+        this.name               = WidgetFactory.monospacedLabel(player.getName());
+        this.pp                 = WidgetFactory.monospacedLabel("PP: 0");
+        this.food               = WidgetFactory.monospacedLabel("Food: 0");
+        this.sustenanceDiscount = WidgetFactory.monospacedLabel("Sustenance Discount: 0");
+        this.stars              = WidgetFactory.monospacedLabel("Stars: 0");
+        this.builderDiscount    = WidgetFactory.monospacedLabel("Builder Discount: 0");
+        this.uniqueInventors    = WidgetFactory.monospacedLabel("Unique inventors: 0");
+        this.collector          = WidgetFactory.monospacedLabel("Collectors: 0");
+        this.hunter             = WidgetFactory.monospacedLabel("Hunters: 0");
+        this.builder            = WidgetFactory.monospacedLabel("Builders: 0");
+        this.shaman             = WidgetFactory.monospacedLabel("Shamans: 0");
+        this.artist             = WidgetFactory.monospacedLabel("Artists: 0");
+        this.inventor           = WidgetFactory.monospacedLabel("Inventors: 0");
     }
 
     public void renderLabels() {

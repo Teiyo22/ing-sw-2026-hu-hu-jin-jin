@@ -33,23 +33,20 @@ public class TUICreateLobbyAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Integer lobbySize;
         Totem totem;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         lobbySize = parseSize(args[1]);
-        if (lobbySize == null)
-            return Optional.of("Lobby size must be an integer between 2 and 5");
-
         totem = parseTotem(args[2]);
-        if (totem == null)
-            return Optional.of("Totem must be one of the following: RED, BLUE, WHITE, BLACK, YELLOW");
+        if (lobbySize == null || totem == null)
+            return false;
 
         new CreateLobbyCommand(clientController, lobbySize, totem).execute();
-        return Optional.empty();
+        return true;
     }
 
     private Integer parseSize(String input) {

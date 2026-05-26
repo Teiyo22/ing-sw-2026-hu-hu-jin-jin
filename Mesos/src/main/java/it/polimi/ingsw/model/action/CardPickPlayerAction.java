@@ -15,7 +15,7 @@ public class CardPickPlayerAction extends PlayerAction {
     }
 
     @Override
-    public String canExecute(Game game) {
+    public String[] canExecute(Game game) {
         return game.getGameState().validate(this);
     }
 

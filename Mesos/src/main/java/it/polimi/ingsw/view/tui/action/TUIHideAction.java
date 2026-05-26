@@ -30,9 +30,9 @@ public class TUIHideAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         currLobby.hidePlayer();
-        return Optional.empty();
+        return true;
     }
 
     @Override

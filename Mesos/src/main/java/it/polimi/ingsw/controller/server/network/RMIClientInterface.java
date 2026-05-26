@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.common.LeaderboardEntry;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.info.ModelStateInfo;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
@@ -183,10 +184,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void showError(String errorMessage) {
+    public void showError(ErrorMessage errorMsg) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showError");
         submitRemoteCall(
-                () -> wrappedClient.showError(errorMessage)
+                () -> wrappedClient.showError(errorMsg)
         );
     }
 

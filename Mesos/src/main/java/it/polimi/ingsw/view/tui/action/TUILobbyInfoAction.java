@@ -35,18 +35,18 @@ public class TUILobbyInfoAction implements Action {
     }
 
     @Override
-    public Optional<String> parseAction(String[] args) {
+    public boolean parseAction(String[] args) {
         Integer lobbyID;
 
         if (args.length != argCount + 1)
-            return Optional.of("Invalid number of arguments");
+            return false;
 
         lobbyID = parseLobbyID(args[1]);
         if (lobbyID == null)
-            return Optional.of("Lobby ID must be an integer from the list of available lobbies");
+            return false;
 
         new LobbyInfoCommand(clientController, lobbyID).execute();
-        return Optional.empty();
+        return true;
 
     }
 

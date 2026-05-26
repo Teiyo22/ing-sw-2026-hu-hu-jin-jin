@@ -1,12 +1,11 @@
 package it.polimi.ingsw.controller.server.lobby.states;
 
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
-
-import java.util.Set;
 
 public class LobbyEndedState extends LobbyState {
     public LobbyEndedState(LobbyController lobbyController) {
@@ -16,12 +15,12 @@ public class LobbyEndedState extends LobbyState {
 
     @Override
     public void joinLobby(ClientInterface client, Player player) {
-        client.showError("The lobby already ended.");
+        client.showError(new ErrorMessage("Join Lobby Error", "The game already ended."));
     }
 
     @Override
     public void startLobby(ClientInterface client) {
-        client.showError("The lobby already ended.");
+        client.showError(new ErrorMessage("Start Lobby Error", "The game already ended."));
     }
 
     @Override
@@ -42,12 +41,12 @@ public class LobbyEndedState extends LobbyState {
 
     @Override
     public void getLobbyInfo(ClientInterface client) {
-        client.showError("The lobby already ended.");
+        client.showError(new ErrorMessage("Lobby Info Error", "The game already ended."));
     }
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        client.showError("Game already ended.");
+        client.showError(new ErrorMessage("Lobby Action Error", "The game already ended."));
     }
 
     @Override

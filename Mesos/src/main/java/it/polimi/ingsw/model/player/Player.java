@@ -41,7 +41,7 @@ public class Player implements Comparable<Player>, Serializable {
     public Player deepCopy() {
         Player copy = new Player(name, totem);
         copy.rank = rank;
-        copy.tribe = tribe.deepCopy();
+        copy.tribe = tribe != null ? tribe.deepCopy() : null;
         return copy;
     }
 

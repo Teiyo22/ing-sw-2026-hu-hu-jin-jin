@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.tui.screen.TUIScreen;
@@ -51,8 +52,9 @@ public class TUIView implements View {
     }
 
     @Override
-    public void displayError(String message) {
-        currScreen.showError(message);
+    public void displayError(ErrorMessage errorMsg) {
+        currScreen.showErrors(errorMsg);
+        notifyChange();
     }
 
     @Override

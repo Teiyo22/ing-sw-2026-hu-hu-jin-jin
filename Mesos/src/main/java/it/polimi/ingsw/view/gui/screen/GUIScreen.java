@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui.screen;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.view.gui.GUIView;
+import it.polimi.ingsw.view.gui.components.ErrorPanel;
 import it.polimi.ingsw.view.gui.section.GUISection;
 
 import javax.swing.*;
@@ -32,9 +34,12 @@ public abstract class GUIScreen extends JPanel implements Screen {
     }
 
     @Override
-    public void showError(String error) {
+    public void showErrors(ErrorMessage errorMsg) {
         SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                new ErrorPanel(errorMsg.getErrors()),
+                errorMsg.getContext(),
+                JOptionPane.PLAIN_MESSAGE);
         });
     }
 }

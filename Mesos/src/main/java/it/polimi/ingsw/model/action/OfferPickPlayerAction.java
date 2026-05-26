@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.action;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Player;
 
 public class OfferPickPlayerAction extends PlayerAction {
     private int offerIndex;
@@ -12,7 +11,7 @@ public class OfferPickPlayerAction extends PlayerAction {
     }
 
     @Override
-    public String canExecute(Game game) {
+    public String[] canExecute(Game game) {
         return game.getGameState().validate(this);
     }
 
