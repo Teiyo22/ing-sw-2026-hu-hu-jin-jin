@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Tribe;
 
 import java.io.Serializable;
 import java.util.*;
@@ -50,7 +51,15 @@ public class Lobby implements Serializable {
 
     public void initGame(Collection<Player> players, Board board) {
         this.board = board;
-        this.updateTribes(players);
+        this.setTribes(players);
+    }
+
+    private void setTribes(Collection<Player> players) {
+        for (Player player : players) {
+            Player matchingPlayer = getPlayerReference(player);
+            if (matchingPlayer != null)
+                matchingPlayer.setTribe(player.getTribe());
+        }
     }
 
     public void resolveOfferPick(Player player, int offerIndex) {
