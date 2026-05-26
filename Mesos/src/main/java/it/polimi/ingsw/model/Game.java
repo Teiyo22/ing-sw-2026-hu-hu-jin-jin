@@ -94,8 +94,8 @@ public class Game {
             p.removeFrom(board.getBottomRow());
         }
 
-        gameState.update();
         lobbyState.notifyOfferResolution(player, topPicks, bottomPicks);
+        gameState.update();
     }
 
     /**
@@ -108,8 +108,8 @@ public class Game {
     public void assignTo(Player player, int offerIndex) {
         board.getOfferTrack()[offerIndex].setPlayer(player);
 
-        gameState.update();
         lobbyState.notifyOfferPick(player, offerIndex);
+        gameState.update();
     }
 
 
