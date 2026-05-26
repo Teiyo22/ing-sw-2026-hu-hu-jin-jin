@@ -98,8 +98,12 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyGameEndUpdate() {
+        List<Player> players = lobbyController.getPlayers().values().stream()
+            .map(Player::lightCopy)
+            .toList();
+
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), new ArrayList<>(lobbyController.getPlayers().values()));
+            client.updateModel(lobbyController.getID(), players);
 
         lobbyController.setState(new LobbyEndedState(lobbyController));
     }

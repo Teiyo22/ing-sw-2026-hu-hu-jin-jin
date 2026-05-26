@@ -25,6 +25,13 @@ public class Player implements Comparable<Player>, Serializable {
         this.tribe = null;
     }
 
+    public Player(String name, Totem totem, int rank) {
+        this.name = name;
+        this.totem = totem;
+        this.rank = rank;
+        this.tribe = null;
+    }
+
     public Player(String name, Totem totem, int rank, Tribe tribe) {
         this.name = name;
         this.totem = totem;
@@ -33,7 +40,7 @@ public class Player implements Comparable<Player>, Serializable {
     }
 
     public Player lightCopy() {
-        return new Player(name, totem);
+        return new Player(name, totem, rank);
     }
 
     /**
