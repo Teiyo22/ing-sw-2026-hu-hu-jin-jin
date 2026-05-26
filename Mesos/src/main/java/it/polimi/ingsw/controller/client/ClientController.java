@@ -297,13 +297,12 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
+    public void updateModel(int lobbyID, List<Player> players, Row topRow) {
         writeLock.lock();
         try {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby.updateTribes(players);
-                currLobby.updateTopRow(topRow);
-                currLobby.updateBottomRow(bottomRow);
+                currLobby.updateRows(topRow);
 
                 view.notifyChange();
             }

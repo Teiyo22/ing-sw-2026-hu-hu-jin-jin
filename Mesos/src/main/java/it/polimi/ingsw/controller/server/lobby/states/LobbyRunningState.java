@@ -12,10 +12,7 @@ import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Tribe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -92,11 +89,12 @@ public class LobbyRunningState extends LobbyState {
     }
 
     public void notifyRoundEndUpdate() {
-        Board board = model.getBoard();
+        List<Player> players = lobbyController.getPlayers().values().stream()
+            .map(Player::lightCopy)
+            .toList();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(),
-                    new ArrayList<>(lobbyController.getPlayers().values()), board.getTopRow(), board.getBottomRow());
+            client.updateModel(lobbyController.getID(), players, model.getBoard().getTopRow());
     }
 
     public void notifyGameEndUpdate() {

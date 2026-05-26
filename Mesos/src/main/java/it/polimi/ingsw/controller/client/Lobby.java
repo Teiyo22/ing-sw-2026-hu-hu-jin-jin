@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.controller.client.turn.*;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
@@ -121,12 +120,9 @@ public class Lobby implements Serializable {
         }
     }
 
-    public void updateTopRow(Row row) {
-        this.board.setTopRow(row);
-    }
-
-    public void updateBottomRow(Row row) {
-        this.board.setBottomRow(row);
+    public void updateRows(Row newTopRow) {
+        board.setBottomRow(board.getTopRow());
+        board.setTopRow(newTopRow);
     }
 
     public void updateTribes(Collection<Player> updatedPlayers) {

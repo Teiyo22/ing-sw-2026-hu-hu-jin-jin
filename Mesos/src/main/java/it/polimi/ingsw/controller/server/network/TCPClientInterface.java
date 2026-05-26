@@ -111,8 +111,8 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void updateModel(int lobbyID, List<Player> players, Row topRow, Row bottomRow) {
-        RoundEndResponse response = new RoundEndResponse(lobbyID, players, topRow, bottomRow);
+    public void updateModel(int lobbyID, List<Player> players, Row topRow) {
+        RoundEndResponse response = new RoundEndResponse(lobbyID, players, topRow);
         sendMessage(response);
     }
 
