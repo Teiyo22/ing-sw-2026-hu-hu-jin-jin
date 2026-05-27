@@ -15,8 +15,7 @@ import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,10 +57,18 @@ public class PersistenceUtil {
             if (filePath.getParent() != null)
                 filePath.getParent().toFile().mkdirs();
 
-            try (FileWriter writer = new FileWriter(filePath.toFile())) {
+            Path tempPath = filePath.resolveSibling(filePath.getFileName() + ".tmp");
+
+            try {
                 Type type = new TypeToken<Map<Integer, Game>>(){}.getType();
-                gson.toJson(data, type, writer);
-                writer.flush();
+                String json  = gson.toJson(data, type);
+
+                Files.writeString(tempPath, json, StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING,
+                    StandardOpenOption.SYNC);
+
+                Files.move(tempPath, filePath, StandardCopyOption.ATOMIC_MOVE,
+                    StandardCopyOption.REPLACE_EXISTING);
 
                 Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: successfully saved lobbies" );
             } catch (Exception e) {
@@ -80,7 +87,6 @@ public class PersistenceUtil {
         try (FileReader reader = new FileReader(filePath.toFile())) {
             Type type = new TypeToken<Map<Integer, Game>>() {}.getType();
             Map<Integer, Game> data = gson.fromJson(reader, type);
-
 
             if (data != null) {
                 Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: loading " + data.size() + " lobbies");
