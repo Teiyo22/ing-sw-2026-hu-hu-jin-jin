@@ -6,6 +6,9 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
+import it.polimi.ingsw.model.card.building.AbstractBuilding;
+import it.polimi.ingsw.model.card.character.AbstractCharacter;
+import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
@@ -16,12 +19,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class PersistenceUtil {
+    private static final Path filePath = Paths.get("saves", "data.json");
+
     private final ScheduledExecutorService scheduler;
     private final Gson gson;
 
@@ -29,6 +35,9 @@ public class PersistenceUtil {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         gson = new GsonBuilder()
             .registerTypeAdapter(AbstractCard.class, new CardAdapterFactory<>().create(AbstractCard.class))
+            .registerTypeAdapter(AbstractCharacter.class, new CardAdapterFactory<AbstractCharacter>().create(AbstractCharacter.class))
+            .registerTypeAdapter(AbstractBuilding.class, new CardAdapterFactory<AbstractBuilding>().create(AbstractBuilding.class))
+            .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
             .setPrettyPrinting()
             .create();
     }
@@ -39,13 +48,13 @@ public class PersistenceUtil {
 
     public void start(Map<Integer, LobbyController> lobbies) {
         scheduler.scheduleAtFixedRate(() -> {
-            Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: Saving game data");
             Map<Integer, Game> data = lobbies.entrySet().stream()
                 .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().getModelSnapshot()))
                 .filter(e -> e.getValue() != null)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            Path filePath = Paths.get("saves", "data.json");
+            Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: saving " + data.size() + " lobbies" );
+
             if (filePath.getParent() != null)
                 filePath.getParent().toFile().mkdirs();
 
@@ -53,51 +62,50 @@ public class PersistenceUtil {
                 Type type = new TypeToken<Map<Integer, Game>>(){}.getType();
                 gson.toJson(data, type, writer);
                 writer.flush();
+
+                Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: successfully saved lobbies" );
             } catch (Exception e) {
-                Logger.getInstance().print(LoggerLevel.ERROR, "Persistence error: " + e.getMessage());
+                Logger.getInstance().print(LoggerLevel.SERVER, "Persistence saving: " + e.getMessage());
             }
 
         }, 10, 10, TimeUnit.SECONDS);
     }
 
-//    public Map<Integer, LobbyController> loadSaves() {
-//        File file = new File("saves/lobbies.json");
-//        if (!file.exists()) return;
-//
-//        try {
-//            FileReader reader = new FileReader(file);
-//            Type type = new TypeToken<Map<Integer, Game>>() {
-//            }.getType();
-//            Map<Integer, Game> savedMap = gson.fromJson(reader, type);
-//            reader.close();
-//
-//            if (savedMap == null || savedMap.isEmpty()) return;
-//
-//            int maxId = 0;
-//            for (Map.Entry<Integer, Game> entry : savedMap.entrySet()) {
-//                Game game = entry.getValue();
-//                int id = entry.getKey();
-//
-//                LobbyController lc = new LobbyController(id, game.getPlayerConfig().getNum());
-//                lc.setModel(game);
-//                lc.setState(new LobbyPausedState(lc));
-//
-//                savedLobbies.put(id, lc);
-//                if (id > maxId) maxId = id;
-//            }
-//
-//            nextLobbyID.set(maxId + 1);
-//
-//        } catch (IOException e) {
-//            System.err.println("[Boot] Errore caricamento: " + e.getMessage());
-//        }
-//    }
+    public Map<Integer, LobbyController> loadSaves() {
+        Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
+
+        if (filePath.getParent() != null)
+            filePath.getParent().toFile().mkdirs();
+
+        try (FileReader reader = new FileReader(filePath.toFile())) {
+            Type type = new TypeToken<Map<Integer, Game>>() {}.getType();
+            Map<Integer, Game> data = gson.fromJson(reader, type);
+
+
+            if (data != null) {
+                Logger.getInstance().print(LoggerLevel.SERVER, "Persistence: loading " + data.size() + " lobbies");
+                for (Map.Entry<Integer, Game> entry : data.entrySet()) {
+                    try {
+                        entry.getValue().build();
+                        lobbies.put(entry.getKey(), new LobbyController(entry.getKey(), entry.getValue()));
+                    } catch (Exception e) {
+                        Logger.getInstance().print(LoggerLevel.ERROR, "Persistence loading: " + e.getMessage());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            Logger.getInstance().print(LoggerLevel.SERVER, "Persistence loading: " + e.getMessage());
+        }
+
+        return lobbies;
+    }
 
     public void stop() {
         scheduler.shutdown();
 
         try {
-            if (!scheduler.awaitTermination(3, TimeUnit.SECONDS)) {
+            if (!scheduler.awaitTermination(10, TimeUnit.SECONDS)) {
                 scheduler.shutdownNow();
             }
         } catch (InterruptedException e) {

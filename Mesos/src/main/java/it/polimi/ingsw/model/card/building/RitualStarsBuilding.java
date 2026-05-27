@@ -29,8 +29,8 @@ public class RitualStarsBuilding extends AbstractBuilding {
      * Adds 3 stars to the tribe of the player who picked the card.
      * */
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         owner.getTribe().addStars(3);
     }
 

@@ -51,14 +51,6 @@ public class Tribe implements Serializable {
         tribe.food = this.food;
         tribe.pp = this.pp;
 
-        tribe.buildings = null;
-        tribe.inventors = null;
-        tribe.builders = null;
-        tribe.hunters = null;
-        tribe.shamans = null;
-        tribe.collectors = null;
-        tribe.artists = null;
-
         tribe.stars = this.stars;
         tribe.sustenanceDiscount = this.sustenanceDiscount;
         tribe.noLossRitualMod = this.noLossRitualMod;

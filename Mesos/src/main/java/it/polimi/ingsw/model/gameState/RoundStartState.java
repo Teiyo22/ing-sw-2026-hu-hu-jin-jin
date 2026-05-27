@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
 import it.polimi.ingsw.model.gameState.info.OfferPickStateInfo;
 import it.polimi.ingsw.model.Game;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class RoundStartState extends GameState {
     private Player currPlayer = null;
-    private int assignedSlots = -1;
+    private int assignedSlots = 0;
 
     public RoundStartState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -24,20 +25,22 @@ public class RoundStartState extends GameState {
      * */
     @Override
     public void update() {
+        OrderSlot[] orderTile = game.getBoard().getOrderTile();
+
         if(currPlayer != null) {
-            game.getBoard().getOrderTile()[assignedSlots].setPlayer(null);
+            orderTile[assignedSlots].setPlayer(null);
         }
 
-        assignedSlots++;
+        for (; assignedSlots < orderTile.length && orderTile[assignedSlots].getAssignedPlayer() == null; assignedSlots++);
 
-        if(assignedSlots == game.getPlayers().size()){
+        if(assignedSlots == orderTile.length){
             game.setGameState(new RoundActionState(game, buildingHandler));
             game.getGameState().update();
 
             return;
         }
 
-        currPlayer = game.getBoard().getOrderTile()[assignedSlots].getAssignedPlayer();
+        currPlayer = orderTile[assignedSlots].getAssignedPlayer();
     }
 
     @Override
@@ -58,5 +61,13 @@ public class RoundStartState extends GameState {
             errors.add("Offer already picked by another player");
 
         return errors.toArray(new String[0]);
+    }
+
+    public void setCurrPlayer(Player currPlayer) {
+        this.currPlayer = currPlayer;
+    }
+
+    public void setAssignedSlots(int assignedSlots) {
+        this.assignedSlots = assignedSlots;
     }
 }

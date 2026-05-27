@@ -2,29 +2,23 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.OfferTile;
-import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
-import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class Game {
     transient private LobbyRunningState lobbyState = null;
 
     transient private PlayerConfig playerConfig;
-    private List<Player> players;
-    private Board board;
-
     transient private GameState gameState;
     transient private BuildingHandler buildingHandler;
+
+    private List<Player> players;
+    private Board board;
 
     public Game(PlayerConfig playerConfig, List<Player> players) {
         this.playerConfig = playerConfig;
@@ -50,6 +44,10 @@ public class Game {
 
     public GameState getGamestate() {
         return gameState;
+    }
+
+    public BuildingHandler getBuildingHandler() {
+        return buildingHandler;
     }
 
     public Board getBoard() {
@@ -113,5 +111,12 @@ public class Game {
         gameState.update();
     }
 
+    public void build() {
+        playerConfig = PlayerConfig.getPlayerConfig(players.size());
+        buildingHandler = new BuildingHandler();
+        gameState = GameState.getGameState(this);
+        board.fixReferencesTo(players);
+        players.forEach(p -> p.registerBuildings(buildingHandler));
 
+    }
 }

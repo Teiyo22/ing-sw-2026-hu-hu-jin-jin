@@ -31,27 +31,42 @@ public class ServerController implements VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
-    private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private final PersistenceUtil persistenceUtil = new PersistenceUtil();
-    private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
-    private final ExecutorService responseService = Executors.newVirtualThreadPerTaskExecutor();
+    private final ConnectionMonitor connectionMonitor;
+    private final PersistenceUtil persistenceUtil;
+    private final ExecutorService requestService;
+    private final ExecutorService responseService;
 
-    private final AtomicInteger nextLobbyID = new AtomicInteger(1);
-    private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
-    private final Map<Integer, LobbyController> savedLobbies = new ConcurrentHashMap<>();
+    private final AtomicInteger nextLobbyID;
+    private final Map<Integer, LobbyController> lobbies;
 
-    private final Map<String, ClientInterface> allClients = new ConcurrentHashMap<>();
-    private final Map<String, ClientInterface> playingClients = new ConcurrentHashMap<>();
+    private final Map<String, ClientInterface> allClients;
+    private final Map<String, ClientInterface> playingClients;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock readLock = lock.readLock();
-    private final Lock writeLock = lock.writeLock();
+    private final Lock readLock;
+    private final Lock writeLock;
 
     public static ServerController getInstance() {
         if (instance == null) {
             instance = new ServerController();
         }
         return instance;
+    }
+
+    public ServerController() {
+        connectionMonitor = new ConnectionMonitor();
+        persistenceUtil = new PersistenceUtil();
+        requestService = Executors.newVirtualThreadPerTaskExecutor();
+        responseService = Executors.newVirtualThreadPerTaskExecutor();
+
+        lobbies = persistenceUtil.loadSaves();
+        nextLobbyID = new AtomicInteger(lobbies.keySet().stream().max(Integer::compare).orElse(0) + 1);
+
+        allClients = new ConcurrentHashMap<>();
+        playingClients = new ConcurrentHashMap<>();
+
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        readLock = lock.readLock();
+        writeLock = lock.writeLock();
     }
 
     //=============================================================================

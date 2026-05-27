@@ -26,6 +26,17 @@ public class Deck {
         buildingCards = CardFactory.generateBuildingCards(deckConfig.getBuildingConfigs(), ageBuildingsCount, playerConfig.getNum());
     }
 
+    public Deck() {}
+
+    public Deck deepCopy() {
+        Deck deck = new Deck();
+        deck.charEventCards = new LinkedList<>(charEventCards);
+        deck.buildingCards = new LinkedList<>(buildingCards);
+        deck.ageBuildingsCount = ageBuildingsCount.clone();
+        deck.currentEra = currentEra;
+        return deck;
+    }
+
     /**
      * Draws a certain number of character/event cards.
      *

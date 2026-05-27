@@ -22,8 +22,8 @@ public class BuilderDoublePPBuilding extends AbstractBuilding implements Visitab
     }
 
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         if (buildingHandler !=  null)
             buildingHandler.addGameEndBuilding(this);
     }

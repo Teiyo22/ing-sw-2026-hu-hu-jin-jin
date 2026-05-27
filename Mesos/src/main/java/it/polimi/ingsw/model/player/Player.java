@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 
 import java.io.Serializable;
@@ -27,13 +28,13 @@ public class Player implements Comparable<Player>, Serializable {
 
     public Player shallowCopy() {
         Player copy = new Player(name, totem);
-        copy.setRank(rank);
+        copy.rank = rank;
         return copy;
     }
 
     public Player mediumCopy() {
         Player copy = new Player(name, totem);
-        copy.setRank(rank);
+        copy.rank = rank;
         copy.tribe = tribe.shallowCopy();
         return copy;
     }
@@ -106,6 +107,11 @@ public class Player implements Comparable<Player>, Serializable {
 
     public List<AbstractBuilding> getBuildings() {
         return tribe.getBuildings();
+    }
+
+    public void registerBuildings(BuildingHandler buildingHandler) {
+        for (AbstractBuilding building : tribe.getBuildings())
+            building.register(this, buildingHandler);
     }
 
     public int getFood() {

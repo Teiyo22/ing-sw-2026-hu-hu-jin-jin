@@ -24,8 +24,8 @@ public class OrderTileBuilding extends AbstractBuilding implements VisitableBuil
      * Adds the card to the list of order tile buildings in the building handler.
      * */
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         if (buildingHandler !=  null)
             buildingHandler.addOrderTileBuilding(this);
     }

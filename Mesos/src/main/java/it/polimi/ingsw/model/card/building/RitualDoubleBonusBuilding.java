@@ -22,8 +22,8 @@ public class RitualDoubleBonusBuilding extends AbstractBuilding {
      * Enables the bonus PP doubling modifier for shamanic rituals.
      * */
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         owner.enableDoubleRitualMod();
     }
 }

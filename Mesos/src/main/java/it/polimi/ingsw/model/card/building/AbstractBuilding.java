@@ -32,10 +32,10 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
      * */
     @Override
     public void onPick(Player player, BuildingHandler buildingHandler) {
-        owner = player;
         cost = Math.max(0, cost - player.getTribe().getBuilderDiscount());
         player.addFood(-cost);
         player.addBuilding(this);
+        register(player, buildingHandler);
     }
 
     @Override
@@ -43,20 +43,9 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         row.addBuilding(this);
     }
 
-    public int getPP() {
-        return pp;
-    }
-    public int getCost() {
-        return cost;
-    }
-
     @Override
     public void removeFrom(Row row){
         row.getBuildingCards().remove(this);
-    }
-
-    public Player getOwner() {
-        return owner;
     }
 
     @Override
@@ -66,5 +55,21 @@ public abstract class AbstractBuilding extends AbstractCard implements Pickable 
         String PP = String.format("PP: %d", pp);
 
         return super.toString() + String.format(format, COST, PP);
+    }
+
+    public void register(Player player, BuildingHandler buildingHandler) {
+        owner = player;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public int getPP() {
+        return pp;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }

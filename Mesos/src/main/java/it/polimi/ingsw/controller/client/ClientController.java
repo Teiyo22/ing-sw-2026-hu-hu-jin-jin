@@ -632,7 +632,7 @@ public class ClientController implements VirtualClient {
         try {
             if (currLobby == null || currLobby.getBoard() == null)
                 return null;
-            return currLobby.getBoard().deepCopy();
+            return currLobby.getBoard().mediumCopy();
         } finally {
             readLock.unlock();
         }

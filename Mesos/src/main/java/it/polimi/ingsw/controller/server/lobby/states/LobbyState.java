@@ -37,7 +37,7 @@ public abstract class LobbyState {
         Game model = lobbyController.getModel();
 
         for (ClientInterface player : lobbyController.getPlayers().keySet()) {
-            player.startLobby(lobbyController.getID(), model.getBoard().deepCopy(), new ArrayList<>(lobbyController.getPlayers().values()));
+            player.startLobby(lobbyController.getID(), model.getBoard().mediumCopy(), new ArrayList<>(lobbyController.getPlayers().values()));
             player.updateState(lobbyController.getID(), model.getGameState().getModelStateInfo());
         }
 

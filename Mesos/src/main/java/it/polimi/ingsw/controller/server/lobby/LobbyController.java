@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.server.lobby;
 
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyPausedState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
@@ -36,6 +37,14 @@ public class LobbyController {
         this.lobbyID = lobbyID;
         this.size = size;
         state = new LobbyWaitingState(this);
+    }
+
+    public LobbyController(int lobbyID, Game game) {
+        this.lobbyID = lobbyID;
+        this.size = game.getPlayers().size();
+
+        this.model = game;
+        this.state = new LobbyPausedState(this);
     }
 
     //=============================================================================

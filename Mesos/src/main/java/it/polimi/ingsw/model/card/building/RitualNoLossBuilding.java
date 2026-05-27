@@ -23,8 +23,8 @@ public class RitualNoLossBuilding extends AbstractBuilding {
      *
      */
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         owner.enableNoLossRitualMod();
     }
 }

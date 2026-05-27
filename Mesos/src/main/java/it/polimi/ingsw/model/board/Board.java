@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.board;
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.Pickable;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 
 import java.io.Serializable;
@@ -29,29 +30,57 @@ public class Board implements Serializable {
         orderTile = new ConfigLoader().loadOrderSlot(game.getPlayerConfig().getOrderTileConfigFile());
     }
 
-    public Board(Row topRow, Row bottomRow, OrderSlot[] orderTile, OfferTile[] offerTrack) {
+    public Board(Deck deck, Row topRow, Row bottomRow, OrderSlot[] orderTile, OfferTile[] offerTrack) {
         this.game = null;
-        this.deck = null;
+        this.deck = deck;
         this.topRow = topRow;
         this.bottomRow = bottomRow;
         this.orderTile = orderTile;
         this.offerTrack = offerTrack;
     }
 
+    public Board mediumCopy() {
+        return new Board(
+            null,
+            topRow.deepCopy(),
+            bottomRow.deepCopy(),
+            orderTileCopy(),
+            offerTrackCopy());
+    }
+
     public Board deepCopy() {
+        return new Board(
+            deck.deepCopy(),
+            topRow.deepCopy(),
+            bottomRow.deepCopy(),
+            orderTileCopy(),
+            offerTrackCopy());
+    }
+
+    private OrderSlot[] orderTileCopy() {
         OrderSlot[] orderTileCopy = new OrderSlot[orderTile.length];
         for (int i = 0; i < orderTile.length; i++)
             orderTileCopy[i] = orderTile[i].copy();
+        return orderTileCopy;
+    }
 
+    private OfferTile[] offerTrackCopy() {
         OfferTile[] offerTrackCopy = new OfferTile[offerTrack.length];
         for (int i = 0; i < offerTrack.length; i++)
             offerTrackCopy[i] = offerTrack[i].copy();
+        return offerTrackCopy;
+    }
 
-        return new Board(
-            topRow.deepCopy(),
-            bottomRow.deepCopy(),
-            orderTileCopy,
-            offerTrackCopy);
+    public void fixReferencesTo(List<Player> players) {
+        for (Player player : players) {
+            for (OrderSlot orderSlot : orderTile)
+                if (player.equals(orderSlot.getAssignedPlayer()))
+                    orderSlot.setPlayer(player);
+
+            for (OfferTile offerTile : offerTrack)
+                if (player.equals(offerTile.getAssignedPlayer()))
+                    offerTile.setPlayer(player);
+        }
     }
 
     public OfferTile[] getOfferTrack() {

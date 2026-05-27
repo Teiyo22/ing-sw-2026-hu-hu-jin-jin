@@ -30,8 +30,8 @@ public class CavePaintingBuilding extends AbstractBuilding implements VisitableB
      * Adds the cave painting building to the player's building handler.
      * */
     @Override
-    public void onPick(Player player, BuildingHandler buildingHandler) {
-        super.onPick(player, buildingHandler);
+    public void register(Player player, BuildingHandler buildingHandler) {
+        super.register(player, buildingHandler);
         if (buildingHandler !=  null)
             buildingHandler.addCavePaintingBuilding(this);
     }
