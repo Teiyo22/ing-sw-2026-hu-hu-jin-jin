@@ -11,30 +11,19 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Deck {
-    private PlayerConfig playerConfig;
-    private Board board;
-
     private Queue<AbstractCard> charEventCards;
     private Queue<AbstractCard> buildingCards;
 
     private int[] ageBuildingsCount;
-    private int currentEra = 0;
+    private int currentEra;
 
-    public Deck(PlayerConfig playerConfig, Board board) {
-        this.playerConfig = playerConfig;
-        this.board = board;
-    }
-
-    /**
-     *  Initializes the deck objects based on the number of players.
-     *  Each number is associated with a different deck config file.
-     *  Each deck config file contains different configurations for the cards
-     * */
-    public void init() {
+    public Deck(PlayerConfig playerConfig) {
         DeckConfig deckConfig = new ConfigLoader().loadDeckConfig(playerConfig.getDeckConfigFile());
         ageBuildingsCount = deckConfig.getBuildingsCountPerAge()[playerConfig.getNum() - 2];
-        initCards(deckConfig.getCardConfigs());
-        initBuildingCards(deckConfig.getBuildingConfigs());
+        currentEra = 0;
+
+        charEventCards = CardFactory.generateCards(deckConfig.getCardConfigs(), playerConfig.getNum());
+        buildingCards = CardFactory.generateBuildingCards(deckConfig.getBuildingConfigs(), ageBuildingsCount, playerConfig.getNum());
     }
 
     /**
@@ -58,7 +47,6 @@ public class Deck {
         return cards;
     }
 
-
     /**
      * Draws a certain number of building cards based on the current age.
      *
@@ -79,33 +67,11 @@ public class Deck {
         return buildings;
     }
 
-
     /**
      * Updates the current age.
      * */
     public void changeEra() {
         this.currentEra += 1;
-    }
-
-
-    /**
-     * Initializes the character and event cards from the card configurations.
-     *
-     * @param configs contains a list of templates for the character/event cards and the associated number of copies.
-     * */
-    private void initCards(List<CardConfig> configs) {
-        charEventCards = CardFactory.generateCards(configs, playerConfig.getNum());
-    }
-
-
-    /**
-     * Initializes the building cards from the card configurations.
-     * The buildings are separated from the character and event cards.
-     *
-     * @param configs contains a list of the templates for the building cards and the associated number of copies.
-     * */
-    private void initBuildingCards(List<CardConfig> configs) {
-        buildingCards = CardFactory.generateBuildingCards(configs, ageBuildingsCount, playerConfig.getNum());
     }
 
     public Queue<AbstractCard> getCharEventCards() {

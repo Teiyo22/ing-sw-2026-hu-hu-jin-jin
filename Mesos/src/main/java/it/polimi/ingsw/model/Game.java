@@ -29,15 +29,7 @@ public class Game {
     public Game(PlayerConfig playerConfig, List<Player> players) {
         this.playerConfig = playerConfig;
         this.players = players;
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Initializing board");
-
         this.board = new Board(this);
-        this.board.initOfferTrack();
-        this.board.initOrderTile();
-
-        Logger.getInstance().print(LoggerLevel.DEBUG, "Board initialized");
-
         this.buildingHandler = new BuildingHandler();
         this.gameState = new GameStartState(this, buildingHandler);
         this.gameState.update();
