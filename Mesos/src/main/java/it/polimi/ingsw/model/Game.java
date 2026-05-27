@@ -17,14 +17,14 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class Game {
-    private LobbyRunningState lobbyState = null;
+    transient private LobbyRunningState lobbyState = null;
 
-    private final PlayerConfig playerConfig;
-    private final List<Player> players;
-    private final Board board;
+    transient private PlayerConfig playerConfig;
+    private List<Player> players;
+    private Board board;
 
-    private GameState gameState;
-    private final BuildingHandler buildingHandler;
+    transient private GameState gameState;
+    transient private BuildingHandler buildingHandler;
 
     public Game(PlayerConfig playerConfig, List<Player> players) {
         this.playerConfig = playerConfig;
@@ -33,6 +33,15 @@ public class Game {
         this.buildingHandler = new BuildingHandler();
         this.gameState = new GameStartState(this, buildingHandler);
         this.gameState.update();
+    }
+
+    public Game(List<Player> players, Board board) {
+        this.players = players;
+        this.board = board;
+    }
+
+    public Game snapshot() {
+        return new Game(players.stream().map(Player::deepCopy).toList(), board.deepCopy());
     }
 
     public PlayerConfig getPlayerConfig() {

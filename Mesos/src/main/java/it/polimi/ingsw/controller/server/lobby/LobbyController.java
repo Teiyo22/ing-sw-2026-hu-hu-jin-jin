@@ -103,6 +103,15 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
+    public Game getModelSnapshot() {
+        readLock.lock();
+        try {
+            return model != null ? model.snapshot() : null;
+        } finally {
+            readLock.unlock();
+        }
+    }
+
     public void playAction(ClientInterface client, PlayerAction action) {
         Player player = players.get(client);
         if (player == null) return;
@@ -149,11 +158,12 @@ public class LobbyController {
     }
 
     public boolean isShowable() {
-        return state.isShowable();
-    }
-
-    public LobbyState getState(){
-        return state;
+        readLock.lock();
+        try {
+            return state.isShowable();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     //=============================================================================

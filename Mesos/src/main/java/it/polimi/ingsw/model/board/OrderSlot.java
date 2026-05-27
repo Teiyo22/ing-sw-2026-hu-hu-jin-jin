@@ -12,11 +12,6 @@ public class OrderSlot implements Serializable {
         this.foodDelta = foodDelta;
     }
 
-    public OrderSlot(Player assignedPlayer, int foodDelta) {
-        this.assignedPlayer = assignedPlayer;
-        this.foodDelta = foodDelta;
-    }
-
     public Player getAssignedPlayer() {
         return assignedPlayer;
     }
@@ -40,7 +35,9 @@ public class OrderSlot implements Serializable {
     }
 
     public OrderSlot copy() {
-        return new OrderSlot(assignedPlayer, foodDelta);
+        OrderSlot copy = new OrderSlot(foodDelta);
+        copy.assignedPlayer = assignedPlayer != null ? assignedPlayer.shallowCopy() : null;
+        return copy;
     }
 
     @Override

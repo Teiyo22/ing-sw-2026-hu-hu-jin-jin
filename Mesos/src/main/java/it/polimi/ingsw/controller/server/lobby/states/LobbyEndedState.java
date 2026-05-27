@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.player.Player;
 public class LobbyEndedState extends LobbyState {
     public LobbyEndedState(LobbyController lobbyController) {
         super(lobbyController);
+        lobbyController.setModel(null);
         ServerController.getInstance().removeFromPlayingClients(lobbyController.getPlayers().keySet());
     }
 

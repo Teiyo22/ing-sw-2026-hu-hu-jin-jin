@@ -1,27 +1,19 @@
 package it.polimi.ingsw.controller.server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
-import it.polimi.ingsw.controller.server.lobby.states.LobbyPausedState;
-import it.polimi.ingsw.controller.server.lobby.states.LobbyResumableState;
-import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
-import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.network.*;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.controller.PersistenceUtil;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -34,17 +26,15 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 
 public class ServerController implements VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
     private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
+    private final PersistenceUtil persistenceUtil = new PersistenceUtil();
     private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
     private final ExecutorService responseService = Executors.newVirtualThreadPerTaskExecutor();
-    private final ScheduledExecutorService persistenceService = Executors.newSingleThreadScheduledExecutor();
-    private final Gson gson = new Gson();
 
     private final AtomicInteger nextLobbyID = new AtomicInteger(1);
     private final Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
@@ -304,84 +294,11 @@ public class ServerController implements VirtualServer {
     }
 
     //=============================================================================
-    // Persistence
-    //=============================================================================
-
-    public void persistLobbies() {
-        persistenceService.scheduleAtFixedRate(() -> {
-            writeLock.lock();
-            try {
-                System.out.println("[Persistence] Lobbies totali: " + lobbies.size());
-                lobbies.forEach((id, lc) -> System.out.println("[Persistence] Lobby " + id + " stato: " + lc.getState().getClass().getSimpleName()));
-                //gets lobby in Running,Paused and Resumable
-                Map<Integer, Game> persLobby = lobbies.entrySet().stream()
-                    .filter(e -> {
-                        LobbyState state = e.getValue().getState();
-                        return state instanceof LobbyRunningState || state instanceof LobbyPausedState
-                            || state instanceof LobbyResumableState;
-                    })
-                    //gets the lobbyID as Key and model as value
-                    .collect(Collectors.toMap(Map.Entry::getKey,
-                        e -> e.getValue().getModel()
-                    ));
-                System.out.println("[Persistence] Lobby da salvare: " + persLobby.size());
-                new File("saves").mkdirs();
-                try (FileWriter writer = new FileWriter("saves/lobbies.json")) {
-                    gson.toJson(persLobby, writer);
-                    writer.flush();
-                }
-            } catch (IOException e) {
-                System.err.println("[Persistence] Errore: " + e.getMessage());
-                System.err.println("[Persistence] Path: " + new File("saves").getAbsolutePath());
-            } finally {
-                writeLock.unlock();
-            }
-        }, 10, 10, TimeUnit.SECONDS);
-    }
-
-    public void loadPersistedLobbies() throws FileNotFoundException {
-        File file = new File("saves/lobbies.json");
-        if (!file.exists()) return;
-
-        try {
-            FileReader reader = new FileReader(file);
-            Type type = new TypeToken<Map<Integer, Game>>() {
-            }.getType();
-            Map<Integer, Game> savedMap = gson.fromJson(reader, type);
-            reader.close();
-
-            if (savedMap == null || savedMap.isEmpty()) return;
-
-            int maxId = 0;
-            for (Map.Entry<Integer, Game> entry : savedMap.entrySet()) {
-                Game game = entry.getValue();
-                int id = entry.getKey();
-
-                LobbyController lc = new LobbyController(id, game.getPlayerConfig().getNum());
-                lc.setModel(game);
-                lc.setState(new LobbyPausedState(lc));
-
-                savedLobbies.put(id, lc);
-                if (id > maxId) maxId = id;
-            }
-
-            nextLobbyID.set(maxId + 1);
-
-        } catch (IOException e) {
-            System.err.println("[Boot] Errore caricamento: " + e.getMessage());
-        }
-    }
-
-    //=============================================================================
     // Network related methods
     //=============================================================================
 
-    public boolean startServer(String ip, int tcpPort, int rmiPort) throws FileNotFoundException {
+    public boolean startServer(String ip, int tcpPort, int rmiPort) {
         System.out.print("\033[H\033[2J");
-
-        loadPersistedLobbies();
-        persistLobbies();
-
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             requestService.submit(networkServer);
@@ -404,6 +321,7 @@ public class ServerController implements VirtualServer {
             return false;
         }
 
+        persistenceUtil.start(lobbies);
         connectionMonitor.startClientMonitor();
         Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
 
@@ -412,6 +330,7 @@ public class ServerController implements VirtualServer {
 
     public void stopServer() {
         connectionMonitor.stop();
+        persistenceUtil.stop();
 
         for (ClientInterface client : allClients.values()) client.cleanup();
         networkServer.cleanup();
@@ -419,7 +338,7 @@ public class ServerController implements VirtualServer {
 
         shutdownExecutor(requestService);
         shutdownExecutor(responseService);
-        shutdownExecutor(persistenceService);
+
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }

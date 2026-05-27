@@ -42,5 +42,4 @@ public class LobbyFullState extends LobbyState {
     public boolean isShowable() {
         return true;
     }
-
 }

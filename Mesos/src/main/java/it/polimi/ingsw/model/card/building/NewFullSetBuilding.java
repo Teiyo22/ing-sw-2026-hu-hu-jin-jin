@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.card.VisitableBuilding;
 import it.polimi.ingsw.model.player.Player;
 
 public class NewFullSetBuilding extends AbstractBuilding implements VisitableBuilding {
-    transient int minForSet;
+    private int minForSet;
 
     public NewFullSetBuilding(String type, int era, boolean isFinal, int cost, int pp) {
         super(type, era, isFinal, cost, pp);

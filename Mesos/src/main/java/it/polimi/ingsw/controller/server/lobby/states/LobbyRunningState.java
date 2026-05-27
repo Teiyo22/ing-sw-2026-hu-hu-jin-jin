@@ -114,5 +114,4 @@ public class LobbyRunningState extends LobbyState {
     public boolean isShowable() {
         return false;
     }
-
 }
