@@ -11,6 +11,6 @@ public class LeaderboardCommand implements Command{
 
     @Override
     public void execute() {
-        clientController.getServer().getLeaderboard(clientController.getID(), clientController.getCurrLobby().getSize());
+        clientController.getLeaderboard();
     }
 }

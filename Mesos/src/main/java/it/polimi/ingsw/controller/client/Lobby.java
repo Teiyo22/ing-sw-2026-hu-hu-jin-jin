@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardResult;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,7 +20,9 @@ public class Lobby implements Serializable {
     transient private Player shownPlayer = null;
     transient private Map<Player, Boolean> players = null;
     transient private Board board = null;
+
     transient private TurnState turnState = null;
+    transient private LeaderboardResult leaderboard = null;
 
     public Lobby(int lobbyID, int size, int playerCount) {
         this.lobbyID = lobbyID;
@@ -229,6 +232,7 @@ public class Lobby implements Serializable {
         lobbyCopy.setPlayers(getPlayersCopy());
         lobbyCopy.setShownPlayer(getShownPlayerCopy());
         lobbyCopy.setTurnState(turnState);
+        lobbyCopy.setLeaderboard(leaderboard);
 
         return lobbyCopy;
     }
@@ -241,6 +245,10 @@ public class Lobby implements Serializable {
 
     private Player getShownPlayerCopy() {
         return shownPlayer == null ? null : shownPlayer.deepCopy();
+    }
+
+    public LeaderboardResult getLeaderboard() {
+        return leaderboard;
     }
 
     //=============================================================================
@@ -265,6 +273,10 @@ public class Lobby implements Serializable {
 
     public void setIdleTurnState() {
         this.turnState = new IdleState(turnState.getCurrPlayer(), turnState.getIndex(), turnState.getEra());
+    }
+
+    public void setLeaderboard(LeaderboardResult leaderboard) {
+        this.leaderboard = leaderboard;
     }
 
     @Override
