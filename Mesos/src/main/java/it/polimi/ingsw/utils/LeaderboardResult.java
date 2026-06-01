@@ -1,8 +1,9 @@
 package it.polimi.ingsw.utils;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class LeaderboardResult {
+public class LeaderboardResult implements Serializable {
     private final List<LeaderboardEntry> leaderboardEntries;
     private final int playerRank;
 

@@ -102,6 +102,7 @@ public class LobbyRunningState extends LobbyState {
         for (ClientInterface client : lobbyController.getPlayers().keySet())
             client.updateModel(lobbyController.getID(), players);
 
+        ServerController.getInstance().updateLeaderboard(model);
         lobbyController.setState(new LobbyEndedState(lobbyController));
     }
 

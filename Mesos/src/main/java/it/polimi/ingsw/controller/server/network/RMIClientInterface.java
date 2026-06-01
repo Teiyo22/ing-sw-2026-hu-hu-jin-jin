@@ -9,6 +9,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardEntry;
 import it.polimi.ingsw.utils.LeaderboardResult;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -113,7 +114,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void showLeaderboard(List<LeaderboardEntry> leaderboard) {
+    public void showLeaderboard(LeaderboardResult leaderboard) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showLeaderboard");
         submitRemoteCall(
                 () -> wrappedClient.showLeaderboard(leaderboard)

@@ -6,10 +6,11 @@ import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.utils.LeaderboardDatabase;
+import it.polimi.ingsw.utils.LeaderboardDB;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
 import it.polimi.ingsw.utils.controller.PersistenceUtil;
@@ -43,6 +44,8 @@ public class ServerController implements VirtualServer {
     private final Map<String, ClientInterface> allClients;
     private final Map<String, ClientInterface> playingClients;
 
+    private final LeaderboardDB leaderboardDB;
+
     private final Lock readLock;
     private final Lock writeLock;
 
@@ -64,6 +67,8 @@ public class ServerController implements VirtualServer {
 
         allClients = new ConcurrentHashMap<>();
         playingClients = new ConcurrentHashMap<>();
+
+        leaderboardDB = new LeaderboardDB();
 
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
         readLock = lock.readLock();
@@ -241,8 +246,25 @@ public class ServerController implements VirtualServer {
 
     @Override
     public void getLeaderboard(String clientID, int playerNum) {
-        ClientInterface client = allClients.get(clientID);
-        client.showLeaderboard(LeaderboardDatabase.getLeaderboard(clientID, playerNum));
+        Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received [Leaderboard Get] request from [Client %s]", clientID));
+
+        readLock.lock();
+        try {
+            ClientInterface client = allClients.get(clientID);
+            if (client == null) return;
+
+            if (leaderboardDB.isAvailable())
+                leaderboardDB.getLeaderboard(client, playerNum);
+            else
+                client.showError(new ErrorMessage("Leaderboard Error", "Leaderboard is not available"));
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    public void updateLeaderboard(Game game) {
+        if (leaderboardDB.isAvailable())
+            leaderboardDB.saveResults(game);
     }
 
     //=============================================================================
@@ -360,18 +382,6 @@ public class ServerController implements VirtualServer {
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
 
-    private void shutdownExecutor(ExecutorService executor) {
-        executor.shutdown();
-
-        try {
-            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
-                executor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            executor.shutdownNow();
-        }
-    }
-
     public void disconnectClient(ClientInterface client) {
         writeLock.lock();
         try {
@@ -408,15 +418,6 @@ public class ServerController implements VirtualServer {
         }
     }
 
-
-    public void submitRequest(Runnable task) {
-        requestService.submit(task);
-    }
-
-    public void submitResponse(Runnable task) {
-        responseService.submit(task);
-    }
-
     @Override
     public void ping(String clientID) {
         readLock.lock();
@@ -428,6 +429,30 @@ public class ServerController implements VirtualServer {
             client.ping();
         } finally {
             readLock.unlock();
+        }
+    }
+
+    //=============================================================================
+    // Executor related methods
+    //=============================================================================
+
+    public void submitRequest(Runnable task) {
+        requestService.submit(task);
+    }
+
+    public void submitResponse(Runnable task) {
+        responseService.submit(task);
+    }
+
+    private void shutdownExecutor(ExecutorService executor) {
+        executor.shutdown();
+
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
         }
     }
 }

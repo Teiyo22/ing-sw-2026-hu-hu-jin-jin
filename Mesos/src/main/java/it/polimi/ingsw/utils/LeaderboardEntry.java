@@ -1,16 +1,25 @@
 package it.polimi.ingsw.utils;
 
-public class LeaderboardEntry {
-    private final String nickname;
-    private final int pp;
-    private final int food;
-    private final String date;
+import java.io.Serializable;
+import java.util.Date;
 
-    public LeaderboardEntry(String nickname, int pp, int food, String date) {
+public class LeaderboardEntry implements Serializable {
+    private int id;
+    private String nickname;
+    private int pp;
+    private int food;
+    private Date date;
+
+    public LeaderboardEntry(int id, String nickname, int pp, int food, Date date) {
+        this.id = id;
         this.nickname = nickname;
         this.pp = pp;
         this.food = food;
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNickname() {
@@ -25,7 +34,7 @@ public class LeaderboardEntry {
         return food;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 }
