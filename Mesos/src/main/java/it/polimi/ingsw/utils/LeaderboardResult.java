@@ -5,18 +5,18 @@ import java.util.List;
 
 public class LeaderboardResult implements Serializable {
     private final List<LeaderboardEntry> leaderboardEntries;
-    private final int playerRank;
+    private final int id;
 
-    public LeaderboardResult(List<LeaderboardEntry> leaderboardEntries, int playerRank) {
+    public LeaderboardResult(List<LeaderboardEntry> leaderboardEntries, int id) {
         this.leaderboardEntries = leaderboardEntries;
-        this.playerRank = playerRank;
+        this.id = id;
     }
 
     public List<LeaderboardEntry> getLeaderboardEntries() {
         return leaderboardEntries;
     }
 
-    public int getPlayerRank() {
-        return playerRank;
+    public int getId() {
+        return id;
     }
 }

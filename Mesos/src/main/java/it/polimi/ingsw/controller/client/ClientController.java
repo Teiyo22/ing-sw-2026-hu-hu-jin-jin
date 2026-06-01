@@ -479,22 +479,21 @@ public class ClientController implements VirtualClient {
     }
 
     public void getLeaderboard(){
-        String clientID;
-        int lobbySize;
+        String clientID = null;
+        int lobbySize = 0;
 
         readLock.lock();
         try {
-            if (currLobby == null) return;
-            clientID = id;
-            lobbySize = currLobby.getSize();
-            view.transitionTo(ScreenType.LEADERBOARD);
-
-            if (currLobby.getLeaderboard() == null)
-                server.getLeaderboard(clientID, lobbySize);
-
+            if (currLobby != null && currLobby.getLeaderboard() == null) {
+                clientID = id;
+                lobbySize = currLobby.getSize();
+            }
         } finally {
             readLock.unlock();
         }
+
+        if (clientID != null && lobbySize > 0)
+            server.getLeaderboard(clientID, lobbySize);
     }
 
     public String getID() {

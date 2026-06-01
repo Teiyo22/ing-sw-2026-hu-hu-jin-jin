@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
@@ -104,6 +105,24 @@ public class WidgetFactory {
         return label;
     }
 
+    public static JLabel createRankCell(String content, Color color) {
+        JLabel label = defaultLabel(content);
+
+        label.setBackground(color);
+        label.setOpaque(true);
+
+        return label;
+    }
+
+    public static JLabel createLeaderboardCell(String content, Color color) {
+        JLabel label = defaultLabel(content);
+        label.setFont(Fonts.small);
+
+        label.setBackground(color);
+        label.setOpaque(true);
+
+        return label;
+    }
 
     // ===============================================================
     // Other factory methods
@@ -183,7 +202,9 @@ public class WidgetFactory {
     }
 
     public static JScrollPane scrollPane(JComponent component, Color color) {
-        JScrollPane scrollPane = new JScrollPane(component);
+        JScrollPane scrollPane = new JScrollPane(component,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         if(color != null) {
             scrollPane.setOpaque(true);

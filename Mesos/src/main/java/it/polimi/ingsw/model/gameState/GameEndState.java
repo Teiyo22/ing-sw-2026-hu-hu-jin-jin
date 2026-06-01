@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardDatabase;
+import it.polimi.ingsw.utils.LeaderboardDB;
 
 import java.util.*;
 
@@ -39,8 +39,6 @@ public class GameEndState extends GameState {
 
         buildingHandler.applyGameEndEffects();
         setLeaderboard();
-
-        new LeaderboardDatabase().saveResults(game);
 
         game.getLobbyState().notifyGameEndUpdate();
     }
