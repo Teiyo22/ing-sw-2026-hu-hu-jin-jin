@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.client.turn.TurnState;
 
 public class TUIShowEndAction implements TUIAction {
@@ -22,7 +23,11 @@ public class TUIShowEndAction implements TUIAction {
 
     @Override
     public boolean isEnabled() {
-        TurnState turnState = clientController.getCurrLobby().getTurnState();
+        Lobby currLobby = clientController.getCurrLobby();
+        if (currLobby == null)
+            return false;
+
+        TurnState turnState = currLobby.getTurnState();
         return turnState != null && turnState.hasEnded();
     }
 

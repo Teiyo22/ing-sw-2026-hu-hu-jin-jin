@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
+import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.view.command.PickCardCommand;
 
@@ -27,6 +28,10 @@ public class TUIPickCardAction implements TUIAction {
 
     @Override
     public boolean isEnabled() {
+        Lobby currLobby = clientController.getCurrLobby();
+        if (currLobby == null)
+            return false;
+
         TurnState turnState = clientController.getCurrLobby().getTurnState();
         return turnState != null && turnState.canPickCard();
     }
