@@ -52,7 +52,7 @@ public class Sustenance extends AbstractEvent {
 
             if (unfedCount > 0) {
                 player.setFood(0);  //spend all the food
-                player.addPP(unfedCount * ppMultiplier);  //lose pp
+                player.addPP(-unfedCount * ppMultiplier);  //lose pp
             } else {
                 player.addFood(-foodCost);  //otherwise just remove the needed amount of food, 1 per member
             }

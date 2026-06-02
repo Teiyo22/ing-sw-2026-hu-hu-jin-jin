@@ -666,6 +666,9 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    public ServerInterface getServer() {
+        return server;
+    }
 
     public boolean isInit() {
         return init;
