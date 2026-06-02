@@ -17,7 +17,7 @@ import java.util.List;
 public class GUIGameEndScreen extends GUIScreen {
     public GUIGameEndScreen(GUIView frame, ClientController clientController) {
         super(frame, clientController);
-        background = ImageCache.loadImage("/images/mesos_blurred.png");
+        background = ImageCache.loadImage("/images/mesos_blurred_no_title.png");
 
         JButton leaderboardBtn = WidgetFactory.mediumButton(new GUILeaderboardAction(clientController, this));
         JButton rankingBtn = WidgetFactory.mediumButton("Ranking", this::showRanking);

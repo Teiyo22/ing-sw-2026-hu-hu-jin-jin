@@ -26,6 +26,7 @@ public class GameInfoSection extends GUISection {
 
     private final JButton pickCardsButton;
     private final JButton pickOfferButton;
+    private final JButton rankingButton;
 
     public GameInfoSection(ClientController clientController, RowSection topRowSection, RowSection bottomRowSection,
                            OfferTrackSection offerTrackSection, ImageCache imageCache) {
@@ -47,7 +48,9 @@ public class GameInfoSection extends GUISection {
 
         // Leave button
         JButton leaveButton = WidgetFactory.tinyButton(new GUILeaveLobbyAction(clientController));
-        JPanel leavePanel = new PanelBuilder().column(0, leaveButton).buildPanel();
+        rankingButton = WidgetFactory.tinyButton("Ranking", clientController::showResults);
+        rankingButton.setVisible(false);
+        JPanel leavePanel = new PanelBuilder().column(5, leaveButton, rankingButton).buildPanel();
 
         panel = new PanelBuilder().rounded(30)
                 .border(playerActionPanel, infoPanel, leavePanel, null, null)
@@ -69,6 +72,8 @@ public class GameInfoSection extends GUISection {
             currentPlayer.setText(formatCurrentPlayer(currLobby.getTurnState().getCurrPlayer()));
             pickOfferButton.setEnabled(currLobby.getTurnState().canPickOffer());
             pickCardsButton.setEnabled(currLobby.getTurnState().canPickCard());
+            rankingButton.setVisible(currLobby.getTurnState().hasEnded());
+
         }
 
         for (Player p : currLobby.getPlayers().keySet()) {

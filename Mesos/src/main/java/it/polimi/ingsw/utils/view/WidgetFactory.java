@@ -57,6 +57,15 @@ public class WidgetFactory {
         return button;
     }
 
+    public static JButton tinyButton(String name, Runnable action) {
+        return tinyButton(new AbstractAction(name) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                action.run();
+            }
+        });
+    }
+
     // ===============================================================
     // Label factory methods
     // ===============================================================

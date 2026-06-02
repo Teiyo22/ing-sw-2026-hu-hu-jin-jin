@@ -274,6 +274,17 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    public void showResults() {
+        writeLock.lock();
+        try {
+            if (currLobby != null) {
+                view.transitionTo(ScreenType.GAME_END);
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
     @Override
     public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         writeLock.lock();
@@ -343,7 +354,7 @@ public class ClientController implements VirtualClient {
                 currLobby.updateTribes(players);
                 currLobby.setRanking(players);
 
-                view.transitionTo(ScreenType.GAME_END);
+                view.notifyChange();
             }
         } finally {
             writeLock.unlock();
