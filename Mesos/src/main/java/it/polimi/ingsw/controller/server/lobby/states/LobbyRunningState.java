@@ -85,13 +85,13 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(lobbyController.getID(), player.mediumCopy(), topRowPicks, bottomRowPicks);
     }
 
-    public void notifyRoundEndUpdate() {
+    public void notifyRoundEndUpdate(boolean eraChanged) {
         List<Player> players = lobbyController.getPlayers().values().stream()
             .map(Player::mediumCopy)
             .toList();
 
         for (ClientInterface client : lobbyController.getPlayers().keySet())
-            client.updateModel(lobbyController.getID(), players, model.getBoard().getTopRow());
+            client.updateModel(lobbyController.getID(), players, model.getBoard().getTopRow(), eraChanged);
     }
 
     public void notifyGameEndUpdate() {

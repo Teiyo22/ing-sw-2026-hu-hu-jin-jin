@@ -6,11 +6,11 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.view.Fonts;
 import it.polimi.ingsw.utils.view.PanelBuilder;
 import it.polimi.ingsw.utils.view.WidgetFactory;
+import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RankingSection extends GUISection {
@@ -19,22 +19,20 @@ public class RankingSection extends GUISection {
 
     public RankingSection(ClientController clientController, JButton leaderboardBtn) {
         table = new PanelBuilder()
-            .grid(HEADERS.length, 0, 2)
+            .grid(HEADERS.length, 0, 0)
             .buildPanel();
 
-        JLabel[] colHeaders = Arrays.stream(HEADERS)
-            .map(h -> WidgetFactory.createRankCell(h, Fonts.mesos_shadow_red_low_opacity))
-            .toArray(JLabel[]::new);
+        JLabel title = WidgetFactory.mediumLabel("FINAL RANKING");
 
-        JPanel header = new PanelBuilder()
-            .column(5,
-                WidgetFactory.mediumLabel("FINAL RANKING"),
-                new PanelBuilder().grid(HEADERS.length, 0, 2, colHeaders).buildPanel())
+        JButton leaveBtn = WidgetFactory.mediumButton(new GUILeaveLobbyAction(clientController));
+        JPanel btnPanel = new PanelBuilder()
+            .row(5, leaderboardBtn, leaveBtn)
             .buildPanel();
 
         panel = new PanelBuilder()
-            .border(header, table, leaderboardBtn, null, null)
+            .column(5, title, table, btnPanel)
             .withTranslucentColor(Fonts.mesos_shadow_red_low_opacity)
+            .centered()
             .withPadding(40, 60, 40, 60)
             .buildPanel();
     }
@@ -53,6 +51,8 @@ public class RankingSection extends GUISection {
     private List<JLabel> buildTable(Lobby currLobby) {
         List<JLabel> cells = new ArrayList<>();
 
+        for (String h : HEADERS)
+            cells.add(WidgetFactory.createRankCell(h, Fonts.mesos_shadow_red_low_opacity));
 
         List<Player> ranking = new ArrayList<>(currLobby.getPlayers().keySet());
         ranking.sort(null);

@@ -93,6 +93,9 @@ public class ClientController implements VirtualClient {
         try {
             Lobby lobby = waitingLobbies.get(lobbyID);
 
+            if (currLobby != null)
+                currLobby.reset();
+
             if (lobby != null) {
                 Map<Player, Boolean> players = new HashMap<>();
                 currLobby = lobby;
@@ -147,10 +150,11 @@ public class ClientController implements VirtualClient {
         try {
             waitingLobbies.remove(lobbyID);
 
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby = null;
-
-            view.notifyChange();
+                view.transitionTo(ScreenType.LOBBY_SELECTION);
+            } else
+                view.notifyChange();
         } finally {
             writeLock.unlock();
         }
@@ -230,10 +234,8 @@ public class ClientController implements VirtualClient {
     public void stopLobby(int lobbyID) {
         writeLock.lock();
         try {
-            if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
-                currLobby.stop();
+            if (currLobby != null && currLobby.getLobbyID() == lobbyID)
                 view.transitionTo(ScreenType.LOBBY_SELECTION);
-            }
         } finally {
             writeLock.unlock();
         }
@@ -319,12 +321,12 @@ public class ClientController implements VirtualClient {
     }
 
     @Override
-    public void updateModel(int lobbyID, List<Player> players, Row topRow) {
+    public void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) {
         writeLock.lock();
         try {
             if (currLobby != null && currLobby.getLobbyID() == lobbyID) {
                 currLobby.updateTribes(players);
-                currLobby.updateRows(topRow);
+                currLobby.updateRows(topRow, eraChanged);
 
                 view.notifyChange();
             }

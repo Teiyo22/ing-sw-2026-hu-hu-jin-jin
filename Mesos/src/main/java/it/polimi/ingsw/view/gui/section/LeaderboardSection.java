@@ -7,6 +7,7 @@ import it.polimi.ingsw.utils.LeaderboardResult;
 import it.polimi.ingsw.utils.view.Fonts;
 import it.polimi.ingsw.utils.view.PanelBuilder;
 import it.polimi.ingsw.utils.view.WidgetFactory;
+import it.polimi.ingsw.view.gui.action.GUILeaveLobbyAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +29,14 @@ public class LeaderboardSection extends GUISection {
 
         JScrollPane scroll = WidgetFactory.scrollPane(table, null);
 
+        JButton leaveBtn = WidgetFactory.mediumButton(new GUILeaveLobbyAction(clientController));
+        JPanel btnPanel = new PanelBuilder()
+            .row(5, rankingBtn, leaveBtn)
+            .buildPanel();
+
         panel = new PanelBuilder()
-            .border(title, scroll, rankingBtn, null, null)
+            .column(5, title, scroll, btnPanel)
+            .centered()
             .withPadding(40, 60, 40, 60)
             .buildPanel();
     }
@@ -41,29 +48,31 @@ public class LeaderboardSection extends GUISection {
             return;
 
         table.removeAll();
-        for(JLabel cell : buildTable(currLobby.getLeaderboard(), clientController.getID()))
+        for(JLabel cell : buildTable(currLobby.getLeaderboard()))
             table.add(cell);
     }
 
-    private List<JLabel> buildTable(LeaderboardResult result, String myName) {
+    private List<JLabel> buildTable(LeaderboardResult result) {
         List<JLabel> cells = new ArrayList<>();
 
-        for (String h : HEADERS)
-            cells.add(WidgetFactory.createLeaderboardCell(h, Fonts.mesos_dark_blue_low_opacity));
+        if (result != null) {
+            for (String h : HEADERS)
+                cells.add(WidgetFactory.createLeaderboardCell(h, Fonts.mesos_dark_blue_low_opacity));
 
-        for (int i = 0; i < result.getLeaderboardEntries().size(); i++) {
-            LeaderboardEntry entry = result.getLeaderboardEntries().get(i);
-            int rank = i + 1;
+            for (int i = 0; i < result.getLeaderboardEntries().size(); i++) {
+                LeaderboardEntry entry = result.getLeaderboardEntries().get(i);
+                int rank = i + 1;
 
-            Color color =  entry.getId() == result.getId()
-                ? new Color(255, 255, 255, 60)
-                : Fonts.mesos_shadow_red_low_opacity;
+                Color color = entry.getId() == result.getId()
+                    ? new Color(255, 255, 255, 60)
+                    : Fonts.mesos_shadow_red_low_opacity;
 
-            cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(rank), color));
-            cells.add(WidgetFactory.createLeaderboardCell(entry.getNickname(), color));
-            cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(entry.getPP()), color));
-            cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(entry.getFood()), color));
-            cells.add(WidgetFactory.createLeaderboardCell(entry.getDate().toString(), color));
+                cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(rank), color));
+                cells.add(WidgetFactory.createLeaderboardCell(entry.getNickname(), color));
+                cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(entry.getPP()), color));
+                cells.add(WidgetFactory.createLeaderboardCell(String.valueOf(entry.getFood()), color));
+                cells.add(WidgetFactory.createLeaderboardCell(entry.getDate().toString(), color));
+            }
         }
 
         return cells;

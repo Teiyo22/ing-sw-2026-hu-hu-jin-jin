@@ -9,7 +9,6 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardEntry;
 import it.polimi.ingsw.utils.LeaderboardResult;
 import it.polimi.ingsw.utils.Logger;
 import it.polimi.ingsw.utils.LoggerLevel;
@@ -146,10 +145,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     }
 
     @Override
-    public void updateModel(int lobbyID, List<Player> players, Row topRow) {
+    public void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, players, topRow)
+                () -> wrappedClient.updateModel(lobbyID, players, topRow, eraChanged)
         );
     }
 

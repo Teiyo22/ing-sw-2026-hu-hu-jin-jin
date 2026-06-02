@@ -41,7 +41,6 @@ public class TUIPickOfferAction implements Action {
         if (offerID == null)
             return false;
 
-        clientController.setIdleTurnState();
         new PickOfferCommand(clientController, offerID).execute();
         return true;
     }

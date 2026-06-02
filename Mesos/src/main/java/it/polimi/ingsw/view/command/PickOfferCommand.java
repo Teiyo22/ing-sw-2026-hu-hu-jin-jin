@@ -14,6 +14,7 @@ public class PickOfferCommand implements Command {
 
     @Override
     public void execute() {
+        clientController.setIdleTurnState();
         clientController.submitRequest(
                 () -> clientController.requestAction(new OfferPickPlayerAction(offerID))
         );

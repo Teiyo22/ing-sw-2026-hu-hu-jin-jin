@@ -204,7 +204,7 @@ public class WidgetFactory {
     public static JScrollPane scrollPane(JComponent component, Color color) {
         JScrollPane scrollPane = new JScrollPane(component,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         if(color != null) {
             scrollPane.setOpaque(true);

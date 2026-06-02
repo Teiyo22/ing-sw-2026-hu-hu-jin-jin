@@ -17,12 +17,15 @@ public class RoundEndState extends GameState {
     private final Row top;
     private final Deck deck;
 
+    private boolean eraChanged;
+
     public RoundEndState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
 
         this.bottom = game.getBoard().getBottomRow();
         this.top = game.getBoard().getTopRow();
         this.deck = game.getBoard().getDeck();
+        this.eraChanged = false;
     }
 
     /**
@@ -35,7 +38,7 @@ public class RoundEndState extends GameState {
         if(!deck.getCharEventCards().isEmpty()) {
             resolveEvents();
             setUp();
-            game.getLobbyState().notifyRoundEndUpdate();
+            game.getLobbyState().notifyRoundEndUpdate(eraChanged);
             game.setGameState(new RoundStartState(game, buildingHandler));
         } else
             game.setGameState(new GameEndState(game, buildingHandler));
@@ -122,6 +125,8 @@ public class RoundEndState extends GameState {
             building.moveTo(top);
             nextBuildingID++;
         }
+
+        eraChanged = true;
     }
 
     @Override

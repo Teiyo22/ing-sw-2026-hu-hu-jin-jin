@@ -7,7 +7,6 @@ import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardEntry;
 import it.polimi.ingsw.utils.LeaderboardResult;
 
 import java.rmi.Remote;
@@ -36,7 +35,7 @@ public interface VirtualClient extends Remote {
 
     void updateModel(int lobbyID, Player player, int offerIndex) throws RemoteException;
     void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) throws RemoteException;
-    void updateModel(int lobbyID, List<Player> players, Row topRow) throws RemoteException;
+    void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) throws RemoteException;
     void updateModel(int lobbyID, List<Player> players) throws RemoteException;
 
     void ping() throws RemoteException;

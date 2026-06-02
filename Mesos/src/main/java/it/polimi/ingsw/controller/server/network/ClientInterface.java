@@ -40,7 +40,7 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
 
     public abstract void updateModel(int lobbyID, Player player, int offerIndex);
     public abstract void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks);
-    public abstract void updateModel(int lobbyID, List<Player> players, Row topRow);
+    public abstract void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged);
     public abstract void updateModel(int lobbyID, List<Player> players);
 
     public abstract void ping();

@@ -47,8 +47,12 @@ public class Lobby implements Serializable {
         players.remove(player);
     }
 
-    public void stop() {
-        players.keySet().forEach(p -> p.setTribe(null));
+    public void reset() {
+        players.clear();
+        shownPlayer = null;
+        turnState = null;
+        leaderboard = null;
+        board = null;
     }
 
     //=============================================================================
@@ -136,14 +140,13 @@ public class Lobby implements Serializable {
         }
     }
 
-    public void updateRows(Row newTopRow) {
+    public void updateRows(Row newTopRow, boolean eraChanged) {
         Row oldTopRow = board.getTopRow();
 
         board.setBottomRow(oldTopRow);
         board.setTopRow(newTopRow);
 
-        if (!oldTopRow.getBuildingCards().isEmpty() &&
-            oldTopRow.getBuildingCards().getFirst().getEra() == newTopRow.getBuildingCards().getFirst().getEra())
+        if (!eraChanged)
             oldTopRow.getBuildingCards().clear();
     }
 

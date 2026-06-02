@@ -43,7 +43,6 @@ public class TUIPickCardAction implements Action {
             return false;
         }
 
-        clientController.setIdleTurnState();
         new PickCardCommand(clientController, topRow, bottomRow).execute();
         return true;
     }
