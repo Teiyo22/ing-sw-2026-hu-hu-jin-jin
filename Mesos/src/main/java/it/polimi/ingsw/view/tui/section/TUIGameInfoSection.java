@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.view.Formatter;
 
-public class TUIPlayerInfoSection implements TUISection {
+public class TUIGameInfoSection implements TUISection {
     private Lobby currLobby;
 
     @Override
@@ -14,10 +14,14 @@ public class TUIPlayerInfoSection implements TUISection {
         Player thisPlayer = currLobby.getPlayer(clientController.getID());
 
         System.out.println();
-        System.out.println(Formatter.separatorLine("Players"));
+        System.out.println(Formatter.separatorLine("Game Info"));
 
         for (Player player : currLobby.getPlayers().keySet())
             System.out.println(Formatter.playerInfo(player, player.equals(currPlayer), player.equals(thisPlayer)));
+
+        System.out.println();
+
+        System.out.println(Formatter.line("Current era: " + currLobby.getTurnState().getEra()));
 
         System.out.println(Formatter.separatorLine(""));
     }

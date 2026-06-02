@@ -10,6 +10,7 @@ public abstract class TurnState {
     public TurnState(Player currPlayer, int index, int era){
         this.currPlayer = currPlayer;
         this.index = index;
+        this.era = era;
     }
 
     public abstract boolean canPickCard();

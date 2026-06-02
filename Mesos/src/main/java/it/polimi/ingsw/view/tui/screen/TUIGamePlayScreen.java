@@ -25,7 +25,7 @@ public class TUIGamePlayScreen extends TUIScreen {
         sections = List.of(
             new TUIClientInfoSection(),
             new TUIActionSection(registry),
-            new TUIPlayerInfoSection(),
+            new TUIGameInfoSection(),
             new TUIOrderTileSection(),
             new TUIRowSection(true),
             new TUIOfferTrackSection(),
