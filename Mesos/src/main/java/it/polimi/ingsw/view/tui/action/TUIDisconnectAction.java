@@ -3,9 +3,7 @@ package it.polimi.ingsw.view.tui.action;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.command.DisconnectCommand;
 
-import java.util.Optional;
-
-public class TUIDisconnectAction implements Action {
+public class TUIDisconnectAction implements TUIAction {
     final private ClientController clientController;
 
     public TUIDisconnectAction(ClientController clientController) {

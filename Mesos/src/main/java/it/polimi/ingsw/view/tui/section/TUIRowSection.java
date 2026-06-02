@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.card.event.AbstractEvent;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.utils.view.Formatter;
 
-public class TUIRowSection implements Section {
+public class TUIRowSection implements TUISection {
     private final boolean isTop;
     private Board board;
 

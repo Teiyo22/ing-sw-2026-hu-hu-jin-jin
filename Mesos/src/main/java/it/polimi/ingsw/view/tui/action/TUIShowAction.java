@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.Optional;
-
-public class TUIShowAction implements Action {
+public class TUIShowAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 1;
 

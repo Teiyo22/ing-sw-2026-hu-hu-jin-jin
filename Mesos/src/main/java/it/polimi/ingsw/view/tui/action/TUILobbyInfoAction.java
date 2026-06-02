@@ -5,9 +5,8 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.view.command.LobbyInfoCommand;
 
 import java.util.Map;
-import java.util.Optional;
 
-public class TUILobbyInfoAction implements Action {
+public class TUILobbyInfoAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 1;
 

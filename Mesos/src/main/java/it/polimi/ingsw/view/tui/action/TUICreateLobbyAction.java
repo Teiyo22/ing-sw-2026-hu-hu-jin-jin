@@ -5,9 +5,7 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.CreateLobbyCommand;
 
-import java.util.Optional;
-
-public class TUICreateLobbyAction implements Action {
+public class TUICreateLobbyAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 2;
 

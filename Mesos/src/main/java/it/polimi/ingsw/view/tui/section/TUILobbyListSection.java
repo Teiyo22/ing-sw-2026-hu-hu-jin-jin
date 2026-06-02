@@ -6,7 +6,7 @@ import it.polimi.ingsw.utils.view.Formatter;
 
 import java.util.Map;
 
-public class TUILobbyListSection implements Section {
+public class TUILobbyListSection implements TUISection {
     private Map<Integer, Lobby> waitingLobbies;
 
     @Override

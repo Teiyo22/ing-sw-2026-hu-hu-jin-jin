@@ -274,7 +274,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
-    public void showResults() {
+    public void showEnd() {
         writeLock.lock();
         try {
             if (currLobby != null) {

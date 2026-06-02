@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.view.command.StartLobbyCommand;
 
-import java.util.Optional;
-
-public class TUIStartLobbyAction implements Action {
+public class TUIStartLobbyAction implements TUIAction {
     final private ClientController clientController;
 
     public TUIStartLobbyAction(ClientController clientController) {

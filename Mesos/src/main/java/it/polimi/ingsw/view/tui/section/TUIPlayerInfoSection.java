@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.view.Formatter;
 
-public class TUIPlayerInfoSection implements  Section {
+public class TUIPlayerInfoSection implements TUISection {
     private Lobby currLobby;
 
     @Override

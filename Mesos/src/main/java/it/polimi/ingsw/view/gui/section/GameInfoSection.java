@@ -48,7 +48,7 @@ public class GameInfoSection extends GUISection {
 
         // Leave button
         JButton leaveButton = WidgetFactory.tinyButton(new GUILeaveLobbyAction(clientController));
-        rankingButton = WidgetFactory.tinyButton("Ranking", clientController::showResults);
+        rankingButton = WidgetFactory.tinyButton("End", clientController::showEnd);
         rankingButton.setVisible(false);
         JPanel leavePanel = new PanelBuilder().column(5, leaveButton, rankingButton).buildPanel();
 

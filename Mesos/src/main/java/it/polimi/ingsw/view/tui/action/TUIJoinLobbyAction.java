@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.view.command.JoinLobbyCommand;
 
-import java.util.Optional;
-
-public class TUIJoinLobbyAction implements Action {
+public class TUIJoinLobbyAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 1;
 

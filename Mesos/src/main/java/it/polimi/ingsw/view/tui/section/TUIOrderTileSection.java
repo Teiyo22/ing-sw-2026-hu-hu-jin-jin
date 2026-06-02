@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.utils.view.Formatter;
 
-public class TUIOrderTileSection implements Section {
+public class TUIOrderTileSection implements TUISection {
     private Board board;
 
     @Override

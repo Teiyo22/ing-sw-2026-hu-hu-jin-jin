@@ -2,6 +2,7 @@ package it.polimi.ingsw.utils.view;
 
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.LeaderboardEntry;
 
 import java.util.Map;
 
@@ -56,5 +57,27 @@ public class Formatter {
 
         return coloredLine(String.format("%s %-20s | Food: %-3d | PP: %-3d",
                 turnMarker, player.getName() + playerMarker, player.getFood(), player.getPP()), player.getTotem().getColor());
+    }
+
+    public static String playerRank(Player player) {
+        Map<Integer, String> ordinalSuffix = Map.of(1, "st", 2, "nd", 3, "rd");
+        return line(String.format("%d%s: %-25s [Food: %d | PP: %d]",
+            player.getRank(),
+            ordinalSuffix.getOrDefault(player.getRank(), "th"),
+            player.getName(),
+            player.getFood(),
+            player.getPP()));
+    }
+
+    public static String leaderboardEntry(int rank, LeaderboardEntry entry, int entryID) {
+        String formattedString = String.format("%-4d. %-25s | Food: %-3d | PP: %-3d | Date: %s",
+            rank,
+            entry.getNickname(),
+            entry.getFood(),
+            entry.getPP(),
+            entry.getDate());
+        return entry.getId() == entryID ?
+            coloredLine(formattedString, "\u001B[42m"):
+            line(formattedString);
     }
 }

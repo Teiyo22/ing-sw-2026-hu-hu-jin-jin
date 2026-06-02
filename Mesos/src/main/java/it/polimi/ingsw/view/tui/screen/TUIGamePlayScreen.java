@@ -14,22 +14,23 @@ public class TUIGamePlayScreen extends TUIScreen {
         eventResults = new ArrayList<>();
 
         registry = new ActionRegistry()
-                .register(new TUIDisconnectAction(clientController))
-                .register(new TUIShowAction(clientController))
-                .register(new TUIHideAction(clientController))
-                .register(new TUIPickOfferAction(clientController))
-                .register(new TUIPickCardAction(clientController))
-                .register(new TUILeaveLobbyAction(clientController));
+            .register(new TUIDisconnectAction(clientController))
+            .register(new TUIShowAction(clientController))
+            .register(new TUIHideAction(clientController))
+            .register(new TUIPickOfferAction(clientController))
+            .register(new TUIPickCardAction(clientController))
+            .register(new TUILeaveLobbyAction(clientController))
+            .register(new TUIShowEndAction(clientController));
 
         sections = List.of(
-                new TUIClientInfoSection(),
-                new TUIActionSection(registry),
-                new TUIPlayerInfoSection(),
-                new TUIOrderTileSection(),
-                new TUIRowSection(true),
-                new TUIOfferTrackSection(),
-                new TUIRowSection(false),
-                new TUIPlayerFocusSection()
+            new TUIClientInfoSection(),
+            new TUIActionSection(registry),
+            new TUIPlayerInfoSection(),
+            new TUIOrderTileSection(),
+            new TUIRowSection(true),
+            new TUIOfferTrackSection(),
+            new TUIRowSection(false),
+            new TUIPlayerFocusSection()
         );
     }
 }

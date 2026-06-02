@@ -16,7 +16,7 @@ public enum ScreenType {
             case LOGIN -> new TUILoginScreen(clientController);
             case LOBBY_SELECTION -> new TUILobbySelectionScreen(clientController);
             case GAME_PLAY -> new TUIGamePlayScreen(clientController);
-            case GAME_END -> null;
+            case GAME_END -> new TUIGameEndScreen(clientController);
         };
     }
 

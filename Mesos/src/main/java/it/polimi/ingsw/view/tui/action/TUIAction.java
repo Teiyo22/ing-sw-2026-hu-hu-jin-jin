@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.tui.action;
 
-public interface Action {
+public interface TUIAction {
     String key();
     String label();
     boolean isEnabled();

@@ -6,16 +6,16 @@ import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.model.card.event.EventResult;
 import it.polimi.ingsw.view.Screen;
 import it.polimi.ingsw.utils.view.Formatter;
-import it.polimi.ingsw.view.tui.action.Action;
+import it.polimi.ingsw.view.tui.action.TUIAction;
 import it.polimi.ingsw.view.tui.action.ActionRegistry;
-import it.polimi.ingsw.view.tui.section.Section;
+import it.polimi.ingsw.view.tui.section.TUISection;
 
 import java.util.List;
 
 public abstract class TUIScreen implements Screen {
     protected final ClientController clientController;
     protected ActionRegistry registry;
-    protected List<Section> sections;
+    protected List<TUISection> sections;
 
     private ErrorMessage errorMsg = null;
     protected List<EventResultMessage> eventResults = null;
@@ -58,7 +58,7 @@ public abstract class TUIScreen implements Screen {
         if (eventResults != null)
             eventResults.clear();
 
-        Action action = registry.resolve(args[0]);
+        TUIAction action = registry.resolve(args[0]);
         if (action == null || !action.parseAction(args))
             showErrors(new ErrorMessage("Input Error", "Invalid input"));
     }

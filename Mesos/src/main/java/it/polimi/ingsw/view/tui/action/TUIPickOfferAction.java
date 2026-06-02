@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.view.command.PickOfferCommand;
 
-import java.util.Optional;
-
-public class TUIPickOfferAction implements Action {
+public class TUIPickOfferAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 1;
 

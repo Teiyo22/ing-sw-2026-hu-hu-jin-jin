@@ -1,35 +1,34 @@
 package it.polimi.ingsw.view.tui.action;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.client.turn.TurnState;
 
-public class TUIHideAction implements TUIAction {
+public class TUIShowEndAction implements TUIAction {
     final private ClientController clientController;
-    private Lobby currLobby;
 
-    public TUIHideAction(ClientController clientController) {
+    public TUIShowEndAction(ClientController clientController) {
         this.clientController = clientController;
     }
 
     @Override
     public String key() {
-        return "2";
+        return "6";
     }
 
     @Override
     public String label() {
-        return "Hide";
+        return "End";
     }
 
     @Override
     public boolean isEnabled() {
-        currLobby = clientController.getCurrLobby();
-        return currLobby != null && currLobby.isShownPlayer();
+        TurnState turnState = clientController.getCurrLobby().getTurnState();
+        return turnState != null && turnState.hasEnded();
     }
 
     @Override
     public boolean parseAction(String[] args) {
-        clientController.hidePlayer();
+        clientController.showEnd();
         return true;
     }
 
@@ -38,4 +37,3 @@ public class TUIHideAction implements TUIAction {
         return String.format("[%s | %s]", key(), label());
     }
 }
-

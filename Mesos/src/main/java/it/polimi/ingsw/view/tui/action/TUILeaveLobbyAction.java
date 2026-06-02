@@ -4,9 +4,7 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.view.command.LeaveLobbyCommand;
 
-import java.util.Optional;
-
-public class TUILeaveLobbyAction implements Action {
+public class TUILeaveLobbyAction implements TUIAction {
     final private ClientController clientController;
 
     public TUILeaveLobbyAction(ClientController clientController) {

@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.card.character.InventorType;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.view.Formatter;
 
-public class TUIPlayerFocusSection implements Section {
+public class TUIPlayerFocusSection implements TUISection {
     private Lobby currLobby;
 
     @Override

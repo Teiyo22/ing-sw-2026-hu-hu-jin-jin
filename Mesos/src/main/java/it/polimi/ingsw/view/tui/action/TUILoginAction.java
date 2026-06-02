@@ -3,9 +3,7 @@ package it.polimi.ingsw.view.tui.action;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.view.command.LoginCommand;
 
-import java.util.Optional;
-
-public class TUILoginAction implements Action{
+public class TUILoginAction implements TUIAction {
     private final ClientController clientController;
     private final int argsCount = 1;
 

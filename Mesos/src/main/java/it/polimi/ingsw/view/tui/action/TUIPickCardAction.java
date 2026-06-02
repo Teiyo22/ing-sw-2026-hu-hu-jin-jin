@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.command.PickCardCommand;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TUIPickCardAction implements Action {
+public class TUIPickCardAction implements TUIAction {
     final private ClientController clientController;
     final private int argCount = 2;
 
