@@ -4,12 +4,14 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.OfferTile;
+import it.polimi.ingsw.view.gui.components.DeckComponent;
 import it.polimi.ingsw.view.gui.components.OfferTileComponent;
 import it.polimi.ingsw.view.gui.components.SelectableComponent;
 import it.polimi.ingsw.view.gui.components.SelectionListener;
 import it.polimi.ingsw.utils.view.ImageCache;
 import it.polimi.ingsw.utils.view.PanelBuilder;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 
 public class OfferTrackSection extends GUISection implements SelectionListener<SelectableComponent<OfferTile>> {
     private final List<SelectableComponent<OfferTile>> components;
+    private final DeckComponent deckComponent;
+
     private SelectableComponent<OfferTile> selectedComponent;
 
     public OfferTrackSection(ClientController controller, ImageCache imageCache) {
@@ -31,6 +35,9 @@ public class OfferTrackSection extends GUISection implements SelectionListener<S
         panel = new PanelBuilder()
             .row(5, components.toArray(new SelectableComponent[0]))
             .buildPanel();
+
+        deckComponent = new DeckComponent(components.getFirst(), imageCache);
+        panel.add(deckComponent, 1);
         panel.setEnabled(false);
     }
 
@@ -47,6 +54,9 @@ public class OfferTrackSection extends GUISection implements SelectionListener<S
 
         for (int i = 0; i < board.getOfferTrack().length; i++)
             components.get(i).render(board.getOfferTrack()[i]);
+
+        if (currLobby.getTurnState() != null)
+            deckComponent.setEra(currLobby.getTurnState().getEra());
 
         if (currLobby.getTurnState() != null && currLobby.getTurnState().canPickOffer()) {
             panel.setEnabled(true);
@@ -92,4 +102,6 @@ public class OfferTrackSection extends GUISection implements SelectionListener<S
     public List<SelectableComponent<OfferTile>> getComponents() {
         return components;
     }
+
+
 }
