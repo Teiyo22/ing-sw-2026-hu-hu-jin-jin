@@ -284,6 +284,12 @@ public class ServerController implements VirtualServer {
         Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with temporary id: " + id);
     }
 
+    /** Method called when a client tries to log into the game.
+     * The username must be unique: if another client has logged in with the same username an error is shown.
+     * Otherwise, the client successfully logs in and its ID becomes the chosen name.
+     * @param clientID the client's current ID, given by the server once connected.
+     * @param username the client's chosen name.
+     * */
     @Override
     public void login(String clientID, String username) {
         Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request to [Login] from [Client %s] as [%s]", clientID, username));
@@ -418,6 +424,11 @@ public class ServerController implements VirtualServer {
         }
     }
 
+    /** This method is called periodically by the connection monitor on the client's side.
+     * The client calls this method to maintain connection: the server's side of the connection monitor saves the last ping's time
+     * for each client and pings back.
+     * @param clientID the ID of the client that called this method.
+     * */
     @Override
     public void ping(String clientID) {
         readLock.lock();

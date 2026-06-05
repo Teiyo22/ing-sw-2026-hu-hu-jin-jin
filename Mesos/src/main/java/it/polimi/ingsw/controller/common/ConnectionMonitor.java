@@ -30,6 +30,11 @@ public class ConnectionMonitor {
         serverLastSeen.set(System.currentTimeMillis());
     }
 
+    /** Manages server disconnection: the scheduler is set to update and check the server's periods of silence (time from last ping),
+     * if this surpasses a certain timeout the client gets disconnected.
+     * If the client does not get disconnected it pings the server, which will then respond with another ping if connected.
+     * @param clientController the client's controller needed to disconnect
+     * */
     public void startServerMonitor(ClientController clientController) {
         serverLastSeen = new AtomicLong();
         serverLastSeen.set(System.currentTimeMillis());
@@ -63,6 +68,10 @@ public class ConnectionMonitor {
         clientLastSeen.put(client, System.currentTimeMillis());
     }
 
+
+    /*** Manages client disconnections: keeps track of every client and their last ping.
+     * If the silence surpasses a set timeout the client gets disconnected.
+     */
     public void startClientMonitor() {
         clientLastSeen = new ConcurrentHashMap<>();
 

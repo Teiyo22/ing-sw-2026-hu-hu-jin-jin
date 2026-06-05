@@ -58,6 +58,9 @@ public class ClientController implements VirtualClient {
     // Lobby management methods
     //=============================================================================
 
+    /**Updates the client's ID once it successfully logs into the game.
+     * Changes screen to lobby selection.
+     * */
     @Override
     public void confirmLogin(String username) {
         writeLock.lock();
