@@ -73,6 +73,10 @@ public class Lobby implements Serializable {
         }
     }
 
+    /** Moves the player from the orderTile to the picked offer tile.
+     * @param player the player who picked the offer.
+     * @param offerIndex the offer tiles are saved in offerTrack which is an array of offerTile, this indicates the array index of the chosen one.
+     * */
     public void resolveOfferPick(Player player, int offerIndex) {
         Player movedPlayer = null;
 
@@ -95,6 +99,11 @@ public class Lobby implements Serializable {
             actionPlayer.updateTribe(updatedPlayer.getTribe());
     }
 
+    /** Calls the method pickCards for each set of picks.
+     * @param player the player who picks the cards.
+     * @param topRowPicks card picks from the top row.
+     * @param bottomRowPicks card picks from the bottom row.
+     * */
     public void resolveCardPicks(Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         Player actionPlayer = getPlayerReference(player);
 
@@ -107,6 +116,11 @@ public class Lobby implements Serializable {
             addToOrderTile(actionPlayer);
     }
 
+    /** Moves the picked card from the row to the player's hand.
+     * @param player the player who picks the cards.
+     * @param picks the list of picked cards.
+     * @param row the row the cards belong to, where they must be removed.
+     * */
     private void pickCards(Player player, List<Pickable> picks, Row row) {
         for (Pickable p : picks) {
             p.onPick(player, null);
@@ -114,6 +128,9 @@ public class Lobby implements Serializable {
         }
     }
 
+    /** Method to find a match between the given player and the players of this lobby.
+     * @return the matched player.
+     * */
     private Player getPlayerReference(Player player) {
         for (Player p : players.keySet())
             if (p.equals(player))

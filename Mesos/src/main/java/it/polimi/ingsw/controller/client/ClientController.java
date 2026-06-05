@@ -218,6 +218,8 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Method that starts the lobby. Initializes the game and changes screen.
+     * */
     @Override
     public void startLobby(int lobbyID, Board board, List<Player> players) {
         writeLock.lock();
@@ -477,6 +479,9 @@ public class ClientController implements VirtualClient {
         server.requestAction(clientID, lobbyID, action);
     }
 
+    /** Method called when the client requests to start the lobby.
+     * The request gets forwarded to the server with the client's ID and the ID of the lobby to start.
+     * */
     public void startLobby() {
         String clientID;
         int lobbyID;

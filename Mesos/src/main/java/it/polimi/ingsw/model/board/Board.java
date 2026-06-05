@@ -39,6 +39,9 @@ public class Board implements Serializable {
         this.offerTrack = offerTrack;
     }
 
+
+    /** Creates a copy of the board with an empty deck.
+     * @return a new board item that copies everything except the deck.*/
     public Board mediumCopy() {
         return new Board(
             null,
@@ -48,6 +51,9 @@ public class Board implements Serializable {
             offerTrackCopy());
     }
 
+    /** Creates an exact copy of the board.
+     * @return a new board item that copies everything.
+     * */
     public Board deepCopy() {
         return new Board(
             deck.deepCopy(),

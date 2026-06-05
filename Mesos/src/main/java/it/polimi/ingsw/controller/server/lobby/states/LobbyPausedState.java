@@ -22,6 +22,11 @@ public class LobbyPausedState extends LobbyState {
                 .toList());
     }
 
+    /** This method allows only returning players to join.
+     * Because the lobby is paused, meaning that it already started but one or more players left,
+     * only the players that were previously in the lobby can rejoin.
+     * Once the lobby is full again, meaning there no missing players left, the lobby transitions to LobbyResumableState.
+     * */
     @Override
     public void joinLobby(ClientInterface client, Player newPlayer) {
         Player player = null;

@@ -14,6 +14,11 @@ public class LobbyWaitingState extends LobbyState {
         super(lobbyController);
     }
 
+    /** Adds a player to the lobby.
+     * Once full transitions to LobbyFullState indicating that the lobby can start and no more players can join.
+     * @param client the client's interface needed to communicate with the client.
+     * @param player the player who requested to join containing related information.
+     * */
     @Override
     public void joinLobby(ClientInterface client, Player player) {
         if (validatePlayerInfo(player) && !lobbyController.getPlayers().containsKey(client)) {
@@ -36,6 +41,11 @@ public class LobbyWaitingState extends LobbyState {
         client.showError(new ErrorMessage("Start Lobby Error", "Not enough players to start the game"));
     }
 
+    /** Removes a client from the lobby's players.
+     * Notifies the removal to the other remaining clients.
+     * If there are no clients left, the lobby is removed.
+     * @param client the client to remove.
+     * */
     @Override
     public boolean removeClient(ClientInterface client) {
         Map<ClientInterface, Player> playersMap = lobbyController.getPlayers();
@@ -75,6 +85,9 @@ public class LobbyWaitingState extends LobbyState {
         client.showError(new ErrorMessage("Lobby Action Error", "Game is not running"));
     }
 
+    /** Checks if the player can join the lobby, meaning if the chosen totem is still available.
+     * @return ture if the totem is available, false if the totem is taken by another player.
+     * */
     private boolean validatePlayerInfo(Player newPlayer) {
         for (Player player : lobbyController.getPlayers().values())
             if (newPlayer.getTotem() == player.getTotem())
