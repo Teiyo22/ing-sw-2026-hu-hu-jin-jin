@@ -1,0 +1,50 @@
+@startuml
+skinparam style strictuml
+
+participant ClientController
+participant RMIServerInterface
+participant RMIClientInterface
+participant ServerController
+participant LeaderboardDB
+participant LobbyRunningState
+participant Game
+participant GameEndState
+
+Game -> GameEndState : update()
+
+activate GameEndState
+GameEndState -> GameEndState: setLeaderboard()
+GameEndState -> LobbyRunningState: notifyGameEnd()
+deactivate GameEndState
+
+activate LobbyRunningState
+LobbyRunningState -> RMIClientInterface:  updateModel(Players)
+deactivate LobbyRunningState
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: updateModel(Players)
+deactivate RMIClientInterface
+
+...
+
+ClientController -> RMIServerInterface: getLeaderboard(LobbySize)
+
+activate RMIServerInterface
+RMIServerInterface -> ServerController: getLeaderboard(LobbySize)
+deactivate RMIServerInterface
+
+activate ServerController
+ServerController -> LeaderboardDB : isAvailable()
+ServerController -> LeaderboardDB : getLeaderboard(Client, LobbySize)
+deactivate ServerController
+
+activate LeaderboardDB
+LeaderboardDB -> LeaderboardDB: executeQuery()
+LeaderboardDB -> RMIClientInterface: showLeaderboard(LeaderboardResult)
+deactivate LeaderboardDB
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: showLeaderboard(LeaderboardResult)
+deactivate RMIClientInterface
+
+@enduml
