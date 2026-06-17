@@ -1,0 +1,61 @@
+@startuml
+skinparam style strictuml
+
+participant ClientController
+participant RMIServerInterface
+participant RMIClientInterface
+participant ServerController
+participant LobbyController
+participant LobbyRunningState
+participant CardPickPlayerAction
+participant Game
+participant GameState
+
+ClientController -> RMIServerInterface: requestAction(LobbyID, CardPickPlayerAction)
+
+activate RMIServerInterface
+RMIServerInterface -> ServerController : requestAction(LobbyID, CardPickPlayerAction)
+deactivate RMIServerInterface
+
+activate ServerController
+ServerController -> LobbyController: playAction(Client, CardPickPlayerAction)
+deactivate ServerController
+
+activate LobbyController
+LobbyController -> LobbyController: getPlayer(Client)
+LobbyController -> CardPickPlayerAction: setPlayer(Player)
+LobbyController -> LobbyRunningState: playAction(Client, CardPickPlayerAction)
+deactivate LobbyController
+
+activate LobbyRunningState
+LobbyRunningState -> CardPickPlayerAction: canExecute(Game)
+
+activate CardPickPlayerAction
+CardPickPlayerAction -> Game: getGameState()
+CardPickPlayerAction -> GameState: validate()
+deactivate CardPickPlayerAction
+
+LobbyRunningState -> CardPickPlayerAction: execute(Game)
+
+activate CardPickPlayerAction
+CardPickPlayerAction -> Game: pick(Player, Picks)
+deactivate CardPickPlayerAction
+
+activate Game
+Game -> LobbyRunningState: notifyOfferResolution(Player, Picks)
+deactivate Game
+
+LobbyRunningState -> RMIClientInterface: updateModel(Player, Picks)
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: updateModel(Player, Picks)
+deactivate RMIClientInterface
+
+LobbyRunningState -> RMIClientInterface: updateState(State)
+deactivate LobbyRunningState
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: updateState(State)
+deactivate RMIClientInterface
+
+@enduml
