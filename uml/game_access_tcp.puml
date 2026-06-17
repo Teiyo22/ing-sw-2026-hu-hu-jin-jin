@@ -1,0 +1,320 @@
+@startuml
+skinparam style strictuml
+
+participant ClientController
+participant TCPServerInterface
+participant NetworkClient
+participant ConnectionMonitor
+participant NetworkServer
+participant ClientHandler
+participant TCPClientInterface
+participant ServerController
+participant LobbyController
+participant LobbyState
+
+activate ClientController
+ClientController -> ClientController : connectTCP(ip, port)
+
+ClientController -> NetworkClient : new NetworkClient()
+ClientController-> TCPServerInterface : new TCPServerInterface()
+
+ClientController -> NetworkClient : connect(ip, port)
+deactivate ClientController
+
+activate NetworkClient
+NetworkClient -> NetworkServer : connect(ip, port)
+activate NetworkServer
+NetworkServer -> NetworkClient : accept()
+deactivate NetworkClient
+
+NetworkServer -> ClientHandler : new ClientHandler()
+NetworkServer -> TCPClientInterface : new TCPClientInterface()
+NetworkServer -> ServerController : submitRequest(ClientHandler)
+NetworkServer -> ServerController : registerClient(TCPClientInterface)
+deactivate NetworkServer
+
+activate ServerController
+ServerController -> ConnectionMonitor: registerClient(TCPClientInterface))
+ServerController -> ServerController: randomUUID()
+ServerController -> TCPClientInterface: setID(String)
+deactivate ServerController
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler : sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient : SetIDResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response)
+TCPServerInterface -> ClientController : setID(ClientID)
+deactivate NetworkClient
+
+activate ClientController
+ClientController -> ConnectionMonitor: startServerMonitor(ClientController)
+deactivate ClientController
+
+
+alt login
+ClientController -> TCPServerInterface: login(ID, Username)
+
+activate TCPServerInterface
+TCPServerInterface -> NetworkClient: sendMessage(Request)
+deactivate TCPServerInterface
+
+activate NetworkClient
+NetworkClient -> ClientHandler: LoginRequest()
+deactivate NetworkClient
+
+activate ClientHandler
+ClientHandler -> TCPClientInterface: handleMessage(Request)
+deactivate ClientHandler
+
+activate TCPClientInterface
+TCPClientInterface -> ServerController : login(ID, Username)
+deactivate TCPClientInterface
+
+activate ServerController
+ServerController -> TCPClientInterface: confirmLogin(Username)
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: LoginResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response)
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: confirmLogin(Username))
+deactivate TCPServerInterface
+
+ServerController -> TCPClientInterface: showWaitingLobbies(Lobbies)
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: WaitingLobbyResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response)
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: confirmLogin(Username))
+deactivate TCPServerInterface
+
+deactivate ServerController
+
+else Invalid Username
+
+ServerController -> TCPClientInterface: showError(Error)
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: ErrorMessage()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response)
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: showError(Error)
+deactivate TCPServerInterface
+end
+
+alt Joining a game lobby
+    ClientController -> TCPServerInterface : getLobbyInfo(LobbyID)
+
+    activate TCPServerInterface
+    TCPServerInterface -> NetworkClient : SendMessage(Request)
+    deactivate TCPServerInterface
+
+    activate NetworkClient
+    NetworkClient -> ClientHandler : LobbyInfoRequest(LobbyID)
+    deactivate NetworkClient
+
+    activate ClientHandler
+    ClientHandler -> TCPClientInterface : handleMessage(Request)
+    deactivate ClientHandler
+
+    activate TCPClientInterface
+    TCPClientInterface -> ServerController : getLobbyInfo(LobbyID)
+    deactivate TCPClientInterface
+
+    activate ServerController
+    ServerController -> LobbyController: getLobbyInfo(Client)
+    deactivate ServerController
+
+    activate LobbyController
+    LobbyController -> LobbyState: getLobbyInfo(Client)
+    deactivate LobbyController
+
+    activate LobbyState
+    LobbyState -> LobbyController : addListener(Client)
+    LobbyState -> TCPClientInterface: setCurrLobbyController(lobbyController)
+    LobbyState -> TCPClientInterface: showLobbyInfo(Players)
+    deactivate LobbyState
+
+    activate TCPClientInterface
+    TCPClientInterface -> ClientHandler: sendMessage(Response)
+    deactivate TCPClientInterface
+
+    activate ClientHandler
+    ClientHandler -> NetworkClient: LobbyInfoResponse()
+    deactivate ClientHandler
+
+    activate NetworkClient
+    NetworkClient -> TCPServerInterface: handleMessage(Response)
+    deactivate NetworkClient
+
+    activate TCPServerInterface
+    TCPServerInterface -> ClientController: showLobbyInfo(Players)
+    deactivate TCPServerInterface
+
+
+    ClientController -> TCPServerInterface : joinLobby(LobbyID, Totem)
+
+    activate TCPServerInterface
+    TCPServerInterface -> NetworkClient : sendMessage(Request)
+    deactivate TCPServerInterface
+
+    activate NetworkClient
+    NetworkClient -> ClientHandler : JoinLobbyRequest(LobbyID)
+    deactivate NetworkClient
+
+    activate ClientHandler
+    ClientHandler -> TCPClientInterface : handleMessage(Request)
+    deactivate ClientHandler
+
+    activate TCPClientInterface
+    TCPClientInterface -> ServerController : joinLobby(LobbyID, Totem)
+    deactivate TCPClientInterface
+
+    activate ServerController
+    ServerController -> LobbyController: joinLobby(Client, Player)
+    deactivate ServerController
+
+    activate LobbyController
+    LobbyController -> LobbyState: joinLobby(Client, Player)
+    deactivate LobbyController
+
+    activate LobbyState
+    LobbyState -> LobbyState : validatePlayerInfo(Player)
+    LobbyState -> TCPClientInterface: addPlayer(Player)
+
+    activate TCPClientInterface
+    TCPClientInterface -> ClientHandler: sendMessage(Response)
+    deactivate TCPClientInterface
+
+    activate ClientHandler
+    ClientHandler -> NetworkClient: addPlayerResponse()
+    deactivate ClientHandler
+
+    activate NetworkClient
+    NetworkClient -> TCPServerInterface: handleMessage(Response)
+    deactivate NetworkClient
+
+    activate TCPServerInterface
+    TCPServerInterface -> ClientController: addPlayer(Player)
+    deactivate TCPServerInterface
+
+    LobbyState -> ServerController: broadcastLobbyUpdate(LobbyID)
+    deactivate LobbyState
+
+    activate ServerController
+    ServerController -> TCPClientInterface: updateLobby(Lobby)
+    deactivate ServerController
+
+    activate TCPClientInterface
+    TCPClientInterface -> ClientHandler: sendMessage(Response)
+    deactivate TCPClientInterface
+
+    activate ClientHandler
+    ClientHandler -> NetworkClient: UpdateLobbyResponse()
+    deactivate ClientHandler
+
+    activate NetworkClient
+    NetworkClient -> TCPServerInterface: handleMessage(Response)
+    deactivate NetworkClient
+
+    activate TCPServerInterface
+    TCPServerInterface -> ClientController: updateLobby(Lobby)
+    deactivate TCPServerInterface
+
+else creating a game lobby
+    ClientController -> TCPServerInterface : createLobby(PlayerNum, Totem)
+
+    activate TCPServerInterface
+    TCPServerInterface -> NetworkClient : SendMessage(Request)
+    deactivate TCPServerInterface
+
+    activate NetworkClient
+    NetworkClient --> ClientHandler : CreateLobbyRequest(PlayerNum, Name, Totem)
+    deactivate NetworkClient
+
+    activate ClientHandler
+    ClientHandler -> TCPClientInterface : handleMessage(Request)
+    deactivate ClientHandler
+
+    activate TCPClientInterface
+    TCPClientInterface -> ServerController : createLobby(PlayerNum, Name, Totem)
+    deactivate TCPClientInterface
+
+    activate ServerController
+    ServerController -> LobbyController: new LobbyController()
+    ServerController -> LobbyController: add(Client, Player)
+    ServerController -> ClientHandler: setCurrLobbyController(Lobby)
+    ServerController -> TCPClientInterface: createLobby(Lobby)
+
+    activate TCPClientInterface
+    TCPClientInterface -> ClientHandler: sendMessage(Response)
+    deactivate TCPClientInterface
+
+    activate ClientHandler
+    ClientHandler -> NetworkClient: CreateLobbyResponse()
+    deactivate ClientHandler
+
+    activate NetworkClient
+    NetworkClient -> TCPServerInterface: handleMessage(Response)
+    deactivate NetworkClient
+
+    activate TCPServerInterface
+    TCPServerInterface -> ClientController: createLobby(Lobby)
+    deactivate TCPServerInterface
+
+    ServerController -> ServerController : broadcastLobbyAddition(Lobby)
+    ServerController -> TCPClientInterface : addLobby(Lobby)
+    deactivate ServerController
+
+    activate TCPClientInterface
+    TCPClientInterface -> ClientHandler: sendMessage(Response)
+    deactivate TCPClientInterface
+
+    activate ClientHandler
+    ClientHandler -> NetworkClient: AddLobbyResponse()
+    deactivate ClientHandler
+
+    activate NetworkClient
+    NetworkClient -> TCPServerInterface: handleMessage(Response)
+    deactivate NetworkClient
+
+    activate TCPServerInterface
+    TCPServerInterface -> ClientController: addLobby(Lobby)
+    deactivate TCPServerInterface
+end
+
+@enduml
