@@ -61,9 +61,7 @@ public class LobbyRunningState extends LobbyState {
 
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
-        System.out.println("WTF2");
         String[] errors = action.canExecute(model);
-        System.out.println("WTF");
         if (errors.length == 0)
             action.execute(model);
         else
