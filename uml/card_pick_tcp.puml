@@ -1,0 +1,106 @@
+@startuml
+skinparam style strictuml
+
+participant ClientController
+participant TCPServerInterface
+participant NetworkClient
+participant ClientHandler
+participant TCPClientInterface
+participant ServerController
+participant LobbyController
+participant LobbyRunningState
+participant CardPickPlayerAction
+participant Game
+participant GameState
+
+ClientController -> TCPServerInterface: requestAction(LobbyID, CardPickPlayerAction)
+
+activate TCPServerInterface
+TCPServerInterface -> NetworkClient: sendMessage(Request)
+deactivate TCPServerInterface
+
+activate NetworkClient
+NetworkClient -> ClientHandler: PlayerActionRequest()
+deactivate NetworkClient
+
+activate ClientHandler
+ClientHandler -> TCPClientInterface: handleMessage(Request))
+deactivate ClientHandler
+
+activate TCPClientInterface
+TCPClientInterface -> ServerController: requestAction(LobbyID, CardPickPlayerAction)
+deactivate TCPClientInterface
+
+activate ServerController
+ServerController -> LobbyController: playAction(Client, CardPickPlayerAction)
+deactivate ServerController
+
+activate LobbyController
+LobbyController -> LobbyController: getPlayer(Client)
+LobbyController -> CardPickPlayerAction: setPlayer(Player)
+LobbyController -> LobbyRunningState: playAction(Client, CardPickPlayerAction)
+deactivate LobbyController
+
+activate LobbyRunningState
+LobbyRunningState -> CardPickPlayerAction: canExecute(Game)
+
+activate CardPickPlayerAction
+CardPickPlayerAction -> Game: getGameState()
+CardPickPlayerAction -> GameState: validate()
+deactivate CardPickPlayerAction
+
+LobbyRunningState -> CardPickPlayerAction: execute(Game)
+
+activate CardPickPlayerAction
+CardPickPlayerAction -> Game: pick(Player, Picks)
+deactivate CardPickPlayerAction
+
+activate Game
+Game -> LobbyRunningState: notifyOfferResolution(Player, Picks)
+deactivate Game
+
+LobbyRunningState -> TCPClientInterface: updateModel(Player, Picks)
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: OfferResolutionResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response))
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: updateModel(Player, Picks)
+deactivate TCPServerInterface
+
+LobbyRunningState -> TCPClientInterface: updateState(State)
+deactivate LobbyRunningState
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: UpdateStateResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response))
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: updateState(State)
+deactivate TCPServerInterface
+
+
+
+
+
+
+
+
+@enduml
