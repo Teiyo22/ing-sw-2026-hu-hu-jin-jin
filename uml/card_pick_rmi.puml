@@ -9,7 +9,7 @@ participant LobbyController
 participant LobbyRunningState
 participant CardPickPlayerAction
 participant Game
-participant GameState
+participant RoundActionState
 
 ClientController -> RMIServerInterface: requestAction(LobbyID, CardPickPlayerAction)
 
@@ -31,8 +31,8 @@ activate LobbyRunningState
 LobbyRunningState -> CardPickPlayerAction: canExecute(Game)
 
 activate CardPickPlayerAction
-CardPickPlayerAction -> Game: getGameState()
-CardPickPlayerAction -> GameState: validate()
+CardPickPlayerAction -> Game: getRoundActionState()
+CardPickPlayerAction -> RoundActionState: validate()
 deactivate CardPickPlayerAction
 
 LobbyRunningState -> CardPickPlayerAction: execute(Game)
