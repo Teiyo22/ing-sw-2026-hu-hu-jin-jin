@@ -1,0 +1,88 @@
+@startuml
+skinparam style strictuml
+
+participant ClientController
+participant TCPServerInterface
+participant NetworkClient
+participant ClientHandler
+participant TCPClientInterface
+participant ServerController
+participant LeaderboardDB
+participant LobbyRunningState
+participant Game
+participant GameEndState
+
+Game -> GameEndState : update()
+
+activate GameEndState
+GameEndState -> GameEndState: setLeaderboard()
+GameEndState -> LobbyRunningState: notifyGameEnd()
+deactivate GameEndState
+
+activate LobbyRunningState
+LobbyRunningState -> TCPClientInterface:  updateModel(Players)
+deactivate LobbyRunningState
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: GameEndResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response))
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: updateModel(Players)
+deactivate TCPServerInterface
+
+...
+
+ClientController -> TCPServerInterface: getLeaderboard(LobbySize)
+
+activate TCPServerInterface
+TCPServerInterface -> NetworkClient: sendMessage(Request)
+deactivate TCPServerInterface
+
+activate NetworkClient
+NetworkClient -> ClientHandler: GetLeaderboardRequest()
+deactivate NetworkClient
+
+activate ClientHandler
+ClientHandler -> TCPClientInterface: handleMessage(Request))
+deactivate ClientHandler
+
+activate TCPClientInterface
+TCPClientInterface -> ServerController: getLeaderboard(LobbySize)
+deactivate TCPClientInterface
+
+activate ServerController
+ServerController -> LeaderboardDB : isAvailable()
+ServerController -> LeaderboardDB : getLeaderboard(Client, LobbySize)
+deactivate ServerController
+
+activate LeaderboardDB
+LeaderboardDB -> LeaderboardDB: executeQuery()
+LeaderboardDB -> TCPClientInterface: showLeaderboard(LeaderboardResult)
+deactivate LeaderboardDB
+
+activate TCPClientInterface
+TCPClientInterface -> ClientHandler: sendMessage(Response)
+deactivate TCPClientInterface
+
+activate ClientHandler
+ClientHandler -> NetworkClient: GetLeaderboardResponse()
+deactivate ClientHandler
+
+activate NetworkClient
+NetworkClient -> TCPServerInterface: handleMessage(Response))
+deactivate NetworkClient
+
+activate TCPServerInterface
+TCPServerInterface -> ClientController: showLeaderboard(LeaderboardResult)
+deactivate TCPServerInterface
+
+@enduml
