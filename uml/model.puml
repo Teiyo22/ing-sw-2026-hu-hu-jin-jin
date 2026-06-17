@@ -3,85 +3,451 @@ top to bottom direction
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 
-package "ing.model" as model {
+package "model" as model {
 
   together {
     class Game {
+      - lobbyState: LobbyRunningState;
+
       - playerConfig : PlayerConfig
+      - gameState : GameState
+      - buildingHandler : BuildingHandler
+
       - players : List<Player>
       - board : Board
-      - gameState : GameState
 
-      + addPlayer(totem : Totem, name : String) : void
-      + setGameState(state : GameState) : void
+      + snapshot() : Game
+      + pick(player : Player, topPicks : Set<Integer>, bottomPicks : Set<Integer>): void
+      + assignTo(player: Player, offerIndex: int): void
+      + build() : void
+    }
+
+    class BuildingHandler {
+      - lastPlayer: Player
+      - lastVisitableCard: VisitableCard
+      - lastOrderSlot: OrderSlot
+      - lastExtraActionState: lastExtraActionState
+
+      - cardPickBuildings : List<VisitableBuilding>
+      - huntBuildings : List<VisitableBuilding>
+      - cavePaintingBuildings : List<VisitableBuilding>
+      - orderTileBuildings : List<VisitableBuilding>
+      - extraActionBuildings : List<VisitableBuilding>
+      - gameEndBuildings : List<VisitableBuilding>
+
+      + addCardPickBuilding(building : VisitableBuilding) : void
+      + addHuntBuilding(building : VisitableBuilding) : void
+      + addCavePaintingBuilding(building : VisitableBuilding) : void
+      + addOrderTileBuilding(building : VisitableBuilding) : void
+      + addGameEndBuilding(building : VisitableBuilding) : void
+      + addExtraActionBuilding(building : VisitableBuilding) : void
+
+      + applyCardPickEffects(visitableCard : VisitableCard, player : Player) : void
+      + applyHuntEffects() : void
+      + applyCavePaintingEffects() : void
+      + applyOrderTileEffects(slot : OrderSlot) : void
+      + applyExtraActionEffects(state : ExtraActionState, buildingIndex : int) : void
+      + applyGameEndEffects() : void
+
+      + visit(building : AbstractBuilding): void
     }
 
     package board {
       class Board {
         - game : Game
+
         - deck : Deck
         - topRow : Row
         - bottomRow : Row
         - orderTile : OrderSlot[]
         - offerTrack : OfferTile[]
 
-        + initOffeTrack() : void
-        + initOrderTile() : void
+        + mediumCopy() : Board
+        + deepCopy() : Board
+        + orderTileCopy() : OrderSlot[]
+        + offerTrackCopy() : OfferTile[]
+
+        + fixReferencesTo(players: List<Player>): void
+        + getPickable(picks: Set<Integer>, isTop: boolean): List<Pickable>
       }
 
+      class Deck {
+        - charEventCards : Queue<AbstractCard>
+        - buildingCards : Queue<AbstractCard>
+        - ageBuildingsCount : List<Integer>
+        - currentEra : int
 
-          class Deck {
-            - playerConfig : PlayerConfig
-            - board : Board
-            - charEventCards : Queue<AbstractCard>
-            - buildingCards : Queue<AbstractCard>
-            - ageBuildingsCount : List<Integer>
-            - currentEra : int
+        + deepCopy() : Deck
 
-            + init() : void
-            + drawCards(num : int) : List<AbstractCard>
-            + drawBuildingCards() : List<AbstractCard>
-            + changeEra() : void
-            - initCards(configs : List<CardConfigs>) : void
-            - initBuildingCards(configs : List<CardConfigs>) : void
-          }
+        + drawCards(num : int) : List<AbstractCard>
+        + drawBuildingCards() : List<AbstractCard>
+        + changeEra() : void
+      }
 
-          class OfferTile {
-            - assignedPlayer : Player
-            - bonusFood : int
-            - topRowPickable : int
-            - bottomRowPickable : int
+      class OfferTile {
+        - type : String
+        - assignedPlayer : Player
+        - bonusFood : int
+        - topRowPickable : int
+        - bottomRowPickable : int
 
-            + solveBonusFood() : void
-          }
+        + copy() : OfferTile
+        + solveBonusFood() : void
+      }
 
-          class OrderSlot {
-            - assignedPlayer : Player
-            - foodDelta : int
+      class OrderSlot {
+        - assignedPlayer : Player
+        - foodDelta : int
 
-            + solveDeltaFood() : void
-          }
+        + copy() : void
+        + solveDeltaFood() : void
+      }
 
-          class Row {
-            - sustenanceEventCards : List<Sustenance>
-            - eventCards : List<AbstractEvent>
-            - characterCards : List<AbstractCharacter>
-            - buildingCards : List<AbstractBuilding>
-          }
+      class Row {
+        - sustenanceEventCards : List<Sustenance>
+        - eventCards : List<AbstractEvent>
+        - characterCards : List<AbstractCharacter>
+        - buildingCards : List<AbstractBuilding>
 
+        + deepCopy() : Row
+        + addSustenanceEvent(event: Sustenance): void
+        + addEvent(event: AbstractEvent): void
+        + addCharacter(character: AbstractCharacter): void
+        + addCharacter(building : AbstractBuilding): void
+      }
     }
+
+    package card {
+          abstract class AbstractCard {
+            # ID : int
+
+            # type : String
+            # resourceName : String
+            # era : int
+            # isFinal : boolean
+
+            + AbstractCard(source: AbstractCard)
+            + clone() : AbstractCard
+            + moveTo(row : Row) : void
+            + equals(obj : Object) : boolean
+          }
+
+          interface BuildingVisitor {
+            + visit(v: OrderTileBuilding);
+            + visit(v: CavePaintingBuilding);
+            + visit(v: HuntBuilding);
+            + visit(v: ExtraActionBuilding);
+            + visit(v: BonusPPBuilding);
+            + visit(v: CharacterBonusBuilding);
+            + visit(v: BuilderDoublePPBuilding);
+            + visit(v: FullSetBuilding);
+            + visit(v: NewFullSetBuilding);
+            + visit(v: InventorPairBuilding);
+            + visit(v: SustenanceDiscountBuilding);
+          }
+
+          interface CardVisitor {
+            + visit(artist : Artist) : void
+            + visit(builder : Builder) : void
+            + visit(collector : Collector) : void
+            + visit(hunter : Hunter) : void
+            + visit(shaman : Shaman) : void
+            + visit(inventor : Inventor) : void
+          }
+
+          interface Pickable {
+            + onPick(player : Player, buildingHandler : BuildingHandler) : void
+            + removeFrom(row : Row) : void
+          }
+
+          interface VisitableBuilding {
+            + accept(v : BuildingVisitor) : void
+          }
+
+          interface VisitableCard {
+            + accept(v: CardVisitor): void
+          }
+
+          package building {
+            abstract class AbstractBuilding {
+              # owner : Player
+              # cost : int
+              # pp : int
+
+              + AbstractBuilding(source : AbstractBuilding)
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+              + moveTo(row : Row) : void
+              + removeFrom(row : Row) : void
+              + register(player: Player, buildingHandler: BuildingHandler) : void
+            }
+
+               together{
+                class CavePaintingBuilding {
+                  - bonusFood : int
+
+                  + CavePaintingBuilding(source : CavePaintingBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                  + accept(v: BuildingVisitor) : void
+                }
+
+                class ExtraActionBuilding {
+                  + ExtraActionBuilding(source : ExtraActionBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                  + accept(v: BuildingVisitor) : void
+                }
+
+                class HuntBuilding {
+                  - bonusPP : int
+                  - bonusFood : int
+
+                  + HuntBuilding(source : HuntBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                  + accept(v: BuildingVisitor) : void
+                }
+
+                class RitualDoubleBonusBuilding {
+                  + RitualDoubleBonusBuilding(source : RitualDoubleBonusBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                }
+
+                class RitualNoLossBuilding {
+                  + RitualNoLossBuilding(source : RitualNoLossBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                }
+
+                class RitualStarsBuilding {
+                  - bonusStars : int
+
+                  + RitualStarsBuilding(source : RitualStarsBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                }
+             }
+
+             class OrderTileBuilding {
+                  + OrderTileBuilding(source : OrderTileBuilding)
+                  + clone() : AbstractCard
+                  + register(player: Player, buildingHandler: BuildingHandler) : void
+                  + accept(v: BuildingVisitor) : void
+                 }
+
+              class InventorPairBuilding {
+                 + InventorPairBuilding(source : InventorPairBuilding)
+                 + clone() : AbstractCard
+                 + register(player: Player, buildingHandler: BuildingHandler) : void
+                 + accept(v: BuildingVisitor) : void
+              }
+
+              class NewFullSetBuilding {
+                - minForSet : int
+
+                + NewFullSetBuilding(source : NewFullSetBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+              }
+
+              class SustenanceDiscountBuilding {
+                - inventorDiscount : int
+                - shamanDiscount : int
+                - hunterDiscount : int
+                - collectorDiscount : int
+                - artistDiscount : int
+                - builderDiscount : int
+
+                + SustenanceDiscountBuilding(source : SustenanceDiscountBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+
+                + visit(i : Inventor) : void
+                + visit(s : Shaman) : void
+                + visit(h : Hunter) : void
+                + visit(c : Collector) : void
+                + visit(a : Artist) : void
+                + visit(b : Builder) : void
+              }
+
+              class BonusPPBuilding {
+                - bonusPP : int
+
+                + BonusPPBuilding(source : BonusPPBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+              }
+
+              class BuilderBonusBuilding {
+                + BuilderBonusBuilding(source : BuilderBonusBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+              }
+
+              class CharacterBonusBuilding {
+                - inventorBonusPP : int
+                - shamanBonusPP : int
+                - hunterBonusPP : int
+                - collectorBonusPP : int
+                - artistBonusPP : int
+                - builderBonusPP : int
+
+                + CharacterBonusBuilding(source : CharacterBonusBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+              }
+
+              class FullSetBuilding {
+                + FullSetBuilding(source : FullSetBuilding)
+                + clone() : AbstractCard
+                + register(player: Player, buildingHandler: BuildingHandler) : void
+                + accept(v: BuildingVisitor) : void
+              }
+          }
+
+          package character {
+            abstract class AbstractCharacter {
+              + AbstractCharacter(source : AbstractCharacter)
+
+              + addToTribeOf(p : Player) : void
+              + onPick(player : Player, buildingHandler : BuildingHandler) : void
+              + moveTo(row : Row) : void
+              + removeFrom(row : Row) : void
+            }
+
+            class Artist {
+              + Artist(source : Artist)
+
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+
+            class Builder {
+              - bonusPP : int
+              - buildingDiscount : int
+
+              + Builder(source : Builder)
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+
+            class Collector {
+              + Collector(source : Collector)
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+
+            class Hunter {
+              - hasIcon : boolean
+
+              + Hunter(source : Hunter)
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+
+            class Inventor {
+              - inventorType : InventorType
+
+              + Inventor(source : Inventor)
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+
+            enum InventorType {
+              BOATWRIGHT
+              FLETCHER
+              FISHERMAN
+              JEWELER
+              HERBORIST
+              SHEPHERD
+              MANUFACTURER
+              MUSICIAN
+              TANNER
+              BAKER
+            }
+
+            class Shaman {
+              - stars : int
+
+              + Shaman(source : Shaman)
+              + clone() : AbstractCard
+              + addToTribeOf(p : Player) : void
+              + accept(v : CardVisitor) : void
+            }
+          }
+
+          package event {
+            abstract class AbstractEvent {
+              + AbstractEvent(source : AbstractEvent)
+
+              + onEvent(game : Game) : void
+              + moveTo(row : Row) : void
+            }
+
+            class CavePainting {
+              - bonusPP: int
+              - malusPP: int
+              - numArtistsBonus : int
+              - numArtistsMalus : int
+
+              + CavePainting(source : CavePainting)
+              + clone() : AbstractCard
+              + onEvent(game : Game) : void
+            }
+
+            class Hunt {
+              - ppMultiplier : int
+
+              + Hunt(source : Hunt)
+              + clone() : AbstractCard
+              + onEvent(game : Game) : void
+            }
+
+            class ShamanicRitual {
+              - bonusPP : int
+              - malusPP : int
+
+              + ShamanicRitual(source : ShamanicRitual)
+              + clone() : AbstractCard
+              + onEvent(game : Game) : void
+            }
+
+            class Sustenance {
+              - ppMultiplier : int
+
+              + Sustenance(source : Sustenance)
+              + clone() : AbstractCard
+              + onEvent(game : Game) : void
+              + moveTo(row : Row): void
+            }
+          }
+        }
 
     package gameState {
       abstract class GameState {
         # game : Game
         # buildingHandler : BuildingHandler
+
         + update() : void
+        + validate(action : CardPickPlayerAction): String[]
+        + validate(action : OfferPickPlayerAction): String[]
+        + getGameState(game : Game)
+        + isRoundStart(orderTile: OrderSlot[]): boolean
       }
 
       together {
           class GameStartState {
-            - playerCount : int
-
             + update() : void
             - assignPlayerToOrderTile() : void
             - distributeCards() : void
@@ -92,7 +458,7 @@ package "ing.model" as model {
             - assignedSlots : int
 
             + update() : void
-            + assignTo(offer : OfferTile) : void
+            + validate(action : OfferPickPlayerAction): String[]
           }
 
           class RoundActionState {
@@ -100,10 +466,19 @@ package "ing.model" as model {
             - offerTrack : OfferTile[*]
             - solvedOffers : int
             - assignedPlayers : int
+            - topRowPickable : int
+            - bottomRowPickable : int
 
             + update() : void
-            + pick(topPicks : List<Pickable>, bottomPicks : List<Pickable>) : void
+            + computePickable() : void
+            + getBuildingsCost(): List<Integer>
             + assignToOrderSlot(offerTile : OfferTile) : void
+
+            + validate(action : CardPickPlayerAction): String[]
+            - validatePlayer(player : Player): boolean
+            - validatePickCount(top: Set<Integer>, bottom: Set<Integer>) : boolean
+            - validateIDList(picks: Set<Integer>, row : Row) : boolean
+            - validateFoodCost(top: Set<Integer>, bottom: Set<Integer>) : boolean
           }
 
           class ExtraActionState {
@@ -111,18 +486,26 @@ package "ing.model" as model {
             - solvedExtraActions : int
 
             + update() : void
-            + pickTop(pickedCards : List<Pickable>) : void
+            + validate(action : CardPickPlayerAction) : String[]
+            - validatePlayer(player: Player): boolean
+            - validatePickCount(top: Set<Integer>, bottom: Set<Integer>): boolean
+            - validateIDList(picks: Set<Integer>, row : Row): boolean
+            - validateFoodCost(top: Set<Integer>)
+            - canPick(): boolean
+
           }
 
           class RoundEndState {
             - bottom : Row
             - top : Row
             - deck : Deck
+            - eraChanged: boolean
 
             + update() : void
             - resolveEvents() : void
             - setUp() : void
             - redrawCards() : void
+            - resolveEraChange(): void
           }
 
           class GameEndState {
@@ -143,54 +526,41 @@ package "ing.model" as model {
         - name : String
         - totem : Totem
         - tribe : Tribe
-        - buildings : List<AbstractBuilding>
-        - food : int
-        - pp : int
         - rank : int
-        - noLossRitualMod : boolean
-        - doubleRitualMod : boolean
 
-        + addPP(delta : int) : void
-        + addFood(delta : int) : void
-        + setFood(n : int) : void
-        + setNoLossRitualMod(b : boolean) : void
-        + setDoubleRitualMod(b : boolean) : void
-        + addBuilding(building : AbstractBuilding) : void
+        + shallowCopy() : Player
+        + mediumCopy() : Player
+        + deepCopy() : Player
+
+        + initTribe(initialFood: int): void
+        + updateTribe(tribe: Tribe): void
+        + registerBuildings(buildingHandler: BuildingHandler): void
+
         + compareTo(other : Player) : int
-        + setRank(rank : int) : void
+        + equals(obj : Object) : boolean
+        + hashCode(): int
       }
 
       class Tribe {
-        - inventors : Map<InventorType, Integer>
-        - shamans : int[]
+        - food: int
+        - pp: int
+
+        - buildings: List<AbstractBuilding>
+
+        - inventors : Map<InventorType, List<Inventor>>
+        - shamans : List<Shaman>
         - builders : List<Builder>
-        - collectors : int
-        - hunters : int
-        - artists : int
+        - collectors : List<Collector>
+        - hunters : List<Hunter>
+        - artists : List<Artist>
+
         - stars : int
         - sustenanceDiscount : int
+        - noLossRitualMod: boolean
+        - doubleRitualMod: boolean
 
-        + getTribeSize() : int
-        + getInventorCount() : int
-        + getNumInventorType(type : InventorType) : int
-        + getShamanCount() : int
-        + getBuilderCount() : int
-        + getCollectorCount() : int
-        + getHunterCount() : int
-        + getArtistCount() : int
-        + getBuilderDiscount() : int
-        + getSustenanceDiscount() : int
-        + addSustenanceDiscount(discount : int) : void
-        + addStars(stars : int) : void
-        + getStars() : int
-        + getInventorBonusPP() : int
-        + getBuilderBonusPP() : int
-        + addInventor(inventor : Inventor) : void
-        + addShaman(shaman : Shaman) : void
-        + addBuilder(builder : Builder) : void
-        + addCollector() : void
-        + addHunter() : void
-        + addArtist() : void
+        + shallowCopy(): Tribe
+        + deepCopy(): Tribe
         + getMinChar() : int
       }
 
@@ -212,328 +582,12 @@ package "ing.model" as model {
         WHITE
         BLACK
         YELLOW
+
+        - ansiColor: String
       }
     }
 
-    package card {
-      abstract class AbstractCard {
-        # ID : int
-        # type : String
-        # era : int
-        # isFinal : boolean
 
-        + clone() : AbstractCard
-        + moveTo(row : Row) : void
-        + setEra(era : int) : void
-        + setID(ID : int) : void
-        + equals(obj : Object) : boolean
-      }
-
-      interface Pickable {
-        + onPick(player : Player, buildingHandler : BuildingHandler) : void
-        + removeFrom(row : Row) : void
-      }
-
-      interface Visitable {
-        + accept(v : CardVisitor) : void
-      }
-
-      package building {
-        abstract class AbstractBuilding {
-          # owner : Player
-          # cost : int
-          # pp : int
-
-          + AbstractBuilding(source : AbstractBuilding)
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + moveTo(row : Row) : void
-          + removeFrom(row : Row) : void
-        }
-
-        class BuildingHandler {
-          - cardPickBuildings : List<CardPickBuilding>
-          - huntBuildings : List<HuntBuilding>
-          - cavePaintingBuildings : List<CavePaintingBuilding>
-          - orderTileBuildings : List<OrderTileBuilding>
-          - extraActionBuildings : List<ExtraActionBuilding>
-          - gameEndBuildings : List<GameEndBuilding>
-
-          + BuildingHandler()
-          + addCardPickBuilding(building : CardPickBuilding) : void
-          + addHuntBuilding(building : HuntBuilding) : void
-          + addCavePaintingBuilding(building : CavePaintingBuilding) : void
-          + addOrderTileBuilding(building : OrderTileBuilding) : void
-          + addGameEndBuilding(building : GameEndBuilding) : void
-          + addExtraActionBuilding(building : ExtraActionBuilding) : void
-          + applyCardPickEffects(visitable : Visitable, player : Player) : void
-          + applyHuntEffects() : void
-          + applyCavePaintingEffects() : void
-          + applyOrderTileEffects(slot : OrderSlot) : void
-          + applyExtraActionEffects(state : ExtraActionState, buildingIndex : int) : void
-          + applyGameEndEffects() : void
-        }
-
-           together{
-            class CavePaintingBuilding {
-              - bonusFood : int
-
-              + CavePaintingBuilding(source : CavePaintingBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-              + applyEffect() : void
-            }
-
-            class ExtraActionBuilding {
-              + ExtraActionBuilding(source : ExtraActionBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-              + applyEffect(state : ExtraActionState) : void
-            }
-
-            class HuntBuilding {
-              - bonusPP : int
-              - bonusFood : int
-
-              + HuntBuilding(source : HuntBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-              + applyEffect() : void
-            }
-
-            class RitualDoubleBonusBuilding {
-              + RitualDoubleBonusBuilding(source : RitualDoubleBonusBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            }
-
-            class RitualNoLossBuilding {
-              + RitualNoLossBuilding(source : RitualNoLossBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            }
-
-            class RitualStarsBuilding {
-              - bonusStars : int
-
-              + RitualStarsBuilding(source : RitualStarsBuilding)
-              + clone() : AbstractCard
-              + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            }
-         }
-
-         class OrderTileBuilding {
-                       + OrderTileBuilding(source : OrderTileBuilding)
-                       + clone() : AbstractCard
-                       + onPick(player : Player, buildingHandler : BuildingHandler) : void
-                       + applyEffect(slot : OrderSlot) : void
-                     }
-
-        package cardPick {
-          abstract class CardPickBuilding {
-            + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            + applyEffect(v : Visitable, p : Player) : void
-          }
-
-          class InventorPairBuilding {
-            + doForInventor(i : Inventor) : void
-          }
-
-          class NewFullSetBuilding {
-            - minForSet : int
-
-            + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            + doForInventor(i : Inventor) : void
-            + doForShaman(s : Shaman) : void
-            + doForHunter(h : Hunter) : void
-            + doForCollector(c : Collector) : void
-            + doForArtist(a : Artist) : void
-            + doForBuilder(b : Builder) : void
-            + checkAndAdd() : void
-          }
-
-          class SustenanceDiscountBuilding {
-            - inventorDiscount : int
-            - shamanDiscount : int
-            - hunterDiscount : int
-            - collectorDiscount : int
-            - artistDiscount : int
-            - builderDiscount : int
-
-            + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            + doForInventor(i : Inventor) : void
-            + doForShaman(s : Shaman) : void
-            + doForHunter(h : Hunter) : void
-            + doForCollector(c : Collector) : void
-            + doForArtist(a : Artist) : void
-            + doForBuilder(b : Builder) : void
-          }
-
-          interface CardVisitor {
-            + doForArtist(artist : Artist) : void
-            + doForBuilder(builder : Builder) : void
-            + doForCollector(collector : Collector) : void
-            + doForHunter(hunter : Hunter) : void
-            + doForShaman(shaman : Shaman) : void
-            + doForInventor(inventor : Inventor) : void
-          }
-        }
-
-        package gameEnd {
-          abstract class GameEndBuilding {
-            + onPick(player : Player, buildingHandler : BuildingHandler) : void
-            + applyEffect() : void
-          }
-
-          class BonusPPBuilding {
-            - bonusPP : int
-            + applyEffect() : void
-          }
-
-          class BuilderBonusBuilding {
-            + applyEffect() : void
-          }
-
-          class CharacterBonusBuilding {
-            - inventorBonusPP : int
-            - shamanBonusPP : int
-            - hunterBonusPP : int
-            - collectorBonusPP : int
-            - artistBonusPP : int
-            - builderBonusPP : int
-            + applyEffect() : void
-          }
-
-          class FullSetBuilding {
-            + applyEffect() : void
-          }
-        }
-      }
-
-      package character {
-        abstract class AbstractCharacter {
-          + addToTribeOf(p : Player) : void
-          + onPick(player : Player, buildingHandler : BuildingHandler) : void
-          + moveTo(row : Row) : void
-          + removeFrom(row : Row) : void
-          + accept(v : CardVisitor) : void
-        }
-
-        class Artist {
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-        }
-
-        class Builder {
-          - bonusPP : int
-          - buildingDiscount : int
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-          + getBonusPP() : int
-          + getBuildingDiscount() : int
-        }
-
-        class Collector {
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-        }
-
-        class Hunter {
-          - hasIcon : boolean
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-        }
-
-        class Inventor {
-          - inventorType : InventorType
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-          + getInventorType() : InventorType
-        }
-
-        enum InventorType {
-          BOATWRIGHT
-          FLETCHER
-          FISHERMAN
-          JEWELER
-          HERBORIST
-          SHEPHERD
-          MANUFACTURER
-          MUSICIAN
-          TANNER
-          BAKER
-        }
-
-        class Shaman {
-          - stars : int
-          + addToTribeOf(p : Player) : void
-          + accept(v : CardVisitor) : void
-          + getStar() : int
-        }
-      }
-
-      package event {
-        abstract class AbstractEvent {
-          + onEvent(game : Game) : void
-          + moveTo(row : Row) : void
-        }
-
-        together {
-            class CavePainting {
-              - bonusPP: int
-              - malusPP: int
-              - numArtistsBonus : int
-              - numArtistsMalus : int
-              + onEvent(game : Game) : void
-            }
-
-            class Hunt {
-              - ppMultiplier : int
-              + onEvent(game : Game) : void
-            }
-
-            class ShamanicRitual {
-              - bonusPP : int
-              - malusPP : int
-              + onEvent(game : Game) : void
-            }
-
-            class Sustenance {
-              - ppMultiplier : int
-              + onEvent(game : Game) : void
-              + moveTo(row : Row): void
-            }
-        }
-      }
-    }
-
-    package utils {
-      class CardConfig {
-       - card : AbstractCard
-       - quantity : int
-      }
-
-      class CardDeserializer {
-        + deserialize (json : JsonElement, typeOfT : Type, context : JsonDeserializationContext)
-      }
-
-      class CardFactory {
-        + generateCards(configs : List<CardConfig>) : Queue<AbstractCard>
-        + generateBuildingCards(configs : List<CardConfig>, buildingsCountPerAge : List<Integer>) : Queue<AbstractCard>
-      }
-
-      class ConfigLoader {
-        + loadOfferTile(path: String) : OfferTile[]
-        + loadOrderSlot(path: String) : OrderSlot[]
-        + loadDeckConfig(path: String) : DeckConfig
-      }
-
-      class DeckConfig {
-        playerCount : int
-        buildingsCountPerAge : List<Integer>
-        buildingConfigs : List<CardConfig>
-        cardConfigs : List<CardConfig>
-      }
-    }
   }
 }
 
@@ -544,8 +598,6 @@ AbstractCard <|-- AbstractBuilding
 AbstractCard <|-- AbstractCharacter
 AbstractCard <|-- AbstractEvent
 
-AbstractBuilding <|-- CardPickBuilding
-AbstractBuilding <|-- GameEndBuilding
 AbstractBuilding <|-- CavePaintingBuilding
 AbstractBuilding <|-- ExtraActionBuilding
 AbstractBuilding <|-- HuntBuilding
@@ -553,16 +605,27 @@ AbstractBuilding <|-- OrderTileBuilding
 AbstractBuilding <|-- RitualDoubleBonusBuilding
 AbstractBuilding <|-- RitualNoLossBuilding
 AbstractBuilding <|-- RitualStarsBuilding
+AbstractBuilding <|- InventorPairBuilding
+AbstractBuilding <|-- NewFullSetBuilding
+AbstractBuilding <|-- SustenanceDiscountBuilding
+AbstractBuilding <|-- BonusPPBuilding
+AbstractBuilding <|-- BuilderBonusBuilding
+AbstractBuilding <|-- CharacterBonusBuilding
+AbstractBuilding <|-- FullSetBuilding
 
-CardPickBuilding <|- InventorPairBuilding
-CardPickBuilding <|-- NewFullSetBuilding
-CardPickBuilding <|-- SustenanceDiscountBuilding
+VisitableBuilding <|-- CavePaintingBuilding
+VisitableBuilding <|-- ExtraActionBuilding
+VisitableBuilding <|-- HuntBuilding
+VisitableBuilding <|-- OrderTileBuilding
+VisitableBuilding <|- InventorPairBuilding
+VisitableBuilding <|-- NewFullSetBuilding
+VisitableBuilding <|-- SustenanceDiscountBuilding
+VisitableBuilding <|-- BonusPPBuilding
+VisitableBuilding <|-- BuilderBonusBuilding
+VisitableBuilding <|-- CharacterBonusBuilding
+VisitableBuilding <|-- FullSetBuilding
 
-GameEndBuilding <|-- BonusPPBuilding
-GameEndBuilding <|-- BuilderBonusBuilding
-GameEndBuilding <|-- CharacterBonusBuilding
-GameEndBuilding <|-- FullSetBuilding
-
+VisitableCard <|-- AbstractCharacter
 AbstractCharacter <|-- Artist
 AbstractCharacter <|-- Builder
 AbstractCharacter <|-- Collector
@@ -575,18 +638,17 @@ AbstractEvent <|-- Hunt
 AbstractEvent <|-- ShamanicRitual
 AbstractEvent <|-- Sustenance
 
+BuildingVisitor <|-- BuildingHandler
+CardVisitor <|-- SustenanceDiscountBuilding
+Pickable <|-- AbstractBuilding
+Pickable <|-- AbstractCharacter
+
 GameState <|-- GameStartState
 GameState <|-- RoundStartState
 GameState <|-- RoundActionState
 GameState <|-- ExtraActionState
 GameState <|-- RoundEndState
 GameState <|-- GameEndState
-
-Pickable <|.. AbstractBuilding
-Pickable <|.. AbstractCharacter
-Visitable <|.. AbstractCharacter
-
-CardVisitor <|.. CardPickBuilding
 
 ' -------------------------
 ' Associations
@@ -602,6 +664,8 @@ Board o-- OfferTile
 Board o-- OrderSlot
 
 Deck o-- AbstractCard
+Row o-- AbstractCard
+Tribe o-- AbstractCard
 
 Player --> Totem
 Player --> Tribe
@@ -614,23 +678,19 @@ AbstractEvent --> Game
 ' -------------------------
 ' Hidden links to encourage vertical layout
 ' -------------------------
+Game -[hidden]down-> Board
+Game -[hidden]down-> Tribe
+Game -[hidden]down-> GameState
+Game -[hidden]down-> BuildingHandler
+
+BuildingHandler -[hidden]down-> BuildingVisitor
+
 GameState -[hidden]down-> GameStartState
 GameState -[hidden]down-> RoundEndState
 GameState -[hidden]down-> RoundActionState
-
-GameStartState -[hidden]> RoundActionState
-RoundActionState -[hidden]> RoundEndState
-RoundStartState -[hidden]> ExtraActionState
-ExtraActionState -[hidden]> GameEndState
-
-GameStartState -[hidden]down-> RoundStartState
-RoundActionState -[hidden]down-> ExtraActionState
-RoundEndState -[hidden]down-> GameEndState
-
-Deck -[hidden]-> OfferTile
-Deck -[hidden]down-> OrderSlot
-Board -[hidden]down-> Row
-Board -[hidden]down-> Deck
+GameStartState -[hidden]-> RoundActionState
+RoundActionState -[hidden]-> RoundEndState
+RoundStartState -[hidden]-> ExtraActionState
 
 AbstractCharacter -[hidden]down-> Artist
 AbstractCharacter -[hidden]down-> Builder
@@ -649,58 +709,37 @@ AbstractEvent -[hidden]-> Sustenance
 CavePainting -[hidden]-> Hunt
 ShamanicRitual -[hidden]-> Sustenance
 
-GameEndBuilding -[hidden]down-> BonusPPBuilding
-GameEndBuilding -[hidden]down-> BuilderBonusBuilding
-GameEndBuilding -[hidden]down-> CharacterBonusBuilding
-GameEndBuilding -[hidden]down-> FullSetBuilding
-BonusPPBuilding -[hidden]down-> CharacterBonusBuilding
-BuilderBonusBuilding -[hidden]down-> FullSetBuilding
-
-CardPickBuilding -[hidden]down-> NewFullSetBuilding
-InventorPairBuilding -[hidden]down-> SustenanceDiscountBuilding
-
-AbstractBuilding -[hidden]> AbstractCharacter
-AbstractEvent -[hidden]> AbstractBuilding
-
-AbstractBuilding -[hidden]down-> GameEndBuilding
-AbstractBuilding -[hidden]down-> CavePaintingBuilding
-AbstractBuilding -[hidden]down-> RitualDoubleBonusBuilding
-OrderTileBuilding -[hidden]> AbstractBuilding
-AbstractBuilding -[hidden]> BuildingHandler
-
-OrderTileBuilding -[hidden]down-> CavePaintingBuilding
-CavePaintingBuilding -[hidden]down-> HuntBuilding
-HuntBuilding -[hidden]down-> ExtraActionBuilding
 RitualDoubleBonusBuilding -[hidden]down-> RitualNoLossBuilding
 RitualNoLossBuilding -[hidden]down-> RitualStarsBuilding
-
-Visitable -[hidden]down-> AbstractCharacter
-AbstractCard -[hidden]down-> AbstractCharacter
-AbstractCard -[hidden]down-> AbstractEvent
-
-CardDeserializer -[hidden]down-> CardFactory
-CardFactory -[hidden]down-> CardConfig
-CardFactory -[hidden]down-> DeckConfig
-CardFactory -[hidden]down-> ConfigLoader
-
-Player -[hidden]down> Tribe
-Player -[hidden]down-> PlayerConfig
-Player -[hidden]down-> Totem
-
-Game -[hidden]down-> Board
-Game -[hidden]down-> Tribe
-Game -[hidden]down-> GameState
-Game -[hidden]down-> CardDeserializer
-
-GameState -[hidden]> Deck
+CavePaintingBuilding -[hidden]down-> HuntBuilding
+HuntBuilding -[hidden]down-> ExtraActionBuilding
+BonusPPBuilding -[hidden]down-> OrderTileBuilding
+OrderTileBuilding -[hidden]down-> NewFullSetBuilding
+FullSetBuilding -[hidden]down-> BuilderBonusBuilding
+BuilderBonusBuilding -[hidden]down-> CharacterBonusBuilding
+SustenanceDiscountBuilding -[hidden]down-> InventorPairBuilding
 
 
+VisitableCard -[hidden]down-> AbstractCharacter
 
-Row -[hidden]down-> AbstractCard
-ExtraActionState -[hidden]down-> AbstractCard
-GameEndState -[hidden]down-> AbstractCard
-RoundActionState -[hidden]down-> AbstractCard
-PlayerConfig-[hidden]down-> AbstractCard
+'AbstractCard -[hidden]down-> AbstractCharacter
+'AbstractCard -[hidden]down-> AbstractEvent
+'
+'Player -[hidden]down> Tribe
+'Player -[hidden]down-> PlayerConfig
+'Player -[hidden]down-> Totem
+'
+
+'
+'GameState -[hidden]> Deck
+'
+'
+'
+'Row -[hidden]down-> AbstractCard
+'ExtraActionState -[hidden]down-> AbstractCard
+'GameEndState -[hidden]down-> AbstractCard
+'RoundActionState -[hidden]down-> AbstractCard
+'PlayerConfig-[hidden]down-> AbstractCard
 
 
 
