@@ -1,0 +1,156 @@
+@startuml
+skinparam style strictuml
+
+participant Registry
+participant ClientController
+participant RMIServerInterface
+participant ConnectionMonitor
+participant RMIClientInterface
+participant ServerController
+participant LobbyController
+participant LobbyState
+
+activate ClientController
+ClientController -> ClientController : connectRMI(IP, Port)
+ClientController -> ClientController: getRegistry(IP, Port)
+ClientController -> Registry: lookup(Name)
+
+ClientController-> RMIServerInterface : new RMIServerInterface()
+ClientController-> RMIServerInterface : registerClient(ClientStub)
+deactivate ClientController
+
+activate RMIServerInterface
+RMIServerInterface -> ServerController: registerClient(Client)
+deactivate RMIServerInterface
+
+activate ServerController
+ServerController -> ConnectionMonitor: registerClient(RMIClientInterface))
+ServerController -> ServerController: randomUUID()
+ServerController -> RMIClientInterface: setID(String)
+deactivate ServerController
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: setID(String)
+deactivate RMIClientInterface
+
+activate ClientController
+ClientController -> ConnectionMonitor: startServerMonitor(ClientController)
+deactivate ClientController
+
+alt login
+ClientController -> RMIServerInterface: login(ID, Username)
+
+activate RMIServerInterface
+RMIServerInterface -> ServerController: login(ID, Username)
+deactivate RMIServerInterface
+
+activate ServerController
+ServerController -> RMIClientInterface: confirmLogin(Username)
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: confirmLogin(Username)
+deactivate RMIClientInterface
+
+ServerController -> RMIClientInterface: showWaitingLobbies(Lobbies)
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: showWaitingLobbies(Response)
+deactivate RMIClientInterface
+
+deactivate ServerController
+
+else Invalid Username
+
+ServerController -> RMIClientInterface: showError(Error)
+
+activate RMIClientInterface
+RMIClientInterface -> ClientController: showError(Error)
+deactivate RMIClientInterface
+
+end
+
+alt Joining a game lobby
+    ClientController -> RMIServerInterface : getLobbyInfo(LobbyID)
+
+    activate RMIServerInterface
+    RMIServerInterface -> ServerController: getLobbyInfo(LobbyID)
+    deactivate RMIServerInterface
+
+    activate ServerController
+    ServerController -> LobbyController: getLobbyInfo(Client)
+    deactivate ServerController
+
+    activate LobbyController
+    LobbyController -> LobbyState: getLobbyInfo(Client)
+    deactivate LobbyController
+
+    activate LobbyState
+    LobbyState -> LobbyController : addListener(Client)
+    LobbyState -> RMIClientInterface: setCurrLobbyController(lobbyController)
+    LobbyState -> RMIClientInterface: showLobbyInfo(Players)
+    deactivate LobbyState
+
+    activate RMIClientInterface
+    RMIClientInterface -> ClientController: showLobbyInfo(Players)
+    deactivate RMIClientInterface
+
+    ClientController -> RMIServerInterface : joinLobby(LobbyID, Totem)
+
+    activate RMIServerInterface
+    RMIServerInterface -> ServerController: joinLobby(LobbyID, Totem)
+    deactivate RMIServerInterface
+
+    activate ServerController
+    ServerController -> LobbyController: joinLobby(Client, Player)
+    deactivate ServerController
+
+    activate LobbyController
+    LobbyController -> LobbyState: joinLobby(Client, Player)
+    deactivate LobbyController
+
+    activate LobbyState
+    LobbyState -> LobbyState : validatePlayerInfo(Player)
+    LobbyState -> RMIClientInterface: addPlayer(Player)
+
+    activate RMIClientInterface
+    RMIClientInterface -> ClientController: addPlayer(Player)
+    deactivate RMIClientInterface
+
+    LobbyState -> ServerController: broadcastLobbyUpdate(LobbyID)
+    deactivate LobbyState
+
+    activate ServerController
+    ServerController -> RMIClientInterface: updateLobby(Lobby)
+    deactivate ServerController
+
+    activate RMIClientInterface
+    RMIClientInterface -> ClientController: updateLobby(Lobby)
+    deactivate RMIClientInterface
+
+else creating a game lobby
+    ClientController -> RMIServerInterface : createLobby(PlayerNum, Totem)
+
+    activate RMIServerInterface
+    RMIServerInterface -> ServerController: createLobby(PlayerNum, Totem)
+    deactivate RMIServerInterface
+
+    activate ServerController
+    ServerController -> LobbyController: new LobbyController()
+    ServerController -> LobbyController: add(Client, Player)
+    ServerController -> ClientHandler: setCurrLobbyController(Lobby)
+    ServerController -> RMIClientInterface: createLobby(Lobby)
+
+    activate RMIClientInterface
+    RMIClientInterface -> ClientController: createLobby(Lobby)
+    deactivate RMIClientInterface
+
+    ServerController -> ServerController : broadcastLobbyAddition(Lobby)
+    ServerController -> RMIClientInterface : addLobby(Lobby)
+    deactivate ServerController
+
+    activate RMIClientInterface
+    RMIClientInterface -> ClientController: addLobby(Lobby)
+    deactivate RMIClientInterface
+end
+
+@enduml
