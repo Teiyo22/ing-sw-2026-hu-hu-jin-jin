@@ -2,17 +2,14 @@ package it.polimi.ingsw.controller.client.network;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Set;
-import java.util.concurrent.*;
 
 public class RMIServerInterface extends ServerInterface {
     VirtualServer wrappedServer;

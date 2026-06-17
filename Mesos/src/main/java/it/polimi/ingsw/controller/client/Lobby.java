@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.board.OrderSlot;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardResult;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
 
 import java.io.Serializable;
 import java.util.*;

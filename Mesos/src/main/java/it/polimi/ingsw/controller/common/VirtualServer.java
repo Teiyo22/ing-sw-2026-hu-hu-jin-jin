@@ -2,13 +2,12 @@ package it.polimi.ingsw.controller.common;
 
 
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.rmi.RemoteException;
 
 import java.rmi.Remote;
-import java.util.Set;
 
 public interface VirtualServer extends Remote {
     void registerClient(ClientInterface client) throws RemoteException;

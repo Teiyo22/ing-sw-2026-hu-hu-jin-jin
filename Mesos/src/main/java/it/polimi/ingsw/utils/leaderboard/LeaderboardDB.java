@@ -1,8 +1,10 @@
-package it.polimi.ingsw.utils;
+package it.polimi.ingsw.utils.leaderboard;
 
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.sql.*;
 import java.util.ArrayList;

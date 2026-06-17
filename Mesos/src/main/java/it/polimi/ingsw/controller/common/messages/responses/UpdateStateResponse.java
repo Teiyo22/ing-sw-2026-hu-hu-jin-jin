@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 

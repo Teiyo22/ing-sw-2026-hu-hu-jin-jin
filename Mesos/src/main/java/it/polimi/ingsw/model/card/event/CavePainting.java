@@ -1,13 +1,12 @@
 package it.polimi.ingsw.model.card.event;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.controller.client.EventResult;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CavePainting extends AbstractEvent{
     @Expose private int bonusPP;  //must be a positive number

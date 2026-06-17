@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller.common.messages.responses;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.model.card.event.EventResult;
+import it.polimi.ingsw.controller.client.EventResult;
 
 import java.io.Serializable;
 import java.util.List;

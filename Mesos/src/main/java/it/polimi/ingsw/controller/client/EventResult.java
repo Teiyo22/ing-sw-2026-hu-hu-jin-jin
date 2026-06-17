@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.card.event;
+package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.model.player.Player;
 

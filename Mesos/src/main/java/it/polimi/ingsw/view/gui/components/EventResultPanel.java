@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui.components;
 
-import it.polimi.ingsw.model.card.event.EventResult;
+import it.polimi.ingsw.controller.client.EventResult;
 import it.polimi.ingsw.utils.view.PanelBuilder;
 import it.polimi.ingsw.utils.view.WidgetFactory;
 

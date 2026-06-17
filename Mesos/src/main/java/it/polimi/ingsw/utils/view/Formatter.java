@@ -2,7 +2,7 @@ package it.polimi.ingsw.utils.view;
 
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardEntry;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardEntry;
 
 import java.util.Map;
 

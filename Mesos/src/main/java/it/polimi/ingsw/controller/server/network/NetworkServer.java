@@ -1,8 +1,8 @@
 package it.polimi.ingsw.controller.server.network;
 
 import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.io.*;
 import java.net.InetSocketAddress;

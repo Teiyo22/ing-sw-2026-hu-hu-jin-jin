@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewFactory;
 

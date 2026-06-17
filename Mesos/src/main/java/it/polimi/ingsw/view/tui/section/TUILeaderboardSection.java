@@ -2,8 +2,8 @@ package it.polimi.ingsw.view.tui.section;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.utils.LeaderboardEntry;
-import it.polimi.ingsw.utils.LeaderboardResult;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardEntry;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
 import it.polimi.ingsw.utils.view.Formatter;
 
 public class TUILeaderboardSection implements TUISection {

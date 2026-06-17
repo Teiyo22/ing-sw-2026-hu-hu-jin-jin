@@ -3,8 +3,8 @@ package it.polimi.ingsw.controller.common;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

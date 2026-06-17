@@ -3,8 +3,10 @@ package it.polimi.ingsw.utils.controller;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import it.polimi.ingsw.model.action.ActionType;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.CardPickPlayerAction;
+import it.polimi.ingsw.controller.client.action.ActionType;
+import it.polimi.ingsw.controller.client.action.OfferPickPlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 
 import java.lang.reflect.Type;
 
@@ -13,8 +15,8 @@ public class PlayerActionSerializer implements JsonSerializer<PlayerAction> {
     public JsonElement serialize(PlayerAction src, Type typeOfSrc, JsonSerializationContext context) {
         ActionType type = src.getType();
         return switch (type) {
-            case CARD_PICK -> context.serialize(src, it.polimi.ingsw.model.action.CardPickPlayerAction.class);
-            case OFFER_PICK -> context.serialize(src, it.polimi.ingsw.model.action.OfferPickPlayerAction.class);
+            case CARD_PICK -> context.serialize(src, CardPickPlayerAction.class);
+            case OFFER_PICK -> context.serialize(src, OfferPickPlayerAction.class);
         };
     }
 }

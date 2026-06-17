@@ -5,15 +5,15 @@ import com.google.gson.*;
 import java.io.*;
 import java.net.*;
 
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 import it.polimi.ingsw.utils.controller.*;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 

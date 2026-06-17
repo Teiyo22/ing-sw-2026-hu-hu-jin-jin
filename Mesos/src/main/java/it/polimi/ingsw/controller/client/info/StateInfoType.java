@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.gameState.info;
+package it.polimi.ingsw.controller.client.info;
 
 public enum StateInfoType {
     CARD_PICK,

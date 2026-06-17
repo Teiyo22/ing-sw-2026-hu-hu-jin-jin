@@ -3,7 +3,7 @@ package it.polimi.ingsw.utils.controller;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import it.polimi.ingsw.model.gameState.info.*;
+import it.polimi.ingsw.controller.client.info.*;
 
 import java.lang.reflect.Type;
 

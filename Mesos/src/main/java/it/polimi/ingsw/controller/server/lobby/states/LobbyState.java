@@ -4,10 +4,10 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.util.ArrayList;
 import java.util.HashSet;

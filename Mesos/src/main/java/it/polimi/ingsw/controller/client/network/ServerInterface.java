@@ -3,10 +3,8 @@ package it.polimi.ingsw.controller.client.network;
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
-
-import java.util.Set;
 
 public abstract class ServerInterface implements VirtualServer {
     protected boolean isConnected = false;

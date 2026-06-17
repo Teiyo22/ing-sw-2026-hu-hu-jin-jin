@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.action.CardPickPlayerAction;
+import it.polimi.ingsw.controller.client.action.CardPickPlayerAction;
 
 import java.util.Set;
 

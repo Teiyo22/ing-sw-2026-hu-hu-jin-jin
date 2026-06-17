@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.command;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.model.action.OfferPickPlayerAction;
+import it.polimi.ingsw.controller.client.action.OfferPickPlayerAction;
 
 public class PickOfferCommand implements Command {
     final private ClientController clientController;

@@ -6,7 +6,7 @@ import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 

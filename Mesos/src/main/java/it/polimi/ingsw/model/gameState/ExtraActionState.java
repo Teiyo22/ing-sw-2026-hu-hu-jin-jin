@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.gameState;
 
-import it.polimi.ingsw.model.gameState.info.CardPickStateInfo;
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.CardPickStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
-import it.polimi.ingsw.model.action.CardPickPlayerAction;
+import it.polimi.ingsw.controller.client.action.CardPickPlayerAction;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;

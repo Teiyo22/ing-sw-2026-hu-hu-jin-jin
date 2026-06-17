@@ -4,11 +4,8 @@ import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Totem;
-
-import java.util.Set;
 
 public class TCPServerInterface extends ServerInterface {
     private final NetworkClient serverHandler;

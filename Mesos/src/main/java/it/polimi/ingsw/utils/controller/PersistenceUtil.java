@@ -9,8 +9,8 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
 
 import java.io.*;

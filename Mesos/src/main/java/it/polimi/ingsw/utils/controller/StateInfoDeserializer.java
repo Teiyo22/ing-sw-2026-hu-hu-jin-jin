@@ -1,10 +1,10 @@
 package it.polimi.ingsw.utils.controller;
 
 import com.google.gson.*;
-import it.polimi.ingsw.model.gameState.info.CardPickStateInfo;
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
-import it.polimi.ingsw.model.gameState.info.GameEndStateInfo;
-import it.polimi.ingsw.model.gameState.info.OfferPickStateInfo;
+import it.polimi.ingsw.controller.client.info.CardPickStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.GameEndStateInfo;
+import it.polimi.ingsw.controller.client.info.OfferPickStateInfo;
 
 import java.lang.reflect.Type;
 

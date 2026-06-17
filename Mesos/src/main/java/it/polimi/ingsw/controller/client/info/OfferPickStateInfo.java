@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.gameState.info;
+package it.polimi.ingsw.controller.client.info;
 
 import it.polimi.ingsw.controller.client.turn.IdleState;
 import it.polimi.ingsw.controller.client.turn.OfferPickState;

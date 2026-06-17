@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller.common.messages.requests;
 import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 
 public class PlayerActionRequest extends Request {
     private int lobbyID;

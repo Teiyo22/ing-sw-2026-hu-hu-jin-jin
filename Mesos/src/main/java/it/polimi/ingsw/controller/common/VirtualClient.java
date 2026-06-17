@@ -2,12 +2,12 @@ package it.polimi.ingsw.controller.common;
 
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardResult;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

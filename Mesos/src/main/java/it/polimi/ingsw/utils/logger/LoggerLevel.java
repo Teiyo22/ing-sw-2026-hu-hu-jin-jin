@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utils;
+package it.polimi.ingsw.utils.logger;
 
 public enum LoggerLevel {
     OFF(6, "\033[0m"),

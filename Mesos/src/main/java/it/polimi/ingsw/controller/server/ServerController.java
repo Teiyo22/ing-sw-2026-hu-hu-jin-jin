@@ -7,12 +7,12 @@ import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.*;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.action.PlayerAction;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
-import it.polimi.ingsw.utils.LeaderboardDB;
-import it.polimi.ingsw.utils.Logger;
-import it.polimi.ingsw.utils.LoggerLevel;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardDB;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 import it.polimi.ingsw.utils.controller.PersistenceUtil;
 
 import java.io.*;

@@ -6,8 +6,8 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.action.PlayerAction;
-import it.polimi.ingsw.model.card.event.EventResult;
+import it.polimi.ingsw.controller.client.action.PlayerAction;
+import it.polimi.ingsw.controller.client.EventResult;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.*;

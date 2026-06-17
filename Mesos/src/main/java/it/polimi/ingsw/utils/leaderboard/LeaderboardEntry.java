@@ -1,4 +1,4 @@
-package it.polimi.ingsw.utils;
+package it.polimi.ingsw.utils.leaderboard;
 
 import java.io.Serializable;
 import java.util.Date;

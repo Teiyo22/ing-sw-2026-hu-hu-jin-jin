@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.gameState.info;
+package it.polimi.ingsw.controller.client.info;
 
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.model.player.Player;

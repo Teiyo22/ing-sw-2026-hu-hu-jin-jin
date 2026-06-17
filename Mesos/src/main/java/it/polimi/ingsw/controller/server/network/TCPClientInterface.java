@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.server.network;
 
-import it.polimi.ingsw.model.gameState.info.ModelStateInfo;
+import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
@@ -9,7 +9,7 @@ import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.utils.LeaderboardResult;
+import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
 
 import java.util.List;
 import java.util.Set;
