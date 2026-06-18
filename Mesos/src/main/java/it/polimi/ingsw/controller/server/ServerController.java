@@ -293,8 +293,8 @@ public class ServerController implements VirtualServer {
             if (!allClients.containsKey(clientID)) return;
 
             ClientInterface client = allClients.get(clientID);
-            if (username.isEmpty()) {
-                client.showError(new ErrorMessage("Login Error", "Username cannot be empty"));
+            if (username.isEmpty() || username.length() > 25) {
+                client.showError(new ErrorMessage("Login Error", "Username length must be between 1-25"));
                 Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] failed to login as [%s]", clientID, username));
                 return;
             }
