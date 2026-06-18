@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class LeaderboardDB {
     private static final String url = "jdbc:mysql://localhost:3306/";
     private static final String dbName = "leaderboard";
-    private static final String username = "root";
+    private static final String username = "mesos";
     private static final String password = "";
 
     private ExecutorService dbService;
@@ -39,6 +39,7 @@ public class LeaderboardDB {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement()) {
             stmt.execute("CREATE DATABASE IF NOT EXISTS " + dbName);
+            Logger.getInstance().print(LoggerLevel.SERVER, "LeaderboardDB: Successfully added new database");
             return true;
         } catch (SQLException ex) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Error creating database: " + ex.getMessage());
@@ -50,16 +51,21 @@ public class LeaderboardDB {
         try (Connection conn = DriverManager.getConnection(url + dbName, username, password);
              Statement stmt = conn.createStatement()) {
 
-            stmt.executeUpdate("""
-                    CREATE TABLE IF NOT EXISTS game_results(
+            for(int i = 2; i <= 5; i++) {
+                String sql_stat = String.format(
+                    """
+                    CREATE TABLE IF NOT EXISTS results_%dp(
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         nickname  VARCHAR(30) NOT NULL,
                         pp INT NOT NULL,
                         food INT NOT NULL,
-                        date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                        lobby_size INT NOT NULL
-                    )
-                """);
+                        date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+                    """,
+                    i);
+
+                stmt.executeUpdate(sql_stat);
+            }
+            Logger.getInstance().print(LoggerLevel.SERVER, "LeaderboardDB: successfully tables created");
             return true;
         } catch (SQLException ex) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Error creating tables: " + ex.getMessage());
@@ -77,7 +83,7 @@ public class LeaderboardDB {
                     int pp = p.getPP();
                     int food = p.getFood();
 
-                    String s = "INSERT INTO game_results(nickname, pp, food, lobby_size) VALUES (?, ?, ?, ?)";
+                    String s = String.format("INSERT INTO results_%dp(nickname, pp, food) VALUES (?, ?, ?, ?)", game.getPlayerConfig().getNum());
 
                     try (Connection conn = DriverManager.getConnection(url + dbName, username, password);
                          PreparedStatement ps = conn.prepareStatement(s)) {
@@ -85,10 +91,9 @@ public class LeaderboardDB {
                         ps.setString(1, nickname);
                         ps.setInt(2, pp);
                         ps.setInt(3, food);
-                        ps.setInt(4, game.getPlayers().size());
 
                         ps.executeUpdate();
-
+                        Logger.getInstance().print(LoggerLevel.SERVER, "LeaderboardDB: Successfully added new entry to leaderboard");
                     } catch (SQLException ex) {
                         Logger.getInstance().print(LoggerLevel.ERROR, "Error saving result: " + ex.getMessage());
                     }
@@ -116,19 +121,20 @@ public class LeaderboardDB {
             Date maxDate = new Date(0);
             int entryID = -1;
 
-            String query = "SELECT id, nickname, pp, food, date FROM game_results WHERE lobby_size = (?) ORDER BY pp DESC, food DESC";
+            String query =
+                String.format("SELECT id, nickname, pp, food, date FROM results_%dp ORDER BY pp DESC, food DESC",
+                    playerNum);
 
             readLock.lock();
             try {
                 try (Connection conn = DriverManager.getConnection(url + dbName, username, password);
                      PreparedStatement ps = conn.prepareStatement(query)) {
-                    ps.setInt(1, playerNum);
-
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             int id = rs.getInt("id");
                             String nickname = rs.getString("nickname");
                             Date date = rs.getTimestamp("date");
+
                             leaderboardEntries.add(new LeaderboardEntry(
                                 id, nickname, rs.getInt("pp"),
                                 rs.getInt("food"), date));
