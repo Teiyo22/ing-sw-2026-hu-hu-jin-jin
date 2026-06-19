@@ -9,9 +9,11 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
 import it.polimi.ingsw.model.card.event.AbstractEvent;
+import it.polimi.ingsw.model.gameState.GameState;
 import it.polimi.ingsw.utils.logger.Logger;
 import it.polimi.ingsw.utils.logger.LoggerLevel;
 import it.polimi.ingsw.utils.model.CardAdapterFactory;
+import it.polimi.ingsw.utils.model.GameStateAdapter;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -37,6 +39,7 @@ public class PersistenceUtil {
             .registerTypeAdapter(AbstractCharacter.class, new CardAdapterFactory<AbstractCharacter>().create(AbstractCharacter.class))
             .registerTypeAdapter(AbstractBuilding.class, new CardAdapterFactory<AbstractBuilding>().create(AbstractBuilding.class))
             .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
+            .registerTypeAdapter(GameState.class, new GameStateAdapter())
             .setPrettyPrinting()
             .create();
     }
