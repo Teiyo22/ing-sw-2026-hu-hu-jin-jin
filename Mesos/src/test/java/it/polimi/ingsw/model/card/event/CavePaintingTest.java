@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card.event;
 
 import com.google.gson.annotations.Expose;
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.character.Artist;
@@ -44,6 +45,8 @@ class CavePaintingTest {
 
 
         game = new Game(PlayerConfig.TWO, players);
+
+        game.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
 
         cavePainting = new CavePainting(1, false, bonusPP, malusPP, numArtistsBonus, numArtistsMalus);
     }

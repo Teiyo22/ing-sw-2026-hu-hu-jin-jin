@@ -17,7 +17,7 @@ public class HuntBuildingTest {
 
     @BeforeEach
     void setUp(){
-        huntBuilding = new HuntBuilding("HuntBuilding", 1, false, 3,2, 2, 4);
+        huntBuilding = new HuntBuilding(1, false, 3,2, 2, 4);
         p= new Player("Pallino", Totem.RED);
         p.setTribe(new Tribe());
 

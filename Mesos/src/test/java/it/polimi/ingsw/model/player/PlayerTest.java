@@ -54,7 +54,7 @@ public class PlayerTest {
 
     @Test
     void addBuildingTest(){
-        AbstractBuilding b= new CavePaintingBuilding("CavePaintingBuilding",1,false,5,2,2);
+        AbstractBuilding b= new CavePaintingBuilding(1,false,5,2,2);
         p.addBuilding(b);
         assertEquals(1,p.getBuildings().size());
 

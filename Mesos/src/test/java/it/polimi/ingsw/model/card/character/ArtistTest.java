@@ -28,7 +28,6 @@ public class ArtistTest {
     void testClone(){
         AbstractCard artist2 = artist.clone();
         assertEquals(artist2.getID(), artist.getID());
-        assertEquals(artist2.getType(), artist.getType());
         assertEquals(artist2.isFinal(), artist.isFinal());
     }
 

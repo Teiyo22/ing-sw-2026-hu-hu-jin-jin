@@ -30,7 +30,7 @@ public class TribeTest {
 
     @Test
     void addInventorTest() {
-        Inventor i = new Inventor("Inventor", 1, false, InventorType.FLETCHER);
+        Inventor i = new Inventor(1, false, InventorType.FLETCHER);
         t.addInventor(i);
         assertEquals(1, t.getInventorCount());
         assertEquals(1, t.getNumInventorType(InventorType.FLETCHER));
@@ -42,36 +42,36 @@ public class TribeTest {
 
     @Test
     void addCollectorTest() {
-        Collector collector = new Collector("Collector", 1, false);
+        Collector collector = new Collector(1, false);
         t.addCollector(collector);
         assertEquals(1, t.getCollectorCount());
     }
 
     @Test
     void addShamanTest() {
-        Shaman s = new Shaman("Shaman", 1, false, 2);
+        Shaman s = new Shaman(1, false, 2);
         t.addShaman(s);
         assertEquals(1, t.getShamanCount());
     }
 
     @Test
     void addBuilderTest() {
-        Builder b = new Builder("Builder", 1, false, 5, 2);
+        Builder b = new Builder(1, false, 5, 2);
         t.addBuilder(b);
         assertEquals(1, t.getBuilderCount());
     }
 
     @Test
     void addArtistTest() {
-        t.addArtist(new Artist("Artist", 1, false));
+        t.addArtist(new Artist(1, false));
         assertEquals(1, t.getArtistCount());
     }
 
     @Test
     void addHunterTest() {
-        t.addHunter(new Hunter("Hunter", 1, false, true));
+        t.addHunter(new Hunter(1, false, true));
         assertEquals(1, t.getHunterCount());
-        t.addHunter(new Hunter("Hunter", 1, false, true));
+        t.addHunter(new Hunter(1, false, true));
         assertEquals(2, t.getHunterCount());
     }
 
@@ -80,27 +80,27 @@ public class TribeTest {
         int i;
 
         for(i = 0; i < 5; i++) {
-            t.addShaman(new Shaman("Shaman", 1, false, 2));
+            t.addShaman(new Shaman(1, false, 2));
         }
 
         for(i = 0; i < 4; i++) {
-            t.addHunter(new Hunter("Hunter", 1, false, true));
+            t.addHunter(new Hunter(1, false, true));
         }
 
         for(i = 0; i < 3; i++) {
-            t.addArtist(new Artist("Artist", 1, false));
+            t.addArtist(new Artist(1, false));
         }
 
         for(i = 0; i < 2; i++) {
-            t.addBuilder(new Builder("Builder", 1, false, 5, 2));
+            t.addBuilder(new Builder(1, false, 5, 2));
         }
 
-        t.addCollector(new Collector("Collector", 1, false));
+        t.addCollector(new Collector(1, false));
 
         assertEquals(0, t.getMinChar());
 
         for(i = 0; i < 6; i++) {
-            t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
+            t.addInventor(new Inventor(1, false, InventorType.FISHERMAN));
         }
 
         assertEquals(1, t.getMinChar());
@@ -108,8 +108,8 @@ public class TribeTest {
 
     @Test
     void getBuilderDiscountTest(){
-        t.addBuilder(new Builder("Builder", 1, false, 5, 2));
-        t.addBuilder(new Builder("Builder", 1, false, 5, 2));
+        t.addBuilder(new Builder(1, false, 5, 2));
+        t.addBuilder(new Builder(1, false, 5, 2));
         assertEquals(4, t.getBuilderDiscount());
     }
 }

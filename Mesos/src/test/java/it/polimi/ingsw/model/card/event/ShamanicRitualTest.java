@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.card.event;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
@@ -38,6 +40,8 @@ class ShamanicRitualTest {
         players.add(player3);
 
         game = new Game(PlayerConfig.THREE, players);
+
+        game.setLobbyState(new LobbyRunningState(new LobbyController(1, 3)));
 
         player1.setTribe(new Tribe());
         player2.setTribe(new Tribe());
