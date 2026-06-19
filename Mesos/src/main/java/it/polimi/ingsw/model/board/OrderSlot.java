@@ -28,10 +28,10 @@ public class OrderSlot implements Serializable {
      * Increases/decreases the food of the player assigned to this slot depending on the foodDelta.
      * */
     public void solveDeltaFood(){
-        if(getAssignedPlayer().getFood() + foodDelta < 0)
-            getAssignedPlayer().addPP(-2);
+        if(assignedPlayer.getFood() + foodDelta < 0)
+            assignedPlayer.addPP(-2);
         else
-            getAssignedPlayer().addFood(foodDelta);
+            assignedPlayer.addFood(foodDelta);
     }
 
     public OrderSlot copy() {

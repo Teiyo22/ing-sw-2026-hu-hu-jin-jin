@@ -99,6 +99,11 @@ public class GameStartState extends GameState{
     }
 
     @Override
+    public GameState copy() {
+        return new GameStartState(game, buildingHandler);
+    }
+
+    @Override
     public ModelStateInfo getModelStateInfo() {
         return null;
     }

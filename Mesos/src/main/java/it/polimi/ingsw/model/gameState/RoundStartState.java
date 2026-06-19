@@ -70,4 +70,21 @@ public class RoundStartState extends GameState {
     public void setAssignedSlots(int assignedSlots) {
         this.assignedSlots = assignedSlots;
     }
+
+    @Override
+    public GameState copy() {
+        RoundStartState copy = new RoundStartState(game, buildingHandler);
+        copy.currPlayer = currPlayer;
+        copy.assignedSlots = assignedSlots;
+        return copy;
+    }
+
+    @Override
+    public void fixReferences(Game game) {
+        super.fixReferences(game);
+        if (currPlayer != null)
+            for (Player p: game.getPlayers())
+                if (currPlayer.equals(p))
+                    currPlayer = p;
+    }
 }

@@ -8,8 +8,8 @@ import it.polimi.ingsw.controller.client.action.CardPickPlayerAction;
 import it.polimi.ingsw.controller.client.action.OfferPickPlayerAction;
 
 public abstract class GameState {
-    final protected Game game;
-    final protected BuildingHandler buildingHandler;
+    transient protected Game game;
+    transient BuildingHandler buildingHandler;
 
     public GameState(Game game, BuildingHandler buildingHandler) {
         this.game = game;
@@ -32,29 +32,10 @@ public abstract class GameState {
         return new String[]{"This action is not available"};
     }
 
-    public static GameState getGameState(Game game) {
-        GameState gameState = isRoundStart(game.getBoard().getOrderTile())
-            ? new RoundStartState(game, game.getBuildingHandler())
-            : new RoundActionState(game, game.getBuildingHandler());
+    public abstract GameState copy();
 
-        gameState.update();
-
-        return gameState;
-    }
-
-    private static boolean isRoundStart(OrderSlot[] orderTile) {
-        if (orderTile[0].getAssignedPlayer() != null) {
-            for (OrderSlot orderSlot : orderTile)
-                if (orderSlot.getAssignedPlayer() == null)
-                    return false;
-
-            return true;
-        } else {
-            for (OrderSlot orderSlot : orderTile)
-                if (orderSlot.getAssignedPlayer() != null)
-                    return true;
-
-            return false;
-        }
+    public void fixReferences(Game game) {
+        this.game = game;
+        this.buildingHandler = game.getBuildingHandler();
     }
 }

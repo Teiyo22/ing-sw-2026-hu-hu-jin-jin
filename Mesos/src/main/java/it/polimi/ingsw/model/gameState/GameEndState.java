@@ -13,9 +13,9 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.*;
 
 public class GameEndState extends GameState {
-    private final Row bottom;
-    private final Row top;
-    private final List<Player> playersList;
+    transient private Row bottom;
+    transient private Row top;
+    transient private List<Player> playersList;
 
     public GameEndState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -101,6 +101,19 @@ public class GameEndState extends GameState {
                 current.setRank(evaluatedPlayers + 1);
             }
         }
+    }
+
+    @Override
+    public GameState copy() {
+        return new GameEndState(game, buildingHandler);
+    }
+
+    @Override
+    public void fixReferences(Game game) {
+        super.fixReferences(game);
+        playersList = game.getPlayers();
+        bottom = game.getBoard().getBottomRow();
+        top = game.getBoard().getTopRow();
     }
 
     @Override

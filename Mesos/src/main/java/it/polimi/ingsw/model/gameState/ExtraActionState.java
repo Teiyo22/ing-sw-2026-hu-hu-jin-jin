@@ -109,4 +109,21 @@ public class ExtraActionState extends GameState {
     public ModelStateInfo getModelStateInfo() {
         return new CardPickStateInfo(currPlayer, -1, game.getBoard().getDeck().getCurrentEra());
     }
+
+    @Override
+    public GameState copy() {
+        ExtraActionState copy = new ExtraActionState(game, buildingHandler);
+        copy.currPlayer = currPlayer;
+        copy.solvedExtraActions = solvedExtraActions;
+        return copy;
+    }
+
+    @Override
+    public void fixReferences(Game game) {
+        super.fixReferences(game);
+        if (currPlayer != null)
+            for (Player p: game.getPlayers())
+                if (currPlayer.equals(p))
+                    currPlayer = p;
+    }
 }

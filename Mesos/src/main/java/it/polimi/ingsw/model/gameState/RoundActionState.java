@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RoundActionState extends GameState {
+    transient private OfferTile[] offerTrack;
+
     private Player currPlayer;
-    private final OfferTile[] offerTrack;
 
     private int solvedOffers = 0;
     private int assignedPlayers = 0;
@@ -175,5 +176,28 @@ public class RoundActionState extends GameState {
             .sum();
 
         return buildingCost <= currPlayer.getFood();
+    }
+
+    @Override
+    public GameState copy() {
+        RoundActionState copy = new RoundActionState(game, buildingHandler);
+        copy.currPlayer = currPlayer.shallowCopy();
+        copy.solvedOffers = solvedOffers;
+        copy.assignedPlayers = assignedPlayers;
+
+        copy.topRowPickable = topRowPickable;
+        copy.bottomRowPickable = bottomRowPickable;
+
+        return copy;
+    }
+
+    @Override
+    public void fixReferences(Game game) {
+        super.fixReferences(game);
+        offerTrack = game.getBoard().getOfferTrack();
+        if (currPlayer != null)
+            for (Player p: game.getPlayers())
+                if (currPlayer.equals(p))
+                    currPlayer = p;
     }
 }

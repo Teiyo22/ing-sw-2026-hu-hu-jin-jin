@@ -14,9 +14,9 @@ public class Game {
     transient private LobbyRunningState lobbyState = null;
 
     transient private PlayerConfig playerConfig;
-    transient private GameState gameState;
     transient private BuildingHandler buildingHandler;
 
+    private GameState gameState;
     private List<Player> players;
     private Board board;
 
@@ -25,17 +25,21 @@ public class Game {
         this.players = players;
         this.board = new Board(this);
         this.buildingHandler = new BuildingHandler();
+
         this.gameState = new GameStartState(this, buildingHandler);
         this.gameState.update();
     }
 
-    public Game(List<Player> players, Board board) {
+    public Game(List<Player> players, Board board, GameState gameState) {
         this.players = players;
         this.board = board;
     }
 
     public Game snapshot() {
-        return new Game(players.stream().map(Player::deepCopy).toList(), board.deepCopy());
+        return new Game(
+            players.stream().map(Player::deepCopy).toList(),
+            board.deepCopy(),
+            gameState.copy());
     }
 
     public PlayerConfig getPlayerConfig() {
@@ -114,9 +118,8 @@ public class Game {
     public void build() {
         playerConfig = PlayerConfig.getPlayerConfig(players.size());
         buildingHandler = new BuildingHandler();
-        gameState = GameState.getGameState(this);
-        board.fixReferencesTo(players);
+        gameState.fixReferences(this);
+        board.fixReferences(players);
         players.forEach(p -> p.registerBuildings(buildingHandler));
-
     }
 }

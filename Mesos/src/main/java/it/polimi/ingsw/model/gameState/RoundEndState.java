@@ -13,11 +13,11 @@ import it.polimi.ingsw.model.card.event.Sustenance;
 import java.util.List;
 
 public class RoundEndState extends GameState {
-    private final Row bottom;
-    private final Row top;
-    private final Deck deck;
+    transient private Row bottom;
+    transient private Row top;
+    transient private Deck deck;
 
-    private boolean eraChanged;
+    transient private boolean eraChanged;
 
     public RoundEndState(Game game, BuildingHandler buildingHandler) {
         super(game, buildingHandler);
@@ -132,5 +132,18 @@ public class RoundEndState extends GameState {
     @Override
     public ModelStateInfo getModelStateInfo() {
         return null;
+    }
+
+    @Override
+    public GameState copy() {
+        return new RoundEndState(game, buildingHandler);
+    }
+
+    @Override
+    public void fixReferences(Game game) {
+        super.fixReferences(game);
+        bottom = game.getBoard().getBottomRow();
+        top = game.getBoard().getTopRow();
+        deck = game.getBoard().getDeck();
     }
 }

@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model.board;
 
-import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.model.ConfigLoader;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -71,7 +69,7 @@ public class Board implements Serializable {
         return offerTrackCopy;
     }
 
-    public void fixReferencesTo(List<Player> players) {
+    public void fixReferences(List<Player> players) {
         for (Player player : players) {
             for (OrderSlot orderSlot : orderTile)
                 if (player.equals(orderSlot.getAssignedPlayer()))
