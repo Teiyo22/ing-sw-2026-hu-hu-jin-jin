@@ -17,7 +17,7 @@ public class CavePaintingBuildingTest {
 
     @BeforeEach
     void setUp(){
-        cavePaintingBuilding= new CavePaintingBuilding("CavePaintingBuilding",1,false, 0, 0, 1);
+        cavePaintingBuilding= new CavePaintingBuilding(1,false, 0, 0, 1);
         p= new Player("Pipino", Totem.BLUE);
         p.setTribe(new Tribe());
 
@@ -31,7 +31,7 @@ public class CavePaintingBuildingTest {
         handler.applyCavePaintingEffects();
         assertEquals(0,p.getFood(),"ho 0 artisti");
 
-        Artist artist = new Artist("Artist", 1, false);
+        Artist artist = new Artist(1, false);
 
         p.getTribe().addArtist(artist);
         handler.applyCavePaintingEffects();

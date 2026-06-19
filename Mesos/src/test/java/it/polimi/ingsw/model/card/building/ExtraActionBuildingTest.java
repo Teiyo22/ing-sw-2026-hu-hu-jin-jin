@@ -23,7 +23,7 @@ public class ExtraActionBuildingTest {
 
     @BeforeEach
     void setUp(){
-        extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding",1,false,2,3);
+        extraActionBuilding = new ExtraActionBuilding(1,false,2,3);
         players = new ArrayList<>();
 
         players.add(new Player("Marco", Totem.BLACK));

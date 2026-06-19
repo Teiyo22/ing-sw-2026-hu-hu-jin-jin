@@ -39,14 +39,14 @@ public class SustenanceDiscountBuildingTest {
 */
     @Test
     void testForCollector(){
-        building = new SustenanceDiscountBuilding("SustenanceDiscountBuilding", 1, false, 3, 3, 0, 0, 0,
+        building = new SustenanceDiscountBuilding(1, false, 3, 3, 0, 0, 0,
                 0, 1, 0);
         building.register(player, buildingHandler);
 
         for(int i = 0; i < 3; i++) {
-            Collector collector = new Collector("Collector", 1, false);
+            Collector collector = new Collector( 1, false);
             player.getTribe().addCollector(collector);
-            player.getTribe().addArtist(new Artist("Artist", 1, false));
+            player.getTribe().addArtist(new Artist(1, false));
             buildingHandler.applyCardPickEffects(collector, player);
         }
 
@@ -55,15 +55,15 @@ public class SustenanceDiscountBuildingTest {
 
     @Test
     void testDoForInventor(){
-        building = new SustenanceDiscountBuilding("SustenanceDiscountBuilding", 1, false, 3, 3, 1, 0, 0,
+        building = new SustenanceDiscountBuilding(1, false, 3, 3, 1, 0, 0,
                 0, 0, 0);
 
         building.register(player, buildingHandler);
 
         for(int i = 0; i < 10; i++) {
-            Inventor inventor = new Inventor("Inventor", 1, false, InventorType.BOATWRIGHT);
+            Inventor inventor = new Inventor(1, false, InventorType.BOATWRIGHT);
             player.getTribe().addInventor(inventor);
-            player.getTribe().addArtist(new Artist("Artist", 1, false));
+            player.getTribe().addArtist(new Artist(1, false));
 
             buildingHandler.applyCardPickEffects(inventor, player);
 
@@ -75,24 +75,24 @@ public class SustenanceDiscountBuildingTest {
 
     @Test
     void testForMultiple(){
-        SustenanceDiscountBuilding building1 = new SustenanceDiscountBuilding("SustenanceDiscountBuilding", 1, false, 3, 3, 1, 0, 0,
+        SustenanceDiscountBuilding building1 = new SustenanceDiscountBuilding(1, false, 3, 3, 1, 0, 0,
                 0, 0, 0);
-        SustenanceDiscountBuilding building2 = new SustenanceDiscountBuilding("SustenanceDiscountBuilding", 1, false, 3, 3, 0, 0, 0,
+        SustenanceDiscountBuilding building2 = new SustenanceDiscountBuilding(1, false, 3, 3, 0, 0, 0,
                 0, 1, 0);
 
         building1.register(player, buildingHandler);
         building2.register(player, buildingHandler);
 
         for(int i = 0; i < 3; i++){
-            Inventor inventor = new Inventor("Inventor", 1, false, InventorType.BOATWRIGHT);
+            Inventor inventor = new Inventor(1, false, InventorType.BOATWRIGHT);
             player.getTribe().addInventor(inventor);
-            player.getTribe().addArtist(new Artist("Artist", 1, false));
+            player.getTribe().addArtist(new Artist(1, false));
 
             buildingHandler.applyCardPickEffects(inventor, player);
         }
 
         for(int i = 0; i < 2; i++){
-            Collector collector = new Collector("Collector", 1, false);
+            Collector collector = new Collector(1, false);
             player.getTribe().addCollector(collector);
 
             buildingHandler.applyCardPickEffects(collector, player);

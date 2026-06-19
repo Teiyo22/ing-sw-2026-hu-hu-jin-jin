@@ -22,25 +22,25 @@ public class NewFullSetBuildingTest {
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
 
-        building = new NewFullSetBuilding("NewFullSetBuilding", 1, false, 0, 0);
+        building = new NewFullSetBuilding(1, false, 0, 0);
 
         building.register(player, buildingHandler);
     }
 
     @Test
     void testCheckAndAdd(){
-        player.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.BAKER));
-        player.getTribe().addArtist(new Artist("Artist", 1, false));
-        player.getTribe().addBuilder(new Builder("Builder", 1, false, 2, 1));
-        player.getTribe().addCollector(new Collector("Collector", 1, false));
+        player.getTribe().addInventor(new Inventor(1, false, InventorType.BAKER));
+        player.getTribe().addArtist(new Artist( 1, false));
+        player.getTribe().addBuilder(new Builder( 1, false, 2, 1));
+        player.getTribe().addCollector(new Collector( 1, false));
 
-        Hunter hunter = new Hunter("Hunter", 1, false, false);
+        Hunter hunter = new Hunter(1, false, false);
         player.getTribe().addHunter(hunter);
         hunter.onPick(player, buildingHandler);
 
         assertEquals(0, player.getFood());
 
-        Shaman shaman = new Shaman("Shaman", 1, false, 3);
+        Shaman shaman = new Shaman(1, false, 3);
         player.getTribe().addShaman(shaman);
         shaman.onPick(player, buildingHandler);
 

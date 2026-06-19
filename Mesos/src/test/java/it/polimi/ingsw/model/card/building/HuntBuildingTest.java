@@ -32,8 +32,8 @@ public class HuntBuildingTest {
         assertEquals(0,p.getPP());
 
 
-        Hunter hunter1 = new Hunter("Hunter", 1, false, false);
-        Hunter hunter2 = new Hunter("Hunter", 1, false, false);
+        Hunter hunter1 = new Hunter(1, false, false);
+        Hunter hunter2 = new Hunter(1, false, false);
 
 
         p.getTribe().addHunter(hunter1);

@@ -21,7 +21,7 @@ class OrderTileBuildingTest {
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
 
-        building = new OrderTileBuilding("OrderTileBuilding", 1, false, 3, 3);
+        building = new OrderTileBuilding(1, false, 3, 3);
         building.register(player, buildingHandler);
     }
 

@@ -20,7 +20,7 @@ public class InventorPairBuildingTest {
 
     @BeforeEach
     void setUp(){
-        inventorPairBuilding=new InventorPairBuilding("InventorPairBuilding", 1, false, 2, 2);
+        inventorPairBuilding=new InventorPairBuilding(1, false, 2, 2);
         buildingHandler= new BuildingHandler();
         p= new Player("Gigio", Totem.BLACK);
         p.setTribe(new Tribe());
@@ -31,7 +31,7 @@ public class InventorPairBuildingTest {
 
     @Test
     void doForInventorTest(){
-        Inventor inventor= new Inventor("Inventor", 1, false, InventorType.BAKER);
+        Inventor inventor= new Inventor(1, false, InventorType.BAKER);
 
         p.getTribe().addInventor(inventor);
         buildingHandler.applyCardPickEffects(inventor, p);
