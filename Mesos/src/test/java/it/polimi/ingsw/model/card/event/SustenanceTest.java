@@ -46,20 +46,20 @@ class SustenanceTest {
         player2.setTribe(new Tribe());
         player3.setTribe(new Tribe());
 
-        sustenanceEvent = new Sustenance("Sustenance", 1, false, PP_MULTIPLIER);
+        sustenanceEvent = new Sustenance(1, false, PP_MULTIPLIER);
     }
 
     @Test
     void testSustenanceEventEffect() {
         for (int i = 0; i < 10; i++) {
-            Collector collector = new Collector("Collector", 1, true);
-            Artist artist = new Artist("Artist", 1, false);
-            Hunter hunter = new Hunter("Hunter", 1, false, false);
+            Collector collector = new Collector(1, true);
+            Artist artist = new Artist(1, false);
+            Hunter hunter = new Hunter(1, false, false);
 
             player1.getTribe().addCollector(collector);
             player1.getTribe().addArtist(artist);
-            player1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.BOATWRIGHT));
-            player1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
+            player1.getTribe().addInventor(new Inventor(1, false, InventorType.BOATWRIGHT));
+            player1.getTribe().addInventor(new Inventor(1, false, InventorType.FISHERMAN));
 
             player2.getTribe().addHunter(hunter);
             player2.getTribe().addArtist(artist);
@@ -68,7 +68,7 @@ class SustenanceTest {
             player3.getTribe().addCollector(collector);
         }
 
-        player3.getTribe().addCollector(new Collector("Collector", 1, true));
+        player3.getTribe().addCollector(new Collector( 1, true));
 
         player1.setFood(0);
         player2.setFood(100);

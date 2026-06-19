@@ -45,12 +45,12 @@ class CavePaintingTest {
 
         game = new Game(PlayerConfig.TWO, players);
 
-        cavePainting = new CavePainting("CavePainting", 1, false, bonusPP, malusPP, numArtistsBonus, numArtistsMalus);
+        cavePainting = new CavePainting(1, false, bonusPP, malusPP, numArtistsBonus, numArtistsMalus);
     }
 
     @Test
     void testMalusApplied() {
-        Artist artist = new Artist("Artist", 1, false);
+        Artist artist = new Artist(1, false);
         player1.getTribe().addArtist(artist);
 
         int initialPP = player1.getPP();

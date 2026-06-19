@@ -42,12 +42,12 @@ class HuntTest {
 
         player1.setTribe(new Tribe());
         player2.setTribe(new Tribe());
-        hunt = new Hunt("Hunt", 1, false, 10);
+        hunt = new Hunt( 1, false, 10);
     }
 
     @Test
     void applyMultiplier(){
-        Hunter hunter = new Hunter("hunter", 1, false, false);
+        Hunter hunter = new Hunter(1, false, false);
 
         for(int i=0; i<3; i++){
             player1.getTribe().addHunter(hunter);

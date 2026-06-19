@@ -43,7 +43,7 @@ class ShamanicRitualTest {
         player2.setTribe(new Tribe());
         player3.setTribe(new Tribe());
 
-        shamanicRitualEvent = new ShamanicRitual("Shamanic Ritual", 1, false, bonusPP, malusPP);
+        shamanicRitualEvent = new ShamanicRitual(1, false, bonusPP, malusPP);
 
     }
 
