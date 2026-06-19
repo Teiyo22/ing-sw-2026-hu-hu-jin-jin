@@ -19,20 +19,27 @@ public class ExtraActionBuildingTest {
     private ExtraActionBuilding extraActionBuilding;
     private List<Player> players;
     private ExtraActionState extraActionState;
+    private BuildingHandler handler;
 
     @BeforeEach
     void setUp(){
         extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding",1,false,2,3);
         players = new ArrayList<>();
-        players.add(new Player("Ciccio", Totem.BLACK));
+
+        players.add(new Player("Marco", Totem.BLACK));
         players.add(new Player("Gigio", Totem.WHITE));
+
+        handler = new BuildingHandler();
+
     }
 
     @Test
     void applyEffectTest(){
         extraActionState= new ExtraActionState(new Game(PlayerConfig.TWO, players), new BuildingHandler());
-        extraActionBuilding.onPick(players.get(0), new BuildingHandler());
-        extraActionBuilding.applyEffect(extraActionState);
-        assertEquals(players.get(0),extraActionState.getCurrPlayer());
+
+        extraActionBuilding.register(players.get(0), handler);
+
+        handler.applyExtraActionEffects(extraActionState, 0);
+        assertEquals(players.get(0), extraActionState.getCurrPlayer());
     }
 }
