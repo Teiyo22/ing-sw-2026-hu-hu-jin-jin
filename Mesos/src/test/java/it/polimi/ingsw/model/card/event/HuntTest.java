@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.card.event;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.card.character.Hunter;
 import it.polimi.ingsw.model.player.Player;
 
 
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Tribe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,38 +17,46 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HuntTest {
-    AbstractEvent hunt;
     private int ppMultiplier = 10;
     Player player1;
     Player player2;
     List<Player> players;
+    Game game;
+
+    Hunt hunt;
+
 
     @BeforeEach
     void setUp() {
         player1 = new Player("Enrico", Totem.BLACK);
+
         player2 = new Player("Marco", Totem.YELLOW);
+
         players = new ArrayList<>();
-    }
-
-    @Test
-    void applyMultiplier(){
-
-        for(int i=0; i<3; i++){
-            player1.getTribe().addHunter();
-        }
-        for(int i=0; i<10; i++){
-            player2.getTribe().addHunter();
-        }
 
         players.add(player1);
         players.add(player2);
 
+        game = new Game(PlayerConfig.TWO, players);
 
-        for(Player player: players){  //apply effects for each player
-            int numHunters = player.getTribe().getHunterCount();
-            player.addFood(numHunters);
-            player.addPP(numHunters * ppMultiplier);
+
+        player1.setTribe(new Tribe());
+        player2.setTribe(new Tribe());
+        hunt = new Hunt("Hunt", 1, false, 10);
+    }
+
+    @Test
+    void applyMultiplier(){
+        Hunter hunter = new Hunter("hunter", 1, false, false);
+
+        for(int i=0; i<3; i++){
+            player1.getTribe().addHunter(hunter);
         }
+        for(int i=0; i<10; i++){
+            hunter.addToTribeOf(player2);
+        }
+
+        hunt.onEvent(game);
 
         assertEquals(3, player1.getFood());
         assertEquals(10, player2.getFood());

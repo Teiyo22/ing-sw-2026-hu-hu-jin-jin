@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model.card.event;
 
-import it.polimi.ingsw.model.card.character.Collector;
-import it.polimi.ingsw.model.card.character.Inventor;
-import it.polimi.ingsw.model.card.character.InventorType;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Tribe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +18,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SustenanceTest {
-    List<Player> players;
-    Player player1;
-    Player player2;
-    Player player3;
-    int ppMultiplier = -10;
+    private List<Player> players;
+    private Player player1;
+    private Player player2;
+    private Player player3;
+
+    private final int PP_MULTIPLIER = 10;
+
+    private Game game;
+    private Sustenance sustenanceEvent;
 
     @BeforeEach
     void setUp() {
@@ -27,46 +35,47 @@ class SustenanceTest {
         player1 = new Player("Enrico", Totem.BLACK);
         player2 = new Player("Marco", Totem.YELLOW);
         player3 = new Player("Franco", Totem.RED);
-    }
 
-    @Test
-    void testSustenanceEventEffect(){
         players.add(player1);
         players.add(player2);
         players.add(player3);
 
-        for(int i=0; i<10; i++) {
-            player1.getTribe().addCollector();
-            player1.getTribe().addArtist();
+        game = new Game(PlayerConfig.THREE, players);
+
+        player1.setTribe(new Tribe());
+        player2.setTribe(new Tribe());
+        player3.setTribe(new Tribe());
+
+        sustenanceEvent = new Sustenance("Sustenance", 1, false, PP_MULTIPLIER);
+    }
+
+    @Test
+    void testSustenanceEventEffect() {
+        for (int i = 0; i < 10; i++) {
+            Collector collector = new Collector("Collector", 1, true);
+            Artist artist = new Artist("Artist", 1, false);
+            Hunter hunter = new Hunter("Hunter", 1, false, false);
+
+            player1.getTribe().addCollector(collector);
+            player1.getTribe().addArtist(artist);
             player1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.BOATWRIGHT));
             player1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
 
-            player2.getTribe().addHunter();
-            player2.getTribe().addArtist();
+            player2.getTribe().addHunter(hunter);
+            player2.getTribe().addArtist(artist);
 
-            player3.getTribe().addHunter();
-            player3.getTribe().addCollector();
+            player3.getTribe().addHunter(hunter);
+            player3.getTribe().addCollector(collector);
         }
-        Collector collector = new Collector("Collector", 1, false);
-        collector.addToTribeOf(player3);
+
+        player3.getTribe().addCollector(new Collector("Collector", 1, true));
 
         player1.setFood(0);
         player2.setFood(100);
         player3.setFood(30);
 
-        for(Player player: players) {  //apply the effects for each player
-            //get the number of tribe members
-            int foodCost = Math.max(player.getTribe().getTribeSize() - player.getTribe().getSustenanceDiscount(), 0);
-            int unfedCount =  foodCost - player.getFood();
 
-            if (unfedCount > 0) {
-                player.setFood(0);  //spend all the food
-                player.addPP(unfedCount * ppMultiplier);
-
-            } else {
-                player.addFood(-foodCost);  //otherwise just remove the needed amount of food, 1 per member
-            }
-        }
+        sustenanceEvent.onEvent(game);
 
         assertEquals(-400, player1.getPP());
         assertEquals(0, player1.getFood());
@@ -75,8 +84,6 @@ class SustenanceTest {
         assertEquals(80, player2.getFood());
 
         assertEquals(0, player3.getPP());
-        assertEquals(12, player3.getFood());
-
+        assertEquals(9, player3.getFood());
     }
-
 }
