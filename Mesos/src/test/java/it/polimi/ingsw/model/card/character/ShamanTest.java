@@ -11,7 +11,7 @@ public class ShamanTest {
 
     @BeforeEach
     void setUp() {
-        shaman = new Shaman("Shaman", 1, false, 3);
+        shaman = new Shaman(1, false, 3);
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
     }

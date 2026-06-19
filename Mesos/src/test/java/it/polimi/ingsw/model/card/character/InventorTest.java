@@ -14,7 +14,7 @@ public class InventorTest {
     void setUp() {
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
-        inventor = new Inventor("Inventor", 1, false, InventorType.BAKER);
+        inventor = new Inventor(1, false, InventorType.BAKER);
     }
 
     @Test

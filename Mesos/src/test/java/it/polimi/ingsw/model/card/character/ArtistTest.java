@@ -13,7 +13,7 @@ public class ArtistTest {
 
     @BeforeEach
     void setUp() {
-        artist = new Artist("Artist", 1, false);
+        artist = new Artist(1, false);
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
     }

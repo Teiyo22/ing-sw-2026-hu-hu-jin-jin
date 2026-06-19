@@ -12,7 +12,7 @@ public class BuilderTest {
 
     @BeforeEach
     void setUp() {
-        builder = new Builder("Builder", 1, false, 2, 2);
+        builder = new Builder(1, false, 2, 2);
         player = new Player("X", Totem.BLACK);
         player.setTribe(new Tribe());
     }
