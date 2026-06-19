@@ -9,7 +9,6 @@ public class CardPickStateInfo extends ModelStateInfo {
 
     public CardPickStateInfo(Player player, int idx, int era) {
         super(player, idx, era);
-        type = StateInfoType.CARD_PICK;
     }
 
     @Override

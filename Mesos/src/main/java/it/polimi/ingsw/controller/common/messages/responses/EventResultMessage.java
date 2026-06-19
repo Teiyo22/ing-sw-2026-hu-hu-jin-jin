@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.client.EventResult;
 
@@ -14,7 +13,6 @@ public class EventResultMessage extends Response implements Serializable {
     private List<EventResult> results;
 
     public EventResultMessage(int lobbyID, String context, List<EventResult> results) {
-        this.type = MessageType.EVENT_RESULT;
         this.lobbyID = lobbyID;
         this.context = context;
         this.results = results;

@@ -1,14 +1,12 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 public class LoginResponse extends Response {
     private String username;
 
     public LoginResponse(String username){
-        this.type = MessageType.LOGIN;
         this.username = username;
     }
 

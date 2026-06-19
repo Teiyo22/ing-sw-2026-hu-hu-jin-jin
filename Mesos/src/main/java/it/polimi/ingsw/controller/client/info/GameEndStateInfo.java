@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.player.Player;
 public class GameEndStateInfo extends ModelStateInfo {
     public GameEndStateInfo(Player player, int idx, int era) {
         super(player, idx, era);
-        type = StateInfoType.GAME_END;
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 
 public abstract class ModelStateInfo implements Serializable {
-    protected StateInfoType type;
     protected Player currPlayer;
     protected int idx;
     protected int era;
@@ -19,8 +18,4 @@ public abstract class ModelStateInfo implements Serializable {
     }
 
     public abstract TurnState getTurnState (Player player);
-
-    public StateInfoType getType(){
-        return type;
-    }
 }

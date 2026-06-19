@@ -6,7 +6,6 @@ public class OfferPickPlayerAction extends PlayerAction {
     private int offerIndex;
 
     public OfferPickPlayerAction(int offerIndex) {
-        this.type = ActionType.OFFER_PICK;
         this.offerIndex = offerIndex;
     }
 

@@ -9,7 +9,6 @@ public class CardPickPlayerAction extends PlayerAction {
     private Set<Integer> bottomPicks;
 
     public CardPickPlayerAction(Set<Integer> topPicks, Set<Integer> bottomPicks) {
-        this.type = ActionType.CARD_PICK;
         this.topPicks = topPicks;
         this.bottomPicks = bottomPicks;
     }

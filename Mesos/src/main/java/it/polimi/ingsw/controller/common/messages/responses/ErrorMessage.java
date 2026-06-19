@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 import java.io.Serializable;
@@ -13,7 +12,6 @@ public class ErrorMessage extends Response implements Serializable {
     private List<String> errors;
 
     public ErrorMessage(String context, String... errors){
-        this.type = MessageType.ERROR;
         this.context = context;
         this.errors = Arrays.asList(errors);
     }

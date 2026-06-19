@@ -40,10 +40,10 @@ public class ClientHandler extends Thread {
                 .registerTypeAdapter(AbstractCharacter.class, new CardAdapterFactory<AbstractCharacter>().create(AbstractCharacter.class))
                 .registerTypeAdapter(AbstractBuilding.class, new CardAdapterFactory<AbstractBuilding>().create(AbstractBuilding.class))
                 .registerTypeAdapter(AbstractEvent.class, new CardAdapterFactory<AbstractEvent>().create(AbstractEvent.class))
-                .registerTypeAdapter(Request.class, new RequestDeserializer())
-                .registerTypeAdapter(Response.class, new ResponseSerializer())
-                .registerTypeAdapter(ModelStateInfo.class, new StateInfoSerializer())
-                .registerTypeAdapter(PlayerAction.class, new PlayerActionDeserializer())
+                .registerTypeAdapter(Request.class, new RequestAdapter())
+                .registerTypeAdapter(Response.class, new ResponseAdapter())
+                .registerTypeAdapter(ModelStateInfo.class, new StateInfoAdapter())
+                .registerTypeAdapter(PlayerAction.class, new PlayerActionAdapter())
                 .create();
     }
 
@@ -70,7 +70,7 @@ public class ClientHandler extends Thread {
     public void sendMessage(Response response) {
         lock.lock();
         try {
-            String message = gson.toJson(response);
+            String message = gson.toJson(response, Response.class);
             Logger.getInstance().print(LoggerLevel.DEBUG, "Sending message to client " + tcpClientInterface.getID() +": " + message);
             output.write(message);
             output.newLine();

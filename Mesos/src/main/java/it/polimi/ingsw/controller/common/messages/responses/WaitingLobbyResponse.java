@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 import java.util.List;
@@ -11,7 +10,6 @@ public class WaitingLobbyResponse extends Response {
     private List<Lobby> lobbies;
 
     public WaitingLobbyResponse(List<Lobby> lobbies){
-        this.type = MessageType.WAITING_LOBBY;
         this.lobbies = lobbies;
     }
 

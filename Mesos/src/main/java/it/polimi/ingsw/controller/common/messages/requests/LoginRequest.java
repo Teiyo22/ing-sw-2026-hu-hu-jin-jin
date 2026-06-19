@@ -1,15 +1,12 @@
 package it.polimi.ingsw.controller.common.messages.requests;
 
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.server.ServerController;
-import it.polimi.ingsw.controller.server.network.TCPClientInterface;
 
 public class LoginRequest extends Request {
     String username;
 
     public LoginRequest(String clientID, String username) {
-        this.type = MessageType.LOGIN;
         this.clientID = clientID;
         this.username = username;
     }

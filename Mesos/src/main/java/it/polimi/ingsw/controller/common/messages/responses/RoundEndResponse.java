@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
@@ -15,7 +14,6 @@ public class RoundEndResponse extends Response {
     private boolean eraChanged;
 
     public RoundEndResponse(int lobbyID, List<Player> players, Row updatedTopRow, boolean eraChanged) {
-        this.type = MessageType.ROUND_END;
         this.lobbyID = lobbyID;
         this.players = players;
         this.updatedTopRow = updatedTopRow;

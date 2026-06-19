@@ -2,14 +2,12 @@ package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.client.Lobby;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
 
 public class UpdateLobbyResponse extends Response {
     private Lobby lobby;
 
     public UpdateLobbyResponse(Lobby lobby) {
-        this.type = MessageType.UPDATE_LOBBY;
         this.lobby = lobby;
     }
 

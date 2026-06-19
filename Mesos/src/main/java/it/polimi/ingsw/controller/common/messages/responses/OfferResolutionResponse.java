@@ -1,9 +1,7 @@
 package it.polimi.ingsw.controller.common.messages.responses;
 
 import it.polimi.ingsw.controller.client.ClientController;
-import it.polimi.ingsw.controller.common.messages.MessageType;
 import it.polimi.ingsw.controller.common.messages.Response;
-import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.Set;
@@ -16,7 +14,6 @@ public class OfferResolutionResponse extends Response {
     private Set<Integer> bottomRowPicks;
 
     public OfferResolutionResponse(int lobbyID, Player player, Set<Integer> getTopRowPicks, Set<Integer> getBottomRowPicks ){
-        this.type = MessageType.OFFER_RESOLUTION;
         this.lobbyID = lobbyID;
         this.player = player;
         this.topRowPicks = getTopRowPicks;
