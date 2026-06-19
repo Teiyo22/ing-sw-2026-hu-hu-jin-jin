@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.board.OfferTile;
 import it.polimi.ingsw.model.card.Pickable;
 import it.polimi.ingsw.model.card.character.AbstractCharacter;
@@ -14,7 +15,9 @@ import it.polimi.ingsw.model.gameState.*;
 import it.polimi.ingsw.model.player.Totem;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GameTest {
     private Game g;
@@ -28,7 +31,9 @@ public class GameTest {
         players.add(new Player("Alice", Totem.WHITE));
         players.add(new Player("Bob", Totem.WHITE));
         players.add(new Player("Carlo", Totem.WHITE));
-        g = new Game(new LobbyController(0, 5), PlayerConfig.FIVE, players);
+        g = new Game(PlayerConfig.FIVE, players);
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 5)));
+
     }
 
     @Test
@@ -41,8 +46,8 @@ public class GameTest {
 
     @Test
     void pickTest() {
-        List<Integer> topPicks = new ArrayList<>();
-        List<Integer> bottomPicks = new ArrayList<>();
+        Set<Integer> topPicks = new HashSet<>();
+        Set<Integer> bottomPicks = new HashSet<>();
 
         int topRowInitialSize = g.getBoard().getTopRow().getCharacterCards().size();
         int bottomRowInitialSize = g.getBoard().getBottomRow().getCharacterCards().size();
@@ -61,7 +66,7 @@ public class GameTest {
     @Test
     void assignToTest() {
         OfferTile offerTile = g.getBoard().getOfferTrack()[0];
-        g.assignTo(players.get(0), offerTile);
+        g.assignTo(players.get(0), 0);
 
         assertEquals(players.get(0), offerTile.getAssignedPlayer());
     }

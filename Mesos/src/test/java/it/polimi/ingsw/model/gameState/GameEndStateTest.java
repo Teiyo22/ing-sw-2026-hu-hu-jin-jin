@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.building.InventorPairBuilding;
+import it.polimi.ingsw.model.card.character.Artist;
 import it.polimi.ingsw.model.card.character.Builder;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.card.character.InventorType;
@@ -30,6 +33,8 @@ class GameEndStateTest {
         players.add(new Player("Bob", Totem.WHITE));
 
         g = new Game(PlayerConfig.FOUR, players);
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+
         gameEndState = new GameEndState(g, new BuildingHandler());
         g.setGameState(gameEndState);
 
@@ -64,6 +69,8 @@ class GameEndStateTest {
         players.add(new Player("Bob", Totem.WHITE));
 
         g = new Game(PlayerConfig.FOUR, players);
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+
         gameEndState = new GameEndState(g, new BuildingHandler());
         g.setGameState(gameEndState);
 
@@ -85,8 +92,8 @@ class GameEndStateTest {
         p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FLETCHER));
         p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FLETCHER));
         p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        p2.getTribe().addArtist();
-        p2.getTribe().addArtist();
+        p2.getTribe().addArtist(new Artist("Artist", 1, false));
+        p2.getTribe().addArtist(new Artist("Artist", 1, false));
         p3.getTribe().addBuilding(new InventorPairBuilding("InventorPairBuilding", 1, false, 0, 2));
 
         g.getBoard().getTopRow().getEventCards().clear();

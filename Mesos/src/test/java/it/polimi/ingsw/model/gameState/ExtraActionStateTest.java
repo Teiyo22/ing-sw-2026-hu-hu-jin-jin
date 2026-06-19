@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.building.ExtraActionBuilding;
@@ -28,8 +30,12 @@ class ExtraActionStateTest {
         players.add(new Player("Bob", Totem.WHITE));
 
         g = new Game(PlayerConfig.FOUR, players);
+
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+
         buildingHandler = new BuildingHandler();
         extraActionState = new ExtraActionState(g, buildingHandler);
+
 
         ExtraActionBuilding extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding", 1, false, 0, 0);
         extraActionBuilding.onPick(players.get(0), buildingHandler);
@@ -41,8 +47,5 @@ class ExtraActionStateTest {
         assertEquals(ExtraActionState.class, g.getGameState().getClass());
         extraActionState.update();
         assertEquals(RoundStartState.class, g.getGameState().getClass());
-
-
-
     }
 }

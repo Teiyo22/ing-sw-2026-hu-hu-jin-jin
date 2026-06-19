@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.gameState;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.building.AbstractBuilding;
@@ -32,6 +34,9 @@ class RoundEndStateTest {
         players.add(new Player("Ciccio", Totem.BLACK));
         players.add(new Player("Gigio", Totem.WHITE));
         game = new Game(PlayerConfig.TWO, players);
+        game.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+
+
         roundEndState = new RoundEndState(game, new BuildingHandler());
         game.setGameState(roundEndState);
     }
