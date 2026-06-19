@@ -337,7 +337,6 @@ public class ServerController implements VirtualServer {
     //=============================================================================
 
     public boolean startServer(String ip, int tcpPort, int rmiPort) {
-        System.out.print("\033[H\033[2J");
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
             requestService.submit(networkServer);

@@ -18,6 +18,7 @@ public class ServerMain {
 
         Console console = System.console();
 
+        System.out.print("\033[H\033[2J");
         String[] input = console.readLine("Enter <ip> <tcpPort> <rmiPort>: ").trim().split(" ");
 
         if (input.length != 3) {
