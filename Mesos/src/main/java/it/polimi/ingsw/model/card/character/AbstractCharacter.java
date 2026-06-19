@@ -8,8 +8,8 @@ import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
 public abstract class AbstractCharacter extends AbstractCard implements Pickable, VisitableCard {
-    public AbstractCharacter(String type, int era, boolean isFinal) {
-        super(type, era, isFinal);
+    public AbstractCharacter(int era, boolean isFinal) {
+        super(era, isFinal);
     }
 
     public AbstractCharacter(AbstractCharacter source) {

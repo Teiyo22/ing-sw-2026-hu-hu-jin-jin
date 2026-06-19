@@ -12,8 +12,8 @@ public class ShamanicRitual extends AbstractEvent {
     @Expose private int bonusPP;
     @Expose private int malusPP;
 
-    public ShamanicRitual(String type, int era, boolean isFinal, int bonusPP, int malusPP) {
-        super(type, era, isFinal);
+    public ShamanicRitual(int era, boolean isFinal, int bonusPP, int malusPP) {
+        super(era, isFinal);
         this.bonusPP = bonusPP;
         this.malusPP = malusPP;
     }
@@ -78,12 +78,10 @@ public class ShamanicRitual extends AbstractEvent {
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-25s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-25s | %-25s ";
         String MALUSPP = String.format("MalusPP: %d", malusPP);
         String BONUSPP = String.format("BonusPP: %d", bonusPP);
 
-        return String.format(format, ID, type, ERA, MALUSPP, BONUSPP);
+        return super.toString() + String.format(format, ID, MALUSPP, BONUSPP);
     }
 }

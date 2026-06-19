@@ -14,9 +14,9 @@ public class CavePainting extends AbstractEvent{
     @Expose private int numArtistsBonus;
     @Expose private int numArtistsMalus;
 
-    public CavePainting(String type, int era, boolean isFinal, 
+    public CavePainting(int era, boolean isFinal, 
                         int bonusPP, int malusPP, int numArtistsBonus, int numArtistsMalus) {
-        super(type, era, isFinal);
+        super(era, isFinal);
         this.bonusPP = bonusPP;
         this.malusPP = malusPP;
         this.numArtistsBonus = numArtistsBonus;
@@ -67,14 +67,12 @@ public class CavePainting extends AbstractEvent{
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-25s | %-25s | %-25s | %-25s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = "| %-25s | %-25s | %-25s | %-25s ";
         String MALUSPP = String.format("MalusPP: %d", malusPP);
         String MALUSTHRESHOLD = String.format("Malus Threshold: %d", numArtistsMalus);
         String BONUSPP = String.format("BonusPP: %d", bonusPP);
         String BONUSTHRESHOLD = String.format("Bonus Threshold: %d", numArtistsBonus);
 
-        return String.format(format, ID, type, ERA, MALUSPP, MALUSTHRESHOLD, BONUSPP, BONUSTHRESHOLD);
+        return super.toString() + String.format(format, MALUSPP, MALUSTHRESHOLD, BONUSPP, BONUSTHRESHOLD);
     }
 }

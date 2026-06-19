@@ -8,13 +8,11 @@ import java.io.Serializable;
 public abstract class AbstractCard implements Serializable {
     protected int ID = -1;
 
-    @Expose protected String type;
     @Expose protected String resourceName;
     @Expose protected int era;
     @Expose protected boolean isFinal;
 
-    public AbstractCard(String type, int era, boolean isFinal) {
-        this.type = type;
+    public AbstractCard(int era, boolean isFinal) {
         this.era = era;
         this.isFinal = isFinal;
     }
@@ -27,7 +25,6 @@ public abstract class AbstractCard implements Serializable {
      * */
     public AbstractCard(AbstractCard source) {
         this.ID = source.ID;
-        this.type = source.type;
         this.resourceName = source.resourceName;
         this.era = source.era;
         this.isFinal = source.isFinal;
@@ -62,10 +59,6 @@ public abstract class AbstractCard implements Serializable {
         return ID;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -91,6 +84,6 @@ public abstract class AbstractCard implements Serializable {
         String id = String.format("ID: %d", ID);
         String ERA = String.format("Era: %d", era);
 
-        return String.format(format, id, type, ERA);
+        return String.format(format, id, this.getClass().getSimpleName(), ERA);
     }
 }

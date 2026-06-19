@@ -11,9 +11,9 @@ public class HuntBuilding extends AbstractBuilding implements VisitableBuilding 
     @Expose private int bonusPP;
     @Expose private int bonusFood;
 
-    public HuntBuilding(String type, int era, boolean isFinal,
+    public HuntBuilding(int era, boolean isFinal,
                         int cost, int pp, int bonusPP, int bonusFood) {
-        super(type, era, isFinal, cost, pp);
+        super(era, isFinal, cost, pp);
         this.bonusPP = bonusPP;
         this.bonusFood = bonusFood;
     }

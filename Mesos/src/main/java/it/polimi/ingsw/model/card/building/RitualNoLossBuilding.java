@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.player.Player;
 
 public class RitualNoLossBuilding extends AbstractBuilding {
-    public RitualNoLossBuilding(String type, int era, boolean isFinal, int cost, int pp) {
-        super(type, era, isFinal, cost, pp);
+    public RitualNoLossBuilding(int era, boolean isFinal, int cost, int pp) {
+        super(era, isFinal, cost, pp);
     }
 
     public RitualNoLossBuilding(RitualNoLossBuilding source) {

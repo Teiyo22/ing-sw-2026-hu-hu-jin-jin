@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Collector extends AbstractCharacter{
-    public Collector(String type, int era, boolean isFinal) {
-        super(type, era, isFinal);
+    public Collector(int era, boolean isFinal) {
+        super(era, isFinal);
     }
 
     public Collector(Collector source) {

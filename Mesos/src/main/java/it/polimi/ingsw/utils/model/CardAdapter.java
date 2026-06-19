@@ -16,13 +16,14 @@ public class CardAdapter<T extends AbstractCard> implements JsonSerializer<T>, J
 
     @Override
     public JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
-        return context.serialize(src, src.getClass());
+        JsonObject json = context.serialize(src, src.getClass()).getAsJsonObject();
+        json.addProperty("type", src.getClass().getSimpleName());
+        return json;
     }
 
     @Override
     public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject();
-
         String typeName = obj.get("type").getAsString();
 
         Class<? extends T> clazz = typeMap.get(typeName);

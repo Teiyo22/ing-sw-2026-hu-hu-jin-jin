@@ -11,8 +11,8 @@ import java.util.List;
 public class Hunt extends AbstractEvent {
     @Expose private int ppMultiplier;
 
-    public Hunt(String type, int era, boolean isFinal, int ppMultiplier) {
-        super(type, era, isFinal);
+    public Hunt(int era, boolean isFinal, int ppMultiplier) {
+        super(era, isFinal);
         this.ppMultiplier = ppMultiplier;
     }
 
@@ -49,11 +49,9 @@ public class Hunt extends AbstractEvent {
 
     @Override
     public String toString() {
-        String format = " %-10s | %-26s | %-15s | %-25s ";
-        String ID = String.format("ID: %d", getID());
-        String ERA = String.format("Era: %d", super.getEra());
+        String format = " %| %-25s ";
         String PPMULTIPLIER = String.format("PPMultiplier: %d", ppMultiplier);
 
-        return String.format(format, ID, type, ERA, PPMULTIPLIER);
+        return super.toString() + String.format(format, PPMULTIPLIER);
     }
 }
