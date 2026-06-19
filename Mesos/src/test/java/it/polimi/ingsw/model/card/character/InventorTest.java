@@ -13,6 +13,7 @@ public class InventorTest {
     @BeforeEach
     void setUp() {
         player = new Player("X", Totem.BLACK);
+        player.setTribe(new Tribe());
         inventor = new Inventor("Inventor", 1, false, InventorType.BAKER);
     }
 

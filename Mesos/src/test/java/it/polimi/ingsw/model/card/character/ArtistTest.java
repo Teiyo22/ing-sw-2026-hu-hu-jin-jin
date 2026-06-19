@@ -15,6 +15,7 @@ public class ArtistTest {
     void setUp() {
         artist = new Artist("Artist", 1, false);
         player = new Player("X", Totem.BLACK);
+        player.setTribe(new Tribe());
     }
 
     @Test

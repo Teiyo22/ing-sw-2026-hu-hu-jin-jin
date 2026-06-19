@@ -14,6 +14,7 @@ public class CollectorTest {
     void setUp() {
         collector = new Collector("Collector", 1, false);
         player = new Player("X", Totem.BLACK);
+        player.setTribe(new Tribe());
     }
 
     @Test
