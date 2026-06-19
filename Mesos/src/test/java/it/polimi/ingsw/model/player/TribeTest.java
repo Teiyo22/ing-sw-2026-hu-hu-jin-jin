@@ -42,7 +42,8 @@ public class TribeTest {
 
     @Test
     void addCollectorTest() {
-        t.addCollector();
+        Collector collector = new Collector("Collector", 1, false);
+        t.addCollector(collector);
         assertEquals(1, t.getCollectorCount());
     }
 
@@ -62,43 +63,46 @@ public class TribeTest {
 
     @Test
     void addArtistTest() {
-        t.addArtist();
+        t.addArtist(new Artist("Artist", 1, false));
         assertEquals(1, t.getArtistCount());
     }
 
     @Test
     void addHunterTest() {
-        t.addHunter(false);
+        t.addHunter(new Hunter("Hunter", 1, false, true));
         assertEquals(1, t.getHunterCount());
-        t.addHunter(true);
+        t.addHunter(new Hunter("Hunter", 1, false, true));
         assertEquals(2, t.getHunterCount());
     }
 
     @Test
     void getMinCharTest() {
-        t.addShaman(new Shaman("Shaman", 1, false, 2));
-        t.addShaman(new Shaman("Shaman", 1, false, 2));
-        t.addShaman(new Shaman("Shaman", 1, false, 2));
-        t.addShaman(new Shaman("Shaman", 1, false, 2));
-        t.addShaman(new Shaman("Shaman", 1, false, 2));
-        t.addHunter(false);
-        t.addHunter(false);
-        t.addHunter(false);
-        t.addHunter(true);
-        t.addArtist();
-        t.addArtist();
-        t.addArtist();
-        t.addBuilder(new Builder("Builder", 1, false, 5, 2));
-        t.addBuilder(new Builder("Builder", 1, false, 5, 2));
-        t.addCollector();
+        int i;
+
+        for(i = 0; i < 5; i++) {
+            t.addShaman(new Shaman("Shaman", 1, false, 2));
+        }
+
+        for(i = 0; i < 4; i++) {
+            t.addHunter(new Hunter("Hunter", 1, false, true));
+        }
+
+        for(i = 0; i < 3; i++) {
+            t.addArtist(new Artist("Artist", 1, false));
+        }
+
+        for(i = 0; i < 2; i++) {
+            t.addBuilder(new Builder("Builder", 1, false, 5, 2));
+        }
+
+        t.addCollector(new Collector("Collector", 1, false));
+
         assertEquals(0, t.getMinChar());
 
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
+        for(i = 0; i < 6; i++) {
+            t.addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
+        }
+
         assertEquals(1, t.getMinChar());
     }
 
