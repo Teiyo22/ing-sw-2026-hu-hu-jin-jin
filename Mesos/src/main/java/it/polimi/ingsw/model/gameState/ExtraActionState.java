@@ -113,7 +113,7 @@ public class ExtraActionState extends GameState {
     @Override
     public GameState copy() {
         ExtraActionState copy = new ExtraActionState(game, buildingHandler);
-        copy.currPlayer = currPlayer;
+        copy.currPlayer = currPlayer.shallowCopy();
         copy.solvedExtraActions = solvedExtraActions;
         return copy;
     }

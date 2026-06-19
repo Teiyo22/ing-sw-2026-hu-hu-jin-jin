@@ -33,6 +33,7 @@ public class Game {
     public Game(List<Player> players, Board board, GameState gameState) {
         this.players = players;
         this.board = board;
+        this.gameState = gameState;
     }
 
     public Game snapshot() {

@@ -74,7 +74,7 @@ public class RoundStartState extends GameState {
     @Override
     public GameState copy() {
         RoundStartState copy = new RoundStartState(game, buildingHandler);
-        copy.currPlayer = currPlayer;
+        copy.currPlayer = currPlayer.shallowCopy();
         copy.assignedSlots = assignedSlots;
         return copy;
     }
