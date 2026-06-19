@@ -138,6 +138,9 @@ public class Lobby implements Serializable {
         return null;
     }
 
+    /** Removes a player from its offer tile.
+     * @return boolean indicating whether the operation was successful,
+     *  needed to know if the player can be moved back to order tile.*/
     private boolean removeFromOfferTrack(Player player) {
         for (int i = 0; i < board.getOfferTrack().length; i++) {
             if (player.equals(board.getOfferTrack()[i].getAssignedPlayer())) {
@@ -148,6 +151,7 @@ public class Lobby implements Serializable {
         return false;
     }
 
+    /** Adds the player to the first available order slot.*/
     private void addToOrderTile(Player player) {
         for (int i = 0; i < board.getOrderTile().length; i++) {
             if (board.getOrderTile()[i].getAssignedPlayer() == null) {

@@ -79,6 +79,13 @@ public class ServerController implements VirtualServer {
     // Lobby management methods
     //=============================================================================
 
+    /** Creates a new lobby at the client's request.
+     * If the client is already in a lobby it shows an error
+     * Otherwise it creates a new lobby with ID and controller, adds the creator as first player and responds with the creation.
+     * The new lobby is also added to the list of waiting lobbies, the update is notified to every client who isn't playing yet.
+     * @param clientID The client who requested the creation.
+     * @param playerNum The lobby size.
+     * @param totem The chosen totem by the creator, who will be the first joined player.*/
     @Override
     public void createLobby(String clientID, int playerNum, Totem totem) {
         Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Create Lobby] with [%d Players] from [Client %s]", playerNum, clientID));
@@ -271,6 +278,7 @@ public class ServerController implements VirtualServer {
     // Client management methods
     //=============================================================================
 
+    /** Adds a new client as a consequence of a connection request. The client is also added to the connection monitor.*/
     @Override
     public void registerClient(ClientInterface client) {
         String id = UUID.randomUUID().toString();
@@ -324,6 +332,7 @@ public class ServerController implements VirtualServer {
 
     }
 
+    /** Adds a client to the list of clients that are currently playing and not selecting a lobby.*/
     public void addToPlayingClients(Collection<ClientInterface> clients) {
         for (ClientInterface client : clients)
             playingClients.put(client.getID(), client);
@@ -342,6 +351,11 @@ public class ServerController implements VirtualServer {
     // Network related methods
     //=============================================================================
 
+    /**Starts server both with TCP and RMI.
+     * For TCP: creates the NetworkServer and passes it to the requestService (runnable task).
+     * This creates a virtual pool for it, which listens for new connections and manages them.
+     * For RMI: creates the stub and binds it to registry.
+     * Finally, it starts both PersistenceUtil and ConnectionMonitor to manage clients' connections.*/
     public boolean startServer(String ip, int tcpPort, int rmiPort) {
         System.out.print("\033[H\033[2J");
         try {

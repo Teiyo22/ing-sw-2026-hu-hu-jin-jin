@@ -121,6 +121,8 @@ public class LobbyController {
         }
     }
 
+    /** Resolves the requested action by calling the action's execute method.
+     * Uses an ExecutorService to carry on the task on a separate thread. */
     public void playAction(ClientInterface client, PlayerAction action) {
         Player player = players.get(client);
         if (player == null) return;

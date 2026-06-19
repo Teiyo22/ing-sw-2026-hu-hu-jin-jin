@@ -167,6 +167,7 @@ public class TCPClientInterface extends ClientInterface {
         clientHandler.cleanup();
     }
 
+    /** Uses the ExecutorService responseService to send messages with a dedicated virtual thread.*/
     private void sendMessage(Response message) {
         if (isConnected)
             ServerController.getInstance().submitResponse(

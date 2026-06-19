@@ -18,6 +18,9 @@ public class NetworkServer extends Thread {
         serverSocket.bind(new InetSocketAddress(ip, tcpPort));
     }
 
+    /** Listens for new connections.
+     * Once a new client tries to connect, it accepts the request and creates the necessary communication objects.
+     * Uses the ExecutorService requestService to create a virtual thread that listens to this client's requests.*/
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted() && !serverSocket.isClosed()){

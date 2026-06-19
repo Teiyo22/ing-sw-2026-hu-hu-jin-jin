@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.player.Totem;
 
 import java.util.Set;
 
+/** Abstract class that defines what a virtual server should implement.
+ * It is used by the client to call server's methods. The actual implementations depend on the chosen communication protocol.
+ * */
 public abstract class ServerInterface implements VirtualServer {
     protected boolean isConnected = false;
     protected ClientController clientController;
