@@ -25,6 +25,7 @@ public abstract class TUIScreen implements Screen {
         this.eventResults = null;
     }
 
+    /** The screen gets cleared and renders each visible section.*/
     @Override
     public void render() {
         synchronized (clientController) {
@@ -51,6 +52,12 @@ public abstract class TUIScreen implements Screen {
             eventResults.add(eventResultMessage);
     }
 
+    /** Takes the first input as the requested action:
+     * the action registry contains all the actions that are available,
+     * the resolve method return the Action object associated with the input,
+     * null if the action is not in this screen's registry, or disabled.
+     * The remaining input is passed as arguments for the action, the parseAction interprets them and executes it
+     * by calling the controller's methods.*/
     public void handleInput(String input) {
         String[] args = input.split(" ");
 

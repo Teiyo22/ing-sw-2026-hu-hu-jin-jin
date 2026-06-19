@@ -29,6 +29,8 @@ public class TUIView implements View {
         currScreen = null;
     }
 
+    /** Starts the view: while the view is running it continuously renders the screen and reads user input.
+     * The input is handled by the screen because available actions vary depending on the current screen.*/
     @Override
     public void start() {
         initRenderExecutor();
@@ -75,6 +77,7 @@ public class TUIView implements View {
         update.set(true);
     }
 
+    /** The executor periodically checks if the view needs to be updated, in this case it renders the screen again.*/
     private void initRenderExecutor() {
         renderExecutor = Executors.newSingleThreadScheduledExecutor();
         renderExecutor.scheduleAtFixedRate(
