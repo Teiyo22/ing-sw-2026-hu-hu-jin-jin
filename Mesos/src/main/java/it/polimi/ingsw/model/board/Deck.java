@@ -17,6 +17,9 @@ public class Deck {
     private int[] ageBuildingsCount;
     private int currentEra;
 
+    /** Creates the deck based on the number of players.
+     * The DeckConfig contains the arrays of number of cards per era ordered by number of players,
+     * from 2 to 5; thus to obtain the correct one 2 is subtracted from number of players.*/
     public Deck(PlayerConfig playerConfig) {
         DeckConfig deckConfig = new ConfigLoader().loadDeckConfig(playerConfig.getDeckConfigFile());
         ageBuildingsCount = deckConfig.getBuildingsCountPerAge()[playerConfig.getNum() - 2];

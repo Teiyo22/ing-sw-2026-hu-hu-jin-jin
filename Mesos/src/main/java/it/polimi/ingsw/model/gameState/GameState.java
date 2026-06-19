@@ -43,6 +43,9 @@ public abstract class GameState {
         return gameState;
     }
 
+    /** If no one is on the orderTile yet, or if everyone already went back to the orderTile
+     * then it means that it's the start of a new round.
+     * @return boolean indicating whether it is the start of a new round*/
     private static boolean isRoundStart(OrderSlot[] orderTile) {
         if (orderTile[0].getAssignedPlayer() != null) {
             for (OrderSlot orderSlot : orderTile)
