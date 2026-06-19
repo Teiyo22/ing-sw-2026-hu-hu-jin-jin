@@ -88,13 +88,13 @@ class GameEndStateTest {
         p2.setFood(0);
         p3.setFood(0);
 
-        p0.getTribe().addBuilder(new Builder("Builder", 1, false, 2, 2));
-        p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FLETCHER));
-        p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FLETCHER));
-        p1.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.FISHERMAN));
-        p2.getTribe().addArtist(new Artist("Artist", 1, false));
-        p2.getTribe().addArtist(new Artist("Artist", 1, false));
-        p3.getTribe().addBuilding(new InventorPairBuilding("InventorPairBuilding", 1, false, 0, 2));
+        p0.getTribe().addBuilder(new Builder(1, false, 2, 2));
+        p1.getTribe().addInventor(new Inventor(1, false, InventorType.FLETCHER));
+        p1.getTribe().addInventor(new Inventor(1, false, InventorType.FLETCHER));
+        p1.getTribe().addInventor(new Inventor(1, false, InventorType.FISHERMAN));
+        p2.getTribe().addArtist(new Artist(1, false));
+        p2.getTribe().addArtist(new Artist(1, false));
+        p3.getTribe().addBuilding(new InventorPairBuilding(1, false, 0, 2));
 
         g.getBoard().getTopRow().getEventCards().clear();
         g.getBoard().getTopRow().getSustenanceEventCards().clear();

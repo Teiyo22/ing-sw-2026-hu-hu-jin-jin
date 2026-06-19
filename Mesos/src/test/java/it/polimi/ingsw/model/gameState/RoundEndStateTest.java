@@ -65,7 +65,7 @@ class RoundEndStateTest {
         Queue<AbstractCard> charEventCards = game.getBoard().getDeck().getCharEventCards();
         Queue<AbstractCard> extendedCharEventCards = new LinkedList<>();
 
-        extendedCharEventCards.add(new Collector("Collector", 2, false));
+        extendedCharEventCards.add(new Collector(2, false));
         extendedCharEventCards.addAll(charEventCards);
 
         game.getBoard().getDeck().setCharEventCards(extendedCharEventCards);

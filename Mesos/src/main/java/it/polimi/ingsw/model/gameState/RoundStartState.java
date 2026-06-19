@@ -87,4 +87,9 @@ public class RoundStartState extends GameState {
                 if (currPlayer.equals(p))
                     currPlayer = p;
     }
+
+
+    public Player getCurrPlayer(){
+        return currPlayer;
+    }
 }

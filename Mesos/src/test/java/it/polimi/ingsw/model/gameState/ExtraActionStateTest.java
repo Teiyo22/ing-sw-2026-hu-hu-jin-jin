@@ -37,7 +37,7 @@ class ExtraActionStateTest {
         extraActionState = new ExtraActionState(g, buildingHandler);
 
 
-        ExtraActionBuilding extraActionBuilding = new ExtraActionBuilding("ExtraActionBuilding", 1, false, 0, 0);
+        ExtraActionBuilding extraActionBuilding = new ExtraActionBuilding(1, false, 0, 0);
         extraActionBuilding.onPick(players.get(0), buildingHandler);
 
         g.setGameState(extraActionState);

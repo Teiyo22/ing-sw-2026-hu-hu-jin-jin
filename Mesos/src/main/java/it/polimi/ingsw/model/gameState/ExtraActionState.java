@@ -126,4 +126,9 @@ public class ExtraActionState extends GameState {
                 if (currPlayer.equals(p))
                     currPlayer = p;
     }
+
+
+    public Player getCurrPlayer(){
+        return currPlayer;
+    }
 }
