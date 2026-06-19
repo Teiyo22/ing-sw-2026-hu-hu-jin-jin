@@ -76,7 +76,7 @@ mysql -u root -p                             # connect to MySQL (it will prompt 
 
 #### MySQL:
 ```
-CREATE DATABASE leaderboard;
+CREATE DATABASE IF NOT EXISTS leaderboard;
 CREATE USER 'mesos'@'localhost' IDENTIFIED BY '';
 GRANT ALL PRIVILEGES ON leaderboard.* TO 'mesos'@'localhost';
 FLUSH PRIVILEGES;
