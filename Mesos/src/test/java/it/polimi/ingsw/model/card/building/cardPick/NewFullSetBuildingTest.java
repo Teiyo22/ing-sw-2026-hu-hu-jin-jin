@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
 
+import it.polimi.ingsw.model.player.Tribe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,24 +20,30 @@ public class NewFullSetBuildingTest {
     void setUp() {
         buildingHandler = new BuildingHandler();
         player = new Player("X", Totem.BLACK);
-        building = new NewFullSetBuilding("NewFullSetBuilding", 1, false, 3, 3, buildingHandler);
+        player.setTribe(new Tribe());
+
+        building = new NewFullSetBuilding("NewFullSetBuilding", 1, false, 0, 0);
+
+        building.register(player, buildingHandler);
     }
 
     @Test
     void testCheckAndAdd(){
         player.getTribe().addInventor(new Inventor("Inventor", 1, false, InventorType.BAKER));
-        player.getTribe().addArtist();
+        player.getTribe().addArtist(new Artist("Artist", 1, false));
         player.getTribe().addBuilder(new Builder("Builder", 1, false, 2, 1));
-        player.getTribe().addCollector();
+        player.getTribe().addCollector(new Collector("Collector", 1, false));
 
-        building.onPick(player, buildingHandler);
+        Hunter hunter = new Hunter("Hunter", 1, false, false);
+        player.getTribe().addHunter(hunter);
+        hunter.onPick(player, buildingHandler);
 
-        player.getTribe().addHunter();
-        building.checkAndAdd();
         assertEquals(0, player.getFood());
 
-        player.getTribe().addShaman(new Shaman("Shaman", 1, false, 3));
-        building.checkAndAdd();
+        Shaman shaman = new Shaman("Shaman", 1, false, 3);
+        player.getTribe().addShaman(shaman);
+        shaman.onPick(player, buildingHandler);
+
         assertEquals(5, player.getFood());
     }
 }
