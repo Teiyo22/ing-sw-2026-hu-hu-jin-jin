@@ -21,10 +21,10 @@ class CavePaintingTest {
     Player player1;
     Player player2;
     List<Player> players;
-    private int bonusPP = 5;
-    private int malusPP = 10;
+    private int bonusPP = 3;
+    private int malusPP = 2;
     private int numArtistsMalus = 2;
-    private int numArtistsBonus = 10;
+    private int numArtistsBonus = 3;
     Game game;
 
     CavePainting cavePainting;
@@ -54,14 +54,20 @@ class CavePaintingTest {
 
         cavePainting.onEvent(game);
 
-        assertEquals(malusPP, player1.getPP());
+        assertEquals(-malusPP, player1.getPP());
     }
 
 
     @Test
     void testBonusApplied(){
+        for(int i = 0; i < 10; i++){
+            Artist artist = new Artist(1, false);
+            player1.getTribe().addArtist(artist);
+        }
 
+        cavePainting.onEvent(game);
 
-        
+        assertEquals(bonusPP*player1.getTribe().getArtistCount(), player1.getPP());
+
     }
 }

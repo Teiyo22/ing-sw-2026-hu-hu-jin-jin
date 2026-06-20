@@ -17,8 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShamanicRitualTest {
-    private int bonusPP = 10;
-    private int malusPP = 100;
+    private int bonusPP = 15;
+    private int malusPP = 7;
     List<Player> players;
     Player player1;
     Player player2;
@@ -86,14 +86,13 @@ class ShamanicRitualTest {
     void NolossModeTest(){
         player1.getTribe().addStars(1);
         player2.getTribe().addStars(100);
+        player3.getTribe().addStars(20);
 
-        player1.addPP(100);
-
-        player1.getTribe().setNoLossRitualMod(true);
+        player1.enableNoLossRitualMod();
 
         shamanicRitualEvent.onEvent(game);
 
-        assertEquals(100, player1.getPP());
+        assertEquals(0, player1.getPP());
     }
 
 
@@ -101,8 +100,9 @@ class ShamanicRitualTest {
     void DoubleModeTest(){
         player1.getTribe().addStars(1);
         player2.getTribe().addStars(100);
+        player3.getTribe().addStars(20);
 
-        player2.getTribe().setDoubleRitualMod(true);
+        player2.enableDoubleRitualMod();
 
         shamanicRitualEvent.onEvent(game);
 

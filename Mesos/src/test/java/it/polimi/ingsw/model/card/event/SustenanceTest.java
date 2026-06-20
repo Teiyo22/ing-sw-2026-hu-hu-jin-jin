@@ -24,7 +24,7 @@ class SustenanceTest {
     private Player player2;
     private Player player3;
 
-    private final int PP_MULTIPLIER = 10;
+    private final int PP_MULTIPLIER = 3;
 
     private Game game;
     private Sustenance sustenanceEvent;
@@ -80,7 +80,7 @@ class SustenanceTest {
 
         sustenanceEvent.onEvent(game);
 
-        assertEquals(-400, player1.getPP());
+        assertEquals(-120, player1.getPP());
         assertEquals(0, player1.getFood());
 
         assertEquals(0, player2.getPP());
