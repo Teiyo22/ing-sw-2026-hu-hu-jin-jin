@@ -201,6 +201,9 @@ public class RoundActionState extends GameState {
                     currPlayer = p;
     }
 
+    public void setCurrPlayer(Player p){
+        currPlayer = p;
+    }
 
     public Player getCurrPlayer(){
         return currPlayer;
