@@ -117,4 +117,38 @@ class ExtraActionStateTest {
         String[] noErrors = extraActionState.validate(validAction);
         assertEquals(0, noErrors.length);
     }
+
+
+    @Test
+    void copyTest() {
+        Player currPlayer = players.get(0);
+        extraActionState.setCurrPlayer(currPlayer);
+
+        GameState copiedState = extraActionState.copy();
+
+        assertInstanceOf(ExtraActionState.class, copiedState);
+
+        ExtraActionState castedCopy = (ExtraActionState) copiedState;
+        assertEquals(extraActionState.getCurrPlayer(), castedCopy.getCurrPlayer());
+    }
+
+
+    @Test
+    void fixReferencesTest() {
+        String targetName = "Ciccio";
+
+        Player detachedPlayer = new Player(targetName, Totem.BLACK);
+        extraActionState.setCurrPlayer(detachedPlayer);
+
+        Player officialPlayer = g.getPlayers().stream()
+                .filter(p -> p.getName().equals(targetName))
+                .findFirst()
+                .orElseThrow();
+
+        assertNotSame(officialPlayer, extraActionState.getCurrPlayer());
+
+        extraActionState.fixReferences(g);
+
+        assertSame(officialPlayer, extraActionState.getCurrPlayer());
+    }
 }

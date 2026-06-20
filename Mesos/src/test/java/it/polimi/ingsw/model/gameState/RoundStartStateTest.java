@@ -97,4 +97,46 @@ class RoundStartStateTest {
         assertEquals(0, noErrors.length);
     }
 
+    @Test
+    void getModelStateInfoTest() {
+        Player currPlayer = players.get(0);
+        roundStartState.setCurrPlayer(currPlayer);
+        roundStartState.setAssignedSlots(1);
+
+        var info = roundStartState.getModelStateInfo();
+
+        assertInstanceOf(OfferPickStateInfo.class, info);
+    }
+
+    @Test
+    void copyTest() {
+        Player currPlayer = players.get(0);
+        roundStartState.setCurrPlayer(currPlayer);
+        roundStartState.setAssignedSlots(2);
+
+        GameState copiedState = roundStartState.copy();
+
+        assertInstanceOf(RoundStartState.class, copiedState);
+
+        RoundStartState castedCopy = (RoundStartState) copiedState;
+        assertEquals(roundStartState.getCurrPlayer(), castedCopy.getCurrPlayer());
+    }
+    @Test
+    void fixReferencesTest() {
+        String targetName = "Ciccio";
+
+        Player detachedPlayer = new Player(targetName, Totem.BLACK);
+        roundStartState.setCurrPlayer(detachedPlayer);
+
+        Player officialPlayer = game.getPlayers().stream()
+                .filter(p -> p.getName().equals(targetName))
+                .findFirst()
+                .orElseThrow();
+
+        assertNotSame(officialPlayer, roundStartState.getCurrPlayer());
+
+        roundStartState.fixReferences(game);
+
+        assertSame(officialPlayer, roundStartState.getCurrPlayer());
+    }
 }

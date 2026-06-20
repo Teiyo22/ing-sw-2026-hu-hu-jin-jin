@@ -114,4 +114,24 @@ class RoundActionStateTest {
 
         assertEquals(0, noErrors.length);
     }
+
+
+    @Test
+    void fixReferencesTest() {
+        String targetName = "Ciccio";
+
+        Player detachedPlayer = new Player(targetName, Totem.BLACK);
+        roundActionState.setCurrPlayer(detachedPlayer);
+
+        Player officialPlayer = game.getPlayers().stream()
+                .filter(p -> p.getName().equals(targetName))
+                .findFirst()
+                .orElseThrow();
+
+        assertNotSame(officialPlayer, roundActionState.getCurrPlayer());
+
+        roundActionState.fixReferences(game);
+
+        assertSame(officialPlayer, roundActionState.getCurrPlayer());
+    }
 }
