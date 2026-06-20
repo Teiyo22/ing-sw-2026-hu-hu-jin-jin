@@ -32,8 +32,6 @@ class CavePaintingTest {
     @BeforeEach
     void setUp(){
         players = new ArrayList<>();
-
-
         player1 = new Player("Enrico", Totem.BLACK);
         player1.setTribe(new Tribe());
         players.add(player1);
@@ -41,8 +39,6 @@ class CavePaintingTest {
         player2 = new Player("Marco", Totem.RED);
         player2.setTribe(new Tribe());
         players.add(player2);
-
-
 
         game = new Game(PlayerConfig.TWO, players);
 
@@ -56,17 +52,16 @@ class CavePaintingTest {
         Artist artist = new Artist(1, false);
         player1.getTribe().addArtist(artist);
 
-        int initialPP = player1.getPP();
-        int numArtists = player1.getTribe().getArtistCount();
-
         cavePainting.onEvent(game);
 
-        if(numArtists <= numArtistsMalus){
-            assertEquals(initialPP - malusPP, player1.getPP(), "Player should lose 10 PP from malus logic: -3");
-        } else if (numArtists >= numArtistsBonus){
-            assertEquals(initialPP + bonusPP, player1.getPP(), "Player should gain 2 PP from bonus logic +5");
-        } else{
-            assertEquals(initialPP, player1.getPP());
-        }
+        assertEquals(malusPP, player1.getPP());
+    }
+
+
+    @Test
+    void testBonusApplied(){
+
+
+        
     }
 }

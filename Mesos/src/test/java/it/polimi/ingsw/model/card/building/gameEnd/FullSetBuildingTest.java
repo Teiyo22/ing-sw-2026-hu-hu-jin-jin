@@ -36,6 +36,10 @@ public class FullSetBuildingTest {
         player.getTribe().addHunter(new Hunter(1 , false, false));
         player.getTribe().addShaman(new Shaman(1, false, 3));
         player.getTribe().addCollector(new Collector(1, false));
+
+        buildingHandler.applyGameEndEffects();
+        assertEquals(0, player.getPP());
+
         player.getTribe().addInventor(new Inventor(1, false, InventorType.BAKER));
 
         buildingHandler.applyGameEndEffects();

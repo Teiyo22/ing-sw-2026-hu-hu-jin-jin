@@ -2,10 +2,7 @@ package it.polimi.ingsw.model.card.building.cardPick;
 
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.building.SustenanceDiscountBuilding;
-import it.polimi.ingsw.model.card.character.Artist;
-import it.polimi.ingsw.model.card.character.Collector;
-import it.polimi.ingsw.model.card.character.Inventor;
-import it.polimi.ingsw.model.card.character.InventorType;
+import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.card.event.Sustenance;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Totem;
@@ -26,31 +23,22 @@ public class SustenanceDiscountBuildingTest {
         player = new Player ("X", Totem.BLACK);
         player.setTribe(new Tribe());
     }
-/*
-    @Test
-    void testOnPickEmptyTribe(){
-        building = new SustenanceDiscountBuilding("SustenanceDiscountBuilding", 1, false, 3, 3,0, 0, 0,
-                1, 0, 0);
-        building.onPick(player, buildingHandler);
 
-        buildingHandler.applyCardPickEffects();
-        assertEquals(0, player.getTribe().getSustenanceDiscount());
-    }
-*/
     @Test
-    void testForCollector(){
+    void testDoForCollector(){
         building = new SustenanceDiscountBuilding(1, false, 3, 3, 0, 0, 0,
                 0, 1, 0);
         building.register(player, buildingHandler);
 
         for(int i = 0; i < 3; i++) {
             Collector collector = new Collector( 1, false);
-            player.getTribe().addCollector(collector);
-            player.getTribe().addArtist(new Artist(1, false));
-            buildingHandler.applyCardPickEffects(collector, player);
+            Builder builder = new Builder(1, false, 0, 0);
+            collector.onPick(player, buildingHandler);
+            builder.onPick(player, buildingHandler);
         }
 
-        assertEquals(3, player.getTribe().getSustenanceDiscount());
+        //collector adds 3 Sustenance Discount
+        assertEquals(12, player.getTribe().getSustenanceDiscount());
     }
 
     @Test
@@ -62,10 +50,10 @@ public class SustenanceDiscountBuildingTest {
 
         for(int i = 0; i < 10; i++) {
             Inventor inventor = new Inventor(1, false, InventorType.BOATWRIGHT);
-            player.getTribe().addInventor(inventor);
-            player.getTribe().addArtist(new Artist(1, false));
+            Artist artist = new Artist(1, false);
 
-            buildingHandler.applyCardPickEffects(inventor, player);
+            inventor.onPick(player, buildingHandler);
+            artist.onPick(player, buildingHandler);
 
         }
 
@@ -78,27 +66,26 @@ public class SustenanceDiscountBuildingTest {
         SustenanceDiscountBuilding building1 = new SustenanceDiscountBuilding(1, false, 3, 3, 1, 0, 0,
                 0, 0, 0);
         SustenanceDiscountBuilding building2 = new SustenanceDiscountBuilding(1, false, 3, 3, 0, 0, 0,
-                0, 1, 0);
+                1, 0, 0);
 
         building1.register(player, buildingHandler);
         building2.register(player, buildingHandler);
 
         for(int i = 0; i < 3; i++){
             Inventor inventor = new Inventor(1, false, InventorType.BOATWRIGHT);
-            player.getTribe().addInventor(inventor);
-            player.getTribe().addArtist(new Artist(1, false));
+            Collector collector = new Collector(1, false);
+            inventor.onPick(player, buildingHandler);
+            collector.onPick(player, buildingHandler);
 
-            buildingHandler.applyCardPickEffects(inventor, player);
         }
 
         for(int i = 0; i < 2; i++){
-            Collector collector = new Collector(1, false);
-            player.getTribe().addCollector(collector);
+            Artist artist = new Artist(1, false);
+            artist.onPick(player, buildingHandler);
 
-            buildingHandler.applyCardPickEffects(collector, player);
         }
 
-        assertEquals(5, player.getTribe().getSustenanceDiscount());
+        assertEquals(14, player.getTribe().getSustenanceDiscount(), "Collectors add 9 (due to the base card bonus), Inventors 3, Artists 2");
     }
 
 }

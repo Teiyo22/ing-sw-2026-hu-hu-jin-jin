@@ -27,14 +27,17 @@ public class CavePaintingBuildingTest {
 
     @Test
     void applyEffectTest(){
-        cavePaintingBuilding.onPick(p,new BuildingHandler());
         handler.applyCavePaintingEffects();
-        assertEquals(0,p.getFood(),"ho 0 artisti");
+        assertEquals(0,p.getFood());
 
         Artist artist = new Artist(1, false);
 
         p.getTribe().addArtist(artist);
         handler.applyCavePaintingEffects();
-        assertEquals(1,p.getFood(),"ho 1 artista");  //????
+        assertEquals(1,p.getFood());
+
+        p.getTribe().addArtist(artist);
+        handler.applyCavePaintingEffects();
+        assertEquals(3, p.getFood());
     }
 }

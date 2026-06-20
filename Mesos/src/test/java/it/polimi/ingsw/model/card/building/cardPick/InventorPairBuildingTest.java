@@ -33,16 +33,13 @@ public class InventorPairBuildingTest {
     void doForInventorTest(){
         Inventor inventor= new Inventor(1, false, InventorType.BAKER);
 
-        p.getTribe().addInventor(inventor);
-        buildingHandler.applyCardPickEffects(inventor, p);
+        inventor.onPick(p, buildingHandler);
         assertEquals(0,p.getFood());
 
-        p.getTribe().addInventor(inventor);
-        buildingHandler.applyCardPickEffects(inventor, p);
+        inventor.onPick(p, buildingHandler);
         assertEquals(3,p.getFood());
 
-        p.getTribe().addInventor(inventor);
-        buildingHandler.applyCardPickEffects(inventor, p);
+        inventor.onPick(p, buildingHandler);
         assertEquals(3,p.getFood());
     }
 

@@ -31,21 +31,18 @@ class HuntTest {
     @BeforeEach
     void setUp() {
         player1 = new Player("Enrico", Totem.BLACK);
-
         player2 = new Player("Marco", Totem.YELLOW);
-
         players = new ArrayList<>();
 
         players.add(player1);
         players.add(player2);
 
         game = new Game(PlayerConfig.TWO, players);
-
         game.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
 
         player1.setTribe(new Tribe());
         player2.setTribe(new Tribe());
-        hunt = new Hunt( 1, false, 10);
+        hunt = new Hunt( 1, false, 2);
     }
 
     @Test
@@ -56,7 +53,7 @@ class HuntTest {
             player1.getTribe().addHunter(hunter);
         }
         for(int i=0; i<10; i++){
-            hunter.addToTribeOf(player2);
+            player2.getTribe().addHunter(hunter);
         }
 
         hunt.onEvent(game);
@@ -64,8 +61,8 @@ class HuntTest {
         assertEquals(3, player1.getFood());
         assertEquals(10, player2.getFood());
 
-        assertEquals(30, player1.getPP());
-        assertEquals(100, player2.getPP());
+        assertEquals(6, player1.getPP());
+        assertEquals(20, player2.getPP());
     }
 
 }

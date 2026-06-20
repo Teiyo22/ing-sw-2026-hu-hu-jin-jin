@@ -17,7 +17,7 @@ public class HuntBuildingTest {
 
     @BeforeEach
     void setUp(){
-        huntBuilding = new HuntBuilding(1, false, 3,2, 2, 4);
+        huntBuilding = new HuntBuilding(1, false, 3,2, 1, 1);
         p= new Player("Pallino", Totem.RED);
         p.setTribe(new Tribe());
 
@@ -38,12 +38,12 @@ public class HuntBuildingTest {
 
         p.getTribe().addHunter(hunter1);
         handler.applyHuntEffects();
-        assertEquals(2,p.getPP());
-        assertEquals(4,p.getFood());
+        assertEquals(1,p.getPP());
+        assertEquals(1,p.getFood());
 
         p.getTribe().addHunter(hunter2);
         handler.applyHuntEffects();
-        assertEquals(6,p.getPP());
-        assertEquals(12,p.getFood());
+        assertEquals(3,p.getPP());
+        assertEquals(3,p.getFood());
     }
 }

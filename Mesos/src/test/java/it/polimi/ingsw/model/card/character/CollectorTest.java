@@ -21,6 +21,7 @@ public class CollectorTest {
     void testAddToTribeOf() {
         collector.addToTribeOf(player);
         assertEquals(1, player.getTribe().getCollectorCount());
+        assertEquals(3, player.getTribe().getSustenanceDiscount());
     }
 
 }

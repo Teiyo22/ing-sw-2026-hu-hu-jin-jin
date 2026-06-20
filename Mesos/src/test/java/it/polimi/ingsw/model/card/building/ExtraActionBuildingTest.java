@@ -35,7 +35,7 @@ public class ExtraActionBuildingTest {
 
     @Test
     void applyEffectTest(){
-        extraActionState= new ExtraActionState(new Game(PlayerConfig.TWO, players), new BuildingHandler());
+        extraActionState= new ExtraActionState(new Game(PlayerConfig.TWO, players), handler);
 
         extraActionBuilding.register(players.get(0), handler);
 

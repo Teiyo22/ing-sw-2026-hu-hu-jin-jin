@@ -19,17 +19,20 @@ public class HunterTest {
     void testAddToTribeOf() {
         Hunter hunter = new Hunter(1, false, true);
         hunter.addToTribeOf(player);
+        assertEquals(0, player.getFood());
         assertEquals(1, player.getTribe().getHunterCount());
-        assertEquals(0, player.getFood()); //era 1
+
 
         Hunter hunter2 = new Hunter(2, false, true);
         hunter2.addToTribeOf(player);
+        assertEquals(1, player.getFood());
         assertEquals(2, player.getTribe().getHunterCount());
-        assertEquals(1, player.getFood()); //era 3
+
 
         Hunter hunter3 = new Hunter(3, false, false);
         hunter3.addToTribeOf(player);
-        assertEquals(3, player.getTribe().getHunterCount());
         assertEquals(1, player.getFood());
+        assertEquals(3, player.getTribe().getHunterCount());
+
     }
 }

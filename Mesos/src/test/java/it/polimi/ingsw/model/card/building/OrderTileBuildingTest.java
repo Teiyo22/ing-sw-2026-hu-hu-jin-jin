@@ -38,6 +38,6 @@ class OrderTileBuildingTest {
 
         o.setPlayer(player);
         buildingHandler.applyOrderTileEffects(o);
-        assertEquals(1, player.getFood()); //???
+        assertEquals(1, player.getFood());
     }
 }
