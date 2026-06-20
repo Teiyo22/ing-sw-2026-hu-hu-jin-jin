@@ -37,7 +37,7 @@ public class SustenanceDiscountBuildingTest {
             builder.onPick(player, buildingHandler);
         }
 
-        //collector adds 3 Sustenance Discount
+        //collector adds 3 Sustenance Discount points
         assertEquals(12, player.getTribe().getSustenanceDiscount());
     }
 

@@ -31,7 +31,7 @@ class ExtraActionStateTest {
 
         g = new Game(PlayerConfig.FOUR, players);
 
-        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 4)));
 
         buildingHandler = new BuildingHandler();
         extraActionState = new ExtraActionState(g, buildingHandler);

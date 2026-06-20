@@ -33,7 +33,7 @@ class GameEndStateTest {
         players.add(new Player("Bob", Totem.WHITE));
 
         g = new Game(PlayerConfig.FOUR, players);
-        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 4)));
 
         gameEndState = new GameEndState(g, new BuildingHandler());
         g.setGameState(gameEndState);
@@ -69,7 +69,7 @@ class GameEndStateTest {
         players.add(new Player("Bob", Totem.WHITE));
 
         g = new Game(PlayerConfig.FOUR, players);
-        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 2)));
+        g.setLobbyState(new LobbyRunningState(new LobbyController(1, 4)));
 
         gameEndState = new GameEndState(g, new BuildingHandler());
         g.setGameState(gameEndState);
