@@ -49,7 +49,7 @@ public class Hunt extends AbstractEvent {
 
     @Override
     public String toString() {
-        String format = " %| %-25s ";
+        String format = " | %-25s ";
         String PPMULTIPLIER = String.format("PPMultiplier: %d", ppMultiplier);
 
         return super.toString() + String.format(format, PPMULTIPLIER);
