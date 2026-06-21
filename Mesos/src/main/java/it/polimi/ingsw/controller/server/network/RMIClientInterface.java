@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public class RMIClientInterface extends ClientInterface implements Serializable {
-    VirtualClient wrappedClient;
+    private VirtualClient wrappedClient;
 
     public RMIClientInterface(VirtualClient wrappedClient) {
         this.wrappedClient = wrappedClient;
