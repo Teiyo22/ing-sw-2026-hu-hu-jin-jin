@@ -46,6 +46,8 @@ public class Sustenance extends AbstractEvent {
             .map(EventResult::new)
             .toList();
 
+        game.getBuildingHandler().applySustenanceDiscountEffects();
+
         for(Player player: players) {  //apply the effects for each player
             //get the number of tribe members
             int foodCost = Math.max(player.getTribe().getTribeSize() - player.getTribe().getSustenanceDiscount(), 0);

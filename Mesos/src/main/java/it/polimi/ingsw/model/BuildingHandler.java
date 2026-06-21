@@ -24,6 +24,7 @@ public class BuildingHandler implements BuildingVisitor {
     private final List<VisitableBuilding> orderTileBuildings;
     private final List<VisitableBuilding> extraActionBuildings;
     private final List<VisitableBuilding> gameEndBuildings;
+    private final List<VisitableBuilding> sustenanceDiscountBuildings;
 
     public BuildingHandler() {
         this.cardPickBuildings = new ArrayList<>();
@@ -32,6 +33,16 @@ public class BuildingHandler implements BuildingVisitor {
         this.orderTileBuildings = new ArrayList<>();
         this.extraActionBuildings = new ArrayList<>();
         this.gameEndBuildings = new ArrayList<>();
+        this.sustenanceDiscountBuildings = new ArrayList<>();
+    }
+
+    /**
+     * Registers a {@link VisitableBuilding} that triggers effects when a card is picked.
+     *
+     * @param building the building to add to the card pick buildings list
+     */
+    public void addSustenanceDiscountBuildings(VisitableBuilding building){
+        sustenanceDiscountBuildings.add(building);
     }
 
     /**
@@ -103,6 +114,18 @@ public class BuildingHandler implements BuildingVisitor {
         lastVisitableCard = null;
         lastPlayer = null;
     }
+
+    public void applySustenanceDiscountEffects() {
+        sustenanceDiscountBuildings.stream()
+                .map(b -> ((AbstractBuilding) b).getOwner().getTribe())
+                .distinct()
+                .forEach(tribe -> tribe.setSustenanceDiscount(tribe.getCollectorCount()*3));
+
+        for(VisitableBuilding building: sustenanceDiscountBuildings){
+            building.accept(this);
+        }
+    }
+
 
     /**
      * During the hunt event, apply the effects of the hunt buildings.
@@ -307,7 +330,13 @@ public class BuildingHandler implements BuildingVisitor {
      */
     @Override
     public void visit(SustenanceDiscountBuilding b) {
-        if(b.getOwner() == lastPlayer && lastVisitableCard != null)
-            lastVisitableCard.accept(b);
+        Player owner = b.getOwner();
+
+        owner.getTribe().addSustenanceDiscount(owner.getTribe().getInventorCount() * b.getInventorDiscount() +
+                owner.getTribe().getShamanCount() * b.getShamanDiscount() +
+                owner.getTribe().getHunterCount() * b.getHunterDiscount() +
+                owner.getTribe().getCollectorCount() * b.getCollectorDiscount() +
+                owner.getTribe().getArtistCount() * b.getArtistDiscount() +
+                owner.getTribe().getBuilderCount() * b.getBuilderDiscount());
     }
 }
