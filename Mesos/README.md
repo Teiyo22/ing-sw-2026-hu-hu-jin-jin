@@ -64,20 +64,45 @@ sudo mysql                                  # connect to MySQL
 #### Windows:
 
 ```
+## MySQL installation (without command line)
+# Download the installer mysql-installer-community-8.0.46.0.msi from https://dev.mysql.com/downloads/installer/
+# Select "Server Only" and proceed
+# Use default Network configurations (Port 3306)
+# Use recommend authentication method
+# Set root password 
+# Add new user "mesos" with no password and localhost as host
+# Proceed until the end
+
+# Open Environment Variables from Windows Search Bar
+# Press Environment Variables...
+# Edit Path in System Variables
+# Add "C:\Program Files\MySQL\MySQL Server 8.0\bin" (or the path where MySQL was installed)
+# Close all windows by pressing OK
+
+### MySQL installation (with command line)
 # Run powershell as administrator
-winget install Oracle.MySQL
+Invoke-WebRequest -Uri "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.33-winx64.zip" -OutFile "$env:TEMP\mysql.zip"
+Expand-Archive -Path "$env:TEMP\mysql.zip" -DestinationPath "C:\"
+Rename-Item -Path "C:\mysql-8.0.33-winx64" -NewName "C:\mysql"
 
-# Restart powershell to update the environment variables
-Get-Service -Name MySQL*                     # check if the service is running
-Restart-Service -Name MySQL*                 # restart the service
+cd C:\mysql
+mysqld --initialize --console   # MySQL initialization
+mysqld --install 		# Instal service
+net start mysql		        # Start service
 
+# Environment variable setup
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\mysql\bin", "Machine") 
+
+
+### Accessing MySQL
+# (re)start powershell as administrator
 mysql -u root -p                             # connect to MySQL (it will prompt for your root password. Default pw should be blank)
 ```
 
 #### MySQL:
 ```
 CREATE DATABASE IF NOT EXISTS leaderboard;
-CREATE USER 'mesos'@'localhost' IDENTIFIED BY '';
+CREATE USER IF NOT EXISTS 'mesos'@'localhost' IDENTIFIED BY '';
 GRANT ALL PRIVILEGES ON leaderboard.* TO 'mesos'@'localhost';
 FLUSH PRIVILEGES;
 exit
