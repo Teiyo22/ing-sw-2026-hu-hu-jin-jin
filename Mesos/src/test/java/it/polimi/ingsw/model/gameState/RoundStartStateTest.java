@@ -20,6 +20,7 @@ class RoundStartStateTest {
     private RoundStartState roundStartState;
     private List<Player> players;
     private Game game;
+    private BuildingHandler handler;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +28,8 @@ class RoundStartStateTest {
         players.add(new Player("Ciccio", Totem.BLACK));
         players.add(new Player("Gigio", Totem.WHITE));
         game = new Game(PlayerConfig.TWO, players);
-        roundStartState = new RoundStartState(game, new BuildingHandler());
+        handler = new BuildingHandler();
+        roundStartState = new RoundStartState(game, handler);
         game.setGameState(roundStartState);
     }
 

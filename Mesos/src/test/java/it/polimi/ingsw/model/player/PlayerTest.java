@@ -93,4 +93,24 @@ public class PlayerTest {
         assertEquals(-1 , p.compareTo(p3));
         assertEquals(1 , p2.compareTo(p));
     }
+
+    @Test
+    void updateTribe(){
+        p1.getTribe().addPP(100);
+        p1.getTribe().setFood(100);
+        p1.getTribe().addStars(100);
+        p1.getTribe().addSustenanceDiscount(100);
+        p1.getTribe().setDoubleRitualMod(true);
+        p1.getTribe().setNoLossRitualMod(false);
+
+        p2.updateTribe(p1.getTribe());
+
+        assertEquals(p2.getTribe().getPP(), p1.getTribe().getPP());
+        assertEquals(p2.getTribe().getFood(), p1.getTribe().getFood());
+        assertEquals(p2.getTribe().getStars(), p1.getTribe().getStars());
+        assertEquals(p2.getTribe().getSustenanceDiscount(), p1.getTribe().getSustenanceDiscount());
+        assertEquals(p2.getTribe().getDoubleRitualMod(), p1.getTribe().getDoubleRitualMod());
+        assertEquals(p2.getTribe().getNoLossRitualMod(), p1.getTribe().getNoLossRitualMod());
+    }
+
 }

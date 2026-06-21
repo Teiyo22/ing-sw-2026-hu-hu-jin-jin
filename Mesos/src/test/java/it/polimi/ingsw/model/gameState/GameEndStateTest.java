@@ -108,4 +108,5 @@ class GameEndStateTest {
         assertEquals(10, p2.getPP());
         assertEquals(2, p3.getPP());
     }
+
 }
