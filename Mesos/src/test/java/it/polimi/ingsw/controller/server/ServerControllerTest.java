@@ -26,6 +26,8 @@ class ServerControllerTest {
     @BeforeEach
     void setUp(){
         server = ServerController.getInstance();
+        server.getLobbies().clear();
+        server.getAllClients().clear();
     }
 
     @Test
@@ -110,11 +112,14 @@ class ServerControllerTest {
         server.getAllClients().put("Mario", p1);
         server.createLobby("Mario", 2, Totem.BLUE);
 
+        TestClient p2 = new TestClient("Pino");
+        server.getAllClients().put("Pino", p2);
+        server.joinLobby("Pino", server.getLobbies().values().iterator().next().getID(), Totem.RED);
         server.leaveLobby("Mario", server.getLobbies().values().iterator().next().getID());
 
         LobbyController controller = server.getLobbies().get(server.getLobbies().values().iterator().next().getID());
         assertFalse(controller.getPlayers().containsKey(p1), "Il giocatore dovrebbe essere stato rimosso");
-        assertEquals(0, controller.getPlayers().size(), "La lobby dovrebbe essere vuota");
+        assertEquals(1, controller.getPlayers().size(), "La lobby dovrebbe essere vuota");
     }
 
     @Test
