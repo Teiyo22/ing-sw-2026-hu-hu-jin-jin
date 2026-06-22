@@ -2,8 +2,10 @@
 skinparam style strictuml
 
 participant ClientController
+participant RMIClientService
 participant RMIServerInterface
 participant RMIClientInterface
+participant RMIServerService
 participant ServerController
 participant LobbyController
 participant LobbyRunningState
@@ -14,8 +16,12 @@ participant RoundActionState
 ClientController -> RMIServerInterface: requestAction(LobbyID, CardPickPlayerAction)
 
 activate RMIServerInterface
-RMIServerInterface -> ServerController : requestAction(LobbyID, CardPickPlayerAction)
+RMIServerInterface -> RMIServerService : requestAction(LobbyID, CardPickPlayerAction)
 deactivate RMIServerInterface
+
+activate RMIServerService
+RMIServerService -> ServerController : submitCPUTask()
+deactivate RMIServerService
 
 activate ServerController
 ServerController -> LobbyController: playAction(Client, CardPickPlayerAction)
@@ -48,14 +54,22 @@ deactivate Game
 LobbyRunningState -> RMIClientInterface: updateModel(Player, Picks)
 
 activate RMIClientInterface
-RMIClientInterface -> ClientController: updateModel(Player, Picks)
+RMIClientInterface -> RMIClientService: updateModel(Player, Picks)
 deactivate RMIClientInterface
+
+activate RMIClientService
+RMIClientService -> ClientController: updateModel(Player, Picks)
+deactivate RMIClientService
 
 LobbyRunningState -> RMIClientInterface: updateState(State)
 deactivate LobbyRunningState
 
 activate RMIClientInterface
-RMIClientInterface -> ClientController: updateState(State)
+RMIClientInterface -> RMIClientService: updateState(State)
 deactivate RMIClientInterface
+
+activate RMIClientService
+RMIClientService -> ClientController: updateState(State)
+deactivate RMIClientService
 
 @enduml

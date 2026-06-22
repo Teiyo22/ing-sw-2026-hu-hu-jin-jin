@@ -2,8 +2,10 @@
 skinparam style strictuml
 
 participant ClientController
+participant RMIClientService
 participant RMIServerInterface
 participant RMIClientInterface
+participant RMIServerService
 participant ServerController
 participant LeaderboardDB
 participant LobbyRunningState
@@ -22,16 +24,24 @@ LobbyRunningState -> RMIClientInterface:  updateModel(Players)
 deactivate LobbyRunningState
 
 activate RMIClientInterface
-RMIClientInterface -> ClientController: updateModel(Players)
+RMIClientInterface -> RMIClientService: updateModel(Players)
 deactivate RMIClientInterface
+
+activate RMIClientService
+RMIClientService -> ClientController: submitCPUTask()
+deactivate RMIClientService
 
 ...
 
 ClientController -> RMIServerInterface: getLeaderboard(LobbySize)
 
 activate RMIServerInterface
-RMIServerInterface -> ServerController: getLeaderboard(LobbySize)
+RMIServerInterface -> RMIServerService: getLeaderboard(LobbySize)
 deactivate RMIServerInterface
+
+activate RMIServerService
+RMIServerService -> ServerController: submitCPUTask()
+deactivate RMIServerService
 
 activate ServerController
 ServerController -> LeaderboardDB : isAvailable()
@@ -44,7 +54,12 @@ LeaderboardDB -> RMIClientInterface: showLeaderboard(LeaderboardResult)
 deactivate LeaderboardDB
 
 activate RMIClientInterface
-RMIClientInterface -> ClientController: showLeaderboard(LeaderboardResult)
+RMIClientInterface -> RMIClientService: showLeaderboard(LeaderboardResult)
 deactivate RMIClientInterface
+
+activate RMIClientService
+RMIClientService -> ClientController: submitCPUTask()
+deactivate RMIClientService
+
 
 @enduml
