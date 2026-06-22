@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Shaman extends AbstractCharacter{
@@ -31,11 +30,6 @@ public class Shaman extends AbstractCharacter{
 
     public int getStar(){
         return this.stars;
-    }
-
-    @Override
-    public void accept(CardVisitor v){
-        v.visit(this);
     }
 
     @Override

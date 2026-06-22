@@ -4,9 +4,7 @@ import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.BuildingVisitor;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.card.VisitableBuilding;
-import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
@@ -80,7 +78,7 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
     public void register(Player player, BuildingHandler buildingHandler) {
         super.register(player, buildingHandler);
         if (buildingHandler !=  null)
-            buildingHandler.addSustenanceDiscountBuildings(this);
+            buildingHandler.addSustenanceBuilding(this);
     }
 
     @Override

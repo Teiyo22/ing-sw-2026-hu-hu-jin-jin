@@ -46,7 +46,7 @@ public class Sustenance extends AbstractEvent {
             .map(EventResult::new)
             .toList();
 
-        game.getBuildingHandler().applySustenanceDiscountEffects();
+        game.getBuildingHandler().applySustenanceEffect();
 
         for(Player player: players) {  //apply the effects for each player
             //get the number of tribe members

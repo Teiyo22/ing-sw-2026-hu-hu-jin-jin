@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Hunter extends AbstractCharacter {
@@ -29,11 +28,6 @@ public class Hunter extends AbstractCharacter {
             p.addFood(p.getTribe().getHunterCount());
 
         p.getTribe().addHunter(this);
-    }
-
-    @Override
-    public void accept(CardVisitor v){
-        v.visit(this);
     }
 
     @Override

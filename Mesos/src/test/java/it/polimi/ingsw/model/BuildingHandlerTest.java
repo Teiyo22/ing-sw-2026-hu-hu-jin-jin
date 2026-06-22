@@ -1,17 +1,13 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.OrderSlot;
-import it.polimi.ingsw.model.card.VisitableBuilding;
-import it.polimi.ingsw.model.card.VisitableCard;
 import it.polimi.ingsw.model.card.building.*;
 import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.gameState.ExtraActionState;
-import it.polimi.ingsw.model.gameState.GameEndState;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -119,11 +115,11 @@ class BuildingHandlerTest {
 
         Inventor inventor = new Inventor(1, false, InventorType.BAKER);
         p1.getTribe().addInventor(inventor);
-        buildingHandler.applySustenanceDiscountEffects();
+        buildingHandler.applySustenanceEffect();
         assertEquals(2, p1.getTribe().getSustenanceDiscount());
 
         p1.getTribe().addInventor(inventor);
-        buildingHandler.applySustenanceDiscountEffects();
+        buildingHandler.applySustenanceEffect();
         assertEquals(4, p1.getTribe().getSustenanceDiscount());
 
     }
@@ -142,7 +138,7 @@ class BuildingHandlerTest {
             p1.getTribe().addBuilder(builder);
         }
 
-        buildingHandler.applySustenanceDiscountEffects();
+        buildingHandler.applySustenanceEffect();
 
         //collectors add 9 additional discount values
         assertEquals(12, p1.getTribe().getSustenanceDiscount());
@@ -172,7 +168,7 @@ class BuildingHandlerTest {
 
         }
         //adds 5
-        buildingHandler.applySustenanceDiscountEffects();
+        buildingHandler.applySustenanceEffect();
 
         //collectors add 9 disocunt points
         assertEquals(14, p1.getTribe().getSustenanceDiscount());
