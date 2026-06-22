@@ -29,6 +29,7 @@ package "model" as model {
       - lastExtraActionState: lastExtraActionState
 
       - cardPickBuildings : List<VisitableBuilding>
+      - sustenanceBuildings : List<VisitableBuilding>
       - huntBuildings : List<VisitableBuilding>
       - cavePaintingBuildings : List<VisitableBuilding>
       - orderTileBuildings : List<VisitableBuilding>
@@ -36,6 +37,7 @@ package "model" as model {
       - gameEndBuildings : List<VisitableBuilding>
 
       + addCardPickBuilding(building : VisitableBuilding) : void
+      + addSustenanceBuilding(building : VisitableBuilding) : void
       + addHuntBuilding(building : VisitableBuilding) : void
       + addCavePaintingBuilding(building : VisitableBuilding) : void
       + addOrderTileBuilding(building : VisitableBuilding) : void
@@ -43,13 +45,24 @@ package "model" as model {
       + addExtraActionBuilding(building : VisitableBuilding) : void
 
       + applyCardPickEffects(visitableCard : VisitableCard, player : Player) : void
+      + applySustenanceEffects() : void
       + applyHuntEffects() : void
       + applyCavePaintingEffects() : void
       + applyOrderTileEffects(slot : OrderSlot) : void
       + applyExtraActionEffects(state : ExtraActionState, buildingIndex : int) : void
       + applyGameEndEffects() : void
 
-      + visit(building : AbstractBuilding): void
+      + visit(building : BonusPPBuilding): void
+      + visit(building : BuilderDoublePPBuilding): void
+      + visit(building : CavePaintingBuilding): void
+      + visit(building : CharacterBonusBuilding): void
+      + visit(building : ExtraActionBuilding): void
+      + visit(building : FullSetBuilding): void
+      + visit(building : HuntBuilding): void
+      + visit(building : InventorPairBuilding): void
+      + visit(building : NewFullSetBuilding): void
+      + visit(building : OrderTileBuilding): void
+      + visit(building : SustenanceDiscountBuilding): void
     }
 
     package board {
@@ -146,15 +159,6 @@ package "model" as model {
             + visit(v: SustenanceDiscountBuilding);
           }
 
-          interface CardVisitor {
-            + visit(artist : Artist) : void
-            + visit(builder : Builder) : void
-            + visit(collector : Collector) : void
-            + visit(hunter : Hunter) : void
-            + visit(shaman : Shaman) : void
-            + visit(inventor : Inventor) : void
-          }
-
           interface Pickable {
             + onPick(player : Player, buildingHandler : BuildingHandler) : void
             + removeFrom(row : Row) : void
@@ -162,10 +166,6 @@ package "model" as model {
 
           interface VisitableBuilding {
             + accept(v : BuildingVisitor) : void
-          }
-
-          interface VisitableCard {
-            + accept(v: CardVisitor): void
           }
 
           package building {
@@ -326,7 +326,6 @@ package "model" as model {
 
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
 
             class Builder {
@@ -336,14 +335,12 @@ package "model" as model {
               + Builder(source : Builder)
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
 
             class Collector {
               + Collector(source : Collector)
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
 
             class Hunter {
@@ -352,7 +349,6 @@ package "model" as model {
               + Hunter(source : Hunter)
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
 
             class Inventor {
@@ -361,7 +357,6 @@ package "model" as model {
               + Inventor(source : Inventor)
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
 
             enum InventorType {
@@ -383,7 +378,6 @@ package "model" as model {
               + Shaman(source : Shaman)
               + clone() : AbstractCard
               + addToTribeOf(p : Player) : void
-              + accept(v : CardVisitor) : void
             }
           }
 
@@ -625,7 +619,6 @@ VisitableBuilding <|-- BuilderBonusBuilding
 VisitableBuilding <|-- CharacterBonusBuilding
 VisitableBuilding <|-- FullSetBuilding
 
-VisitableCard <|-- AbstractCharacter
 AbstractCharacter <|-- Artist
 AbstractCharacter <|-- Builder
 AbstractCharacter <|-- Collector
@@ -639,7 +632,6 @@ AbstractEvent <|-- ShamanicRitual
 AbstractEvent <|-- Sustenance
 
 BuildingVisitor <|-- BuildingHandler
-CardVisitor <|-- SustenanceDiscountBuilding
 Pickable <|-- AbstractBuilding
 Pickable <|-- AbstractCharacter
 
@@ -680,7 +672,7 @@ AbstractEvent --> Game
 ' -------------------------
 Game -[hidden]down-> Board
 Game -[hidden]down-> Tribe
-Game -[hidden]down-> GameState
+Game -[hidden]> GameState
 Game -[hidden]down-> BuildingHandler
 
 BuildingHandler -[hidden]down-> BuildingVisitor
@@ -689,7 +681,6 @@ GameState -[hidden]down-> GameStartState
 GameState -[hidden]down-> RoundEndState
 GameState -[hidden]down-> RoundActionState
 GameStartState -[hidden]-> RoundActionState
-RoundActionState -[hidden]-> RoundEndState
 RoundStartState -[hidden]-> ExtraActionState
 
 AbstractCharacter -[hidden]down-> Artist
@@ -720,7 +711,6 @@ BuilderBonusBuilding -[hidden]down-> CharacterBonusBuilding
 SustenanceDiscountBuilding -[hidden]down-> InventorPairBuilding
 
 
-VisitableCard -[hidden]down-> AbstractCharacter
 
 'AbstractCard -[hidden]down-> AbstractCharacter
 'AbstractCard -[hidden]down-> AbstractEvent
