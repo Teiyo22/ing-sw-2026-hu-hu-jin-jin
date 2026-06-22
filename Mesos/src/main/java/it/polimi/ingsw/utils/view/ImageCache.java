@@ -14,6 +14,8 @@ public class ImageCache {
         cache = new HashMap<>();
     }
 
+    /** Looks for the resource in the cache and returns the Image if it has already been loaded in the cache,
+     * otherwise it loads it before returning.*/
     public Image getImage(String resource) {
         if(cache.containsKey(resource)){
             return cache.get(resource);
