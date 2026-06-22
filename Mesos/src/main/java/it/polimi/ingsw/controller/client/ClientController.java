@@ -557,7 +557,7 @@ public class ClientController implements VirtualClient {
      *
      */
     public boolean connectTCP(String ip, int tcpPort) {
-        NetworkClient networkClient = new NetworkClient();
+        ServerHandler networkClient = new ServerHandler();
         this.server = new TCPServerInterface(this, networkClient);
 
         try {

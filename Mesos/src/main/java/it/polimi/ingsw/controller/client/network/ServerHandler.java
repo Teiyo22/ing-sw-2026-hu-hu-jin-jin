@@ -20,7 +20,7 @@ import it.polimi.ingsw.utils.model.CardAdapterFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class NetworkClient extends Thread {
+public class ServerHandler extends Thread {
     private TCPServerInterface server;
     private Socket socket;
     private BufferedReader input;
@@ -29,7 +29,7 @@ public class NetworkClient extends Thread {
 
     private final ReentrantLock lock = new ReentrantLock();
 
-    public NetworkClient() {
+    public ServerHandler() {
         this.server = null;
         this.socket = null;
         this.input = null;

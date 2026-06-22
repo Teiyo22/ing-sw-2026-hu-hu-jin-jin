@@ -9,10 +9,10 @@ import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Totem;
 
 public class TCPServerInterface extends ServerInterface {
-    private final NetworkClient serverHandler;
+    private final ServerHandler serverHandler;
     private final ClientController clientController;
 
-    public TCPServerInterface(ClientController clientController, NetworkClient serverHandler) {
+    public TCPServerInterface(ClientController clientController, ServerHandler serverHandler) {
         this.clientController = clientController;
         this.serverHandler = serverHandler;
         serverHandler.setServer(this);
