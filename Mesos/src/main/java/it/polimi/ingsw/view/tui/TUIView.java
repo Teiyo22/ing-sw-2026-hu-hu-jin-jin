@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.tui.screen.TUIScreen;
+import it.polimi.ingsw.view.tui.screen.*;
 
 import java.io.IOError;
 import java.util.Scanner;
@@ -71,7 +71,7 @@ public class TUIView implements View {
 
     @Override
     public void transitionTo(ScreenType type) {
-        currScreen = ScreenType.getTUIScreen(type, clientController);
+        currScreen = getTUIScreen(type, clientController);
         update.set(true);
     }
 
@@ -98,5 +98,14 @@ public class TUIView implements View {
         } catch (InterruptedException e) {
             renderExecutor.shutdownNow();
         }
+    }
+
+    public TUIScreen getTUIScreen(ScreenType type, ClientController clientController) {
+        return switch (type) {
+            case LOGIN -> new TUILoginScreen(clientController);
+            case LOBBY_SELECTION -> new TUILobbySelectionScreen(clientController);
+            case GAME_PLAY -> new TUIGamePlayScreen(clientController);
+            case GAME_END -> new TUIGameEndScreen(clientController);
+        };
     }
 }

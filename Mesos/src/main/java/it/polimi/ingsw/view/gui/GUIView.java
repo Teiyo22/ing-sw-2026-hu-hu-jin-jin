@@ -5,7 +5,7 @@ import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.view.ScreenType;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.screen.GUIScreen;
+import it.polimi.ingsw.view.gui.screen.*;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -57,7 +57,7 @@ public class GUIView extends JFrame implements View {
 
     @Override
     public void transitionTo(ScreenType type) {
-        currScreen = ScreenType.getGUIScreen(type, this, controller);
+        currScreen = getGUIScreen(type, this, controller);
         this.setContentPane(currScreen);
         this.revalidate();
         notifyChange();
@@ -72,5 +72,14 @@ public class GUIView extends JFrame implements View {
                 this.repaint();
             });
         }
+    }
+
+    public GUIScreen getGUIScreen(ScreenType type, GUIView frame, ClientController clientController) {
+        return switch(type) {
+            case LOGIN -> new GUILoginScreen(frame, clientController);
+            case LOBBY_SELECTION -> new GUILobbySelectionScreen(frame, clientController);
+            case GAME_PLAY -> new GUIGamePlayScreen(frame, clientController);
+            case GAME_END -> new GUIGameEndScreen(frame, clientController);
+        };
     }
 }
