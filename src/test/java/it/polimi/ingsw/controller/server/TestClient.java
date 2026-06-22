@@ -24,6 +24,11 @@ class TestClient extends ClientInterface {
     }
 
     @Override
+    public void disconnect() {
+
+    }
+
+    @Override
     public String getID() {
         return id;
     }
