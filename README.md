@@ -25,7 +25,7 @@
 
 To start a game server, launch the jar with this command: 
 
-`java -jar PSP4-1.0-SNAPSHOT-server.jar`
+`java -jar PSP4-1.0-SNAPSHOT-server.jar` (will require JAVA SDK 23+)
 
 After starting the jar, a prompt will appear in the console asking for the ip address and ports to use. 
 If no valid inputs are entered, the server will default to: 
@@ -40,7 +40,7 @@ At any point the server can be closed by typing `stop` in the console, The serve
 
 To start a game client, launch the jar with this command:
 
-`java -jar PSP4-1.0-SNAPSHOT-client.jar`
+`java -jar PSP4-1.0-SNAPSHOT-client.jar` (will require JAVA SDK 23+)
 
 After starting the jar, the user will be prompted to enter in sequence:
 - Network Protocol (TCP | RMI, default: TCP)
@@ -48,6 +48,10 @@ After starting the jar, the user will be prompted to enter in sequence:
 - UI (TUI | GUI, default: TUI)
 
 For each prompt, if the input is invalid, then the default value will be used.
+
+## Additional notes
+- For the best experience on Windows it is recommended to use cmd as powershell does not support ANSI codes for colored texts.
+- For the best experience with TUI, it is recommend to use terminal at fullscreen.
 
 ## How to setup the database
 #### Linux:
@@ -61,7 +65,7 @@ sudo service mysql restart                  # restart the service
 sudo mysql                                  # connect to MySQL
 ```
 
-#### Windows:
+#### Windows (without command line):
 
 ```
 ## MySQL installation (without command line)
@@ -79,24 +83,36 @@ sudo mysql                                  # connect to MySQL
 # Add "C:\Program Files\MySQL\MySQL Server 8.0\bin" (or the path where MySQL was installed)
 # Close all windows by pressing OK
 
-### MySQL installation (with command line)
+# start powershell as administrator
+mysql -u root -p                             # connect to MySQL (use the password for root)
+```
+
+#### Windows (with command line):
+
+
+``` 
 # Run powershell as administrator
-Invoke-WebRequest -Uri "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.33-winx64.zip" -OutFile "$env:TEMP\mysql.zip"
-Expand-Archive -Path "$env:TEMP\mysql.zip" -DestinationPath "C:\"
-Rename-Item -Path "C:\mysql-8.0.33-winx64" -NewName "C:\mysql"
 
-cd C:\mysql
-mysqld --initialize --console   # MySQL initialization
-mysqld --install 		# Instal service
-net start mysql		        # Start service
+winget install Oracle.MySQL
+cd 'C:\Program Files\MySQL\MySQL Server 8.4\bin\' # The path where MySQL was installed might be different
 
-# Environment variable setup
-[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\mysql\bin", "Machine") 
+# MySQL initialization and service installation
+.\mysqld --initialize                    # Write down the temporary password for root
+.\mysqld --install
 
+# Set Environment Variable
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Program Files\MySQL\MySQL Server 8.4\bin\", "Machine")
 
-### Accessing MySQL
-# (re)start powershell as administrator
-mysql -u root -p                             # connect to MySQL (it will prompt for your root password. Default pw should be blank)
+# Start service
+net start MySQL                          
+
+# restart powershell as administrator
+mysql -u root -p                             # connect to MySQL (use the temporary password)
+
+# Installation with command line will require setting a new password for root first
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'YourNewPassword!';
+FLUSH PRIVILEGES;
+
 ```
 
 #### MySQL:
