@@ -536,9 +536,9 @@ public class ClientController implements VirtualClient {
             VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
 
             RMIClientService rmiClientService = new RMIClientService(this);
-            server = new RMIServerInterface(rmiClientService, serverStub);
-
             VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(rmiClientService, 0);
+
+            server = new RMIServerInterface(rmiClientService, serverStub);
             server.registerClient(new RMIClientInterface(stub));
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
