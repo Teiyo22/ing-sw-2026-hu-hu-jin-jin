@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model.card.event;
 
+import it.polimi.ingsw.controller.server.lobby.LobbyController;
+import it.polimi.ingsw.controller.server.lobby.states.LobbyRunningState;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerConfig;
 import it.polimi.ingsw.model.player.Totem;
+import it.polimi.ingsw.model.player.Tribe;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +17,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShamanicRitualTest {
-    private int bonusPP = 10;
-    private int malusPP = 100;
+    private int bonusPP = 15;
+    private int malusPP = 7;
     List<Player> players;
     Player player1;
     Player player2;
     Player player3;
+    Game game;
+    ShamanicRitual shamanicRitualEvent;
 
     @BeforeEach
     void setUp() {
@@ -27,107 +34,78 @@ class ShamanicRitualTest {
         player2 = new Player("Marco", Totem.YELLOW);
         player3 = new Player("Franco", Totem.RED);
 
-    }
-
-    @Test
-    void testMinMaxBonusAllEqual() {
 
         players.add(player1);
         players.add(player2);
         players.add(player3);
 
+        game = new Game(PlayerConfig.THREE, players);
+
+        game.setLobbyState(new LobbyRunningState(new LobbyController(1, 3)));
+
+        player1.setTribe(new Tribe());
+        player2.setTribe(new Tribe());
+        player3.setTribe(new Tribe());
+
+        shamanicRitualEvent = new ShamanicRitual(1, false, bonusPP, malusPP);
+
+    }
+
+    @Test
+    void testMinMaxBonusAllEqual() {
         player1.getTribe().addStars(10);
         player2.getTribe().addStars(10);
         player3.getTribe().addStars(10);
 
 
-        int minStars = players.getFirst().getTribe().getStars();
-        int maxStars = minStars;  //number of stars owned by the player(s) who has the most
-
-        for (int i = 1; i < players.size(); i++) {
-            int stars = players.get(i).getTribe().getStars();
-
-            if (stars < minStars)
-                minStars = stars;
-            else if (stars > maxStars)
-                maxStars = stars;
-        }
-
-        //apply effects to players, depending on their number of stars
-        for (Player player : players) {
-            int playerStars = player.getTribe().getStars();
-
-            if (playerStars == minStars) {
-                if (!player.getNoLossRitualMod()) {
-                    player.addPP(-malusPP);  //players with the least stars lose pp
-
-                }
-            }
-
-            if (playerStars == maxStars) {  //players with the most stars gain pp
-                if (player.getDoubleRitualMod()) {
-                    player.addPP(bonusPP * 2);
-                } else {
-                    player.addPP(bonusPP);
-                }
-            }
-        }
+        shamanicRitualEvent.onEvent(game);
 
 
-            assertEquals( bonusPP-malusPP, players.get(0).getPP(), "Il player 1 non ottiene nulla");
-            assertEquals( bonusPP-malusPP, players.get(1).getPP(), "player 2 ha il numero di stelle massimo, prende il bonus");
-            assertEquals( bonusPP-malusPP, players.get(2).getPP(), "Player should gain 10 food");
+        assertEquals( bonusPP-malusPP, players.get(0).getPP());
+        assertEquals( bonusPP-malusPP, players.get(1).getPP());
+        assertEquals( bonusPP-malusPP, players.get(2).getPP());
     }
 
 
     @Test
     void testMinMaxBonus() {
-
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-
         player1.getTribe().addStars(10);
         player2.getTribe().addStars(100);
         player3.getTribe().addStars(1);
 
 
-        int minStars = players.getFirst().getTribe().getStars();
-        int maxStars = minStars;  //number of stars owned by the player(s) who has the most
+        shamanicRitualEvent.onEvent(game);
 
-        for (int i = 1; i < players.size(); i++) {
-            int stars = players.get(i).getTribe().getStars();
-
-            if (stars < minStars)
-                minStars = stars;
-            else if (stars > maxStars)
-                maxStars = stars;
-        }
-
-        //apply effects to players, depending on their number of stars
-        for (Player player : players) {
-            int playerStars = player.getTribe().getStars();
-
-            if (playerStars == minStars) {
-                if (!player.getNoLossRitualMod()) {
-                    player.addPP(-malusPP);  //players with the least stars lose pp
-
-                }
-            }
-
-            if (playerStars == maxStars) {  //players with the most stars gain pp
-                if (player.getDoubleRitualMod()) {
-                    player.addPP(bonusPP * 2);
-                } else {
-                    player.addPP(bonusPP);
-                }
-            }
-        }
-
-
-        assertEquals( 0, players.get(0).getPP(), "Il player 1 non ottiene nulla");
-        assertEquals( bonusPP, players.get(1).getPP(), "player 2 ha il numero di stelle massimo, prende il bonus");
-        assertEquals( -malusPP, players.get(2).getPP(), "Player should gain 10 food");
+        assertEquals( 0, player1.getPP(), "Il player 1 non ottiene nulla");
+        assertEquals( bonusPP, player2.getPP(), "player 2 ha il numero di stelle massimo, prende il bonus");
+        assertEquals( -malusPP, player3.getPP(), "malus");
     }
 
+
+    @Test
+    void NolossModeTest(){
+        player1.getTribe().addStars(1);
+        player2.getTribe().addStars(100);
+        player3.getTribe().addStars(20);
+
+        player1.enableNoLossRitualMod();
+
+        shamanicRitualEvent.onEvent(game);
+
+        assertEquals(0, player1.getPP());
+    }
+
+
+    @Test
+    void DoubleModeTest(){
+        player1.getTribe().addStars(1);
+        player2.getTribe().addStars(100);
+        player3.getTribe().addStars(20);
+
+        player2.enableDoubleRitualMod();
+
+        shamanicRitualEvent.onEvent(game);
+
+        assertEquals(2*bonusPP, player2.getPP());
+    }
 }

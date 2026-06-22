@@ -3,11 +3,10 @@ package it.polimi.ingsw.model.card.character;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.Pickable;
-import it.polimi.ingsw.model.card.VisitableCard;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.player.Player;
 
-public abstract class AbstractCharacter extends AbstractCard implements Pickable, VisitableCard {
+public abstract class AbstractCharacter extends AbstractCard implements Pickable{
     public AbstractCharacter(int era, boolean isFinal) {
         super(era, isFinal);
     }

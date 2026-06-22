@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.card.character;
 
 import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Builder extends AbstractCharacter{
@@ -38,12 +37,6 @@ public class Builder extends AbstractCharacter{
     public int getBuildingDiscount() {
         return buildingDiscount;
     }
-
-    @Override
-    public void accept(CardVisitor v){
-        v.visit(this);
-    }
-
 
     @Override
     public String toString() {

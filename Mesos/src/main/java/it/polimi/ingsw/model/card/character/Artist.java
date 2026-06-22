@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.card.character;
 
 import it.polimi.ingsw.model.card.AbstractCard;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.player.Player;
 
 public class Artist extends AbstractCharacter {
@@ -22,10 +21,4 @@ public class Artist extends AbstractCharacter {
     public void addToTribeOf(Player p) {
         p.getTribe().addArtist(this);
     }
-
-    @Override
-    public void accept(CardVisitor v){
-        v.visit(this);
-    }
-
 }

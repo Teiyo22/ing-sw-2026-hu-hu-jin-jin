@@ -12,14 +12,16 @@ public class CollectorTest {
 
     @BeforeEach
     void setUp() {
-        collector = new Collector("Collector", 1, false);
+        collector = new Collector(1, false);
         player = new Player("X", Totem.BLACK);
+        player.setTribe(new Tribe());
     }
 
     @Test
     void testAddToTribeOf() {
         collector.addToTribeOf(player);
         assertEquals(1, player.getTribe().getCollectorCount());
+        assertEquals(3, player.getTribe().getSustenanceDiscount());
     }
 
 }

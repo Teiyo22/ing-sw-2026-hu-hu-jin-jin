@@ -4,15 +4,13 @@ import com.google.gson.annotations.Expose;
 import it.polimi.ingsw.model.BuildingHandler;
 import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.BuildingVisitor;
-import it.polimi.ingsw.model.card.CardVisitor;
 import it.polimi.ingsw.model.card.VisitableBuilding;
-import it.polimi.ingsw.model.card.character.*;
 import it.polimi.ingsw.model.player.Player;
 
 import java.util.List;
 import java.util.Map;
 
-public class SustenanceDiscountBuilding extends AbstractBuilding implements VisitableBuilding, CardVisitor {
+public class SustenanceDiscountBuilding extends AbstractBuilding implements VisitableBuilding {
     @Expose int inventorDiscount;
     @Expose int shamanDiscount;
     @Expose int hunterDiscount;
@@ -47,49 +45,40 @@ public class SustenanceDiscountBuilding extends AbstractBuilding implements Visi
         return new SustenanceDiscountBuilding(this);
     }
 
-    /**
-     * If the picked card is an inventor card, the discount associated to the inventor is added to the tribe.
-     * */
-    @Override
-    public void visit(Inventor i) {
-        owner.getTribe().addSustenanceDiscount(inventorDiscount);
-    }
-
-    @Override
-    public void visit(Shaman s) {
-        owner.getTribe().addSustenanceDiscount(shamanDiscount);
-    }
-
-    @Override
-    public void visit(Hunter h) {
-        owner.getTribe().addSustenanceDiscount(hunterDiscount);
-    }
-
-    @Override
-    public void visit(Collector c) {
-        owner.getTribe().addSustenanceDiscount(collectorDiscount);
-    }
-
-    @Override
-    public void visit(Artist a) {
-        owner.getTribe().addSustenanceDiscount(artistDiscount);
-    }
-
-    @Override
-    public void visit(Builder b) {
-        owner.getTribe().addSustenanceDiscount(builderDiscount);
-    }
-
     @Override
     public void accept(BuildingVisitor v) {
         v.visit(this);
+    }
+
+    public int getInventorDiscount(){
+        return inventorDiscount;
+    }
+
+    public int getShamanDiscount(){
+        return shamanDiscount;
+    }
+
+    public int getBuilderDiscount(){
+        return builderDiscount;
+    }
+
+    public int getArtistDiscount(){
+        return artistDiscount;
+    }
+
+    public int getHunterDiscount(){
+        return hunterDiscount;
+    }
+
+    public int getCollectorDiscount(){
+        return collectorDiscount;
     }
 
     @Override
     public void register(Player player, BuildingHandler buildingHandler) {
         super.register(player, buildingHandler);
         if (buildingHandler !=  null)
-            buildingHandler.addCardPickBuilding(this);
+            buildingHandler.addSustenanceBuilding(this);
     }
 
     @Override

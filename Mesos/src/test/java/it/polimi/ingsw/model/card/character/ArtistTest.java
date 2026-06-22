@@ -13,8 +13,9 @@ public class ArtistTest {
 
     @BeforeEach
     void setUp() {
-        artist = new Artist("Artist", 1, false);
+        artist = new Artist(1, false);
         player = new Player("X", Totem.BLACK);
+        player.setTribe(new Tribe());
     }
 
     @Test
@@ -27,7 +28,6 @@ public class ArtistTest {
     void testClone(){
         AbstractCard artist2 = artist.clone();
         assertEquals(artist2.getID(), artist.getID());
-        assertEquals(artist2.getType(), artist.getType());
         assertEquals(artist2.isFinal(), artist.isFinal());
     }
 

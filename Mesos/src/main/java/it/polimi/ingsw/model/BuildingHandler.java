@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.OrderSlot;
+import it.polimi.ingsw.model.card.AbstractCard;
 import it.polimi.ingsw.model.card.BuildingVisitor;
 import it.polimi.ingsw.model.card.VisitableBuilding;
-import it.polimi.ingsw.model.card.VisitableCard;
 import it.polimi.ingsw.model.card.building.*;
 import it.polimi.ingsw.model.card.character.Inventor;
 import it.polimi.ingsw.model.gameState.ExtraActionState;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BuildingHandler implements BuildingVisitor {
     private Player lastPlayer;
-    private VisitableCard lastVisitableCard;
+    private AbstractCard lastPickedCard;
     private OrderSlot lastOrderSlot;
     private ExtraActionState lastExtraActionState;
 
@@ -24,6 +24,7 @@ public class BuildingHandler implements BuildingVisitor {
     private final List<VisitableBuilding> orderTileBuildings;
     private final List<VisitableBuilding> extraActionBuildings;
     private final List<VisitableBuilding> gameEndBuildings;
+    private final List<VisitableBuilding> sustenanceBuildings;
 
     public BuildingHandler() {
         this.cardPickBuildings = new ArrayList<>();
@@ -32,6 +33,16 @@ public class BuildingHandler implements BuildingVisitor {
         this.orderTileBuildings = new ArrayList<>();
         this.extraActionBuildings = new ArrayList<>();
         this.gameEndBuildings = new ArrayList<>();
+        this.sustenanceBuildings = new ArrayList<>();
+    }
+
+    /**
+     * Registers a {@link VisitableBuilding} that triggers effects when a card is picked.
+     *
+     * @param building the building to add to the card pick buildings list
+     */
+    public void addSustenanceBuilding(VisitableBuilding building){
+        sustenanceBuildings.add(building);
     }
 
     /**
@@ -92,17 +103,29 @@ public class BuildingHandler implements BuildingVisitor {
      * After a card has been picked, apply the effects of the card pick buildings.
      * The effects consist in receiving different bonuses depending on the building and picked card.
      * */
-    public void applyCardPickEffects(VisitableCard visitableCard, Player player) {
-        lastVisitableCard = visitableCard;
+    public void applyCardPickEffects(AbstractCard pickedCard, Player player) {
+        lastPickedCard = pickedCard;
         lastPlayer = player;
 
         for(VisitableBuilding building: cardPickBuildings){
             building.accept(this);
         }
 
-        lastVisitableCard = null;
+        lastPickedCard = null;
         lastPlayer = null;
     }
+
+    public void applySustenanceEffect() {
+        sustenanceBuildings.stream()
+                .map(b -> ((AbstractBuilding) b).getOwner().getTribe())
+                .distinct()
+                .forEach(tribe -> tribe.setSustenanceDiscount(tribe.getCollectorCount()*3));
+
+        for(VisitableBuilding building: sustenanceBuildings){
+            building.accept(this);
+        }
+    }
+
 
     /**
      * During the hunt event, apply the effects of the hunt buildings.
@@ -292,7 +315,7 @@ public class BuildingHandler implements BuildingVisitor {
      */
     @Override
     public void visit(InventorPairBuilding b) {
-        if (b.getOwner() == lastPlayer && lastVisitableCard instanceof Inventor i) {
+        if (b.getOwner() == lastPlayer && lastPickedCard instanceof Inventor i) {
             if (b.getOwner().getTribe().getNumInventorType(i.getInventorType()) % 2 == 0) {
                 b.getOwner().addFood(3);
             }
@@ -307,7 +330,13 @@ public class BuildingHandler implements BuildingVisitor {
      */
     @Override
     public void visit(SustenanceDiscountBuilding b) {
-        if(b.getOwner() == lastPlayer && lastVisitableCard != null)
-            lastVisitableCard.accept(b);
+        Player owner = b.getOwner();
+
+        owner.getTribe().addSustenanceDiscount(owner.getTribe().getInventorCount() * b.getInventorDiscount() +
+                owner.getTribe().getShamanCount() * b.getShamanDiscount() +
+                owner.getTribe().getHunterCount() * b.getHunterDiscount() +
+                owner.getTribe().getCollectorCount() * b.getCollectorDiscount() +
+                owner.getTribe().getArtistCount() * b.getArtistDiscount() +
+                owner.getTribe().getBuilderCount() * b.getBuilderDiscount());
     }
 }
