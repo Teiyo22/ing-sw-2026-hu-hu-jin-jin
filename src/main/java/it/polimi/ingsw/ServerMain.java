@@ -14,7 +14,7 @@ public class ServerMain {
         int rmiPort;
 
         Logger l = Logger.getInstance();
-        l.setLevel(LoggerLevel.DEBUG);
+        l.setLevel(LoggerLevel.ERROR);
 
         Console console = System.console();
 

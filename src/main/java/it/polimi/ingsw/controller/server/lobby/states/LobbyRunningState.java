@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.controller.client.EventResult;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.util.*;
 
@@ -48,6 +50,7 @@ public class LobbyRunningState extends LobbyState {
             model.setLobbyState(null);
 
             ServerController.getInstance().broadcastLobbyAddition(lobbyController.getLobby());
+            Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully left [Lobby %s]", client.getID(), lobbyController.getID()));
             return true;
         }
 

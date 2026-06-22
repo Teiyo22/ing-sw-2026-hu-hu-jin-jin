@@ -47,6 +47,7 @@ public class LobbyPausedState extends LobbyState {
                 lobbyController.setState(new LobbyResumableState(lobbyController));
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
+            Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully joined [Lobby %s]", client.getID(), lobbyController.getID()));
         } else if (lobbyController.getPlayers().containsKey(client)) {
             client.showError(new ErrorMessage("Join Lobby Error", "Already in the lobby"));
         } else {
@@ -71,6 +72,7 @@ public class LobbyPausedState extends LobbyState {
                 listener.removeClient(lobbyController.getID(), new Player(removedPlayer.getName(), removedPlayer.getTotem()));
 
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
+            Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully left [Lobby %s]", client.getID(), lobbyController.getID()));
             return true;
         }
 

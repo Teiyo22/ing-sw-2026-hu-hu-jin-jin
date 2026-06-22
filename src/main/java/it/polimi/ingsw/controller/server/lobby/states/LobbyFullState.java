@@ -6,6 +6,8 @@ import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.controller.client.action.PlayerAction;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 public class LobbyFullState extends LobbyState {
     public LobbyFullState(LobbyController lobbyController) {
@@ -27,6 +29,7 @@ public class LobbyFullState extends LobbyState {
 
             lobbyController.setState(new LobbyWaitingState(lobbyController));
             ServerController.getInstance().broadcastLobbyUpdate(lobbyController.getLobby());
+            Logger.getInstance().print(LoggerLevel.SERVER, String.format("[Client %s] successfully left [Lobby %s]", client.getID(), lobbyController.getID()));
             return true;
         }
 
