@@ -78,7 +78,7 @@ public class Board implements Serializable {
     /** Method to fix object references.
      * After deserialization the references might be different from the original,
      * this makes sure every reference points to the correct object by matching the new Player objects.*/
-    public void fixReferencesTo(List<Player> players) {
+    public void fixReferences(List<Player> players) {
         for (Player player : players) {
             for (OrderSlot orderSlot : orderTile)
                 if (player.equals(orderSlot.getAssignedPlayer()))
