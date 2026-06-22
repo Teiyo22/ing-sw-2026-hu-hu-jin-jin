@@ -169,6 +169,8 @@ public class LobbyController {
         return new Lobby(lobbyID, size, players.size());
     }
 
+    /** @return boolean indicating whether the lobby can be showed in the lobby selection page or not,
+     * a lobby is showable if it has not started yet.*/
     public boolean isShowable() {
         readLock.lock();
         try {

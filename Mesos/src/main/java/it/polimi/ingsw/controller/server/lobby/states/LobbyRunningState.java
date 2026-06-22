@@ -98,6 +98,8 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(lobbyController.getID(), players, model.getBoard().getTopRow(), eraChanged);
     }
 
+    /** Updates the model on the clients' side to reflect the end of the game.
+     * Saves the game results, changes state.*/
     public void notifyGameEndUpdate() {
         List<Player> players = lobbyController.getPlayers().values().stream()
             .map(Player::mediumCopy)
