@@ -235,7 +235,6 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void createLobby(Lobby lobby, Player player) {
-        System.out.println("ClientController: createLobby");
         writeLock.lock();
         try {
             currLobby = lobby;
@@ -605,8 +604,6 @@ public class ClientController implements VirtualClient {
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
-            System.out.println("Failed to connect with TCP to server: " + ip + ":" + tcpPort);
-            System.out.println("Reason: " + e.getMessage());
             return false;
         }
 
