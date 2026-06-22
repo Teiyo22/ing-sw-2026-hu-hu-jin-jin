@@ -3,7 +3,7 @@ skinparam style strictuml
 
 participant ClientController
 participant TCPServerInterface
-participant NetworkClient
+participant ServerHandler
 participant ClientHandler
 participant TCPClientInterface
 participant ServerController
@@ -16,12 +16,12 @@ participant RoundActionState
 ClientController -> TCPServerInterface: requestAction(LobbyID, CardPickPlayerAction)
 
 activate TCPServerInterface
-TCPServerInterface -> NetworkClient: sendMessage(Request)
+TCPServerInterface -> ServerHandler: sendMessage(Request)
 deactivate TCPServerInterface
 
-activate NetworkClient
-NetworkClient -> ClientHandler: PlayerActionRequest()
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> ClientHandler: PlayerActionRequest()
+deactivate ServerHandler
 
 activate ClientHandler
 ClientHandler -> TCPClientInterface: handleMessage(Request))
@@ -66,12 +66,12 @@ TCPClientInterface -> ClientHandler: sendMessage(Response)
 deactivate TCPClientInterface
 
 activate ClientHandler
-ClientHandler -> NetworkClient: OfferResolutionResponse()
+ClientHandler -> ServerHandler: OfferResolutionResponse()
 deactivate ClientHandler
 
-activate NetworkClient
-NetworkClient -> TCPServerInterface: handleMessage(Response))
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> TCPServerInterface: handleMessage(Response))
+deactivate ServerHandler
 
 activate TCPServerInterface
 TCPServerInterface -> ClientController: updateModel(Player, Picks)
@@ -85,12 +85,12 @@ TCPClientInterface -> ClientHandler: sendMessage(Response)
 deactivate TCPClientInterface
 
 activate ClientHandler
-ClientHandler -> NetworkClient: UpdateStateResponse()
+ClientHandler -> ServerHandler: UpdateStateResponse()
 deactivate ClientHandler
 
-activate NetworkClient
-NetworkClient -> TCPServerInterface: handleMessage(Response))
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> TCPServerInterface: handleMessage(Response))
+deactivate ServerHandler
 
 activate TCPServerInterface
 TCPServerInterface -> ClientController: updateState(State)

@@ -3,7 +3,7 @@ skinparam style strictuml
 
 participant ClientController
 participant TCPServerInterface
-participant NetworkClient
+participant ServerHandler
 participant ClientHandler
 participant TCPClientInterface
 participant ServerController
@@ -28,12 +28,12 @@ TCPClientInterface -> ClientHandler: sendMessage(Response)
 deactivate TCPClientInterface
 
 activate ClientHandler
-ClientHandler -> NetworkClient: GameEndResponse()
+ClientHandler -> ServerHandler: GameEndResponse()
 deactivate ClientHandler
 
-activate NetworkClient
-NetworkClient -> TCPServerInterface: handleMessage(Response))
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> TCPServerInterface: handleMessage(Response))
+deactivate ServerHandler
 
 activate TCPServerInterface
 TCPServerInterface -> ClientController: updateModel(Players)
@@ -44,12 +44,12 @@ deactivate TCPServerInterface
 ClientController -> TCPServerInterface: getLeaderboard(LobbySize)
 
 activate TCPServerInterface
-TCPServerInterface -> NetworkClient: sendMessage(Request)
+TCPServerInterface -> ServerHandler: sendMessage(Request)
 deactivate TCPServerInterface
 
-activate NetworkClient
-NetworkClient -> ClientHandler: GetLeaderboardRequest()
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> ClientHandler: GetLeaderboardRequest()
+deactivate ServerHandler
 
 activate ClientHandler
 ClientHandler -> TCPClientInterface: handleMessage(Request))
@@ -74,12 +74,12 @@ TCPClientInterface -> ClientHandler: sendMessage(Response)
 deactivate TCPClientInterface
 
 activate ClientHandler
-ClientHandler -> NetworkClient: GetLeaderboardResponse()
+ClientHandler -> ServerHandler: GetLeaderboardResponse()
 deactivate ClientHandler
 
-activate NetworkClient
-NetworkClient -> TCPServerInterface: handleMessage(Response))
-deactivate NetworkClient
+activate ServerHandler
+ServerHandler -> TCPServerInterface: handleMessage(Response))
+deactivate ServerHandler
 
 activate TCPServerInterface
 TCPServerInterface -> ClientController: showLeaderboard(LeaderboardResult)
