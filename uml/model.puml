@@ -24,7 +24,7 @@ package "model" as model {
 
     class BuildingHandler {
       - lastPlayer: Player
-      - lastVisitableCard: VisitableCard
+      - lastCard: AbstractCard
       - lastOrderSlot: OrderSlot
       - lastExtraActionState: lastExtraActionState
 
@@ -44,7 +44,7 @@ package "model" as model {
       + addGameEndBuilding(building : VisitableBuilding) : void
       + addExtraActionBuilding(building : VisitableBuilding) : void
 
-      + applyCardPickEffects(visitableCard : VisitableCard, player : Player) : void
+      + applyCardPickEffects(card: AbstractCard, player : Player) : void
       + applySustenanceEffects() : void
       + applyHuntEffects() : void
       + applyCavePaintingEffects() : void
@@ -649,11 +649,14 @@ Game --> Board
 Game --> PlayerConfig
 Game --> GameState
 Game --> Player
+Game --> BuildingHandler
 
 Board o- Deck
 Board o-- Row
 Board o-- OfferTile
 Board o-- OrderSlot
+
+BuildingHandler o-- VisitableBuilding
 
 Deck o-- AbstractCard
 Row o-- AbstractCard
