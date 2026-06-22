@@ -62,6 +62,8 @@ public class ServerController implements VirtualServer {
     public ServerController() {
         connectionMonitor = new ConnectionMonitor();
         persistenceUtil = new PersistenceUtil();
+        leaderboardDB = new LeaderboardDB();
+
         ioService = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 3));
         taskService = Executors.newVirtualThreadPerTaskExecutor();
 
@@ -70,6 +72,7 @@ public class ServerController implements VirtualServer {
 
         allClients = new ConcurrentHashMap<>();
         playingClients = new ConcurrentHashMap<>();
+
 
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
         readLock = lock.readLock();
@@ -382,7 +385,6 @@ public class ServerController implements VirtualServer {
 
         persistenceUtil.start(lobbies);
         connectionMonitor.startClientMonitor();
-        leaderboardDB = new LeaderboardDB();
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
 
