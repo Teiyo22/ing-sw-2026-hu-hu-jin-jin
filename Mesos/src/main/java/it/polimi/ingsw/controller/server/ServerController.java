@@ -80,6 +80,13 @@ public class ServerController implements VirtualServer {
     // Lobby management methods
     //=============================================================================
 
+    /** Creates a new lobby at the client's request.
+     * If the client is already in a lobby it shows an error
+     * Otherwise it creates a new lobby with ID and controller, adds the creator as first player and responds with the creation.
+     * The new lobby is also added to the list of waiting lobbies, the update is notified to every client who isn't playing yet.
+     * @param clientID The client who requested the creation.
+     * @param playerNum The lobby size.
+     * @param totem The chosen totem by the creator, who will be the first joined player.*/
     @Override
     public void createLobby(String clientID, int playerNum, Totem totem) {
         Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request [Create Lobby] with [%d Players] from [Client %s]", playerNum, clientID));
@@ -272,6 +279,7 @@ public class ServerController implements VirtualServer {
     // Client management methods
     //=============================================================================
 
+    /** Adds a new client as a consequence of a connection request. The client is also added to the connection monitor.*/
     @Override
     public void registerClient(ClientInterface client) {
         String id = UUID.randomUUID().toString();
@@ -284,6 +292,12 @@ public class ServerController implements VirtualServer {
         Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with temporary id: " + id);
     }
 
+    /** Method called when a client tries to log into the game.
+     * The username must be unique: if another client has logged in with the same username an error is shown.
+     * Otherwise, the client successfully logs in and its ID becomes the chosen name.
+     * @param clientID the client's current ID, given by the server once connected.
+     * @param username the client's chosen name.
+     * */
     @Override
     public void login(String clientID, String username) {
         Logger.getInstance().print(LoggerLevel.SERVER, String.format("Received request to [Login] from [Client %s] as [%s]", clientID, username));
@@ -318,6 +332,7 @@ public class ServerController implements VirtualServer {
 
     }
 
+    /** Adds a client to the list of clients that are currently playing and not selecting a lobby.*/
     public void addToPlayingClients(Collection<ClientInterface> clients) {
         for (ClientInterface client : clients)
             playingClients.put(client.getID(), client);
@@ -336,6 +351,11 @@ public class ServerController implements VirtualServer {
     // Network related methods
     //=============================================================================
 
+    /**Starts server both with TCP and RMI.
+     * For TCP: creates the NetworkServer and passes it to the requestService (runnable task).
+     * This creates a virtual pool for it, which listens for new connections and manages them.
+     * For RMI: creates the stub and binds it to registry.
+     * Finally, it starts both PersistenceUtil and ConnectionMonitor to manage clients' connections.*/
     public boolean startServer(String ip, int tcpPort, int rmiPort) {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
@@ -420,6 +440,11 @@ public class ServerController implements VirtualServer {
         }
     }
 
+    /** This method is called periodically by the connection monitor on the client's side.
+     * The client calls this method to maintain connection: the server's side of the connection monitor saves the last ping's time
+     * for each client and pings back.
+     * @param clientID the ID of the client that called this method.
+     * */
     @Override
     public void ping(String clientID) {
         readLock.lock();

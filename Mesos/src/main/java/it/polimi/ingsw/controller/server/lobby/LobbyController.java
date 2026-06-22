@@ -114,6 +114,7 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
+    /** Returns a copy of the model at a given time, null if there is none.*/
     public Game getModelSnapshot() {
         readLock.lock();
         try {
@@ -123,6 +124,8 @@ public class LobbyController {
         }
     }
 
+    /** Resolves the requested action by calling the action's execute method.
+     * Uses an ExecutorService to carry on the task on a separate thread. */
     public void playAction(ClientInterface client, PlayerAction action) {
         Player player = players.get(client);
         if (player == null) return;
@@ -168,6 +171,8 @@ public class LobbyController {
         return new Lobby(lobbyID, size, players.size());
     }
 
+    /** @return boolean indicating whether the lobby can be showed in the lobby selection page or not,
+     * a lobby is showable if it has not started yet.*/
     public boolean isShowable() {
         readLock.lock();
         try {

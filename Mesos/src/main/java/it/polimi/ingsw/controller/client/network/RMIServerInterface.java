@@ -105,6 +105,10 @@ public class RMIServerInterface extends ServerInterface {
         void run() throws Exception;
     }
 
+    /**Method to call remote methods. Used to manage RemoteException.
+     * The methods that call this pass a lambda expression containing the remote call without having to catch the exception.
+     * @param remoteCall functional interface that runs a given method and throws RemoteException-
+     * */
     private void submitRemoteCall(RunnableChecked remoteCall) {
             if (isConnected) {
                 try {

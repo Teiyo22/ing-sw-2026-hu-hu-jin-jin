@@ -100,6 +100,8 @@ public class ServerHandler extends Thread {
 
     }
 
+    /**Connects to the server by creating and connecting a socket.
+     * It then starts a separate thread to listen for server messages.*/
     public void connect(String ip, int tcpPort) throws IOException, IllegalArgumentException {
         InetSocketAddress endpoint = new InetSocketAddress(ip, tcpPort);
         this.socket = new Socket();

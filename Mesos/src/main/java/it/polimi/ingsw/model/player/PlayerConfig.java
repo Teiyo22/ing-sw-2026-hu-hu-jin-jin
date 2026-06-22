@@ -34,6 +34,9 @@ public enum PlayerConfig {
         return orderTileConfigFile;
     }
 
+
+    /** Return the respective configuration based on the number of players.
+     * Each configuration contains the size and directories for the json files.*/
     public static PlayerConfig getPlayerConfig(int n) {
         for (PlayerConfig c : PlayerConfig.values()) {
             if (c.getNum() == n) {

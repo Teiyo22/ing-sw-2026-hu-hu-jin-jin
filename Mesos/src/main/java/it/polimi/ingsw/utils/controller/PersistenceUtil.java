@@ -48,6 +48,12 @@ public class PersistenceUtil {
     // Persistence
     //=============================================================================
 
+    /** Starts the persistence function:
+     * an executor service periodically saves the ongoing games by creating and saving copies of the model.
+     * The information first is saved on a separate temporary file to avoid corrupting existing saves
+     * (overwriting and then crashing, resulting in incomplete information), and then moved.
+     * @param lobbies map of the existing lobbies, each entry pairs the lobby ID and the lobby controller.
+     *        This includes lobbies that have not started yet, thus they might have null models. These are filtered out.*/
     public void start(Map<Integer, LobbyController> lobbies) {
         scheduler.scheduleAtFixedRate(() -> {
             Map<Integer, Game> data = lobbies.entrySet().stream()
@@ -81,6 +87,8 @@ public class PersistenceUtil {
         }, 10, 10, TimeUnit.SECONDS);
     }
 
+    /** Loads the saved data: this needs to be converted back into a map of ID and lobby controller, instead of ID and Game.
+     * @return A map of Integer (LobbyID) and LobbyController. This map either contains the previously saved lobbies or nothing.*/
     public Map<Integer, LobbyController> loadSaves() {
         Map<Integer, LobbyController> lobbies = new ConcurrentHashMap<>();
 

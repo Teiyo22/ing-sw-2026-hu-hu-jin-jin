@@ -64,9 +64,12 @@ public class ClientController implements VirtualClient {
     }
 
     //=============================================================================
-    // Lobby management methods
+    // Lobby management methods: called by the server to update lobby related info
     //=============================================================================
 
+    /**Updates the client's ID once it successfully logs into the game.
+     * Changes screen to lobby selection.
+     * */
     @Override
     public void confirmLogin(String username) {
         writeLock.lock();
@@ -78,6 +81,8 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /**Updates the view to show the waiting lobbies, meaning lobbies that are not full yet.
+     * @param lobbies list of lobbies that are waiting for more players, containing related information.*/
     @Override
     public void showWaitingLobbies(List<Lobby> lobbies) {
         writeLock.lock();
@@ -96,6 +101,14 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates information related to the lobby the client is currently viewing.
+     * This method updates the information so that the view can showcase the selected lobby.
+     * An error message occurs if the selected lobby can not be joined anymore, meaning that it reached the max amount of players,
+     * thus not being in the waiting lobbies list anymore
+     * @param lobbyID the ID of the newly selected lobby
+     * @param connectedPlayers players that are still connected to the server
+     * @param disconnectedPlayers players that joined the lobby but disconnected
+     * */
     @Override
     public void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
         writeLock.lock();
@@ -124,6 +137,10 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Adds a player to the lobby. This method is used when the client is in a lobby and another player joins
+     * @param lobbyID hte ID of the lobby the player joined, used to check if it is the correct lobby
+     *                so that there is no mix up with other lobbies
+     * @param player the player that just joined, to add to the list of players in the lobby*/
     @Override
     public void addPlayer(int lobbyID, Player player) {
         writeLock.lock();
@@ -137,6 +154,8 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Adds a newly created lobby to the list of waiting lobbies.
+     * If this client is the one that created the lobby, thus already being in it, it also updates the related information.*/
     @Override
     public void addLobby(Lobby lobby) {
         writeLock.lock();
@@ -153,6 +172,8 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Removes a lobby from the list of waiting lobbies.
+     * If the client had this lobby selected, it will go back to the original lobby selection screen with none selected.*/
     @Override
     public void removeLobby(int lobbyID) {
         writeLock.lock();
@@ -169,6 +190,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates general lobby information in the waiting lobbies list.*/
     @Override
     public void updateLobby(Lobby lobby) {
         writeLock.lock();
@@ -182,6 +204,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Removes a client: used when a client disconnects, the player is still in the lobby but it is no longer connected.*/
     @Override
     public void removeClient(int lobbyID, Player player) {
         writeLock.lock();
@@ -194,6 +217,9 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Removes a player from the lobby.
+     * @param lobbyID the ID of the lobby the player left, used to check if it is this client's lobby to avoid mix-uo.
+     * @param player the player that left, to remove from the list of players in the lobby.*/
     @Override
     public void removePlayer(int lobbyID, Player player) {
         writeLock.lock();
@@ -225,6 +251,8 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Method that starts the lobby. Initializes the game and changes screen.
+     * */
     @Override
     public void startLobby(int lobbyID, Board board, List<Player> players) {
         writeLock.lock();
@@ -268,7 +296,7 @@ public class ClientController implements VirtualClient {
     }
 
     //=============================================================================
-    // Game related methods
+    // Game related methods: called by the server to update gameplay related info
     //=============================================================================
 
     @Override
@@ -295,6 +323,10 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates the state for this player.
+     * This state is different from the lobby state or the game state:
+     * it is specifically the turn state indicating whether the player can take any actions.
+     * */
     @Override
     public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         writeLock.lock();
@@ -312,6 +344,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates the model after an offer has been picked*/
     @Override
     public void updateModel(int lobbyID, Player player, int offerIndex) {
         writeLock.lock();
@@ -326,6 +359,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates the model after a player has picked cards.*/
     @Override
     public void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         writeLock.lock();
@@ -341,6 +375,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates the model after a round, when a new top row is created and the old one shifts down to bottom row.*/
     @Override
     public void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) {
         writeLock.lock();
@@ -356,6 +391,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Updates the model at the end of the game, with ranking information and players' final conditions.*/
     @Override
     public void updateModel(int lobbyID, List<Player> players) {
         writeLock.lock();
@@ -371,6 +407,7 @@ public class ClientController implements VirtualClient {
         }
     }
 
+    /** Shows the specified player's information. Used in TUI, GUI does not need a dedicated method.*/
     public void showPlayer(Player player) {
         writeLock.lock();
         try {
@@ -392,7 +429,7 @@ public class ClientController implements VirtualClient {
     }
 
     //=============================================================================
-    // Server related methods
+    // Server related methods: called by the client to the server
     //=============================================================================
 
     public void createLobby(int size, Totem totem) {
@@ -484,6 +521,9 @@ public class ClientController implements VirtualClient {
         server.requestAction(clientID, lobbyID, action);
     }
 
+    /** Method called when the client requests to start the lobby.
+     * The request gets forwarded to the server with the client's ID and the ID of the lobby to start.
+     * */
     public void startLobby() {
         String clientID;
         int lobbyID;
@@ -524,7 +564,7 @@ public class ClientController implements VirtualClient {
     }
 
     //=============================================================================
-    // Network related methods
+    // Network related methods: used to setup and maintain connection
     //=============================================================================
 
     /**
@@ -553,7 +593,7 @@ public class ClientController implements VirtualClient {
 
     /**
      * Connecting to the server using TCP.
-     * Creates the NetworkClient and the ServerTCPInterface, which initializes the server reference in the first.
+     * Creates the NetworkClient and the TCPServerInterface, which initializes the server reference in the first.
      *
      */
     public boolean connectTCP(String ip, int tcpPort) {

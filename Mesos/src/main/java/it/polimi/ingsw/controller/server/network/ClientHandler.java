@@ -47,6 +47,8 @@ public class ClientHandler extends Thread {
                 .create();
     }
 
+    /** Listens for new requests from the client, deserializes the requests and forwards them to the interface which will handle it.
+     * */
     @Override
     public void run() {
         String line;
@@ -67,6 +69,7 @@ public class ClientHandler extends Thread {
         }
     }
 
+    /** Serializes the message and sends it to the client.*/
     public void sendMessage(Response response) {
         lock.lock();
         try {

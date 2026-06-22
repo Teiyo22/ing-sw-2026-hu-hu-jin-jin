@@ -59,6 +59,10 @@ public class LobbyRunningState extends LobbyState {
         client.showError(new ErrorMessage("Lobby Info Error", "The lobby is already running"));
     }
 
+    /**The action is carried on by calling the action's execute method, which will adequately call Game's methods.
+     * After resolution Game will call notify methods so that the model can be updated on the clients' side.
+     * Last, this method calls updateState so that the game state cna also be updated on the clients' side.
+     * */
     @Override
     public void playAction(ClientInterface client, PlayerAction action) {
         String[] errors = action.canExecute(model);
@@ -92,6 +96,8 @@ public class LobbyRunningState extends LobbyState {
             client.updateModel(lobbyController.getID(), players, model.getBoard().getTopRow(), eraChanged);
     }
 
+    /** Updates the model on the clients' side to reflect the end of the game.
+     * Saves the game results, changes state.*/
     public void notifyGameEndUpdate() {
         List<Player> players = lobbyController.getPlayers().values().stream()
             .map(Player::mediumCopy)
