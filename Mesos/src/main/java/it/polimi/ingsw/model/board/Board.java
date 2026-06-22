@@ -41,7 +41,7 @@ public class Board implements Serializable {
 
 
     /** Creates a copy of the board with an empty deck.
-     * @return a new board item that copies everything except the deck.*/
+     * @return a new board item that copies everything except the deck, maintaining a reference to the original object.*/
     public Board mediumCopy() {
         return new Board(
             null,
@@ -77,6 +77,9 @@ public class Board implements Serializable {
         return offerTrackCopy;
     }
 
+    /** Method to fix object references.
+     * After deserialization the references might be different from the original,
+     * this makes sure every reference points to the correct object by matching the new Player objects.*/
     public void fixReferencesTo(List<Player> players) {
         for (Player player : players) {
             for (OrderSlot orderSlot : orderTile)

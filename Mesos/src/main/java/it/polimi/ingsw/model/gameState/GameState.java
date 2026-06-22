@@ -33,6 +33,7 @@ public abstract class GameState {
         return new String[]{"This action is not available"};
     }
 
+    /** Checks the state of the game and returns the appropriate GameState.*/
     public static GameState getGameState(Game game) {
         GameState gameState = isRoundStart(game.getBoard().getOrderTile())
             ? new RoundStartState(game, game.getBuildingHandler())

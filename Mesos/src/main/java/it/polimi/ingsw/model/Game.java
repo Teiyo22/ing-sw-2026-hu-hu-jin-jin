@@ -111,6 +111,8 @@ public class Game {
         gameState.update();
     }
 
+    /** Builds the model again after being loaded by a save.
+     * Everything reflects the saved conditions.*/
     public void build() {
         playerConfig = PlayerConfig.getPlayerConfig(players.size());
         buildingHandler = new BuildingHandler();

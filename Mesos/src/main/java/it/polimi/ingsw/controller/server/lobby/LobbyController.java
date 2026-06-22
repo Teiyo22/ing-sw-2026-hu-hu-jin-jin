@@ -112,6 +112,7 @@ public class LobbyController {
             model = new Game(PlayerConfig.getPlayerConfig(size), new ArrayList<>(players.values()));
     }
 
+    /** Returns a copy of the model at a given time, null if there is none.*/
     public Game getModelSnapshot() {
         readLock.lock();
         try {
