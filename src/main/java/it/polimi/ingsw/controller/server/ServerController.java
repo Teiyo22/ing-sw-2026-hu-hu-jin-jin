@@ -422,6 +422,7 @@ public class ServerController implements VirtualServer {
             LobbyController lobbyController = removedClient.getCurrLobbyController();
             if (lobbyController != null) {
                 lobbyController.remove(removedClient);
+                lobbyController.getListeners().remove(removedClient);
             }
         } finally {
             writeLock.unlock();

@@ -83,7 +83,6 @@ public class LobbyController {
         writeLock.lock();
         try {
             state.removeClient(client);
-            listeners.remove(client);
         } finally {
             writeLock.unlock();
         }

@@ -56,6 +56,8 @@ public class TCPClientInterface extends ClientInterface{
 
     @Override
     public void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) {
+        
+
         LobbyInfoResponse response = new LobbyInfoResponse(lobbyID, connectedPlayers, disconnectedPlayers);
         sendMessage(response);
     }
