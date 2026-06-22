@@ -454,4 +454,13 @@ public class ServerController implements VirtualServer {
             executor.shutdownNow();
         }
     }
+
+    public Map<Integer, LobbyController> getLobbies() {
+        return lobbies;
+    }
+
+    public Map<String, ClientInterface> getAllClients() {
+        return allClients;
+    }
+
 }
