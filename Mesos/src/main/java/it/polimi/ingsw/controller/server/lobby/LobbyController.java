@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.server.lobby;
 
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyPausedState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyState;
 import it.polimi.ingsw.controller.server.lobby.states.LobbyWaitingState;
@@ -25,7 +26,7 @@ public class LobbyController {
     private final Map<ClientInterface, Player> players = new ConcurrentHashMap<>();
     private final Set<ClientInterface> listeners = ConcurrentHashMap.newKeySet();
 
-    private Game model = null;
+    private Game model;
     private LobbyState state;
 
     private ExecutorService gameLoop;
@@ -78,10 +79,11 @@ public class LobbyController {
         }
     }
 
-    public boolean remove(ClientInterface client) {
+    public void remove(ClientInterface client) {
         writeLock.lock();
         try {
-            return state.removeClient(client);
+            state.removeClient(client);
+            listeners.remove(client);
         } finally {
             writeLock.unlock();
         }
@@ -93,7 +95,7 @@ public class LobbyController {
     }
 
     public void initGameLoop() {
-        gameLoop = Executors.newSingleThreadExecutor();
+        gameLoop = Executors.newVirtualThreadPerTaskExecutor();
     }
 
     public void shutdownGameLoop() {

@@ -58,12 +58,12 @@ public class ClientHandler extends Thread {
                 tcpClientInterface.handleMessage(request);
             }
 
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
+            ServerController.getInstance().disconnect(tcpClientInterface.getID());
         } catch (SocketException | JsonParseException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
+            ServerController.getInstance().disconnect(tcpClientInterface.getID());
         }
     }
 
@@ -77,7 +77,7 @@ public class ClientHandler extends Thread {
             output.flush();
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
-            ServerController.getInstance().disconnectClient(tcpClientInterface);
+            ServerController.getInstance().disconnect(tcpClientInterface.getID());
         } finally {
             lock.unlock();
         }
@@ -89,9 +89,24 @@ public class ClientHandler extends Thread {
 
     public void cleanup() {
         try {
+            if (output != null) {
+                output.flush();
+                output.close();
+                output = null;
+            }
+        } catch (IOException ignore) {}
+
+        try {
+            if (input != null) {
+                input.close();
+                input = null;
+            }
+        } catch (IOException ignore) {}
+
+        try {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
-                Logger.getInstance().print(LoggerLevel.SERVER, "TCP Client Socket successfully closed");
+                socket = null;
             }
         } catch (IOException ignore) {
         }

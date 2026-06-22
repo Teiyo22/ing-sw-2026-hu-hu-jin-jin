@@ -1,9 +1,8 @@
 package it.polimi.ingsw.controller.client.network;
 
-import it.polimi.ingsw.controller.client.ClientController;
 import it.polimi.ingsw.controller.common.VirtualServer;
-import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.controller.client.action.PlayerAction;
+import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Totem;
 import it.polimi.ingsw.utils.logger.Logger;
 import it.polimi.ingsw.utils.logger.LoggerLevel;
@@ -12,11 +11,13 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RMIServerInterface extends ServerInterface {
-    VirtualServer wrappedServer;
+    private VirtualServer wrappedServer;
+    private RMIClientService rmiClientService;
 
-    public RMIServerInterface(ClientController clientController, VirtualServer wrappedServer) {
-        super(clientController);
+    public RMIServerInterface(RMIClientService rmiClientService, VirtualServer wrappedServer) {
+        this.rmiClientService = rmiClientService;
         this.wrappedServer = wrappedServer;
+        this.isConnected = true;
     }
 
     @Override
@@ -90,26 +91,26 @@ public class RMIServerInterface extends ServerInterface {
     }
 
     @Override
-    public void disconnect() {
+    public void disconnect(String clientID) {
         isConnected = false;
         try {
-            UnicastRemoteObject.unexportObject(clientController, true);
-        } catch (RemoteException e) {
-            Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
+            UnicastRemoteObject.unexportObject(rmiClientService, true);
+            wrappedServer.disconnect(clientID);
+        } catch (RemoteException ignore) {
         }
     }
 
     @FunctionalInterface
     interface RunnableChecked {
-        void run() throws RemoteException;
+        void run() throws Exception;
     }
 
     private void submitRemoteCall(RunnableChecked remoteCall) {
             if (isConnected) {
                 try {
                     remoteCall.run();
-                } catch (RemoteException e) {
-                    clientController.disconnect();
+                } catch (Exception e) {
+                    rmiClientService.disconnect();
                 }
             }
         }

@@ -68,6 +68,8 @@ public class NetworkClient extends Thread {
         } catch (IOException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, e.getMessage());
             server.getClientController().disconnect();
+        } catch (Exception e) {
+            System.out.println("Unexpected error in TCP thread: " + e.getMessage());
         }
     }
 
@@ -105,7 +107,8 @@ public class NetworkClient extends Thread {
 
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         this.output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-        new Thread(this).start();
+        this.server.getClientController().submitIOTask(this);
+        server.setConnected(true);
 
     }
 
@@ -135,7 +138,5 @@ public class NetworkClient extends Thread {
                 socket = null;
             }
         } catch (IOException ignore) {}
-
-        this.interrupt();
     }
 }

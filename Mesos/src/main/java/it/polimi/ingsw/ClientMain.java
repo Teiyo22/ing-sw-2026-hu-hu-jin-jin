@@ -17,7 +17,7 @@ public class ClientMain {
         String ui;
 
         Logger l = Logger.getInstance();
-        l.setLevel(LoggerLevel.OFF);
+        l.setLevel(LoggerLevel.DEBUG);
 
         Console console = System.console();
 

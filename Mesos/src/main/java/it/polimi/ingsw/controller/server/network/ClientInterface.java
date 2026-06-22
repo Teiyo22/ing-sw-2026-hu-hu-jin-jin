@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.client.Lobby;
 import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
+import it.polimi.ingsw.controller.server.ServerController;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
@@ -14,10 +15,11 @@ import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ClientInterface implements VirtualClient, Serializable {
     protected String id;
-    protected LobbyController currLobbyController = null;
+    protected LobbyController currLobbyController;
     protected boolean isConnected = false;
 
     public abstract void confirmLogin(String username);
@@ -44,9 +46,7 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
     public abstract void updateModel(int lobbyID, List<Player> players);
 
     public abstract void ping();
-
-    public void cleanup() {};
-
+    public abstract void disconnect();
 
     public String getID() {
         return id;
@@ -66,10 +66,6 @@ public abstract class ClientInterface implements VirtualClient, Serializable {
 
         lobbyController.getListeners().add(this);
         currLobbyController = lobbyController;
-    }
-
-    public void setConnected(boolean connected) {
-        isConnected = connected;
     }
 
     @Override

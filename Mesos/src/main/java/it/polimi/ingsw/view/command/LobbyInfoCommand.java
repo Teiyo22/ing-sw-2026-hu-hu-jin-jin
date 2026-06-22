@@ -13,7 +13,7 @@ public class LobbyInfoCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.submitRequest(
+        clientController.submitIOTask(
                 () -> clientController.getLobbyInfo(lobbyID)
         );
     }

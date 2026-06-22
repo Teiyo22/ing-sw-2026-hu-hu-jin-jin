@@ -71,7 +71,7 @@ public class ConnectionMonitor {
                 long silence = System.currentTimeMillis() - clientLastSeen.get(client);
 
                 if (silence > timeout * 1000) {
-                    ServerController.getInstance().disconnectClient(client);
+                    ServerController.getInstance().disconnect(client.getID());
                     Logger.getInstance().print(LoggerLevel.DEBUG, "Connection Monitor disconnecting client " + client.getID() + " after " + silence / 1000 + "s of silence");
                 }
             }

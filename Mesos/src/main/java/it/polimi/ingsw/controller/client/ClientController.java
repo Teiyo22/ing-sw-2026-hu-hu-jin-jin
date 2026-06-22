@@ -1,9 +1,6 @@
 package it.polimi.ingsw.controller.client;
 
-import it.polimi.ingsw.controller.client.network.NetworkClient;
-import it.polimi.ingsw.controller.client.network.RMIServerInterface;
-import it.polimi.ingsw.controller.client.network.ServerInterface;
-import it.polimi.ingsw.controller.client.network.TCPServerInterface;
+import it.polimi.ingsw.controller.client.network.*;
 import it.polimi.ingsw.controller.client.turn.TurnState;
 import it.polimi.ingsw.controller.common.messages.responses.EventResultMessage;
 import it.polimi.ingsw.controller.client.info.ModelStateInfo;
@@ -38,21 +35,33 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class ClientController implements VirtualClient {
-    private volatile String id = "";
-    private volatile boolean init = false;
+    private volatile String id;
+    private volatile boolean init;
 
-    private View view = null;
-    private ServerInterface server = null;
+    private View view;
+    private ServerInterface server;
 
-    private final ConnectionMonitor connectionMonitor = new ConnectionMonitor();
-    private final ExecutorService requestService = Executors.newVirtualThreadPerTaskExecutor();
+    private final ConnectionMonitor connectionMonitor;
+    private final ExecutorService ioService;
+    private final ExecutorService taskService;
 
-    private Lobby currLobby = null;
-    private final Map<Integer, Lobby> waitingLobbies = new ConcurrentHashMap<>();
+    private Lobby currLobby;
+    private final Map<Integer, Lobby> waitingLobbies;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Lock readLock = lock.readLock();
-    private final Lock writeLock = lock.writeLock();
+    private final Lock readLock;
+    private final Lock writeLock;
+
+    public ClientController() {
+        id = "";
+        init = false;
+        connectionMonitor = new ConnectionMonitor();
+        ioService = Executors.newVirtualThreadPerTaskExecutor();
+        taskService = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 2));
+        waitingLobbies = new ConcurrentHashMap<>();
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        readLock = lock.readLock();
+        writeLock = lock.writeLock();
+    }
 
     //=============================================================================
     // Lobby management methods
@@ -200,6 +209,7 @@ public class ClientController implements VirtualClient {
 
     @Override
     public void createLobby(Lobby lobby, Player player) {
+        System.out.println("ClientController: createLobby");
         writeLock.lock();
         try {
             currLobby = lobby;
@@ -491,7 +501,7 @@ public class ClientController implements VirtualClient {
         server.startLobby(clientID, lobbyID);
     }
 
-    public void getLeaderboard(){
+    public void getLeaderboard() {
         String clientID = null;
         int lobbySize = 0;
 
@@ -510,12 +520,7 @@ public class ClientController implements VirtualClient {
     }
 
     public String getID() {
-        readLock.lock();
-        try {
-            return id;
-        } finally {
-            readLock.unlock();
-        }
+        return id;
     }
 
     //=============================================================================
@@ -529,10 +534,11 @@ public class ClientController implements VirtualClient {
         try {
             Registry registry = LocateRegistry.getRegistry(ip, rmiPort);
             VirtualServer serverStub = (VirtualServer) registry.lookup("mesos_server");
-            server = new RMIServerInterface(this, serverStub);
-            server.setConnected(true);
 
-            VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(this, 0);
+            RMIClientService rmiClientService = new RMIClientService(this);
+            server = new RMIServerInterface(rmiClientService, serverStub);
+
+            VirtualClient stub = (VirtualClient) UnicastRemoteObject.exportObject(rmiClientService, 0);
             server.registerClient(new RMIClientInterface(stub));
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with RMI to server: " + ip + ":" + rmiPort);
@@ -556,7 +562,6 @@ public class ClientController implements VirtualClient {
 
         try {
             networkClient.connect(ip, tcpPort);
-            server.setConnected(true);
 
             Logger.getInstance().print(LoggerLevel.CLIENT, "Successfully connected with TCP to server: " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
@@ -572,25 +577,37 @@ public class ClientController implements VirtualClient {
         init = false;
 
         view.close();
+        server.disconnect(id);
 
-        server.disconnect();
+        shutdownExecutor(ioService);
+        shutdownExecutor(taskService);
         connectionMonitor.stop();
-        requestService.shutdown();
 
-        try {
-            if (!requestService.awaitTermination(2, TimeUnit.SECONDS)) {
-                requestService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            requestService.shutdownNow();
-        }
 
         Formatter.clearScreen();
         System.exit(0);
     }
 
-    public void submitRequest(Runnable task) {
-        requestService.submit(task);
+    public void submitIOTask(Runnable task) {
+        ioService.submit(task);
+    }
+
+    public void submitCPUTask(Runnable task) {
+        taskService.submit(task);
+    }
+
+    private void shutdownExecutor(ExecutorService executor) {
+        if (executor == null) return;
+
+        executor.shutdown();
+
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
     }
 
     @Override
@@ -624,7 +641,6 @@ public class ClientController implements VirtualClient {
             writeLock.unlock();
         }
     }
-
 
 
     //=============================================================================

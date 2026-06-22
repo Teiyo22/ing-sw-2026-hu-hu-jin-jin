@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller.client;
 
 import it.polimi.ingsw.model.player.Player;
 
-public class EventResult {
+import java.io.Serializable;
+
+public class EventResult implements Serializable {
     private Player player;
     private int ppDelta;
     private int foodDelta;

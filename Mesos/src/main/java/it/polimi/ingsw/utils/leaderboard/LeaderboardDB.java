@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils.leaderboard;
 
+import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -27,7 +29,7 @@ public class LeaderboardDB {
 
     public LeaderboardDB() {
         if (createDatabaseIfNotExists() && createTablesIfNotExist()) {
-            dbService = Executors.newFixedThreadPool(5);
+            dbService = Executors.newVirtualThreadPerTaskExecutor();
 
             ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
             readLock = lock.readLock();
@@ -159,5 +161,19 @@ public class LeaderboardDB {
 
     public boolean isAvailable() {
         return dbService != null;
+    }
+
+    public void close() {
+        if (dbService == null) return;
+
+        dbService.shutdown();
+
+        try {
+            if (!dbService.awaitTermination(5, TimeUnit.SECONDS)) {
+                dbService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            dbService.shutdownNow();
+        }
     }
 }

@@ -11,7 +11,7 @@ public class LeaveLobbyCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.submitRequest(
+        clientController.submitIOTask(
                 clientController::leaveLobby
         );
     }

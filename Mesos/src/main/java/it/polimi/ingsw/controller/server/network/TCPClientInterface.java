@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.server.network;
 
 import it.polimi.ingsw.controller.client.info.ModelStateInfo;
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.common.messages.responses.*;
@@ -10,11 +11,14 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Row;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.utils.leaderboard.LeaderboardResult;
+import it.polimi.ingsw.utils.logger.Logger;
+import it.polimi.ingsw.utils.logger.LoggerLevel;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class TCPClientInterface extends ClientInterface {
+public class TCPClientInterface extends ClientInterface{
     private ClientHandler clientHandler;
 
     public TCPClientInterface(ClientHandler clientHandler) {
@@ -22,12 +26,15 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     public void handleMessage(Request request) {
-        request.receive(ServerController.getInstance());
+        ServerController.getInstance().submitCPUTask(() ->
+            request.receive(ServerController.getInstance())
+        );
     }
 
     @Override
     public void setID(String clientID) {
         this.id = clientID;
+        isConnected = true;
 
         SetIDResponse response = new SetIDResponse(clientID);
         sendMessage(response);
@@ -163,14 +170,16 @@ public class TCPClientInterface extends ClientInterface {
     }
 
     @Override
-    public void cleanup() {
+    public void disconnect() {
+        Logger.getInstance().print(LoggerLevel.SERVER, "Disconnecting client " + id);
+        isConnected = false;
         clientHandler.cleanup();
     }
 
     private void sendMessage(Response message) {
         if (isConnected)
-            ServerController.getInstance().submitResponse(
-                    () -> clientHandler.sendMessage(message)
+            ServerController.getInstance().submitIOTask(
+                () -> clientHandler.sendMessage(message)
             );
     }
 }

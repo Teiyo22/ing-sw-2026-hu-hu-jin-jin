@@ -19,7 +19,7 @@ public class PickCardCommand implements Command {
     @Override
     public void execute() {
         clientController.setIdleTurnState();
-        clientController.submitRequest(
+        clientController.submitIOTask(
                 () -> clientController.requestAction(new CardPickPlayerAction(topPicks, bottomPicks))
         );
     }

@@ -16,27 +16,30 @@ import java.util.Set;
 
 public interface VirtualClient extends Remote {
     void setID(String clientID) throws RemoteException;
+
     void confirmLogin(String username) throws RemoteException;
-    void showWaitingLobbies(List<Lobby> lobbies) throws RemoteException;
-    void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) throws RemoteException;
-    void addPlayer(int lobbyID, Player player) throws RemoteException;
-    void addLobby(Lobby lobby) throws RemoteException;
-    void removeLobby(int lobbyID) throws RemoteException;
-    void updateLobby(Lobby lobby) throws RemoteException;
     void removeClient(int lobbyID, Player player) throws RemoteException;
     void removePlayer(int lobbyID, Player player) throws RemoteException;
-    void showLeaderboard(LeaderboardResult leaderboardResult) throws RemoteException;
-    void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
-    void createLobby(Lobby lobby, Player player) throws RemoteException;
+    void addPlayer(int lobbyID, Player player) throws RemoteException;
+
+    void showWaitingLobbies(List<Lobby> lobbies) throws RemoteException;
+    void showLobbyInfo(int lobbyID, Set<Player> connectedPlayers, Set<Player> disconnectedPlayers) throws RemoteException;
+    void addLobby(Lobby lobby) throws RemoteException;
+    void removeLobby(int lobbyID) throws RemoteException;
     void startLobby(int lobbyID, Board board, List<Player> players) throws RemoteException;
     void stopLobby(int lobbyID) throws RemoteException;
-    void showError(ErrorMessage errorMsg) throws RemoteException;
-    void showEventResults(EventResultMessage eventResultMessage) throws RemoteException;
+    void createLobby(Lobby lobby, Player player) throws RemoteException;
+    void updateLobby(Lobby lobby) throws RemoteException;
 
+    void updateState(int lobbyID, ModelStateInfo modelStateInfo) throws RemoteException;
     void updateModel(int lobbyID, Player player, int offerIndex) throws RemoteException;
     void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) throws RemoteException;
     void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) throws RemoteException;
     void updateModel(int lobbyID, List<Player> players) throws RemoteException;
+    void showEventResults(EventResultMessage eventResultMessage) throws RemoteException;
+    void showLeaderboard(LeaderboardResult leaderboardResult) throws RemoteException;
 
+    void showError(ErrorMessage errorMsg) throws RemoteException;
     void ping() throws RemoteException;
+    void disconnect() throws RemoteException;
 }

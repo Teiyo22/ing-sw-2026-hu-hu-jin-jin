@@ -13,8 +13,14 @@ public class LoginCommand implements Command {
 
     @Override
     public void execute() {
-        clientController.submitRequest(
-                () -> clientController.login(username)
+        clientController.submitIOTask(
+                () -> {
+                    try {
+                        clientController.login(username);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
         );
     }
 }

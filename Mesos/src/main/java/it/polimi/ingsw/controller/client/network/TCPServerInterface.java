@@ -5,23 +5,30 @@ import it.polimi.ingsw.controller.common.messages.Request;
 import it.polimi.ingsw.controller.common.messages.requests.*;
 import it.polimi.ingsw.controller.common.messages.Response;
 import it.polimi.ingsw.controller.client.action.PlayerAction;
+import it.polimi.ingsw.controller.server.network.ClientInterface;
 import it.polimi.ingsw.model.player.Totem;
 
 public class TCPServerInterface extends ServerInterface {
     private final NetworkClient serverHandler;
+    private final ClientController clientController;
 
     public TCPServerInterface(ClientController clientController, NetworkClient serverHandler) {
-        super(clientController);
+        this.clientController = clientController;
         this.serverHandler = serverHandler;
         serverHandler.setServer(this);
     }
 
-    /** Method to interpret and handle messages.
+    /**
+     * Method to interpret and handle messages.
      * Calls the message's receive method which will call ClientController's methods according to the message.
+     *
      * @param response Message received from the NetworkClient.
-     * */
+     *
+     */
     public void handleMessage(Response response) {
-        response.receive(clientController);
+        clientController.submitCPUTask(() ->
+            response.receive(clientController)
+        );
     }
 
     public void login(String clientID, String username) {
@@ -59,8 +66,10 @@ public class TCPServerInterface extends ServerInterface {
     }
 
 
-    /** Method to leave the lobby.
-     * */
+    /**
+     * Method to leave the lobby.
+     *
+     */
     @Override
     public void leaveLobby(String clientID, int lobbyID) {
         LeaveLobbyRequest request = new LeaveLobbyRequest(clientID, lobbyID);
@@ -68,8 +77,10 @@ public class TCPServerInterface extends ServerInterface {
     }
 
 
-    /** Method to start the lobby.
-     * */
+    /**
+     * Method to start the lobby.
+     *
+     */
     @Override
     public void startLobby(String clientID, int lobbyID) {
         StartLobbyRequest request = new StartLobbyRequest(clientID, lobbyID);
@@ -107,8 +118,8 @@ public class TCPServerInterface extends ServerInterface {
      * Method to play a specific action.
      *
      * @param clientID
-     * @param lobbyID    ID of the player's lobby
-     * @param action action that the player wants to play.
+     * @param lobbyID  ID of the player's lobby
+     * @param action   action that the player wants to play.
      *
      */
     @Override
@@ -124,7 +135,7 @@ public class TCPServerInterface extends ServerInterface {
     }
 
     @Override
-    public void disconnect() {
+    public void disconnect(String clientID) {
         isConnected = false;
         serverHandler.cleanup();
     }
@@ -132,5 +143,12 @@ public class TCPServerInterface extends ServerInterface {
     private void sendMessage(Request message) {
         if (isConnected)
             serverHandler.sendMessage(message);
+    }
+
+    @Override
+    public void registerClient(ClientInterface client) { ; }
+
+    public ClientController getClientController() {
+        return clientController;
     }
 }

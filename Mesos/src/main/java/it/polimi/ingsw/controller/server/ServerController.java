@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.server;
 
 import it.polimi.ingsw.controller.common.ConnectionMonitor;
 import it.polimi.ingsw.controller.client.Lobby;
+import it.polimi.ingsw.controller.common.VirtualClient;
 import it.polimi.ingsw.controller.common.VirtualServer;
 import it.polimi.ingsw.controller.common.messages.responses.ErrorMessage;
 import it.polimi.ingsw.controller.server.lobby.LobbyController;
@@ -33,10 +34,13 @@ public class ServerController implements VirtualServer {
     private static ServerController instance;
 
     private NetworkServer networkServer;
-    private final ConnectionMonitor connectionMonitor;
+    private RMIServerService rmiServerService;
     private final PersistenceUtil persistenceUtil;
-    private final ExecutorService requestService;
-    private final ExecutorService responseService;
+    private  LeaderboardDB leaderboardDB;
+
+    private final ConnectionMonitor connectionMonitor;
+    private final ExecutorService ioService;
+    private final ExecutorService taskService;
 
     private final AtomicInteger nextLobbyID;
     private final Map<Integer, LobbyController> lobbies;
@@ -44,7 +48,6 @@ public class ServerController implements VirtualServer {
     private final Map<String, ClientInterface> allClients;
     private final Map<String, ClientInterface> playingClients;
 
-    private final LeaderboardDB leaderboardDB;
 
     private final Lock readLock;
     private final Lock writeLock;
@@ -59,16 +62,14 @@ public class ServerController implements VirtualServer {
     public ServerController() {
         connectionMonitor = new ConnectionMonitor();
         persistenceUtil = new PersistenceUtil();
-        requestService = Executors.newVirtualThreadPerTaskExecutor();
-        responseService = Executors.newVirtualThreadPerTaskExecutor();
+        ioService = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 3));
+        taskService = Executors.newVirtualThreadPerTaskExecutor();
 
         lobbies = persistenceUtil.loadSaves();
         nextLobbyID = new AtomicInteger(lobbies.keySet().stream().max(Integer::compare).orElse(0) + 1);
 
         allClients = new ConcurrentHashMap<>();
         playingClients = new ConcurrentHashMap<>();
-
-        leaderboardDB = new LeaderboardDB();
 
         ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
         readLock = lock.readLock();
@@ -278,7 +279,6 @@ public class ServerController implements VirtualServer {
         allClients.put(id, client);
         connectionMonitor.registerClient(client);
 
-        client.setConnected(true);
         client.setID(id);
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Client connected with temporary id: " + id);
@@ -339,7 +339,7 @@ public class ServerController implements VirtualServer {
     public boolean startServer(String ip, int tcpPort, int rmiPort) {
         try {
             this.networkServer = new NetworkServer(ip, tcpPort);
-            requestService.submit(networkServer);
+            ioService.submit(networkServer);
             Logger.getInstance().print(LoggerLevel.SERVER, "TCP Server successfully started on " + ip + ":" + tcpPort);
         } catch (IOException | IllegalArgumentException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "TCP Server failed to start on " + ip + ":" + tcpPort);
@@ -349,7 +349,8 @@ public class ServerController implements VirtualServer {
 
         try {
             Registry registry = LocateRegistry.createRegistry(rmiPort);
-            Remote stub = UnicastRemoteObject.exportObject(this, 0);
+            rmiServerService = new RMIServerService();
+            Remote stub = UnicastRemoteObject.exportObject(rmiServerService, 0);
             registry.rebind("mesos_server", stub);
 
             Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully started on " + ip + ":" + rmiPort);
@@ -361,6 +362,8 @@ public class ServerController implements VirtualServer {
 
         persistenceUtil.start(lobbies);
         connectionMonitor.startClientMonitor();
+        leaderboardDB = new LeaderboardDB();
+
         Logger.getInstance().print(LoggerLevel.SERVER, "Server successfully started");
 
         return true;
@@ -369,47 +372,47 @@ public class ServerController implements VirtualServer {
     public void stopServer() {
         connectionMonitor.stop();
         persistenceUtil.stop();
-
-        for (ClientInterface client : allClients.values()) client.cleanup();
+        leaderboardDB.close();
         networkServer.cleanup();
+
+        for (LobbyController lobby: lobbies.values()) lobby.shutdownGameLoop();
+        for (ClientInterface client : allClients.values()) client.disconnect();
         RMICleanup();
 
-        shutdownExecutor(requestService);
-        shutdownExecutor(responseService);
+        shutdownExecutor(ioService);
+        shutdownExecutor(taskService);
 
 
         Logger.getInstance().print(LoggerLevel.SERVER, "Server stopped");
     }
 
-    public void disconnectClient(ClientInterface client) {
+    public void disconnect(String clientID) {
         writeLock.lock();
         try {
-            ClientInterface removedClient = allClients.remove(client.getID());
+            ClientInterface removedClient = allClients.remove(clientID);
             if (removedClient == null) return;
 
-            playingClients.remove(client.getID());
-            connectionMonitor.unregisterClient(client);
+            playingClients.remove(clientID);
+            connectionMonitor.unregisterClient(removedClient);
 
-            removedClient.setConnected(false);
-            removedClient.cleanup();
+            removedClient.disconnect();
 
-            LobbyController lobbyController = client.getCurrLobbyController();
+            LobbyController lobbyController = removedClient.getCurrLobbyController();
             if (lobbyController != null) {
-                lobbyController.getListeners().remove(client);
-                lobbyController.remove(client);
+                lobbyController.remove(removedClient);
             }
         } finally {
             writeLock.unlock();
         }
 
-        Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + client.getID());
+        Logger.getInstance().print(LoggerLevel.SERVER, "Client disconnected with ID: " + clientID);
     }
 
     private void RMICleanup() {
         try {
             Registry registry = LocateRegistry.getRegistry();
             registry.unbind("mesos_server");
-            UnicastRemoteObject.unexportObject(this, true);
+            UnicastRemoteObject.unexportObject(rmiServerService, true);
             Logger.getInstance().print(LoggerLevel.SERVER, "RMI Server successfully closed");
         } catch (RemoteException | NotBoundException e) {
             Logger.getInstance().print(LoggerLevel.ERROR, "Failed to cleanly stop RMI server");
@@ -435,15 +438,17 @@ public class ServerController implements VirtualServer {
     // Executor related methods
     //=============================================================================
 
-    public void submitRequest(Runnable task) {
-        requestService.submit(task);
+    public void submitIOTask(Runnable task) {
+        ioService.submit(task);
     }
 
-    public void submitResponse(Runnable task) {
-        responseService.submit(task);
+    public void submitCPUTask(Runnable task) {
+        taskService.submit(task);
     }
 
     private void shutdownExecutor(ExecutorService executor) {
+        if (executor == null) return;
+
         executor.shutdown();
 
         try {

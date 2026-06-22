@@ -29,9 +29,10 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void setID(String clientID) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to setID");
         this.id = clientID;
+        isConnected = true;
 
         submitRemoteCall(
-                () -> wrappedClient.setID(clientID)
+            () -> wrappedClient.setID(clientID)
         );
     }
 
@@ -41,7 +42,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
         this.id = username;
 
         submitRemoteCall(
-                () -> wrappedClient.confirmLogin(username)
+            () -> wrappedClient.confirmLogin(username)
         );
     }
 
@@ -49,7 +50,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void showWaitingLobbies(List<Lobby> lobbies) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showWaitingLobbies");
         submitRemoteCall(
-                () -> wrappedClient.showWaitingLobbies(lobbies)
+            () -> wrappedClient.showWaitingLobbies(lobbies)
         );
     }
 
@@ -65,7 +66,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void addPlayer(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to addPlayer");
         submitRemoteCall(
-                () -> wrappedClient.addPlayer(lobbyID, player)
+            () -> wrappedClient.addPlayer(lobbyID, player)
         );
     }
 
@@ -73,7 +74,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void addLobby(Lobby lobby) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to addLobby");
         submitRemoteCall(
-                () -> wrappedClient.addLobby(lobby)
+            () -> wrappedClient.addLobby(lobby)
         );
     }
 
@@ -84,7 +85,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
             currLobbyController = null;
 
         submitRemoteCall(
-                () -> wrappedClient.removeLobby(lobbyID)
+            () -> wrappedClient.removeLobby(lobbyID)
         );
     }
 
@@ -92,7 +93,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateLobby(Lobby lobby) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateLobby");
         submitRemoteCall(
-                () -> wrappedClient.updateLobby(lobby)
+            () -> wrappedClient.updateLobby(lobby)
         );
     }
 
@@ -100,7 +101,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void removeClient(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to removeClient");
         submitRemoteCall(
-                () -> wrappedClient.removeClient(lobbyID, player)
+            () -> wrappedClient.removeClient(lobbyID, player)
         );
     }
 
@@ -108,7 +109,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void removePlayer(int lobbyID, Player player) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to removePlayer");
         submitRemoteCall(
-                () -> wrappedClient.removeClient(lobbyID, player)
+            () -> wrappedClient.removeClient(lobbyID, player)
         );
     }
 
@@ -116,7 +117,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void showLeaderboard(LeaderboardResult leaderboard) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showLeaderboard");
         submitRemoteCall(
-                () -> wrappedClient.showLeaderboard(leaderboard)
+            () -> wrappedClient.showLeaderboard(leaderboard)
         );
     }
 
@@ -124,7 +125,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateState(int lobbyID, ModelStateInfo modelStateInfo) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateState");
         submitRemoteCall(
-                () -> wrappedClient.updateState(lobbyID, modelStateInfo)
+            () -> wrappedClient.updateState(lobbyID, modelStateInfo)
         );
     }
 
@@ -132,7 +133,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateModel(int lobbyID, Player player, int offerIndex) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, offerIndex)
+            () -> wrappedClient.updateModel(lobbyID, player, offerIndex)
         );
     }
 
@@ -140,7 +141,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateModel(int lobbyID, Player player, Set<Integer> topRowPicks, Set<Integer> bottomRowPicks) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, player, topRowPicks, bottomRowPicks)
+            () -> wrappedClient.updateModel(lobbyID, player, topRowPicks, bottomRowPicks)
         );
     }
 
@@ -148,7 +149,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateModel(int lobbyID, List<Player> players, Row topRow, boolean eraChanged) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, players, topRow, eraChanged)
+            () -> wrappedClient.updateModel(lobbyID, players, topRow, eraChanged)
         );
     }
 
@@ -156,7 +157,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void updateModel(int lobbyID, List<Player> players) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to updateModel");
         submitRemoteCall(
-                () -> wrappedClient.updateModel(lobbyID, players)
+            () -> wrappedClient.updateModel(lobbyID, players)
         );
     }
 
@@ -172,7 +173,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void startLobby(int lobbyID, Board board, List<Player> players) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to startLobby");
         submitRemoteCall(
-                () -> wrappedClient.startLobby(lobbyID, board, players)
+            () -> wrappedClient.startLobby(lobbyID, board, players)
         );
     }
 
@@ -180,7 +181,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void stopLobby(int lobbyID) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to stopLobby");
         submitRemoteCall(
-                () -> wrappedClient.stopLobby(lobbyID)
+            () -> wrappedClient.stopLobby(lobbyID)
         );
     }
 
@@ -188,7 +189,7 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void showError(ErrorMessage errorMsg) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showError");
         submitRemoteCall(
-                () -> wrappedClient.showError(errorMsg)
+            () -> wrappedClient.showError(errorMsg)
         );
     }
 
@@ -196,15 +197,23 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
     public void showEventResults(EventResultMessage eventResultMessage) {
         Logger.getInstance().print(LoggerLevel.DEBUG, "Remote call to showEventResults");
         submitRemoteCall(
-                () -> wrappedClient.showEventResults(eventResultMessage)
+            () -> wrappedClient.showEventResults(eventResultMessage)
         );
     }
 
     @Override
     public void ping() {
         submitRemoteCall(
-                () -> wrappedClient.ping()
+            () -> wrappedClient.ping()
         );
+    }
+
+    @Override
+    public void disconnect() {
+        submitRemoteCall(
+            () -> wrappedClient.disconnect()
+        );
+        isConnected = false;
     }
 
     @FunctionalInterface
@@ -214,12 +223,17 @@ public class RMIClientInterface extends ClientInterface implements Serializable 
 
     private void submitRemoteCall(RunnableChecked remoteCall) {
         if (!isConnected) return;
-        ServerController.getInstance().submitResponse(() -> {
+        ServerController.getInstance().submitIOTask(() -> {
             try {
                 remoteCall.run();
-            } catch (RemoteException e)  {
-                ServerController.getInstance().disconnectClient(this);
+            } catch (RemoteException e) {
+                ServerController.getInstance().disconnect(id);
             }
         });
+    }
+
+    @Override
+    public String getID() {
+        return id;
     }
 }
