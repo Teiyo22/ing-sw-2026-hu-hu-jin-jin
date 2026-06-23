@@ -163,12 +163,15 @@ public class Lobby implements Serializable {
 
     public void updateRows(Row newTopRow, boolean eraChanged) {
         Row oldTopRow = board.getTopRow();
+        Row oldBottomRow = board.getBottomRow();
+
+        if (!eraChanged)
+            oldTopRow.setBuildingCards(oldBottomRow.getBuildingCards());
 
         board.setBottomRow(oldTopRow);
         board.setTopRow(newTopRow);
 
-        if (!eraChanged)
-            oldTopRow.getBuildingCards().clear();
+
     }
 
     public void updateTribes(Collection<Player> updatedPlayers) {

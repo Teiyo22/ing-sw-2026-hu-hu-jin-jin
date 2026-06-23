@@ -53,6 +53,10 @@ public class Row implements Serializable {
         return characterCards;
     }
 
+    public void setBuildingCards(List<AbstractBuilding> buildingCards) {
+        this.buildingCards = buildingCards;
+    }
+
     public List<AbstractBuilding> getBuildingCards() {
         return buildingCards;
     }
