@@ -76,7 +76,7 @@ public class TCPClientInterface extends ClientInterface{
 
     @Override
     public void removeLobby(int lobbyID) {
-        if (currLobbyController.getID() == lobbyID)
+        if (currLobbyController != null && currLobbyController.getID() == lobbyID)
             currLobbyController = null;
 
         RemoveLobbyResponse response = new RemoveLobbyResponse(lobbyID);
