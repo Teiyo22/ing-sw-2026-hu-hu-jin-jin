@@ -64,8 +64,8 @@ public class ServerController implements VirtualServer {
         persistenceUtil = new PersistenceUtil();
         leaderboardDB = new LeaderboardDB();
 
-        ioService = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 3));
-        taskService = Executors.newVirtualThreadPerTaskExecutor();
+        ioService = Executors.newVirtualThreadPerTaskExecutor();
+        taskService = Executors.newFixedThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 3));
 
         lobbies = persistenceUtil.loadSaves();
         nextLobbyID = new AtomicInteger(lobbies.keySet().stream().max(Integer::compare).orElse(0) + 1);
