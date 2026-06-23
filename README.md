@@ -4,7 +4,7 @@
 - Niccolò Hu (10941223)
 - Sijia Jennyfer Hu (10892454)
 - Enrico Jin (10890225)
-- Nicolò Jin (10898946)
+- Binghao Nicolò Jin (10898946)
 
 ## Advanced Features
 
