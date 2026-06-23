@@ -42,6 +42,7 @@ public class ServerMain {
 
         ServerController controller = ServerController.getInstance();
 
+        System.setProperty("java.rmi.server.hostname", address);
         if (controller.startServer(address, tcpPort, rmiPort)) {
             String line;
 
