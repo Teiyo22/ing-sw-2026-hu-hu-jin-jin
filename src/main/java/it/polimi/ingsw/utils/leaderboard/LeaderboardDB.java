@@ -85,7 +85,7 @@ public class LeaderboardDB {
                     int pp = p.getPP();
                     int food = p.getFood();
 
-                    String s = String.format("INSERT INTO results_%dp(nickname, pp, food) VALUES (?, ?, ?, ?)", game.getPlayerConfig().getNum());
+                    String s = String.format("INSERT INTO results_%dp(nickname, pp, food) VALUES (?, ?, ?)", game.getPlayerConfig().getNum());
 
                     try (Connection conn = DriverManager.getConnection(url + dbName, username, password);
                          PreparedStatement ps = conn.prepareStatement(s)) {
